@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
 
 const mainColor = Color(0xFF92cdcf);
+const secondaryColor = Color(0xFFcfa7c2);
+
+// Custom colors extension
+@immutable
+class CustomColors extends ThemeExtension<CustomColors> {
+  const CustomColors({required this.success});
+
+  final Color success;
+
+  @override
+  CustomColors copyWith({Color? success}) {
+    return CustomColors(success: success ?? this.success);
+  }
+
+  @override
+  CustomColors lerp(ThemeExtension<CustomColors>? other, double t) {
+    if (other is! CustomColors) {
+      return this;
+    }
+    return CustomColors(success: Color.lerp(success, other.success, t)!);
+  }
+}
 
 final colorScheme = ColorScheme.fromSeed(
   seedColor: mainColor,
+  secondary: secondaryColor,
   brightness: Brightness.dark,
 );
 
@@ -11,6 +34,9 @@ final theme = ThemeData(
   colorScheme: colorScheme,
   fontFamily: 'NunitoSans',
   useMaterial3: true,
+  extensions: <ThemeExtension<dynamic>>[
+    const CustomColors(success: Color(0xFF00FF00)),
+  ],
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
@@ -55,3 +81,7 @@ final theme = ThemeData(
     ),
   ),
 );
+
+extension ThemeDataExtensions on ThemeData {
+  CustomColors get customColors => extension<CustomColors>()!;
+}

@@ -20,6 +20,10 @@ class HomeController extends GetxController {
     }
   }
 
+  bool bottomNavigationIndexIs(BottomNavigationItemEnum item) {
+    return bottomNavigationItems[bottomNavigationIndex.value] == item;
+  }
+
   String get currentItemTitle {
     switch (bottomNavigationItems[bottomNavigationIndex.value]) {
       case BottomNavigationItemEnum.recipes:

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class LocalizationService extends GetxController {
   static const localeEN = Locale('en', 'US');
-  static const localeES = Locale('es', 'ES');
+  static const localeES = Locale('es', 'AR');
 
   static const supportedLocales = [localeEN, localeES];
 
@@ -53,5 +54,11 @@ class LocalizationService extends GetxController {
           supportedLocale.languageCode == locale.languageCode &&
           supportedLocale.countryCode == locale.countryCode,
     );
+  }
+
+  String formatCurrency(double amount, String currency) {
+    final lc = currentLocale.toString();
+    final formatter = NumberFormat.simpleCurrency(locale: lc, name: currency);
+    return formatter.format(amount);
   }
 }
