@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/routes/app_routes.dart';
 
 class SplashController extends GetxController with GetTickerProviderStateMixin {
   final RxBool isInitializing = true.obs;
@@ -68,8 +67,6 @@ class SplashController extends GetxController with GetTickerProviderStateMixin {
       errorMessage.value = '';
 
       await Future.delayed(const Duration(milliseconds: 500));
-
-      Get.offNamed(AppRoutes.home);
     } catch (e) {
       isInitializing.value = false;
       hasError.value = true;
