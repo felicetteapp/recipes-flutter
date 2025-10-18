@@ -3,13 +3,10 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:recipes_flutter/app/routes/app_routes.dart';
-import 'package:recipes_flutter/app/services/groups_service.dart';
 
 class AuthService extends GetxService {
   final RxBool isLoggedIn = false.obs;
-  final RxList<String> _userGroups = <String>[].obs;
-
-  List<String> get userGroups => _userGroups;
+  final RxList<String> userGroups = <String>[].obs;
 
   Future<UserCredential> login(String email, String password) async {
     return FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -54,17 +51,14 @@ class AuthService extends GetxService {
     log('User logged in', name: 'AuthService');
     final groups = await getUserGroups();
     log('User groups: $groups', name: 'AuthService');
-    _userGroups.assignAll(groups);
+    userGroups.assignAll(groups);
     isLoggedIn.value = true;
     Get.offAllNamed(AppRoutes.home);
   }
 
   listenToGroupsChanges() {
-    _userGroups.listen((List<String> groups) {
+    userGroups.listen((List<String> groups) {
       log('User groups updated: $groups', name: 'AuthService');
-
-      final groupsService = Get.find<GroupsService>();
-      groupsService.getUserGroups();
     });
   }
 

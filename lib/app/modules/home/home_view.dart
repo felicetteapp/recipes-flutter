@@ -5,6 +5,7 @@ import 'package:recipes_flutter/app/common/widgets/drawer/drawer.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/budget_display/budget_display.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/ingredients/ingredients.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/ingredients/new/new_fab.dart';
+import 'package:recipes_flutter/app/modules/home/widgets/recipes/recipes.dart';
 
 import 'home_controller.dart';
 
@@ -28,7 +29,7 @@ class HomeView extends GetView<HomeController> {
         if (controller.bottomNavigationIndexIs(
           BottomNavigationItemEnum.recipes,
         )) {
-          return const Center(child: Text('Recipes View'));
+          return const RecipesWidget();
         }
         if (controller.bottomNavigationIndexIs(BottomNavigationItemEnum.list)) {
           return const Center(child: Text('List View'));

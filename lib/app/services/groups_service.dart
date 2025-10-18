@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:recipes_flutter/app/data/models/group_models.dart';
 import 'package:recipes_flutter/app/services/api/group_api_service.dart';
 import 'package:recipes_flutter/app/services/auth_service.dart';
-import 'package:recipes_flutter/app/services/ingredients_service.dart';
 
 class GroupsService extends GetxService {
   final GroupApiService groupApiService = Get.put<GroupApiService>(
@@ -17,8 +16,6 @@ class GroupsService extends GetxService {
   void selectGroup(FRGroup? group) {
     selectedGroup.value = group;
     log('Selected group: ${group?.name}', name: 'GroupsService');
-    IngredientsService ingredientsService = Get.find<IngredientsService>();
-    ingredientsService.getSelectedGroupIngredients();
   }
 
   void getUserGroups() async {
@@ -45,5 +42,15 @@ class GroupsService extends GetxService {
       final group = groupSnapshot.data()!;
       availableGroups.add(group);
     }
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    final authService = Get.find<AuthService>();
+    authService.userGroups.listen((_) {
+      getUserGroups();
+    });
   }
 }

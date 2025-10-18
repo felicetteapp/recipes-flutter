@@ -1,0 +1,56 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class FRRecipeIngredient {
+  String ingredientId;
+  String quantity;
+
+  FRRecipeIngredient({required this.ingredientId, required this.quantity});
+
+  factory FRRecipeIngredient.fromMap(Map<String, dynamic> data) {
+    return FRRecipeIngredient(
+      ingredientId: data['ingredient'] as String,
+      quantity: data['quantity'] as String,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {'ingredient': ingredientId, 'quantity': quantity};
+  }
+}
+
+class FRRecipe {
+  String id;
+  String name;
+  List<FRRecipeIngredient> ingredients;
+
+  FRRecipe({required this.id, required this.name, required this.ingredients});
+
+  factory FRRecipe.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> doc,
+    SnapshotOptions? options,
+  ) {
+    final data = doc.data()!;
+    return FRRecipe(
+      id: doc.id,
+      name: data['name'] as String,
+      ingredients:
+          (data['ingredients'] as List<dynamic>)
+              .map(
+                (e) => FRRecipeIngredient.fromMap(
+                  Map<String, dynamic>.from(e as Map),
+                ),
+              )
+              .toList(),
+    );
+  }
+
+  static Map<String, dynamic> toFirestore(
+    FRRecipe recipe,
+    SetOptions? options,
+  ) {
+    return {
+      'name': recipe.name,
+      'ingredients': recipe.ingredients.map((e) => e.toMap()).toList(),
+    };
+  }
+}

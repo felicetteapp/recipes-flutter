@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/data/models/group_models.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/services/api/ingredient_api_service.dart';
 import 'package:recipes_flutter/app/services/auth_service.dart';
@@ -85,6 +86,18 @@ class IngredientsService extends GetxService {
     );
   }
 
+  FRIngredient? getIngredientById(String ingredientId) {
+    try {
+      return ingredients.firstWhere((ing) => ing.id == ingredientId);
+    } catch (e) {
+      log(
+        'Ingredient with ID $ingredientId not found',
+        name: 'IngredientsService',
+      );
+      return null;
+    }
+  }
+
   @override
   void onClose() {
     _ingredientsSubscription?.cancel();
@@ -97,12 +110,15 @@ class IngredientsService extends GetxService {
 
     final AuthService authService = Get.find<AuthService>();
     authService.isLoggedIn.listen((isLoggedIn) {
-      if (isLoggedIn) {
-        getSelectedGroupIngredients();
-      } else {
+      if (!isLoggedIn) {
         ingredients.clear();
         _ingredientsSubscription?.cancel();
       }
+    });
+
+    final GroupsService groupsService = Get.find<GroupsService>();
+    groupsService.selectedGroup.listen((FRGroup? group) {
+      getSelectedGroupIngredients();
     });
   }
 }
