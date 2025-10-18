@@ -6,10 +6,9 @@ import 'package:recipes_flutter/app/routes/app_routes.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
 
 class AuthService extends GetxService {
-  final RxBool _isLoggedIn = false.obs;
+  final RxBool isLoggedIn = false.obs;
   final RxList<String> _userGroups = <String>[].obs;
 
-  bool get isLoggedIn => _isLoggedIn.value;
   List<String> get userGroups => _userGroups;
 
   Future<UserCredential> login(String email, String password) async {
@@ -20,6 +19,7 @@ class AuthService extends GetxService {
   }
 
   Future<void> logout() async {
+    isLoggedIn.value = false;
     return FirebaseAuth.instance.signOut();
   }
 
@@ -46,7 +46,7 @@ class AuthService extends GetxService {
 
   handleUserLoggedOut() {
     log('User logged out', name: 'AuthService');
-    _isLoggedIn.value = false;
+    isLoggedIn.value = false;
     Get.offAllNamed(AppRoutes.login);
   }
 
@@ -55,7 +55,7 @@ class AuthService extends GetxService {
     final groups = await getUserGroups();
     log('User groups: $groups', name: 'AuthService');
     _userGroups.assignAll(groups);
-    _isLoggedIn.value = true;
+    isLoggedIn.value = true;
     Get.offAllNamed(AppRoutes.home);
   }
 

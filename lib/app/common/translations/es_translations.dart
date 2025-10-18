@@ -9,6 +9,21 @@ class EsTranslations extends Translations {
           'El nombre debe tener al menos @min caracteres',
       TranslationKeys.nameMaxLength:
           'El nombre no puede exceder @max caracteres',
+
+      // common
+      TranslationKeys.email: 'Email',
+      TranslationKeys.password: 'Contraseña',
+      TranslationKeys.login: 'Iniciar sesión',
+      TranslationKeys.logout: 'Cerrar sesión',
+      TranslationKeys.cancel: 'Cancelar',
+      TranslationKeys.save: 'Guardar',
+      TranslationKeys.delete: 'Eliminar',
+      TranslationKeys.edit: 'Editar',
+      TranslationKeys.confirm: 'Confirmar',
+      TranslationKeys.tryAgain: 'Intente de nuevo',
+
+      // login
+      TranslationKeys.loginErrorTitle: 'Error de inicio de sesión',
     },
   };
 }

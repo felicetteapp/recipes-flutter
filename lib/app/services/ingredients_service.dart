@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/services/api/ingredient_api_service.dart';
+import 'package:recipes_flutter/app/services/auth_service.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
 
 class IngredientsService extends GetxService {
@@ -88,5 +89,20 @@ class IngredientsService extends GetxService {
   void onClose() {
     _ingredientsSubscription?.cancel();
     super.onClose();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    final AuthService authService = Get.find<AuthService>();
+    authService.isLoggedIn.listen((isLoggedIn) {
+      if (isLoggedIn) {
+        getSelectedGroupIngredients();
+      } else {
+        ingredients.clear();
+        _ingredientsSubscription?.cancel();
+      }
+    });
   }
 }

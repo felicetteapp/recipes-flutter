@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -17,12 +19,16 @@ class LocalizationService extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _currentLocale.listen((locale) {
+      log('Locale changed to: $locale', name: 'LocalizationService');
+      Get.updateLocale(locale);
+    });
     _loadLocaleFromStorage();
   }
 
   void _loadLocaleFromStorage() {
     // TODO: Implement loading locale from persistent storage
-    _currentLocale.value = localeEN;
+    _currentLocale.value = localeES;
   }
 
   void changeLocale(Locale locale) {

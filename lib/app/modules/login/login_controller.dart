@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/services/auth_service.dart';
 import 'package:recipes_flutter/app/utils/snackbar.dart';
 
@@ -21,7 +22,10 @@ class LoginController extends GetxController {
     try {
       await authService.login(emailController.text, passwordController.text);
     } catch (e) {
-      FRSnackbar.error('Login Error', e.toString());
+      FRSnackbar.error(
+        TranslationKeys.loginErrorTitle.tr,
+        TranslationKeys.tryAgain.tr,
+      );
     } finally {
       isLoading.value = false;
     }
