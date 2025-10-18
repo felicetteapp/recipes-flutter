@@ -4,10 +4,16 @@ import 'package:recipes_flutter/app/services/localization_service.dart';
 import 'package:recipes_flutter/theme.dart';
 
 class BudgetDisplay extends StatelessWidget {
-  final int used;
-  final int total;
+  final double used;
+  final double total;
+  final String currency;
 
-  const BudgetDisplay({super.key, required this.used, required this.total});
+  const BudgetDisplay({
+    super.key,
+    required this.used,
+    required this.total,
+    required this.currency,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +42,7 @@ class BudgetDisplay extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: ls.formatCurrency(used.toDouble(), 'EUR'),
+                        text: ls.formatCurrency(used.toDouble(), currency),
                         style: TextStyle(color: theme.colorScheme.primary),
                       ),
                       TextSpan(text: ' '),
@@ -46,7 +52,7 @@ class BudgetDisplay extends StatelessWidget {
                       ),
                       TextSpan(text: ' '),
                       TextSpan(
-                        text: ls.formatCurrency(total.toDouble(), 'BRL'),
+                        text: ls.formatCurrency(total.toDouble(), currency),
                         style: TextStyle(color: theme.colorScheme.secondary),
                       ),
                     ],

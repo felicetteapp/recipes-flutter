@@ -28,7 +28,11 @@ class HomeView extends GetView<HomeController> {
               visible: controller.bottomNavigationIndexIs(
                 BottomNavigationItemEnum.list,
               ),
-              child: BudgetDisplay(used: 123, total: 456),
+              child: BudgetDisplay(
+                used: 123,
+                total: controller.budget,
+                currency: controller.currency,
+              ),
             ),
             NavigationBar(
               selectedIndex: controller.bottomNavigationIndex.value,
