@@ -12,7 +12,11 @@ class GroupApiService extends ApiService {
         );
   }
 
+  DocumentReference<FRGroup> doc(String groupId) {
+    return collection().doc(groupId);
+  }
+
   Future<DocumentSnapshot<FRGroup>> getGroup(String groupId) {
-    return collection().doc(groupId).get();
+    return doc(groupId).get();
   }
 }

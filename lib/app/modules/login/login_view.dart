@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/utils/snackbar.dart';
 
 import 'login_controller.dart';
 
@@ -20,6 +21,12 @@ class LoginView extends GetView<LoginController> {
             controller: controller.passwordController,
             decoration: const InputDecoration(labelText: 'Password'),
             obscureText: true,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              FRSnackbar.success('Error', 'An error occurred');
+            },
+            child: Text('teste'),
           ),
           Obx(
             () =>

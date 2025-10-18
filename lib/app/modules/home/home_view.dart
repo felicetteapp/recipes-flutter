@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:recipes_flutter/app/common/widgets/appbar/appbar.dart';
 import 'package:recipes_flutter/app/common/widgets/drawer/drawer.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/budget_display/budget_display.dart';
+import 'package:recipes_flutter/app/modules/home/widgets/ingredients/ingredients.dart';
+import 'package:recipes_flutter/app/modules/home/widgets/ingredients/new/new_fab.dart';
 
 import 'home_controller.dart';
 
@@ -14,12 +16,30 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       appBar: FRAppbar(title: Obx(() => Text(controller.currentItemTitle))),
       drawer: const FRDrawer(),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          return ListTile(title: Text('Item $index'));
-        },
-        itemCount: 20,
-      ),
+      floatingActionButton: Obx(() {
+        if (controller.bottomNavigationIndexIs(
+          BottomNavigationItemEnum.ingredients,
+        )) {
+          return NewIngredientFab();
+        }
+        return SizedBox.shrink();
+      }),
+      body: Obx(() {
+        if (controller.bottomNavigationIndexIs(
+          BottomNavigationItemEnum.recipes,
+        )) {
+          return const Center(child: Text('Recipes View'));
+        }
+        if (controller.bottomNavigationIndexIs(BottomNavigationItemEnum.list)) {
+          return const Center(child: Text('List View'));
+        }
+        if (controller.bottomNavigationIndexIs(
+          BottomNavigationItemEnum.ingredients,
+        )) {
+          return IngredientsWidget();
+        }
+        return const Center(child: Text('Unknown View'));
+      }),
       bottomNavigationBar: Obx(
         () => Column(
           mainAxisSize: MainAxisSize.min,

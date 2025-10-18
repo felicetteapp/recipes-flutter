@@ -6,13 +6,31 @@ const secondaryColor = Color(0xFFcfa7c2);
 // Custom colors extension
 @immutable
 class CustomColors extends ThemeExtension<CustomColors> {
-  const CustomColors({required this.success});
+  const CustomColors({
+    required this.success,
+    required this.onSuccess,
+    required this.successContainer,
+    required this.onSuccessContainer,
+  });
 
   final Color success;
+  final Color successContainer;
+  final Color onSuccess;
+  final Color onSuccessContainer;
 
   @override
-  CustomColors copyWith({Color? success}) {
-    return CustomColors(success: success ?? this.success);
+  CustomColors copyWith({
+    Color? success,
+    Color? onSuccess,
+    Color? successContainer,
+    Color? onSuccessContainer,
+  }) {
+    return CustomColors(
+      success: success ?? this.success,
+      onSuccess: onSuccess ?? this.onSuccess,
+      successContainer: successContainer ?? this.successContainer,
+      onSuccessContainer: onSuccessContainer ?? this.onSuccessContainer,
+    );
   }
 
   @override
@@ -20,7 +38,14 @@ class CustomColors extends ThemeExtension<CustomColors> {
     if (other is! CustomColors) {
       return this;
     }
-    return CustomColors(success: Color.lerp(success, other.success, t)!);
+    return CustomColors(
+      success: Color.lerp(success, other.success, t)!,
+      onSuccess: Color.lerp(onSuccess, other.onSuccess, t)!,
+      successContainer:
+          Color.lerp(successContainer, other.successContainer, t)!,
+      onSuccessContainer:
+          Color.lerp(onSuccessContainer, other.onSuccessContainer, t)!,
+    );
   }
 }
 
@@ -35,7 +60,12 @@ final theme = ThemeData(
   fontFamily: 'NunitoSans',
   useMaterial3: true,
   extensions: <ThemeExtension<dynamic>>[
-    const CustomColors(success: Color(0xFF00FF00)),
+    CustomColors(
+      success: Color(0xFF00FF00),
+      onSuccess: colorScheme.surface,
+      successContainer: Color(0xFF007F00),
+      onSuccessContainer: colorScheme.surface,
+    ),
   ],
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
@@ -63,22 +93,6 @@ final theme = ThemeData(
     ),
     filled: false,
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-  ),
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
-    iconSize: 86,
-    extendedPadding: EdgeInsets.all(8),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-    extendedSizeConstraints: BoxConstraints(
-      minWidth: 64,
-      minHeight: 64,
-      maxWidth: 350,
-      maxHeight: 250,
-    ),
-    extendedTextStyle: TextStyle(
-      fontFamily: 'Outward',
-      fontSize: 86,
-      height: 1.1,
-    ),
   ),
 );
 

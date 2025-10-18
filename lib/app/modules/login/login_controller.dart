@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipes_flutter/app/services/auth_service.dart';
+import 'package:recipes_flutter/app/utils/snackbar.dart';
 
 class LoginController extends GetxController {
   final RxBool isLoading = false.obs;
@@ -20,11 +21,7 @@ class LoginController extends GetxController {
     try {
       await authService.login(emailController.text, passwordController.text);
     } catch (e) {
-      Get.snackbar(
-        'Login Error',
-        e.toString(),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      FRSnackbar.error('Login Error', e.toString());
     } finally {
       isLoading.value = false;
     }
