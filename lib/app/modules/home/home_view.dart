@@ -12,63 +12,141 @@ import 'home_controller.dart';
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
 
+  _buildBody() {
+    return Obx(() {
+      if (controller.bottomNavigationIndexIs(
+        BottomNavigationItemEnum.recipes,
+      )) {
+        return const RecipesWidget();
+      }
+      if (controller.bottomNavigationIndexIs(BottomNavigationItemEnum.list)) {
+        return const Center(child: Text('List View'));
+      }
+      if (controller.bottomNavigationIndexIs(
+        BottomNavigationItemEnum.ingredients,
+      )) {
+        return IngredientsWidget();
+      }
+      return const Center(child: Text('Unknown View'));
+    });
+  }
+
+  _buildBottomNavigationBar() {
+    return Obx(
+      () => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Visibility(
+            visible: controller.bottomNavigationIndexIs(
+              BottomNavigationItemEnum.list,
+            ),
+            child: BudgetDisplay(
+              used: 123,
+              total: controller.budget,
+              currency: controller.currency,
+            ),
+          ),
+          NavigationBar(
+            selectedIndex: controller.bottomNavigationIndex.value,
+            onDestinationSelected: controller.setBottomNavigationIndex,
+            destinations: const [
+              NavigationDestination(icon: Icon(Icons.book), label: 'Recipes'),
+              NavigationDestination(icon: Icon(Icons.list), label: 'List'),
+              NavigationDestination(
+                icon: Icon(Icons.kitchen),
+                label: 'Ingredients',
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildFloatingActionButton() {
+    return Obx(() {
+      if (controller.bottomNavigationIndexIs(
+        BottomNavigationItemEnum.ingredients,
+      )) {
+        return NewIngredientFab();
+      }
+      if (controller.bottomNavigationIndexIs(
+        BottomNavigationItemEnum.recipes,
+      )) {
+        if (controller.itsSelectionMode.value) {
+          return FloatingActionButton.large(
+            backgroundColor: Get.theme.colorScheme.secondary,
+            foregroundColor: Get.theme.colorScheme.onSecondary,
+            child: const Icon(Icons.save),
+            onPressed: () {
+              controller.saveRecipesSelection();
+            },
+          );
+        }
+
+        return FloatingActionButton.extended(
+          onPressed: () {
+            Get.snackbar('FAB Pressed', 'New Recipe FAB Pressed');
+          },
+          icon: const Icon(Icons.add),
+          label: const Text('Add Recipe'),
+        );
+      }
+      return SizedBox.shrink();
+    });
+  }
+
+  _buildAppBarTitle() {
+    return Obx(() {
+      return Text(controller.currentItemTitle);
+    });
+  }
+
+  List<Widget>? _buildAppBarActions() {
+    return [
+      Obx(
+        () => Visibility(
+          visible: controller.bottomNavigationIndexIs(
+            BottomNavigationItemEnum.recipes,
+          ),
+          child: TextButton(
+            onPressed: () {
+              controller.enableRecipesSelectionMode();
+            },
+            child: const Text('Select recipes'),
+          ),
+        ),
+      ),
+    ];
+  }
+
+  _buildAppBar() {
+    if (controller.itsSelectionMode.value) {
+      return FRAppbar(
+        title: Text('${controller.selectedIds.length} selected'),
+        showBackButton: false,
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            controller.itsSelectionMode.value = false;
+            controller.selectedIds.clear();
+          },
+        ),
+        selectingMode: true,
+      );
+    }
+    return FRAppbar(title: _buildAppBarTitle(), actions: _buildAppBarActions());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FRAppbar(title: Obx(() => Text(controller.currentItemTitle))),
-      drawer: const FRDrawer(),
-      floatingActionButton: Obx(() {
-        if (controller.bottomNavigationIndexIs(
-          BottomNavigationItemEnum.ingredients,
-        )) {
-          return NewIngredientFab();
-        }
-        return SizedBox.shrink();
-      }),
-      body: Obx(() {
-        if (controller.bottomNavigationIndexIs(
-          BottomNavigationItemEnum.recipes,
-        )) {
-          return const RecipesWidget();
-        }
-        if (controller.bottomNavigationIndexIs(BottomNavigationItemEnum.list)) {
-          return const Center(child: Text('List View'));
-        }
-        if (controller.bottomNavigationIndexIs(
-          BottomNavigationItemEnum.ingredients,
-        )) {
-          return IngredientsWidget();
-        }
-        return const Center(child: Text('Unknown View'));
-      }),
-      bottomNavigationBar: Obx(
-        () => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Visibility(
-              visible: controller.bottomNavigationIndexIs(
-                BottomNavigationItemEnum.list,
-              ),
-              child: BudgetDisplay(
-                used: 123,
-                total: controller.budget,
-                currency: controller.currency,
-              ),
-            ),
-            NavigationBar(
-              selectedIndex: controller.bottomNavigationIndex.value,
-              onDestinationSelected: controller.setBottomNavigationIndex,
-              destinations: const [
-                NavigationDestination(icon: Icon(Icons.book), label: 'Recipes'),
-                NavigationDestination(icon: Icon(Icons.list), label: 'List'),
-                NavigationDestination(
-                  icon: Icon(Icons.kitchen),
-                  label: 'Ingredients',
-                ),
-              ],
-            ),
-          ],
-        ),
+    return Obx(
+      () => Scaffold(
+        appBar: _buildAppBar(),
+        drawer: const FRDrawer(),
+        floatingActionButton: _buildFloatingActionButton(),
+        body: _buildBody(),
+        bottomNavigationBar: _buildBottomNavigationBar(),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/data/models/recipe_models.dart';
+import 'package:recipes_flutter/app/modules/home/home_controller.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
 import 'package:recipes_flutter/app/services/ingredients_service.dart';
 import 'package:recipes_flutter/app/services/recipes_service.dart';
@@ -16,6 +17,7 @@ class RecipesWidget extends StatelessWidget {
     final recipesService = Get.find<RecipesService>();
     final groupsService = Get.find<GroupsService>();
     final ingredientsService = Get.find<IngredientsService>();
+    final homeViewController = Get.find<HomeController>();
     return Obx(() {
       final recipes = recipesService.recipes;
 
@@ -33,6 +35,7 @@ class RecipesWidget extends StatelessWidget {
             groupsService: groupsService,
             ingredientsService: ingredientsService,
             recipesService: recipesService,
+            homeViewController: homeViewController,
           );
         },
         itemCount: itemCount,
@@ -46,6 +49,7 @@ class RecipesWidget extends StatelessWidget {
     required GroupsService groupsService,
     required IngredientsService ingredientsService,
     required RecipesService recipesService,
+    required HomeController homeViewController,
   }) {
     final isInList = recipesService.isRecipeInSelectedGroupList(recipe.id);
     final ingredients =
@@ -61,29 +65,63 @@ class RecipesWidget extends StatelessWidget {
 
     ingredients.sort((a, b) => a.name.compareTo(b.name));
 
-    return ListTile(
-      title: Text(recipe.name),
-      subtitle: Text(ingredients.map((i) => i.name).join(', ')),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-      trailing: Row(
-        spacing: 4,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (isInList)
-            Chip(
-              label: Text('on list'),
-              avatar: isInList ? Icon(Icons.list) : null,
-              visualDensity: VisualDensity.compact,
-              padding: EdgeInsets.all(9),
-              //            labelPadding: EdgeInsets.all(2),
-            ),
-          IconButton(
-            onPressed: () {
-              log('Edit Recipe: ${recipe.name}');
-            },
-            icon: const Icon(Icons.edit),
-          ),
-        ],
+    return Obx(
+      () => ListTile(
+        leading:
+            homeViewController.itsSelectionMode.value
+                ? Checkbox(
+                  value: homeViewController.selectedIds.contains(recipe.id),
+                  onChanged: (checked) {
+                    if (checked == true) {
+                      homeViewController.selectedIds.add(recipe.id);
+                    } else {
+                      homeViewController.selectedIds.remove(recipe.id);
+                    }
+                  },
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                )
+                : null,
+        title: Text(recipe.name),
+        onTap:
+            homeViewController.itsSelectionMode.value
+                ? () {
+                  if (homeViewController.selectedIds.contains(recipe.id)) {
+                    homeViewController.selectedIds.remove(recipe.id);
+                  } else {
+                    homeViewController.selectedIds.add(recipe.id);
+                  }
+                }
+                : null,
+        onLongPress:
+            homeViewController.itsSelectionMode.value
+                ? null
+                : () {
+                  homeViewController.enableRecipesSelectionMode();
+                },
+        subtitle: Text(ingredients.map((i) => i.name).join(', ')),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16),
+        trailing:
+            !homeViewController.itsSelectionMode.value
+                ? Row(
+                  spacing: 4,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (isInList)
+                      Chip(
+                        label: Text('on list'),
+                        avatar: isInList ? Icon(Icons.list) : null,
+                        visualDensity: VisualDensity.compact,
+                        padding: EdgeInsets.all(9),
+                      ),
+                    IconButton(
+                      onPressed: () {
+                        log('Edit Recipe: ${recipe.name}');
+                      },
+                      icon: const Icon(Icons.edit),
+                    ),
+                  ],
+                )
+                : null,
       ),
     );
   }

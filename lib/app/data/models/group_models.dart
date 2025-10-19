@@ -112,6 +112,45 @@ class FRGroup {
   }
 
   static Map<String, dynamic> toFirestore(FRGroup group, SetOptions? options) {
-    return {'creatorUid': group.creatorUid, 'name': group.name};
+    return {
+      'creatorUid': group.creatorUid,
+      'name': group.name,
+      'currentRecipes': group.currentRecipes,
+      'currentIngredients': group.currentIngredients,
+      'checkedIngredients': group.checkedIngredients,
+      'ingredientsPrices': group.ingredientsPrices.map(
+        (key, value) =>
+            MapEntry(key, value.map((price) => price.toMap()).toList()),
+      ),
+      'filters': group.filters.toMap(),
+      'currency': group.currency,
+      'budget': group.budget,
+    };
+  }
+
+  FRGroup copyWith({
+    String? id,
+    String? creatorUid,
+    String? name,
+    List<String>? currentRecipes,
+    List<Map<String, String>>? currentIngredients,
+    List<String>? checkedIngredients,
+    Map<String, List<FRIngredientPrice>>? ingredientsPrices,
+    FRGroupFilter? filters,
+    String? currency,
+    double? budget,
+  }) {
+    return FRGroup(
+      id: id ?? this.id,
+      creatorUid: creatorUid ?? this.creatorUid,
+      name: name ?? this.name,
+      currentRecipes: currentRecipes ?? this.currentRecipes,
+      currentIngredients: currentIngredients ?? this.currentIngredients,
+      checkedIngredients: checkedIngredients ?? this.checkedIngredients,
+      ingredientsPrices: ingredientsPrices ?? this.ingredientsPrices,
+      filters: filters ?? this.filters,
+      currency: currency ?? this.currency,
+      budget: budget ?? this.budget,
+    );
   }
 }

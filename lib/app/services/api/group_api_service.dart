@@ -19,4 +19,14 @@ class GroupApiService extends ApiService {
   Future<DocumentSnapshot<FRGroup>> getGroup(String groupId) {
     return doc(groupId).get();
   }
+
+  Stream<DocumentSnapshot<FRGroup>> listenGroup(String groupId) {
+    return doc(groupId).snapshots();
+  }
+
+  Future<void> updateGroupRecipes({required FRGroup group}) {
+    return doc(
+      group.id,
+    ).set(group, SetOptions(mergeFields: ['currentRecipes']));
+  }
 }

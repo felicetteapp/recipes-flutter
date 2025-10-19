@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:recipes_flutter/app/data/models/group_models.dart';
 import 'package:recipes_flutter/app/services/api/group_api_service.dart';
@@ -12,9 +14,12 @@ class GroupsService extends GetxService {
   );
   final RxList<FRGroup> availableGroups = <FRGroup>[].obs;
   final Rx<FRGroup?> selectedGroup = Rx<FRGroup?>(null);
+  final Rxn<String> selectedGroupId = Rxn<String>();
+  StreamSubscription<DocumentSnapshot<FRGroup>>?
+  _currentGroupListenerSubscription;
 
   void selectGroup(FRGroup? group) {
-    selectedGroup.value = group;
+    selectedGroupId.value = group?.id;
     log('Selected group: ${group?.name}', name: 'GroupsService');
   }
 
@@ -44,6 +49,23 @@ class GroupsService extends GetxService {
     }
   }
 
+  Future<void> updateCurrentGroupRecipes(List<String> recipeIds) {
+    final group = selectedGroup.value;
+    log(
+      'Updating current recipes for group ${group?.name} to $recipeIds',
+      name: 'GroupsService',
+    );
+    if (group == null) {
+      throw Exception('No selected group to update recipes for');
+    }
+    final newGroup = group.copyWith(currentRecipes: recipeIds);
+    log(
+      'New group current recipes: ${newGroup.currentRecipes}',
+      name: 'GroupsService',
+    );
+    return groupApiService.updateGroupRecipes(group: newGroup);
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -51,6 +73,26 @@ class GroupsService extends GetxService {
     final authService = Get.find<AuthService>();
     authService.userGroups.listen((_) {
       getUserGroups();
+    });
+
+    selectedGroupId.listen((gId) {
+      _currentGroupListenerSubscription?.cancel();
+      if (gId != null) {
+        _currentGroupListenerSubscription = groupApiService
+            .listenGroup(gId)
+            .listen((groupSnapshot) {
+              if (groupSnapshot.exists) {
+                final group = groupSnapshot.data()!;
+                selectedGroup.value = group;
+                log(
+                  'Selected group updated: ${group.name}',
+                  name: 'GroupsService',
+                );
+              }
+            });
+      } else {
+        selectedGroup.value = null;
+      }
     });
   }
 }
