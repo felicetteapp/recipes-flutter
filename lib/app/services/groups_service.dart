@@ -75,6 +75,16 @@ class GroupsService extends GetxService {
       getUserGroups();
     });
 
+    authService.isLoggedIn.listen((isLoggedIn) {
+      if (!isLoggedIn) {
+        availableGroups.clear();
+        selectedGroup.value = null;
+        selectedGroupId.value = null;
+        _currentGroupListenerSubscription?.cancel();
+        _currentGroupListenerSubscription = null;
+      }
+    });
+
     selectedGroupId.listen((gId) {
       _currentGroupListenerSubscription?.cancel();
       if (gId != null) {

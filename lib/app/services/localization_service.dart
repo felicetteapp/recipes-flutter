@@ -28,7 +28,7 @@ class LocalizationService extends GetxController {
 
   void _loadLocaleFromStorage() {
     // TODO: Implement loading locale from persistent storage
-    _currentLocale.value = localeES;
+    _currentLocale.value = localeEN;
   }
 
   void changeLocale(Locale locale) {
