@@ -62,7 +62,7 @@ class IngredientsService extends GetxService {
     );
   }
 
-  Future<void> createIngredient({
+  Future<FRIngredient> createIngredient({
     required String groupId,
     required FRIngredient ingredient,
   }) async {
@@ -70,10 +70,8 @@ class IngredientsService extends GetxService {
       groupId: groupId,
       ingredient: ingredient,
     );
-    log(
-      'Created ingredient with ID: ${docRef.id} in group $groupId',
-      name: 'IngredientsService',
-    );
+
+    return ingredient.copyWith(id: docRef.id);
   }
 
   Future<void> deleteIngredient({

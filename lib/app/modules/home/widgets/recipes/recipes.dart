@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/data/models/recipe_models.dart';
 import 'package:recipes_flutter/app/modules/home/home_controller.dart';
+import 'package:recipes_flutter/app/modules/home/widgets/recipes/edit_create_modal/edit_create_modal_view.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
 import 'package:recipes_flutter/app/services/ingredients_service.dart';
 import 'package:recipes_flutter/app/services/recipes_service.dart';
@@ -116,6 +117,13 @@ class RecipesWidget extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         log('Edit Recipe: ${recipe.name}');
+                        Get.dialog(
+                          EditCreateRecipeModal(
+                            groupId: groupsService.selectedGroup.value!.id,
+                            recipe: recipe,
+                          ),
+                          useSafeArea: false,
+                        );
                       },
                       icon: const Icon(Icons.edit),
                     ),

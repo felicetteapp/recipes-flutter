@@ -67,7 +67,7 @@ class RecipesService extends GetxService {
     return recipeApiService.updateRecipe(groupId: groupId, recipe: recipe);
   }
 
-  Future<void> createRecipe({
+  Future<FRRecipe> createRecipe({
     required String groupId,
     required FRRecipe recipe,
   }) async {
@@ -79,6 +79,7 @@ class RecipesService extends GetxService {
       'Created recipe with ID: ${docRef.id} in group $groupId',
       name: 'RecipesService',
     );
+    return recipe.copyWith(id: docRef.id);
   }
 
   Future<void> deleteRecipe({

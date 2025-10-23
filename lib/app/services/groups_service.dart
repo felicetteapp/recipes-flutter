@@ -66,6 +66,20 @@ class GroupsService extends GetxService {
     return groupApiService.updateGroupRecipes(group: newGroup);
   }
 
+  Future<void> updateCurrentGroupFilters(FRGroupFilter filters) {
+    final group = selectedGroup.value;
+    log(
+      'Updating current filters for group ${group?.name} to $filters',
+      name: 'GroupsService',
+    );
+    if (group == null) {
+      throw Exception('No selected group to update filters for');
+    }
+    final newGroup = group.copyWith(filters: filters);
+    log('New group filters: ${newGroup.filters}', name: 'GroupsService');
+    return groupApiService.updateGroupFilters(group: newGroup);
+  }
+
   @override
   void onInit() {
     super.onInit();

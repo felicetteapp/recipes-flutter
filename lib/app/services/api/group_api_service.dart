@@ -29,4 +29,8 @@ class GroupApiService extends ApiService {
       group.id,
     ).set(group, SetOptions(mergeFields: ['currentRecipes']));
   }
+
+  Future<void> updateGroupFilters({required FRGroup group}) {
+    return doc(group.id).set(group, SetOptions(mergeFields: ['filters']));
+  }
 }

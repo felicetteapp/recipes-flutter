@@ -3,47 +3,77 @@ import 'package:get/get.dart';
 import 'package:recipes_flutter/theme.dart';
 
 class FRSnackbar {
-  static void show({
+  static SnackbarController show({
     required String title,
     required String message,
     required Color backgroundColor,
     required Color colorText,
     SnackPosition snackPosition = SnackPosition.BOTTOM,
+    Duration? duration = const Duration(seconds: 3),
+    EdgeInsets? margin,
   }) {
-    Get.snackbar(
+    return Get.snackbar(
       title,
       message,
       backgroundColor: backgroundColor,
       colorText: colorText,
       snackPosition: snackPosition,
+      duration: duration,
+      margin: margin,
     );
   }
 
-  static void success(
+  static SnackbarController success(
     String title,
     String message, {
     SnackPosition? snackPosition,
+    Duration? duration,
+    EdgeInsets? margin,
   }) {
-    FRSnackbar.show(
+    return FRSnackbar.show(
       title: title,
       message: message,
       snackPosition: snackPosition ?? SnackPosition.BOTTOM,
+      duration: duration,
       backgroundColor: Get.theme.customColors.successContainer,
       colorText: Get.theme.customColors.onSuccessContainer,
+      margin: margin,
     );
   }
 
-  static void error(
+  static SnackbarController error(
     String title,
     String message, {
     SnackPosition? snackPosition,
+    Duration? duration,
+    EdgeInsets? margin,
   }) {
-    FRSnackbar.show(
+    return FRSnackbar.show(
       title: title,
       message: message,
       snackPosition: snackPosition ?? SnackPosition.BOTTOM,
+      duration: duration,
       backgroundColor: Get.theme.colorScheme.errorContainer,
       colorText: Get.theme.colorScheme.onErrorContainer,
+      margin: margin,
+    );
+  }
+
+  static SnackbarController info(
+    String title,
+    String message, {
+    SnackPosition? snackPosition,
+    Duration? duration,
+    EdgeInsets? margin,
+  }) {
+    return FRSnackbar.show(
+      title: title,
+      message: message,
+      snackPosition: snackPosition ?? SnackPosition.BOTTOM,
+      duration: duration,
+      backgroundColor: Get.theme.colorScheme.primaryContainer,
+      colorText: Get.theme.colorScheme.onPrimaryContainer,
+      margin: margin,
     );
   }
 }

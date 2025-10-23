@@ -53,4 +53,16 @@ class FRRecipe {
       'ingredients': recipe.ingredients.map((e) => e.toMap()).toList(),
     };
   }
+
+  FRRecipe copyWith({
+    String? name,
+    List<FRRecipeIngredient>? ingredients,
+    String? id,
+  }) {
+    return FRRecipe(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      ingredients: ingredients ?? this.ingredients,
+    );
+  }
 }

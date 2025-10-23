@@ -5,7 +5,10 @@ import 'package:recipes_flutter/app/common/widgets/drawer/drawer.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/budget_display/budget_display.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/ingredients/ingredients.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/ingredients/new/new_fab.dart';
+import 'package:recipes_flutter/app/modules/home/widgets/list/list.dart';
+import 'package:recipes_flutter/app/modules/home/widgets/recipes/edit_create_modal/edit_create_modal_view.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/recipes/recipes.dart';
+import 'package:recipes_flutter/app/services/groups_service.dart';
 
 import 'home_controller.dart';
 
@@ -20,7 +23,7 @@ class HomeView extends GetView<HomeController> {
         return const RecipesWidget();
       }
       if (controller.bottomNavigationIndexIs(BottomNavigationItemEnum.list)) {
-        return const Center(child: Text('List View'));
+        return const ListWidget();
       }
       if (controller.bottomNavigationIndexIs(
         BottomNavigationItemEnum.ingredients,
@@ -47,6 +50,7 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           NavigationBar(
+            height: 80,
             selectedIndex: controller.bottomNavigationIndex.value,
             onDestinationSelected: controller.setBottomNavigationIndex,
             destinations: const [
@@ -64,6 +68,8 @@ class HomeView extends GetView<HomeController> {
   }
 
   _buildFloatingActionButton() {
+    final groupsService = Get.find<GroupsService>();
+
     return Obx(() {
       if (controller.bottomNavigationIndexIs(
         BottomNavigationItemEnum.ingredients,
@@ -86,7 +92,13 @@ class HomeView extends GetView<HomeController> {
 
         return FloatingActionButton.extended(
           onPressed: () {
-            Get.snackbar('FAB Pressed', 'New Recipe FAB Pressed');
+            Get.dialog(
+              EditCreateRecipeModal(
+                groupId: groupsService.selectedGroup.value!.id,
+                recipe: null,
+              ),
+              useSafeArea: false,
+            );
           },
           icon: const Icon(Icons.add),
           label: const Text('Add Recipe'),
