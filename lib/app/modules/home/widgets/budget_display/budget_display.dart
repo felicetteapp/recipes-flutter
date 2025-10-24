@@ -32,6 +32,7 @@ class BudgetDisplay extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 8,
             children: [
               Flexible(
                 child: RichText(
@@ -43,17 +44,21 @@ class BudgetDisplay extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: ls.formatCurrency(used.toDouble(), currency),
-                        style: TextStyle(color: theme.colorScheme.primary),
+                        style: TextStyle(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      TextSpan(text: ' '),
                       TextSpan(
-                        text: 'Used from',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        text: ' used of ',
+                        style: TextStyle(fontWeight: FontWeight.normal),
                       ),
-                      TextSpan(text: ' '),
                       TextSpan(
                         text: ls.formatCurrency(total.toDouble(), currency),
-                        style: TextStyle(color: theme.colorScheme.secondary),
+                        style: TextStyle(
+                          color: theme.colorScheme.secondary,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -78,18 +83,18 @@ class BudgetDisplay extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: ls.formatCurrency(available.toDouble(), 'ARS'),
+                        text: ls.formatCurrency(available.toDouble(), currency),
                         style: TextStyle(
                           color:
                               available < 0
                                   ? theme.colorScheme.error
                                   : theme.customColors.success,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      TextSpan(text: ' '),
                       TextSpan(
-                        text: 'Available',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        text: ' available',
+                        style: TextStyle(fontWeight: FontWeight.normal),
                       ),
                     ],
                   ),

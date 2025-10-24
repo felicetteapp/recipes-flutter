@@ -11,6 +11,14 @@ class HomeController extends GetxController {
 
   double get budget => groupsService.selectedGroup.value?.budget ?? 0.0;
   String get currency => groupsService.selectedGroup.value?.currency ?? '';
+  double get usedBudget =>
+      groupsService.selectedGroup.value?.ingredientsPrices.values
+          .expand((prices) => prices)
+          .fold(
+            0.0,
+            (sum, price) => (sum ?? 0) + price.unitPrice * price.quantity,
+          ) ??
+      0.0;
 
   final List<BottomNavigationItemEnum> bottomNavigationItems = [
     BottomNavigationItemEnum.recipes,

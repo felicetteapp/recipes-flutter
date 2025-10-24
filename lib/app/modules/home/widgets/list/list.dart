@@ -10,65 +10,61 @@ class ListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ListController());
-    return Obx(() {
+    return Obx(key: Key('list_obx'), () {
+      var itemCount = 0;
+      final staticItemsAtTop = 1;
+      final ingredients = controller.sortedIngredientList;
+      final recipes = controller.sortedRecipeList;
       if (controller.displayType.value == ListDisplayTypeEnum.ingredients) {
-        final staticItemsAtTop = 1;
-        final ingredients = controller.sortedIngredientList;
-        final itemCount = staticItemsAtTop + ingredients.length;
-        return ListView.builder(
-          itemCount: itemCount,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return _buildFilters(controller);
-            }
-
-            final item = ingredients[index - staticItemsAtTop];
-            return _buildIngredientListTile(item);
-          },
-        );
+        itemCount = staticItemsAtTop + ingredients.length;
       } else {
-        final staticItemsAtTop = 1;
-        final recipes = controller.sortedRecipeList;
         final totalIngredients = recipes.fold<int>(
           0,
           (sum, recipeItem) => sum + recipeItem.recipe.ingredients.length,
         );
-        final itemCount = staticItemsAtTop + recipes.length + totalIngredients;
-        return ListView.builder(
-          itemCount: itemCount,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return _buildFilters(controller);
+        itemCount = staticItemsAtTop + recipes.length + totalIngredients;
+      }
+
+      return ListView.builder(
+        key: const Key('list_view'),
+        itemCount: itemCount,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return _buildFilters(controller);
+          }
+
+          if (controller.displayType.value == ListDisplayTypeEnum.ingredients) {
+            final item = ingredients[index - staticItemsAtTop];
+            return _buildIngredientListTile(item);
+          }
+
+          final adjustedIndex = index - staticItemsAtTop;
+
+          var currentIndex = 0;
+          for (final recipeItem in recipes) {
+            if (adjustedIndex == currentIndex) {
+              return _buildRecipeTitle(recipeItem, controller);
             }
+            currentIndex++;
 
-            final adjustedIndex = index - staticItemsAtTop;
-
-            var currentIndex = 0;
-            for (final recipeItem in recipes) {
+            for (final ingredient in recipeItem.ingredients) {
               if (adjustedIndex == currentIndex) {
-                return _buildRecipeTitle(recipeItem, controller);
+                final recipeIngredient = recipeItem.recipe.ingredients
+                    .firstWhere((ri) => ri.ingredientId == ingredient.id);
+                return _buildRecipeIngredientItem(
+                  ingredient,
+                  recipeIngredient,
+                  recipeItem,
+                  controller,
+                );
               }
               currentIndex++;
-
-              for (final ingredient in recipeItem.ingredients) {
-                if (adjustedIndex == currentIndex) {
-                  final recipeIngredient = recipeItem.recipe.ingredients
-                      .firstWhere((ri) => ri.ingredientId == ingredient.id);
-                  return _buildRecipeIngredientItem(
-                    ingredient,
-                    recipeIngredient,
-                    recipeItem,
-                    controller,
-                  );
-                }
-                currentIndex++;
-              }
             }
+          }
 
-            return const SizedBox.shrink();
-          },
-        );
-      }
+          return const SizedBox.shrink();
+        },
+      );
     });
   }
 
@@ -190,45 +186,43 @@ class ListWidget extends StatelessWidget {
 
   Padding _buildFilters(ListController controller) {
     return Padding(
+      key: const Key('list_filters'),
       padding: const EdgeInsets.only(bottom: 16),
       child: Wrap(
         alignment: WrapAlignment.center,
         spacing: 8,
         children: [
-          Obx(
-            () => SegmentedButton<ListDisplayTypeEnum>(
-              segments: const [
-                ButtonSegment<ListDisplayTypeEnum>(
-                  value: ListDisplayTypeEnum.ingredients,
-                  label: Text('Ingredients'),
-                ),
-                ButtonSegment<ListDisplayTypeEnum>(
-                  value: ListDisplayTypeEnum.recipes,
-                  label: Text('Recipes'),
-                ),
-              ],
-              selected: {controller.displayType.value},
-              onSelectionChanged: (newSelection) {
-                if (newSelection.isNotEmpty) {
-                  controller.setDisplayType(newSelection.first);
-                }
+          SegmentedButton<ListDisplayTypeEnum>(
+            key: const Key('list_display_type_segmented_button'),
+            segments: const [
+              ButtonSegment<ListDisplayTypeEnum>(
+                value: ListDisplayTypeEnum.ingredients,
+                label: Text('Ingredients'),
+              ),
+              ButtonSegment<ListDisplayTypeEnum>(
+                value: ListDisplayTypeEnum.recipes,
+                label: Text('Recipes'),
+              ),
+            ],
+            selected: {controller.displayType.value},
+            onSelectionChanged: (newSelection) {
+              if (newSelection.isNotEmpty) {
+                controller.setDisplayType(newSelection.first);
+              }
+            },
+          ),
+
+          Visibility(
+            visible:
+                controller.displayType.value == ListDisplayTypeEnum.ingredients,
+            child: ChoiceChip(
+              label: const Text('Show checked first'),
+              selected: controller.showCheckedFirst,
+              onSelected: (selected) {
+                controller.setShowCheckedFirst(selected);
               },
             ),
           ),
-          Obx(() {
-            return Visibility(
-              visible:
-                  controller.displayType.value ==
-                  ListDisplayTypeEnum.ingredients,
-              child: ChoiceChip(
-                label: const Text('Show checked first'),
-                selected: controller.showCheckedFirst,
-                onSelected: (selected) {
-                  controller.setShowCheckedFirst(selected);
-                },
-              ),
-            );
-          }),
         ],
       ),
     );
@@ -238,16 +232,10 @@ class ListWidget extends StatelessWidget {
     ListRecipeItem recipeItem,
     ListController controller,
   ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Text(
-        recipeItem.recipe.name,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-          color: Get.theme.colorScheme.primary,
-        ),
-      ),
+    return ListTile(
+      textColor: Get.theme.colorScheme.primaryFixedDim,
+      key: Key('recipe_title_${recipeItem.recipe.id}'),
+      title: Text(recipeItem.recipe.name),
     );
   }
 

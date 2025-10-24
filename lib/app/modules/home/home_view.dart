@@ -44,7 +44,7 @@ class HomeView extends GetView<HomeController> {
               BottomNavigationItemEnum.list,
             ),
             child: BudgetDisplay(
-              used: 123,
+              used: controller.usedBudget,
               total: controller.budget,
               currency: controller.currency,
             ),
