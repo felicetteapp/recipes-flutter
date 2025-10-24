@@ -36,12 +36,30 @@ class FRIngredientPrice {
   }
 }
 
+class FRCurrentIngredients {
+  String ingredientId;
+  String quantity;
+
+  FRCurrentIngredients({required this.ingredientId, required this.quantity});
+
+  factory FRCurrentIngredients.fromMap(Map<String, dynamic> data) {
+    return FRCurrentIngredients(
+      ingredientId: data['i'] as String,
+      quantity: data['q'] as String,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {'i': ingredientId, 'q': quantity};
+  }
+}
+
 class FRGroup {
   String id;
   String creatorUid;
   String name;
   List<String> currentRecipes;
-  List<Map<String, String>> currentIngredients;
+  List<FRCurrentIngredients> currentIngredients;
   List<String> checkedIngredients;
   Map<String, List<FRIngredientPrice>> ingredientsPrices;
   FRGroupFilter filters;
@@ -78,7 +96,11 @@ class FRGroup {
           [],
       currentIngredients:
           (data['currentIngredients'] as List<dynamic>?)
-              ?.map((e) => Map<String, String>.from(e as Map))
+              ?.map(
+                (e) => FRCurrentIngredients.fromMap(
+                  Map<String, dynamic>.from(e as Map),
+                ),
+              )
               .toList() ??
           [],
       checkedIngredients:
@@ -133,7 +155,7 @@ class FRGroup {
     String? creatorUid,
     String? name,
     List<String>? currentRecipes,
-    List<Map<String, String>>? currentIngredients,
+    List<FRCurrentIngredients>? currentIngredients,
     List<String>? checkedIngredients,
     Map<String, List<FRIngredientPrice>>? ingredientsPrices,
     FRGroupFilter? filters,

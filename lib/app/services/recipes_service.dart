@@ -89,6 +89,36 @@ class RecipesService extends GetxService {
     return recipeApiService.deleteRecipe(groupId: groupId, recipeId: recipeId);
   }
 
+  List<FRRecipe> getCurrentGroupRecipes() {
+    final groupsService = Get.find<GroupsService>();
+    final selectedGroup = groupsService.selectedGroup.value;
+    if (selectedGroup == null) {
+      return [];
+    }
+    return recipes
+        .where((recipe) => selectedGroup.currentRecipes.contains(recipe.id))
+        .toList();
+  }
+
+  List<FRRecipe> getRecipesByIngredientId(
+    String ingredientId,
+    List<FRRecipe>? source,
+  ) {
+    final actualSource = source ?? recipes;
+    return actualSource.where((recipe) {
+      return recipe.ingredients.any((ri) => ri.ingredientId == ingredientId);
+    }).toList();
+  }
+
+  FRRecipe? getRecipeById(String recipeId) {
+    try {
+      return recipes.firstWhere((recipe) => recipe.id == recipeId);
+    } catch (e) {
+      log('Recipe with ID $recipeId not found', name: 'RecipesService');
+      return null;
+    }
+  }
+
   @override
   void onClose() {
     _recipesSubscription?.cancel();

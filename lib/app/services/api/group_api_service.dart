@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipes_flutter/app/data/models/group_models.dart';
 import 'package:recipes_flutter/app/services/api/api_service.dart';
@@ -31,6 +33,19 @@ class GroupApiService extends ApiService {
   }
 
   Future<void> updateGroupFilters({required FRGroup group}) {
-    return doc(group.id).set(group, SetOptions(mergeFields: ['filters']));
+    log(
+      'Updating filters for group ${group.name} to ${group.filters}',
+      name: 'GroupApiService',
+    );
+
+    log(
+      'filter showCheckedsFirst: ${group.filters.showCheckedsFirst}',
+      name: 'GroupApiService',
+    );
+
+    log(FRGroup.toFirestore(group, null).toString(), name: 'GroupApiService');
+    return doc(
+      group.id,
+    ).update({'filters': FRGroup.toFirestore(group, null)['filters']});
   }
 }
