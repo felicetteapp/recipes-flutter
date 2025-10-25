@@ -7,8 +7,9 @@ import 'package:intl/intl.dart';
 class LocalizationService extends GetxController {
   static const localeEN = Locale('en', 'US');
   static const localeES = Locale('es', 'AR');
+  static const localePT = Locale('pt', 'BR');
 
-  static const supportedLocales = [localeEN, localeES];
+  static const supportedLocales = [localeEN, localeES, localePT];
 
   static const localeKey = 'locale';
 
@@ -48,7 +49,9 @@ class LocalizationService extends GetxController {
       case 'en':
         return 'English';
       case 'es':
-        return 'Español';
+        return 'Español (AR)';
+      case 'pt':
+        return 'Português (BR)';
       default:
         return 'English';
     }

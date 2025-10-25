@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipes_flutter/app/services/auth_service.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
+import 'package:recipes_flutter/app/services/localization_service.dart';
 
 class FRDrawer extends StatelessWidget {
   const FRDrawer({super.key});
@@ -37,6 +38,39 @@ class FRDrawer extends StatelessWidget {
       ),
       ...actualGroupsTiles,
     ];
+  }
+
+  Widget _buildLanguageListTile(BuildContext context) {
+    final localizationService = Get.find<LocalizationService>();
+
+    return ListTile(
+      leading: Icon(Icons.language),
+      title: Text('Language'),
+      subtitle: Text(
+        localizationService.getLocaleName(localizationService.currentLocale),
+      ),
+      onTap: () async {
+        final response = await Get.dialog<Locale>(
+          SimpleDialog(
+            title: Text('Select Language'),
+            children:
+                LocalizationService.supportedLocales.map((locale) {
+                  return SimpleDialogOption(
+                    onPressed: () {
+                      Get.back(result: locale);
+                    },
+                    child: Text(localizationService.getLocaleName(locale)),
+                  );
+                }).toList(),
+          ),
+        );
+
+        if (response != null) {
+          localizationService.changeLocale(response);
+        }
+        // Open language selection dialog
+      },
+    );
   }
 
   @override
@@ -86,6 +120,8 @@ class FRDrawer extends StatelessWidget {
               ),
             ),
             ..._buildGroupListTiles(context),
+            const Divider(),
+            _buildLanguageListTile(context),
             const Divider(),
             ListTile(
               leading: Icon(Icons.logout),
