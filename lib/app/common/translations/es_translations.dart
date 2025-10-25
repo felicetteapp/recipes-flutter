@@ -70,6 +70,9 @@ class EsTranslations extends Translations {
       TranslationKeys.nonActualIngredients: 'Ingredientes No Reales',
       TranslationKeys.nonActualIngredientsSubtitle:
           'Estos elementos se pueden agregar a la lista de compras pero no se pueden usar en recetas',
+      TranslationKeys.newIngredient: 'Nuevo Ingrediente',
+      TranslationKeys.ingredientName: 'Nombre del Ingrediente',
+      TranslationKeys.isActualIngredient: 'Es Ingrediente Real',
     },
   };
 }

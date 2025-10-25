@@ -56,6 +56,9 @@ class TranslationKeys {
   static const String nonActualIngredients = 'non_actual_ingredients';
   static const String nonActualIngredientsSubtitle =
       'non_actual_ingredients_subtitle';
+  static const String newIngredient = 'new_ingredient';
+  static const String ingredientName = 'ingredient_name';
+  static const String isActualIngredient = 'is_actual_ingredient';
 
   static pluralKey(String key) => '${key}_other';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/ingredients/new/new_modal_controller.dart';
 import 'package:recipes_flutter/theme.dart';
 
@@ -12,7 +13,7 @@ class NewIngredientModal extends StatelessWidget {
     final controller = Get.put(NewIngredientModalController(groupId: groupId));
     return Scaffold(
       extendBody: false,
-      appBar: AppBar(title: const Text('New Ingredient')),
+      appBar: AppBar(title: Text(TranslationKeys.newIngredient.tr)),
       body: Column(
         children: [
           Expanded(
@@ -24,13 +25,13 @@ class NewIngredientModal extends StatelessWidget {
                   children: [
                     TextField(
                       controller: controller.nameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Ingredient Name',
+                      decoration: InputDecoration(
+                        labelText: TranslationKeys.ingredientName.tr,
                       ),
                     ),
                     Obx(
                       () => CheckboxListTile(
-                        title: const Text('Is Actual Ingredient'),
+                        title: Text(TranslationKeys.isActualIngredient.tr),
                         value: controller.isActualIngredient.value,
                         onChanged: (value) {
                           controller.isActualIngredient.value = value ?? false;
@@ -60,7 +61,7 @@ class NewIngredientModal extends StatelessWidget {
                       Get.back();
                     },
                     icon: const Icon(Icons.chevron_left),
-                    label: const Text('Cancel'),
+                    label: Text(TranslationKeys.cancel.tr),
                   ),
                 ),
                 Expanded(
@@ -78,7 +79,7 @@ class NewIngredientModal extends StatelessWidget {
                                 controller.createIngredient();
                               },
                       icon: const Icon(Icons.save),
-                      label: const Text('Save'),
+                      label: Text(TranslationKeys.save.tr),
                     ),
                   ),
                 ),

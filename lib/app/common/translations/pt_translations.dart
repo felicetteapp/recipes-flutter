@@ -69,6 +69,9 @@ class PtTranslations extends Translations {
       TranslationKeys.nonActualIngredients: 'Ingredientes Não-Reais',
       TranslationKeys.nonActualIngredientsSubtitle:
           'Estes itens podem ser adicionados à lista de compras, mas não podem ser usados em receitas',
+      TranslationKeys.newIngredient: 'Novo Ingrediente',
+      TranslationKeys.ingredientName: 'Nome do Ingrediente',
+      TranslationKeys.isActualIngredient: 'É Ingrediente Real',
     },
   };
 }

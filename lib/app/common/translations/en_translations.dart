@@ -68,6 +68,9 @@ class EnTranslations extends Translations {
       TranslationKeys.nonActualIngredients: 'Non-Actual Ingredients',
       TranslationKeys.nonActualIngredientsSubtitle:
           'This items can be added to the sopping list but can\'t be used in recipes',
+      TranslationKeys.newIngredient: 'New Ingredient',
+      TranslationKeys.ingredientName: 'Ingredient Name',
+      TranslationKeys.isActualIngredient: 'Is Actual Ingredient',
     },
   };
 }
