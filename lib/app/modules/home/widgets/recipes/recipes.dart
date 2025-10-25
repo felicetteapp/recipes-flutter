@@ -82,7 +82,43 @@ class RecipesWidget extends StatelessWidget {
                   activeColor: Theme.of(context).colorScheme.secondary,
                 )
                 : null,
-        title: Text(recipe.name),
+        title: Wrap(
+          spacing: 8,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text(recipe.name),
+            if (isInList && !homeViewController.itsSelectionMode.value)
+              Container(
+                decoration: BoxDecoration(
+                  color: Get.theme.colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 2,
+                  children: [
+                    Icon(
+                      Icons.list,
+                      size: 14,
+                      color: Get.theme.colorScheme.onPrimaryContainer,
+                    ),
+                    Text(
+                      'on list'.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 10,
+                        height: 0.8,
+                        color: Get.theme.colorScheme.onPrimaryContainer,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
         onTap:
             homeViewController.itsSelectionMode.value
                 ? () {
@@ -107,13 +143,6 @@ class RecipesWidget extends StatelessWidget {
                   spacing: 4,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (isInList)
-                      Chip(
-                        label: Text('on list'),
-                        avatar: isInList ? Icon(Icons.list) : null,
-                        visualDensity: VisualDensity.compact,
-                        padding: EdgeInsets.all(9),
-                      ),
                     IconButton(
                       onPressed: () {
                         log('Edit Recipe: ${recipe.name}');

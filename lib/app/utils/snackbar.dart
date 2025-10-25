@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:recipes_flutter/theme.dart';
 
+const defaultDuration = Duration(seconds: 3);
+
 class FRSnackbar {
   static SnackbarController show({
     required String title,
@@ -9,7 +11,7 @@ class FRSnackbar {
     required Color backgroundColor,
     required Color colorText,
     SnackPosition snackPosition = SnackPosition.BOTTOM,
-    Duration? duration = const Duration(seconds: 3),
+    Duration? duration = defaultDuration,
     EdgeInsets? margin,
   }) {
     return Get.snackbar(
@@ -27,7 +29,7 @@ class FRSnackbar {
     String title,
     String message, {
     SnackPosition? snackPosition,
-    Duration? duration,
+    Duration? duration = defaultDuration,
     EdgeInsets? margin,
   }) {
     return FRSnackbar.show(
@@ -45,7 +47,7 @@ class FRSnackbar {
     String title,
     String message, {
     SnackPosition? snackPosition,
-    Duration? duration,
+    Duration? duration = defaultDuration,
     EdgeInsets? margin,
   }) {
     return FRSnackbar.show(
@@ -63,7 +65,7 @@ class FRSnackbar {
     String title,
     String message, {
     SnackPosition? snackPosition,
-    Duration? duration,
+    Duration? duration = defaultDuration,
     EdgeInsets? margin,
   }) {
     return FRSnackbar.show(
