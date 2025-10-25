@@ -22,6 +22,20 @@ class EnTranslations extends Translations {
 
       // login
       TranslationKeys.loginErrorTitle: 'Login failed',
+
+      // drawer
+      TranslationKeys.yourGroups: 'Your Groups',
+      TranslationKeys.language: 'Language',
+      TranslationKeys.selectLanguage: 'Select Language',
+      TranslationKeys.about: 'About',
+      TranslationKeys.applicationName: 'Felicette Recipes',
+      TranslationKeys.applicationDescription:
+          'Felicette Recipes is an open-source application to help you manage your recipes and shopping lists.',
+      TranslationKeys.developedWith: 'Developed with',
+      TranslationKeys.loveAndCats: 'Love and Cats',
+      TranslationKeys.developedIn: 'in Curitiba, Brazil.',
+      TranslationKeys.developedBy: 'By felicette.dev',
+      TranslationKeys.checkoutGithub: 'Check out the project on GitHub: ',
     },
   };
 }

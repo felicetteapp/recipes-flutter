@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/services/auth_service.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
 import 'package:recipes_flutter/app/services/localization_service.dart';
@@ -30,9 +31,9 @@ class FRDrawer extends StatelessWidget {
         }).toList();
 
     return [
-      const ListTile(
+      ListTile(
         title: Text(
-          'Your Groups',
+          TranslationKeys.yourGroups.tr,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -45,14 +46,14 @@ class FRDrawer extends StatelessWidget {
 
     return ListTile(
       leading: Icon(Icons.language),
-      title: Text('Language'),
+      title: Text(TranslationKeys.language.tr),
       subtitle: Text(
         localizationService.getLocaleName(localizationService.currentLocale),
       ),
       onTap: () async {
         final response = await Get.dialog<Locale>(
           SimpleDialog(
-            title: Text('Select Language'),
+            title: Text(TranslationKeys.selectLanguage.tr),
             children:
                 LocalizationService.supportedLocales.map((locale) {
                   return SimpleDialogOption(
@@ -125,14 +126,14 @@ class FRDrawer extends StatelessWidget {
             const Divider(),
             ListTile(
               leading: Icon(Icons.logout),
-              title: Text('Logout'),
+              title: Text(TranslationKeys.logout.tr),
               onTap: () {
                 authService.logout();
               },
             ),
             const Divider(),
             AboutListTile(
-              applicationName: 'Felicette Recipes',
+              applicationName: TranslationKeys.applicationName.tr,
               // TODO: get current version from pubspec.yaml
               applicationVersion: '1.0.0',
               applicationIcon: Image.asset(
@@ -149,24 +150,22 @@ class FRDrawer extends StatelessWidget {
                     children: [
                       TextSpan(
                         text:
-                            'Felicette Recipes is an open-source application to help you manage your recipes and shopping lists.\n\n',
+                            '${TranslationKeys.applicationDescription.tr}\n\n',
                       ),
-                      TextSpan(text: 'Developed with '),
+                      TextSpan(text: TranslationKeys.developedWith.tr),
+                      TextSpan(text: ' '),
                       TextSpan(
-                        text: 'Love and Cats',
+                        text: TranslationKeys.loveAndCats.tr,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      TextSpan(text: ' in '),
+                      TextSpan(text: ' '),
+                      TextSpan(text: TranslationKeys.developedIn.tr),
+                      TextSpan(text: ' '),
                       TextSpan(
-                        text: 'Curitiba, Brazil.',
+                        text: '${TranslationKeys.developedBy.tr}\n\n',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      TextSpan(text: ' By '),
-                      TextSpan(
-                        text: 'felicette.dev\n\n',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextSpan(text: 'Check out the project on GitHub: '),
+                      TextSpan(text: TranslationKeys.checkoutGithub.tr),
                       WidgetSpan(
                         child: GestureDetector(
                           onTap: () {
@@ -186,7 +185,7 @@ class FRDrawer extends StatelessWidget {
                 ),
               ],
               icon: Icon(Icons.info_outline),
-              child: Text('About'),
+              child: Text(TranslationKeys.about.tr),
             ),
           ],
         );

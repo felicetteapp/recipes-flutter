@@ -16,4 +16,17 @@ class TranslationKeys {
 
   // login
   static const String loginErrorTitle = 'login_error';
+
+  // drawer
+  static const String yourGroups = 'your_groups';
+  static const String language = 'language';
+  static const String selectLanguage = 'select_language';
+  static const String about = 'about';
+  static const String applicationName = 'application_name';
+  static const String applicationDescription = 'application_description';
+  static const String developedWith = 'developed_with_love';
+  static const String loveAndCats = 'love_and_cats';
+  static const String developedIn = 'developed_in';
+  static const String developedBy = 'developed_by';
+  static const String checkoutGithub = 'checkout_github';
 }

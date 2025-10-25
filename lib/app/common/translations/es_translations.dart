@@ -24,6 +24,20 @@ class EsTranslations extends Translations {
 
       // login
       TranslationKeys.loginErrorTitle: 'Error de inicio de sesión',
+
+      // drawer
+      TranslationKeys.yourGroups: 'Tus Grupos',
+      TranslationKeys.language: 'Idioma',
+      TranslationKeys.selectLanguage: 'Seleccionar Idioma',
+      TranslationKeys.about: 'Acerca de',
+      TranslationKeys.applicationName: 'Felicette Recetas',
+      TranslationKeys.applicationDescription:
+          'Felicette Recetas es una aplicación de código abierto que te ayuda a gestionar tus recetas y listas de compras.',
+      TranslationKeys.developedWith: 'Desarrollado con',
+      TranslationKeys.loveAndCats: 'Amor y Gatos',
+      TranslationKeys.developedIn: 'en Curitiba, Brasil.',
+      TranslationKeys.developedBy: 'Por felicette.dev',
+      TranslationKeys.checkoutGithub: 'Visita el proyecto en GitHub: ',
     },
   };
 }
