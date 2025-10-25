@@ -19,6 +19,18 @@ class EnTranslations extends Translations {
       TranslationKeys.edit: 'Edit',
       TranslationKeys.confirm: 'Confirm',
       TranslationKeys.tryAgain: 'Try Again',
+      TranslationKeys.list: 'list',
+      '${TranslationKeys.list}_zero': 'lists',
+      '${TranslationKeys.list}_one': 'list',
+      '${TranslationKeys.list}_other': 'lists',
+      TranslationKeys.recipe: 'recipe',
+      '${TranslationKeys.recipe}_zero': 'recipes',
+      '${TranslationKeys.recipe}_one': 'recipe',
+      '${TranslationKeys.recipe}_other': 'recipes',
+      TranslationKeys.ingredient: 'ingredient',
+      '${TranslationKeys.ingredient}_zero': 'ingredients',
+      '${TranslationKeys.ingredient}_one': 'ingredient',
+      '${TranslationKeys.ingredient}_other': 'ingredients',
 
       // login
       TranslationKeys.loginErrorTitle: 'Login failed',

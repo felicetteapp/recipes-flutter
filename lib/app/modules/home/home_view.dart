@@ -53,12 +53,18 @@ class HomeView extends GetView<HomeController> {
             height: 80,
             selectedIndex: controller.bottomNavigationIndex.value,
             onDestinationSelected: controller.setBottomNavigationIndex,
-            destinations: const [
-              NavigationDestination(icon: Icon(Icons.book), label: 'Recipes'),
-              NavigationDestination(icon: Icon(Icons.list), label: 'List'),
+            destinations: [
+              NavigationDestination(
+                icon: Icon(Icons.book),
+                label: 'recipe'.trPlural('recipe', 2).capitalizeFirst!,
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.list),
+                label: 'list'.trPlural('list', 2).capitalizeFirst!,
+              ),
               NavigationDestination(
                 icon: Icon(Icons.kitchen),
-                label: 'Ingredients',
+                label: 'ingredient'.trPlural('ingredient', 2).capitalizeFirst!,
               ),
             ],
           ),
