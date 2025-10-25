@@ -24,6 +24,7 @@ class PtTranslations extends Translations {
       '${TranslationKeys.list}_zero': 'listas',
       '${TranslationKeys.list}_one': 'lista',
       '${TranslationKeys.list}_other': 'listas',
+      TranslationKeys.onList: 'na lista',
       TranslationKeys.recipe: 'receita',
       '${TranslationKeys.recipe}_zero': 'receitas',
       '${TranslationKeys.recipe}_one': 'receita',

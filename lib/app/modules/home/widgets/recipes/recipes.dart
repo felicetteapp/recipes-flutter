@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/data/models/recipe_models.dart';
 import 'package:recipes_flutter/app/modules/home/home_controller.dart';
@@ -106,7 +107,7 @@ class RecipesWidget extends StatelessWidget {
                       color: Get.theme.colorScheme.onPrimaryContainer,
                     ),
                     Text(
-                      'on list'.toUpperCase(),
+                      TranslationKeys.onList.tr.toUpperCase(),
                       style: TextStyle(
                         fontSize: 10,
                         height: 0.8,
@@ -145,7 +146,6 @@ class RecipesWidget extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
-                        log('Edit Recipe: ${recipe.name}');
                         Get.dialog(
                           EditCreateRecipeModal(
                             groupId: groupsService.selectedGroup.value!.id,

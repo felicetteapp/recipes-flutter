@@ -14,6 +14,7 @@ class TranslationKeys {
   static const String confirm = 'confirm';
   static const String tryAgain = 'try_again';
   static const String list = 'list';
+  static const String onList = 'on_list';
   static const String recipe = 'recipe';
   static const String ingredient = 'ingredient';
 

@@ -25,6 +25,7 @@ class EsTranslations extends Translations {
       '${TranslationKeys.list}_zero': 'listas',
       '${TranslationKeys.list}_one': 'lista',
       '${TranslationKeys.list}_other': 'listas',
+      TranslationKeys.onList: 'en lista',
       TranslationKeys.recipe: 'receta',
       '${TranslationKeys.recipe}_zero': 'recetas',
       '${TranslationKeys.recipe}_one': 'receta',

@@ -23,6 +23,7 @@ class EnTranslations extends Translations {
       '${TranslationKeys.list}_zero': 'lists',
       '${TranslationKeys.list}_one': 'list',
       '${TranslationKeys.list}_other': 'lists',
+      TranslationKeys.onList: 'on list',
       TranslationKeys.recipe: 'recipe',
       '${TranslationKeys.recipe}_zero': 'recipes',
       '${TranslationKeys.recipe}_one': 'recipe',
