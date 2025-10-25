@@ -20,11 +20,21 @@ class ListWidget extends StatelessWidget {
       if (controller.displayType.value == ListDisplayTypeEnum.ingredients) {
         itemCount = staticItemsAtTop + ingredients.length;
       } else {
+        final ingredientsWithoutRecipes = controller.ingredientsWithoutRecipes;
+
         final totalIngredients = recipes.fold<int>(
           0,
           (sum, recipeItem) => sum + recipeItem.recipe.ingredients.length,
         );
-        itemCount = staticItemsAtTop + recipes.length + totalIngredients;
+        final hasIngredientsWithoutRecipes =
+            ingredientsWithoutRecipes.isNotEmpty;
+        itemCount =
+            staticItemsAtTop +
+            recipes.length +
+            totalIngredients +
+            (hasIngredientsWithoutRecipes
+                ? 1 + ingredientsWithoutRecipes.length
+                : 0);
       }
 
       return ListView.builder(
@@ -41,6 +51,8 @@ class ListWidget extends StatelessWidget {
           }
 
           final adjustedIndex = index - staticItemsAtTop;
+          final ingredientsWithoutRecipes =
+              controller.ingredientsWithoutRecipes;
 
           var currentIndex = 0;
           for (final recipeItem in recipes) {
@@ -61,6 +73,22 @@ class ListWidget extends StatelessWidget {
                 );
               }
               currentIndex++;
+            }
+          }
+
+          // Handle ingredients without recipes section
+          if (ingredientsWithoutRecipes.isNotEmpty) {
+            if (adjustedIndex == currentIndex) {
+              return _buildIngredientsWithoutRecipesTitle();
+            }
+            currentIndex++;
+
+            final ingredientIndex = adjustedIndex - currentIndex;
+            if (ingredientIndex >= 0 &&
+                ingredientIndex < ingredientsWithoutRecipes.length) {
+              return _buildIngredientListTile(
+                ingredientsWithoutRecipes[ingredientIndex],
+              );
             }
           }
 
@@ -284,6 +312,14 @@ class ListWidget extends StatelessWidget {
       textColor: Get.theme.colorScheme.primaryFixedDim,
       key: Key('recipe_title_${recipeItem.recipe.id}'),
       title: Text(recipeItem.recipe.name),
+    );
+  }
+
+  Widget _buildIngredientsWithoutRecipesTitle() {
+    return ListTile(
+      textColor: Get.theme.colorScheme.primaryFixedDim,
+      key: const Key('ingredients_without_recipes_title'),
+      title: const Text('Other Ingredients'),
     );
   }
 
