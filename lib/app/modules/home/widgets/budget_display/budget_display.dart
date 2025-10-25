@@ -50,7 +50,7 @@ class BudgetDisplay extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: ' used of ',
+                        text: ' spent of ',
                         style: TextStyle(fontWeight: FontWeight.normal),
                       ),
                       TextSpan(

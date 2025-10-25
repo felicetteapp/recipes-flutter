@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/data/models/group_models.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/data/models/recipe_models.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/list/list_controller.dart';
+import 'package:recipes_flutter/app/services/localization_service.dart';
 
 class ListWidget extends StatelessWidget {
   const ListWidget({super.key});
@@ -69,6 +71,9 @@ class ListWidget extends StatelessWidget {
   }
 
   CheckboxListTile _buildIngredientListTile(ListIngredientItem item) {
+    final groupService = Get.find<ListController>().groupsService;
+    final currency = groupService.selectedGroup.value?.currency ?? 'USD';
+
     return CheckboxListTile(
       visualDensity: VisualDensity.compact,
       key: Key(item.ingredient.id),
@@ -78,24 +83,47 @@ class ListWidget extends StatelessWidget {
         // Handle checkbox state change
       },
       title: Text(item.ingredient.name),
-      secondary: Text(
-        item.price.isNotEmpty
-            ? item.price
-                .map(
-                  (p) => '${p.quantity} x \$${p.unitPrice.toStringAsFixed(2)}',
-                )
-                .join(', ')
-            : 'No price available',
+      secondary: _buildIngredientItemSecondary(
+        item.price,
+        currency,
+        item.isChecked,
       ),
-      subtitle: _buildIngredientItemSubtitle(item.ingredient, item.recipes),
+      subtitle: _buildIngredientItemSubtitle(
+        item.ingredient,
+        item.recipes,
+        quantity: item.quantity,
+      ),
     );
   }
 
   RichText _buildIngredientItemSubtitleText(
     FRIngredient ingredient,
-    FRRecipe recipe, {
+    FRRecipe? recipe, {
     bool isMainRecipe = false,
+    String? quantity,
   }) {
+    if (recipe == null && (quantity == null || quantity.isEmpty)) {
+      return RichText(text: TextSpan());
+    }
+
+    if (recipe == null) {
+      return RichText(
+        text: TextSpan(
+          style: TextStyle(
+            fontSize: 12,
+            color: Get.context?.theme.colorScheme.onSurfaceVariant,
+            height: 1,
+          ),
+          children: [
+            TextSpan(
+              text: quantity,
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
+          ],
+        ),
+      );
+    }
+
     final quantityOfThisIngriedient =
         recipe.ingredients
             .firstWhere((ri) => ri.ingredientId == ingredient.id)
@@ -143,6 +171,7 @@ class ListWidget extends StatelessWidget {
     FRIngredient ingredient,
     List<FRRecipe> recipes, {
     FRRecipe? mainRecipe,
+    String? quantity,
   }) {
     final localRecipes = [...recipes];
 
@@ -180,6 +209,23 @@ class ListWidget extends StatelessWidget {
             ),
           );
         }),
+        if (quantity != null && quantity.isNotEmpty)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color:
+                    Get.context?.theme.colorScheme.outlineVariant ??
+                    Colors.grey,
+              ),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: _buildIngredientItemSubtitleText(
+              ingredient,
+              null,
+              quantity: quantity,
+            ),
+          ),
       ],
     );
   }
@@ -190,18 +236,24 @@ class ListWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 16),
       child: Wrap(
         alignment: WrapAlignment.center,
+        runAlignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 8,
         children: [
           SegmentedButton<ListDisplayTypeEnum>(
             key: const Key('list_display_type_segmented_button'),
             segments: const [
               ButtonSegment<ListDisplayTypeEnum>(
+                icon: Icon(Icons.kitchen),
                 value: ListDisplayTypeEnum.ingredients,
                 label: Text('Ingredients'),
+                tooltip: 'Show list by ingredients',
               ),
               ButtonSegment<ListDisplayTypeEnum>(
+                icon: Icon(Icons.book),
                 value: ListDisplayTypeEnum.recipes,
                 label: Text('Recipes'),
+                tooltip: 'Show list by recipes',
               ),
             ],
             selected: {controller.displayType.value},
@@ -211,18 +263,14 @@ class ListWidget extends StatelessWidget {
               }
             },
           ),
-
-          Visibility(
-            visible:
-                controller.displayType.value == ListDisplayTypeEnum.ingredients,
-            child: ChoiceChip(
+          if (controller.displayType.value == ListDisplayTypeEnum.ingredients)
+            ChoiceChip(
               label: const Text('Show checked first'),
               selected: controller.showCheckedFirst,
               onSelected: (selected) {
                 controller.setShowCheckedFirst(selected);
               },
             ),
-          ),
         ],
       ),
     );
@@ -264,20 +312,88 @@ class ListWidget extends StatelessWidget {
         // Handle checkbox state change
       },
       title: Text(ingredient.name),
-      secondary: Text(
-        prices.isNotEmpty
-            ? prices
-                .map(
-                  (p) => '${p.quantity} x \$${p.unitPrice.toStringAsFixed(2)}',
-                )
-                .join(', ')
-            : 'No price available',
+      secondary: _buildIngredientItemSecondary(
+        prices,
+        group?.currency ?? 'USD',
+        isChecked,
       ),
       subtitle: _buildIngredientItemSubtitle(
         ingredient,
         recipes,
         mainRecipe: recipeItem.recipe,
       ),
+    );
+  }
+
+  Widget? _buildIngredientItemSecondary(
+    List<FRIngredientPrice> prices,
+    String currency,
+    bool isChecked,
+  ) {
+    final ls = Get.find<LocalizationService>();
+
+    if (prices.isEmpty && !isChecked) {
+      return null;
+    } else if (prices.isEmpty && isChecked) {
+      return IconButton(
+        onPressed: () {},
+        icon: Icon(Icons.edit),
+        color: Get.context?.theme.colorScheme.secondary,
+      );
+    }
+
+    final priceTotal = prices.fold<double>(
+      0.0,
+      (sum, price) => sum + (price.unitPrice * price.quantity),
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          ls.formatCurrency(priceTotal, currency),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Get.context?.theme.colorScheme.error,
+            fontSize: 14,
+          ),
+        ),
+        Wrap(
+          spacing: 4,
+          children:
+              prices.map((p) {
+                return RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Get.context?.theme.colorScheme.onSurfaceVariant,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: p.quantity.toString(),
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: ' x ',
+                        style: TextStyle(fontWeight: FontWeight.normal),
+                      ),
+                      TextSpan(
+                        text: ls.formatCurrency(
+                          p.unitPrice.toDouble(),
+                          currency,
+                        ),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Get.context?.theme.colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+        ),
+      ],
     );
   }
 }

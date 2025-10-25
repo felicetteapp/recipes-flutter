@@ -16,12 +16,14 @@ class ListIngredientItem {
   final List<FRIngredientPrice> price;
   final List<FRRecipe> recipes;
   final bool isChecked;
+  final String? quantity;
 
   ListIngredientItem({
     required this.ingredient,
     required this.price,
     required this.isChecked,
     required this.recipes,
+    required this.quantity,
   });
 }
 
@@ -108,12 +110,24 @@ class ListController extends GetxController {
         name: 'ListController',
       );
 
+      String? quantity;
+
+      if (group.currentIngredients.any(
+        (ingMap) => ingMap.ingredientId == ingredientId,
+      )) {
+        quantity =
+            group.currentIngredients
+                .firstWhere((ingMap) => ingMap.ingredientId == ingredientId)
+                .quantity;
+      }
+
       list.add(
         ListIngredientItem(
           ingredient: ingredient,
           price: prices ?? [],
           isChecked: isChecked,
           recipes: recipes,
+          quantity: quantity,
         ),
       );
     }
@@ -168,5 +182,10 @@ class ListController extends GetxController {
     });
 
     return list;
+  }
+
+  List<ListIngredientItem> get ingredientsWithoutRecipes {
+    final allIngredients = sortedIngredientList;
+    return allIngredients.where((item) => item.recipes.isEmpty).toList();
   }
 }
