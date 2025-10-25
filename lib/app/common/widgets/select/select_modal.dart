@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/common/widgets/select/select_controller.dart';
 
 class SelectModal<T> extends StatelessWidget {
@@ -62,7 +63,7 @@ class SelectModal<T> extends StatelessWidget {
             child: TextField(
               autofocus: true,
               focusNode: controller.filterControllerFocusNode,
-              decoration: InputDecoration(labelText: 'Search'),
+              decoration: InputDecoration(labelText: TranslationKeys.search.tr),
               controller: controller.filterController,
               textInputAction: TextInputAction.done,
               onSubmitted: controller.onSubmitted,
@@ -84,7 +85,9 @@ class SelectModal<T> extends StatelessWidget {
                 itemBuilder: (context, index) {
                   if (createItemVisible && index == itemCount - 1) {
                     return ListTile(
-                      title: Text('Create "${controller.filter.value}"'),
+                      title: Text(
+                        '${TranslationKeys.create.tr} "${controller.filter.value}"',
+                      ),
                       leading: Icon(Icons.add),
                       onTap: () async {
                         controller.handleCreateItem();
@@ -121,7 +124,7 @@ class SelectModal<T> extends StatelessWidget {
                 onPressed: () {
                   Get.back();
                 },
-                child: Text('Done'),
+                child: Text(TranslationKeys.done.tr),
               ),
             ),
           ),

@@ -96,6 +96,11 @@ class PtTranslations extends Translations {
       TranslationKeys.quantitiesShoppingListText:
           'As quantidades aparecerão na lista de compras quando a receita for selecionada.',
       TranslationKeys.quantityFor: 'Quantidade para @ingredient',
+
+      // select modal
+      TranslationKeys.search: 'Buscar',
+      TranslationKeys.create: 'Criar',
+      TranslationKeys.done: 'Concluído',
     },
   };
 }

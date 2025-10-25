@@ -81,5 +81,10 @@ class TranslationKeys {
       'quantities_shopping_list_text';
   static const String quantityFor = 'quantity_for';
 
+  // select modal
+  static const String search = 'search';
+  static const String create = 'create';
+  static const String done = 'done';
+
   static pluralKey(String key) => '${key}_other';
 }

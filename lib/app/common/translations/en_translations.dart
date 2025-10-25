@@ -95,6 +95,11 @@ class EnTranslations extends Translations {
       TranslationKeys.quantitiesShoppingListText:
           'The quantities will appear in the shopping list when the recipe is selected.',
       TranslationKeys.quantityFor: 'Quantity for @ingredient',
+
+      // select modal
+      TranslationKeys.search: 'Search',
+      TranslationKeys.create: 'Create',
+      TranslationKeys.done: 'Done',
     },
   };
 }
