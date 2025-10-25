@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/common.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
 
 class HomeController extends GetxController {
@@ -44,11 +45,20 @@ class HomeController extends GetxController {
   String get currentItemTitle {
     switch (bottomNavigationItems[bottomNavigationIndex.value]) {
       case BottomNavigationItemEnum.recipes:
-        return 'Recipes';
+        return TranslationHelper.plural(
+          TranslationKeys.recipe,
+          0,
+        ).capitalizeFirst!;
       case BottomNavigationItemEnum.list:
-        return 'List';
+        return TranslationHelper.plural(
+          TranslationKeys.list,
+          1,
+        ).capitalizeFirst!;
       case BottomNavigationItemEnum.ingredients:
-        return 'Ingredients';
+        return TranslationHelper.plural(
+          TranslationKeys.ingredient,
+          0,
+        ).capitalizeFirst!;
     }
   }
 
