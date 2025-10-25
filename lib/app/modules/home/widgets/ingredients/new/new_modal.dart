@@ -61,7 +61,11 @@ class NewIngredientModal extends StatelessWidget {
                       Get.back();
                     },
                     icon: const Icon(Icons.chevron_left),
-                    label: Text(TranslationKeys.cancel.tr),
+                    label: Text(
+                      TranslationKeys.cancel.tr,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
                 Expanded(
@@ -79,7 +83,11 @@ class NewIngredientModal extends StatelessWidget {
                                 controller.createIngredient();
                               },
                       icon: const Icon(Icons.save),
-                      label: Text(TranslationKeys.save.tr),
+                      label: Text(
+                        TranslationKeys.save.tr,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ),

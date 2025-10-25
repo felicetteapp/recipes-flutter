@@ -83,6 +83,19 @@ class PtTranslations extends Translations {
           'Ingrediente excluído com sucesso',
       TranslationKeys.ingredientCreatedSuccessfully:
           'Ingrediente criado com sucesso',
+
+      // recipes
+      TranslationKeys.editRecipe: 'Editar Receita',
+      TranslationKeys.createRecipe: 'Criar Receita',
+      TranslationKeys.recipeName: 'Nome da Receita',
+      TranslationKeys.selectIngredients: 'Selecionar Ingredientes',
+      TranslationKeys.chooseIngredientsText:
+          'Escolha os ingredientes necessários para a receita. As quantidades podem ser inseridas abaixo.',
+      TranslationKeys.optionalQuantitiesText:
+          'Opcionalmente, insira as quantidades dos ingredientes abaixo.',
+      TranslationKeys.quantitiesShoppingListText:
+          'As quantidades aparecerão na lista de compras quando a receita for selecionada.',
+      TranslationKeys.quantityFor: 'Quantidade para @ingredient',
     },
   };
 }

@@ -82,6 +82,19 @@ class EnTranslations extends Translations {
           'Ingredient deleted successfully',
       TranslationKeys.ingredientCreatedSuccessfully:
           'Ingredient created successfully',
+
+      // recipes
+      TranslationKeys.editRecipe: 'Edit Recipe',
+      TranslationKeys.createRecipe: 'Create Recipe',
+      TranslationKeys.recipeName: 'Recipe Name',
+      TranslationKeys.selectIngredients: 'Select Ingredients',
+      TranslationKeys.chooseIngredientsText:
+          'Choose the ingredients needed for the recipe. Quantities can be entered below.',
+      TranslationKeys.optionalQuantitiesText:
+          'Optionally, enter the quantities of the ingredients below.',
+      TranslationKeys.quantitiesShoppingListText:
+          'The quantities will appear in the shopping list when the recipe is selected.',
+      TranslationKeys.quantityFor: 'Quantity for @ingredient',
     },
   };
 }

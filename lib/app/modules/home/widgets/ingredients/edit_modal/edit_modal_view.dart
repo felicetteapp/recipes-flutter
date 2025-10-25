@@ -65,16 +65,20 @@ class EditIngredientModal extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               spacing: 16,
               children: [
-                Expanded(
+                Flexible(
                   child: TextButton.icon(
                     onPressed: () {
                       Get.back();
                     },
                     icon: const Icon(Icons.chevron_left),
-                    label: Text(TranslationKeys.cancel.tr),
+                    label: Text(
+                      TranslationKeys.cancel.tr,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
-                Expanded(
+                Flexible(
                   child: Obx(
                     () => FilledButton.icon(
                       style: FilledButton.styleFrom(
@@ -88,14 +92,17 @@ class EditIngredientModal extends StatelessWidget {
                                 controller.updateIngredient();
                               },
                       icon: const Icon(Icons.save),
-                      label: Text(TranslationKeys.save.tr),
+                      label: Text(
+                        TranslationKeys.save.tr,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ),
-                Expanded(
+                Flexible(
                   child: TextButton.icon(
                     onPressed: () {
-                      // add a confirmation dialog before deleting
                       Get.defaultDialog(
                         title: TranslationKeys.confirmDeletion.tr,
                         middleText: TranslationKeys.confirmDeletionMessage.tr,
@@ -114,6 +121,8 @@ class EditIngredientModal extends StatelessWidget {
                     label: Text(
                       TranslationKeys.delete.tr,
                       style: TextStyle(color: Get.theme.colorScheme.error),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),

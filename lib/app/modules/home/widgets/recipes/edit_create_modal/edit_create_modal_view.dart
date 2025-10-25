@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/common/widgets/select/select.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/data/models/recipe_models.dart';
@@ -27,7 +28,10 @@ class EditCreateRecipeModal extends StatelessWidget {
     return Scaffold(
       extendBody: false,
       appBar: AppBar(
-        title: recipe != null ? Text('Edit Recipe') : Text('Create Recipe'),
+        title:
+            recipe != null
+                ? Text(TranslationKeys.editRecipe.tr)
+                : Text(TranslationKeys.createRecipe.tr),
       ),
       body: Column(
         children: [
@@ -40,17 +44,17 @@ class EditCreateRecipeModal extends StatelessWidget {
                   children: [
                     TextField(
                       controller: controller.nameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Recipe Name',
+                      decoration: InputDecoration(
+                        labelText: TranslationKeys.recipeName.tr,
                       ),
                     ),
                     Text(
-                      'Choose the ingredients needed for the recipe. Quantities can be entered below.',
+                      TranslationKeys.chooseIngredientsText.tr,
                       style: Get.theme.textTheme.bodyMedium,
                     ),
                     Obx(
                       () => FRSelect<FRIngredient>(
-                        label: 'Select Ingredients',
+                        label: TranslationKeys.selectIngredients.tr,
                         items:
                             ingredientsService.ingredients
                                 .where((i) => i.actualIngredient)
@@ -119,11 +123,11 @@ class EditCreateRecipeModal extends StatelessWidget {
                     ),
                     Divider(),
                     Text(
-                      'Optionally, enter the quantities of the ingredients below.',
+                      TranslationKeys.optionalQuantitiesText.tr,
                       style: Get.theme.textTheme.bodyMedium,
                     ),
                     Text(
-                      'The quantities will appear in the shopping list when the recipe is selected.',
+                      TranslationKeys.quantitiesShoppingListText.tr,
                       style: Get.theme.textTheme.bodySmall,
                     ),
 
@@ -138,8 +142,11 @@ class EditCreateRecipeModal extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 8),
                                 child: TextField(
                                   decoration: InputDecoration(
-                                    labelText:
-                                        'Quantity for ${ingredient?.name ?? 'Unknown'}',
+                                    labelText: TranslationKeys.quantityFor
+                                        .trParams({
+                                          'ingredient':
+                                              ingredient?.name ?? 'Unknown',
+                                        }),
                                   ),
                                   onChanged: (value) {
                                     ri.quantity = value;
@@ -175,7 +182,11 @@ class EditCreateRecipeModal extends StatelessWidget {
                       Get.back();
                     },
                     icon: const Icon(Icons.chevron_left),
-                    label: const Text('Cancel'),
+                    label: Text(
+                      TranslationKeys.cancel.tr,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
                 Expanded(
@@ -194,7 +205,11 @@ class EditCreateRecipeModal extends StatelessWidget {
                                     : controller.updateRecipe();
                               },
                       icon: const Icon(Icons.save),
-                      label: const Text('Save'),
+                      label: Text(
+                        TranslationKeys.save.tr,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ),
@@ -204,11 +219,10 @@ class EditCreateRecipeModal extends StatelessWidget {
                       onPressed: () {
                         // add a confirmation dialog before deleting
                         Get.defaultDialog(
-                          title: 'Confirm Deletion',
-                          middleText:
-                              'Are you sure you want to delete this ingredient?',
-                          textCancel: 'Cancel',
-                          textConfirm: 'Delete',
+                          title: TranslationKeys.confirmDeletion.tr,
+                          middleText: TranslationKeys.confirmDeletionMessage.tr,
+                          textCancel: TranslationKeys.cancel.tr,
+                          textConfirm: TranslationKeys.delete.tr,
                           onConfirm: () {
                             log('Recipe deleted: ${recipe!.id}');
                             controller.deleteRecipe();
@@ -220,8 +234,10 @@ class EditCreateRecipeModal extends StatelessWidget {
                         color: Get.theme.colorScheme.error,
                       ),
                       label: Text(
-                        'Delete',
+                        TranslationKeys.delete.tr,
                         style: TextStyle(color: Get.theme.colorScheme.error),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),

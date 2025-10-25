@@ -70,5 +70,16 @@ class TranslationKeys {
   static const String ingredientCreatedSuccessfully =
       'ingredient_created_successfully';
 
+  // recipes
+  static const String editRecipe = 'edit_recipe';
+  static const String createRecipe = 'create_recipe';
+  static const String recipeName = 'recipe_name';
+  static const String selectIngredients = 'select_ingredients';
+  static const String chooseIngredientsText = 'choose_ingredients_text';
+  static const String optionalQuantitiesText = 'optional_quantities_text';
+  static const String quantitiesShoppingListText =
+      'quantities_shopping_list_text';
+  static const String quantityFor = 'quantity_for';
+
   static pluralKey(String key) => '${key}_other';
 }
