@@ -22,18 +22,19 @@ class EsTranslations extends Translations {
       TranslationKeys.confirm: 'Confirmar',
       TranslationKeys.tryAgain: 'Intente de nuevo',
       TranslationKeys.list: 'lista',
-      '${TranslationKeys.list}_zero': 'listas',
-      '${TranslationKeys.list}_one': 'lista',
       '${TranslationKeys.list}_other': 'listas',
       TranslationKeys.onList: 'en lista',
       TranslationKeys.recipe: 'receta',
-      '${TranslationKeys.recipe}_zero': 'recetas',
-      '${TranslationKeys.recipe}_one': 'receta',
       '${TranslationKeys.recipe}_other': 'recetas',
       TranslationKeys.ingredient: 'ingrediente',
-      '${TranslationKeys.ingredient}_zero': 'ingredientes',
-      '${TranslationKeys.ingredient}_one': 'ingrediente',
       '${TranslationKeys.ingredient}_other': 'ingredientes',
+
+      // home view
+      TranslationKeys.unknownView: 'Vista desconocida',
+      TranslationKeys.addRecipe: 'Agregar receta',
+      TranslationKeys.selectRecipes: 'Seleccionar recetas',
+      TranslationKeys.itemsSelected: '@count seleccionado',
+      '${TranslationKeys.itemsSelected}_other': '@count seleccionados',
 
       // login
       TranslationKeys.loginErrorTitle: 'Error de inicio de sesión',

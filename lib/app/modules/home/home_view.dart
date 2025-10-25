@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_helper.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/common/widgets/appbar/appbar.dart';
 import 'package:recipes_flutter/app/common/widgets/drawer/drawer.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/budget_display/budget_display.dart';
@@ -30,7 +32,7 @@ class HomeView extends GetView<HomeController> {
       )) {
         return IngredientsWidget();
       }
-      return const Center(child: Text('Unknown View'));
+      return Center(child: Text(TranslationKeys.unknownView.tr));
     });
   }
 
@@ -56,15 +58,27 @@ class HomeView extends GetView<HomeController> {
             destinations: [
               NavigationDestination(
                 icon: Icon(Icons.book),
-                label: 'recipe'.trPlural('recipe', 2).capitalizeFirst!,
+                label:
+                    TranslationHelper.plural(
+                      TranslationKeys.recipe,
+                      0,
+                    ).capitalizeFirst!,
               ),
               NavigationDestination(
                 icon: Icon(Icons.list),
-                label: 'list'.trPlural('list', 2).capitalizeFirst!,
+                label:
+                    TranslationHelper.plural(
+                      TranslationKeys.list,
+                      1,
+                    ).capitalizeFirst!,
               ),
               NavigationDestination(
                 icon: Icon(Icons.kitchen),
-                label: 'ingredient'.trPlural('ingredient', 2).capitalizeFirst!,
+                label:
+                    TranslationHelper.plural(
+                      TranslationKeys.ingredient,
+                      0,
+                    ).capitalizeFirst!,
               ),
             ],
           ),
@@ -107,7 +121,7 @@ class HomeView extends GetView<HomeController> {
             );
           },
           icon: const Icon(Icons.add),
-          label: const Text('Add Recipe'),
+          label: Text(TranslationKeys.addRecipe.tr),
         );
       }
       return SizedBox.shrink();
@@ -131,7 +145,7 @@ class HomeView extends GetView<HomeController> {
             onPressed: () {
               controller.enableRecipesSelectionMode();
             },
-            child: const Text('Select recipes'),
+            child: Text(TranslationKeys.selectRecipes.tr),
           ),
         ),
       ),
@@ -141,7 +155,12 @@ class HomeView extends GetView<HomeController> {
   _buildAppBar() {
     if (controller.itsSelectionMode.value) {
       return FRAppbar(
-        title: Text('${controller.selectedIds.length} selected'),
+        title: Text(
+          TranslationHelper.plural(
+            TranslationKeys.itemsSelected,
+            controller.selectedIds.length,
+          ),
+        ),
         showBackButton: false,
         leading: IconButton(
           icon: const Icon(Icons.close),

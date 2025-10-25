@@ -21,18 +21,19 @@ class PtTranslations extends Translations {
       TranslationKeys.confirm: 'Confirmar',
       TranslationKeys.tryAgain: 'Tentar Novamente',
       TranslationKeys.list: 'lista',
-      '${TranslationKeys.list}_zero': 'listas',
-      '${TranslationKeys.list}_one': 'lista',
       '${TranslationKeys.list}_other': 'listas',
       TranslationKeys.onList: 'na lista',
       TranslationKeys.recipe: 'receita',
-      '${TranslationKeys.recipe}_zero': 'receitas',
-      '${TranslationKeys.recipe}_one': 'receita',
       '${TranslationKeys.recipe}_other': 'receitas',
       TranslationKeys.ingredient: 'ingrediente',
-      '${TranslationKeys.ingredient}_zero': 'ingredientes',
-      '${TranslationKeys.ingredient}_one': 'ingrediente',
       '${TranslationKeys.ingredient}_other': 'ingredientes',
+
+      // home view
+      TranslationKeys.unknownView: 'Vista desconhecida',
+      TranslationKeys.addRecipe: 'Adicionar receita',
+      TranslationKeys.selectRecipes: 'Selecionar receitas',
+      TranslationKeys.itemsSelected: '@count selecionado',
+      '${TranslationKeys.itemsSelected}_other': '@count selecionados',
 
       // login
       TranslationKeys.loginErrorTitle: 'Falha no login',

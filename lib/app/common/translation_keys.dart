@@ -1,3 +1,5 @@
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
+
 class TranslationKeys {
   static const String nameMinLength = 'name_min_length';
   static const String nameMaxLength = 'name_max_length';
@@ -21,6 +23,12 @@ class TranslationKeys {
   // login
   static const String loginErrorTitle = 'login_error';
 
+  // home view
+  static const String unknownView = 'unknown_view';
+  static const String addRecipe = 'add_recipe';
+  static const String selectRecipes = 'select_recipes';
+  static const String itemsSelected = 'items_selected';
+
   // drawer
   static const String yourGroups = 'your_groups';
   static const String language = 'language';
@@ -33,4 +41,6 @@ class TranslationKeys {
   static const String developedIn = 'developed_in';
   static const String developedBy = 'developed_by';
   static const String checkoutGithub = 'checkout_github';
+
+  static pluralKey(String key) => '${key}_other';
 }

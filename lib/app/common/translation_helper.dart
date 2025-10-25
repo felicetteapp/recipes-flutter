@@ -13,4 +13,12 @@ class TranslationHelper {
       'max': maxLength.toString(),
     });
   }
+
+  static String plural(String key, int count, {Map<String, String>? params}) {
+    return key.trPluralParams(
+      TranslationKeys.pluralKey(key),
+      count,
+      params ?? {'count': count.toString()},
+    );
+  }
 }
