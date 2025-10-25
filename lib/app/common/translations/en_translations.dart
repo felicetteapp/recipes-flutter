@@ -55,6 +55,10 @@ class EnTranslations extends Translations {
       TranslationKeys.developedIn: 'in Curitiba, Brazil.',
       TranslationKeys.developedBy: 'By felicette.dev',
       TranslationKeys.checkoutGithub: 'Check out the project on GitHub: ',
+
+      // budget display
+      TranslationKeys.spentOf: ' spent of ',
+      TranslationKeys.available: ' available',
     },
   };
 }

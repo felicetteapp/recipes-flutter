@@ -56,6 +56,10 @@ class PtTranslations extends Translations {
       TranslationKeys.developedIn: 'em Curitiba, Brasil.',
       TranslationKeys.developedBy: 'Por felicette.dev',
       TranslationKeys.checkoutGithub: 'Confira o projeto no GitHub: ',
+
+      // budget display
+      TranslationKeys.spentOf: ' gasto de ',
+      TranslationKeys.available: ' disponível',
     },
   };
 }

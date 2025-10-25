@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/services/localization_service.dart';
 import 'package:recipes_flutter/theme.dart';
 
@@ -39,7 +40,7 @@ class BudgetDisplay extends StatelessWidget {
                   text: TextSpan(
                     style: TextStyle(
                       fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSurface,
+                      color: theme.colorScheme.onSurface,
                     ),
                     children: [
                       TextSpan(
@@ -50,7 +51,7 @@ class BudgetDisplay extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: ' spent of ',
+                        text: TranslationKeys.spentOf.tr,
                         style: TextStyle(fontWeight: FontWeight.normal),
                       ),
                       TextSpan(
@@ -79,7 +80,7 @@ class BudgetDisplay extends StatelessWidget {
                   text: TextSpan(
                     style: TextStyle(
                       fontSize: 16,
-                      color: Theme.of(context).colorScheme.onSurface,
+                      color: theme.colorScheme.onSurface,
                     ),
                     children: [
                       TextSpan(
@@ -93,7 +94,7 @@ class BudgetDisplay extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: ' available',
+                        text: TranslationKeys.available.tr,
                         style: TextStyle(fontWeight: FontWeight.normal),
                       ),
                     ],

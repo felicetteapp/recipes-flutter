@@ -45,5 +45,9 @@ class TranslationKeys {
   static const String developedBy = 'developed_by';
   static const String checkoutGithub = 'checkout_github';
 
+  // budget display
+  static const String spentOf = 'spent_of';
+  static const String available = 'available';
+
   static pluralKey(String key) => '${key}_other';
 }

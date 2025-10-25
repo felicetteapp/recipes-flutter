@@ -57,6 +57,10 @@ class EsTranslations extends Translations {
       TranslationKeys.developedIn: 'en Curitiba, Brasil.',
       TranslationKeys.developedBy: 'Por felicette.dev',
       TranslationKeys.checkoutGithub: 'Visita el proyecto en GitHub: ',
+
+      // budget display
+      TranslationKeys.spentOf: ' gastado de ',
+      TranslationKeys.available: ' disponible',
     },
   };
 }
