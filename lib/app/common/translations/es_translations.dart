@@ -28,6 +28,11 @@ class EsTranslations extends Translations {
       '${TranslationKeys.recipe}_other': 'recetas',
       TranslationKeys.ingredient: 'ingrediente',
       '${TranslationKeys.ingredient}_other': 'ingredientes',
+      TranslationKeys.showListByIngredients: 'Mostrar lista por ingredientes',
+      TranslationKeys.showListByRecipes: 'Mostrar lista por recetas',
+      TranslationKeys.showCheckedFirst: 'Mostrar marcados primero',
+      TranslationKeys.otherIngredients: 'Otros Ingredientes',
+      TranslationKeys.for_: 'para ',
 
       // home view
       TranslationKeys.unknownView: 'Vista desconocida',

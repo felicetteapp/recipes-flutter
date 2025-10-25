@@ -26,6 +26,11 @@ class EnTranslations extends Translations {
       '${TranslationKeys.recipe}_other': 'recipes',
       TranslationKeys.ingredient: 'ingredient',
       '${TranslationKeys.ingredient}_other': 'ingredients',
+      TranslationKeys.showListByIngredients: 'Show list by ingredients',
+      TranslationKeys.showListByRecipes: 'Show list by recipes',
+      TranslationKeys.showCheckedFirst: 'Show checked first',
+      TranslationKeys.otherIngredients: 'Other Ingredients',
+      TranslationKeys.for_: 'for ',
 
       // home view
       TranslationKeys.unknownView: 'Unknown View',

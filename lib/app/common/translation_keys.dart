@@ -17,6 +17,11 @@ class TranslationKeys {
   static const String onList = 'on_list';
   static const String recipe = 'recipe';
   static const String ingredient = 'ingredient';
+  static const String showListByIngredients = 'show_list_by_ingredients';
+  static const String showListByRecipes = 'show_list_by_recipes';
+  static const String showCheckedFirst = 'show_checked_first';
+  static const String otherIngredients = 'other_ingredients';
+  static const String for_ = 'for';
 
   // login
   static const String loginErrorTitle = 'login_error';

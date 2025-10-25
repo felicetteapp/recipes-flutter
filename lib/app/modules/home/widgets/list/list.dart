@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/common.dart';
 import 'package:recipes_flutter/app/data/models/group_models.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/data/models/recipe_models.dart';
@@ -181,7 +182,7 @@ class ListWidget extends StatelessWidget {
               ),
             if (!isMainRecipe)
               TextSpan(
-                text: 'for ',
+                text: TranslationKeys.for_.tr,
                 style: const TextStyle(fontWeight: FontWeight.w400),
               ),
           ],
@@ -270,18 +271,28 @@ class ListWidget extends StatelessWidget {
         children: [
           SegmentedButton<ListDisplayTypeEnum>(
             key: const Key('list_display_type_segmented_button'),
-            segments: const [
+            segments: [
               ButtonSegment<ListDisplayTypeEnum>(
                 icon: Icon(Icons.kitchen),
                 value: ListDisplayTypeEnum.ingredients,
-                label: Text('Ingredients'),
-                tooltip: 'Show list by ingredients',
+                label: Text(
+                  TranslationHelper.plural(
+                    TranslationKeys.ingredient,
+                    0,
+                  ).capitalizeFirst!,
+                ),
+                tooltip: TranslationKeys.showListByIngredients.tr,
               ),
               ButtonSegment<ListDisplayTypeEnum>(
                 icon: Icon(Icons.book),
                 value: ListDisplayTypeEnum.recipes,
-                label: Text('Recipes'),
-                tooltip: 'Show list by recipes',
+                label: Text(
+                  TranslationHelper.plural(
+                    TranslationKeys.recipe,
+                    0,
+                  ).capitalizeFirst!,
+                ),
+                tooltip: TranslationKeys.showListByRecipes.tr,
               ),
             ],
             selected: {controller.displayType.value},
@@ -293,7 +304,7 @@ class ListWidget extends StatelessWidget {
           ),
           if (controller.displayType.value == ListDisplayTypeEnum.ingredients)
             ChoiceChip(
-              label: const Text('Show checked first'),
+              label: Text(TranslationKeys.showCheckedFirst.tr),
               selected: controller.showCheckedFirst,
               onSelected: (selected) {
                 controller.setShowCheckedFirst(selected);
@@ -319,7 +330,7 @@ class ListWidget extends StatelessWidget {
     return ListTile(
       textColor: Get.theme.colorScheme.primaryFixedDim,
       key: const Key('ingredients_without_recipes_title'),
-      title: const Text('Other Ingredients'),
+      title: Text(TranslationKeys.otherIngredients.tr),
     );
   }
 
