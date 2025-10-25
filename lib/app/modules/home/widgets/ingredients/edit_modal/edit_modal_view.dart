@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/ingredients/edit_modal/edit_modal_controller.dart';
 import 'package:recipes_flutter/theme.dart';
@@ -22,7 +23,7 @@ class EditIngredientModal extends StatelessWidget {
     );
     return Scaffold(
       extendBody: false,
-      appBar: AppBar(title: const Text('Edit Ingredient')),
+      appBar: AppBar(title: Text(TranslationKeys.editIngredient.tr)),
       body: Column(
         children: [
           Expanded(
@@ -34,13 +35,13 @@ class EditIngredientModal extends StatelessWidget {
                   children: [
                     TextField(
                       controller: controller.nameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Ingredient Name',
+                      decoration: InputDecoration(
+                        labelText: TranslationKeys.ingredientName.tr,
                       ),
                     ),
                     Obx(
                       () => CheckboxListTile(
-                        title: const Text('Is Actual Ingredient'),
+                        title: Text(TranslationKeys.isActualIngredient.tr),
                         value: controller.isActualIngredient.value,
                         onChanged: (value) {
                           controller.isActualIngredient.value = value ?? false;
@@ -70,7 +71,7 @@ class EditIngredientModal extends StatelessWidget {
                       Get.back();
                     },
                     icon: const Icon(Icons.chevron_left),
-                    label: const Text('Cancel'),
+                    label: Text(TranslationKeys.cancel.tr),
                   ),
                 ),
                 Expanded(
@@ -87,7 +88,7 @@ class EditIngredientModal extends StatelessWidget {
                                 controller.updateIngredient();
                               },
                       icon: const Icon(Icons.save),
-                      label: const Text('Save'),
+                      label: Text(TranslationKeys.save.tr),
                     ),
                   ),
                 ),
@@ -96,11 +97,10 @@ class EditIngredientModal extends StatelessWidget {
                     onPressed: () {
                       // add a confirmation dialog before deleting
                       Get.defaultDialog(
-                        title: 'Confirm Deletion',
-                        middleText:
-                            'Are you sure you want to delete this ingredient?',
-                        textCancel: 'Cancel',
-                        textConfirm: 'Delete',
+                        title: TranslationKeys.confirmDeletion.tr,
+                        middleText: TranslationKeys.confirmDeletionMessage.tr,
+                        textCancel: TranslationKeys.cancel.tr,
+                        textConfirm: TranslationKeys.delete.tr,
                         onConfirm: () {
                           log('Ingredient deleted: ${ingredient.id}');
                           controller.deleteIngredient();
@@ -112,7 +112,7 @@ class EditIngredientModal extends StatelessWidget {
                       color: Get.theme.colorScheme.error,
                     ),
                     label: Text(
-                      'Delete',
+                      TranslationKeys.delete.tr,
                       style: TextStyle(color: Get.theme.colorScheme.error),
                     ),
                   ),

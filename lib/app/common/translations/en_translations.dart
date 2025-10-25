@@ -18,6 +18,7 @@ class EnTranslations extends Translations {
       TranslationKeys.delete: 'Delete',
       TranslationKeys.edit: 'Edit',
       TranslationKeys.confirm: 'Confirm',
+      TranslationKeys.success: 'Success',
       TranslationKeys.tryAgain: 'Try Again',
       TranslationKeys.list: 'list',
       '${TranslationKeys.list}_other': 'lists',
@@ -71,6 +72,16 @@ class EnTranslations extends Translations {
       TranslationKeys.newIngredient: 'New Ingredient',
       TranslationKeys.ingredientName: 'Ingredient Name',
       TranslationKeys.isActualIngredient: 'Is Actual Ingredient',
+      TranslationKeys.editIngredient: 'Edit Ingredient',
+      TranslationKeys.confirmDeletion: 'Confirm Deletion',
+      TranslationKeys.confirmDeletionMessage:
+          'Are you sure you want to delete this ingredient?',
+      TranslationKeys.ingredientUpdatedSuccessfully:
+          'Ingredient updated successfully',
+      TranslationKeys.ingredientDeletedSuccessfully:
+          'Ingredient deleted successfully',
+      TranslationKeys.ingredientCreatedSuccessfully:
+          'Ingredient created successfully',
     },
   };
 }

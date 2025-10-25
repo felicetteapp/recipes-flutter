@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/services/ingredients_service.dart';
 import 'package:recipes_flutter/app/utils/snackbar.dart';
@@ -34,6 +35,9 @@ class NewIngredientModalController extends GetxController {
     );
     isLoading.value = false;
     Get.back();
-    FRSnackbar.success('Success', 'Ingredient created successfully');
+    FRSnackbar.success(
+      TranslationKeys.success.tr,
+      TranslationKeys.ingredientCreatedSuccessfully.tr,
+    );
   }
 }

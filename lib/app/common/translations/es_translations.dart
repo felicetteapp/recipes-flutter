@@ -20,6 +20,7 @@ class EsTranslations extends Translations {
       TranslationKeys.delete: 'Eliminar',
       TranslationKeys.edit: 'Editar',
       TranslationKeys.confirm: 'Confirmar',
+      TranslationKeys.success: 'Éxito',
       TranslationKeys.tryAgain: 'Intente de nuevo',
       TranslationKeys.list: 'lista',
       '${TranslationKeys.list}_other': 'listas',
@@ -73,6 +74,16 @@ class EsTranslations extends Translations {
       TranslationKeys.newIngredient: 'Nuevo Ingrediente',
       TranslationKeys.ingredientName: 'Nombre del Ingrediente',
       TranslationKeys.isActualIngredient: 'Es Ingrediente Real',
+      TranslationKeys.editIngredient: 'Editar Ingrediente',
+      TranslationKeys.confirmDeletion: 'Confirmar Eliminación',
+      TranslationKeys.confirmDeletionMessage:
+          '¿Estás seguro de que quieres eliminar este ingrediente?',
+      TranslationKeys.ingredientUpdatedSuccessfully:
+          'Ingrediente actualizado exitosamente',
+      TranslationKeys.ingredientDeletedSuccessfully:
+          'Ingrediente eliminado exitosamente',
+      TranslationKeys.ingredientCreatedSuccessfully:
+          'Ingrediente creado exitosamente',
     },
   };
 }

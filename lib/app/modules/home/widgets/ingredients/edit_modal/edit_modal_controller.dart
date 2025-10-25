@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/services/ingredients_service.dart';
 import 'package:recipes_flutter/app/utils/snackbar.dart';
@@ -37,7 +38,10 @@ class EditIngredientModalController extends GetxController {
     );
     isLoading.value = false;
     Get.back();
-    FRSnackbar.success('Success', 'Ingredient updated successfully');
+    FRSnackbar.success(
+      'Success',
+      TranslationKeys.ingredientUpdatedSuccessfully.tr,
+    );
   }
 
   Future<void> deleteIngredient() async {
@@ -49,6 +53,9 @@ class EditIngredientModalController extends GetxController {
     isLoading.value = false;
     Get.back();
     Get.back();
-    FRSnackbar.success('Success', 'Ingredient deleted successfully');
+    FRSnackbar.success(
+      'Success',
+      TranslationKeys.ingredientDeletedSuccessfully.tr,
+    );
   }
 }

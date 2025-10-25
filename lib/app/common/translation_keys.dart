@@ -12,6 +12,7 @@ class TranslationKeys {
   static const String delete = 'delete';
   static const String edit = 'edit';
   static const String confirm = 'confirm';
+  static const String success = 'success';
   static const String tryAgain = 'try_again';
   static const String list = 'list';
   static const String onList = 'on_list';
@@ -59,6 +60,15 @@ class TranslationKeys {
   static const String newIngredient = 'new_ingredient';
   static const String ingredientName = 'ingredient_name';
   static const String isActualIngredient = 'is_actual_ingredient';
+  static const String editIngredient = 'edit_ingredient';
+  static const String confirmDeletion = 'confirm_deletion';
+  static const String confirmDeletionMessage = 'confirm_deletion_message';
+  static const String ingredientUpdatedSuccessfully =
+      'ingredient_updated_successfully';
+  static const String ingredientDeletedSuccessfully =
+      'ingredient_deleted_successfully';
+  static const String ingredientCreatedSuccessfully =
+      'ingredient_created_successfully';
 
   static pluralKey(String key) => '${key}_other';
 }
