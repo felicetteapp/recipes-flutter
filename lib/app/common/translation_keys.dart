@@ -13,6 +13,9 @@ class TranslationKeys {
   static const String edit = 'edit';
   static const String confirm = 'confirm';
   static const String tryAgain = 'try_again';
+  static const String list = 'list';
+  static const String recipe = 'recipe';
+  static const String ingredient = 'ingredient';
 
   // login
   static const String loginErrorTitle = 'login_error';
