@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/ingredients/edit_modal/edit_modal_view.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
@@ -29,28 +30,24 @@ class IngredientsWidget extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 72),
         itemBuilder: (context, index) {
           if (index == 0) {
-            return const ListTile(
+            return ListTile(
               title: Text(
-                'Actual Ingredients',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                TranslationKeys.actualIngredients.tr,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              leading: Icon(Icons.kitchen_outlined),
-              subtitle: Text(
-                'These items can be used in recipes and added to the shopping list',
-              ),
+              leading: const Icon(Icons.kitchen_outlined),
+              subtitle: Text(TranslationKeys.actualIngredientsSubtitle.tr),
             );
           }
 
           if (index == actualIngredients.length + 1) {
-            return const ListTile(
+            return ListTile(
               title: Text(
-                'Non-Actual Ingredients',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                TranslationKeys.nonActualIngredients.tr,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              leading: Icon(Icons.shopping_cart_outlined),
-              subtitle: Text(
-                'This items can be added to the sopping list but can\'t be used in recipes',
-              ),
+              leading: const Icon(Icons.shopping_cart_outlined),
+              subtitle: Text(TranslationKeys.nonActualIngredientsSubtitle.tr),
             );
           }
 

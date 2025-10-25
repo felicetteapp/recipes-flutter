@@ -37,6 +37,7 @@ class EsTranslations extends Translations {
       // home view
       TranslationKeys.unknownView: 'Vista desconocida',
       TranslationKeys.addRecipe: 'Agregar receta',
+      TranslationKeys.addIngredient: 'Agregar ingrediente',
       TranslationKeys.selectRecipes: 'Seleccionar recetas',
       TranslationKeys.itemsSelected: '@count seleccionado',
       '${TranslationKeys.itemsSelected}_other': '@count seleccionados',
@@ -61,6 +62,14 @@ class EsTranslations extends Translations {
       // budget display
       TranslationKeys.spentOf: ' gastado de ',
       TranslationKeys.available: ' disponible',
+
+      // ingredients
+      TranslationKeys.actualIngredients: 'Ingredientes Reales',
+      TranslationKeys.actualIngredientsSubtitle:
+          'Estos elementos se pueden usar en recetas y agregar a la lista de compras',
+      TranslationKeys.nonActualIngredients: 'Ingredientes No Reales',
+      TranslationKeys.nonActualIngredientsSubtitle:
+          'Estos elementos se pueden agregar a la lista de compras pero no se pueden usar en recetas',
     },
   };
 }

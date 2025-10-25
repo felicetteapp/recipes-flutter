@@ -35,6 +35,7 @@ class EnTranslations extends Translations {
       // home view
       TranslationKeys.unknownView: 'Unknown View',
       TranslationKeys.addRecipe: 'Add Recipe',
+      TranslationKeys.addIngredient: 'Add Ingredient',
       TranslationKeys.selectRecipes: 'Select recipes',
       TranslationKeys.itemsSelected: '@count selected',
       '${TranslationKeys.itemsSelected}_other': '@count selected',
@@ -59,6 +60,14 @@ class EnTranslations extends Translations {
       // budget display
       TranslationKeys.spentOf: ' spent of ',
       TranslationKeys.available: ' available',
+
+      // ingredients
+      TranslationKeys.actualIngredients: 'Actual Ingredients',
+      TranslationKeys.actualIngredientsSubtitle:
+          'These items can be used in recipes and added to the shopping list',
+      TranslationKeys.nonActualIngredients: 'Non-Actual Ingredients',
+      TranslationKeys.nonActualIngredientsSubtitle:
+          'This items can be added to the sopping list but can\'t be used in recipes',
     },
   };
 }

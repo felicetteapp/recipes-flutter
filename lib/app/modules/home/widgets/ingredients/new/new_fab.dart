@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/ingredients/new/new_modal.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
 
@@ -19,7 +20,7 @@ class NewIngredientFab extends StatelessWidget {
         );
       },
       icon: const Icon(Icons.add),
-      label: const Text('Add Ingredient'),
+      label: Text(TranslationKeys.addIngredient.tr),
     );
   }
 }

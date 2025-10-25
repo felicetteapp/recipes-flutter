@@ -29,6 +29,7 @@ class TranslationKeys {
   // home view
   static const String unknownView = 'unknown_view';
   static const String addRecipe = 'add_recipe';
+  static const String addIngredient = 'add_ingredient';
   static const String selectRecipes = 'select_recipes';
   static const String itemsSelected = 'items_selected';
 
@@ -48,6 +49,13 @@ class TranslationKeys {
   // budget display
   static const String spentOf = 'spent_of';
   static const String available = 'available';
+
+  // ingredients
+  static const String actualIngredients = 'actual_ingredients';
+  static const String actualIngredientsSubtitle = 'actual_ingredients_subtitle';
+  static const String nonActualIngredients = 'non_actual_ingredients';
+  static const String nonActualIngredientsSubtitle =
+      'non_actual_ingredients_subtitle';
 
   static pluralKey(String key) => '${key}_other';
 }
