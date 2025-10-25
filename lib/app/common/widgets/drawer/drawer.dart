@@ -29,7 +29,6 @@ class FRDrawer extends StatelessWidget {
         }).toList();
 
     return [
-      const Divider(),
       const ListTile(
         title: Text(
           'Your Groups',
@@ -50,9 +49,40 @@ class FRDrawer extends StatelessWidget {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-              child: Text(
-                'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+              child: Row(
+                spacing: 8,
+                children: [
+                  Image.asset(
+                    'assets/images/felicette_recipes_logo.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                  Expanded(
+                    child: RichText(
+                      softWrap: true,
+                      maxLines: 2,
+                      text: TextSpan(
+                        style: TextStyle(fontSize: 24),
+                        children: [
+                          TextSpan(
+                            text: 'Felicette',
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Get.theme.colorScheme.primary,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' Recipes',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Get.theme.colorScheme.secondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             ..._buildGroupListTiles(context),
@@ -63,6 +93,64 @@ class FRDrawer extends StatelessWidget {
               onTap: () {
                 authService.logout();
               },
+            ),
+            const Divider(),
+            AboutListTile(
+              applicationName: 'Felicette Recipes',
+              // TODO: get current version from pubspec.yaml
+              applicationVersion: '1.0.0',
+              applicationIcon: Image.asset(
+                'assets/images/felicette_recipes_logo.png',
+                width: 50,
+                height: 50,
+              ),
+              aboutBoxChildren: [
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    children: [
+                      TextSpan(
+                        text:
+                            'Felicette Recipes is an open-source application to help you manage your recipes and shopping lists.\n\n',
+                      ),
+                      TextSpan(text: 'Developed with '),
+                      TextSpan(
+                        text: 'Love and Cats',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(text: ' in '),
+                      TextSpan(
+                        text: 'Curitiba, Brazil.',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(text: ' By '),
+                      TextSpan(
+                        text: 'felicette.dev\n\n',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(text: 'Check out the project on GitHub: '),
+                      WidgetSpan(
+                        child: GestureDetector(
+                          onTap: () {
+                            // Open GitHub link
+                          },
+                          child: Text(
+                            'github.com/felicetteapp/recipes-flutter',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              icon: Icon(Icons.info_outline),
+              child: Text('About'),
             ),
           ],
         );
