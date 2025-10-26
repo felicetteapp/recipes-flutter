@@ -15,48 +15,51 @@ class SelectModal<T> extends StatelessWidget {
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                padding: EdgeInsets.all(8),
-                scrollDirection: Axis.horizontal,
-                controller: controller.selectedItemsScrollController,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minWidth: constraints.maxWidth),
-                  child: Obx(
-                    () => Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ...controller.selectedItems.map(
-                          (val) => Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 8,
-                            ),
-                            child: Chip(
-                              key: ValueKey(controller.itemLabelBuilder(val)),
-                              padding: EdgeInsets.all(0),
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              label: Text(controller.itemLabelBuilder(val)),
-                              onDeleted: () {
-                                final newValue = List<T>.from(
-                                  controller.selectedItems,
-                                );
-                                newValue.remove(val);
-                                controller.selectedItems.value = newValue;
-                              },
+          Visibility(
+            visible: controller.isMulti,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  padding: EdgeInsets.all(8),
+                  scrollDirection: Axis.horizontal,
+                  controller: controller.selectedItemsScrollController,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: constraints.maxWidth),
+                    child: Obx(
+                      () => Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ...controller.selectedItems.map(
+                            (val) => Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 4,
+                                vertical: 8,
+                              ),
+                              child: Chip(
+                                key: ValueKey(controller.itemLabelBuilder(val)),
+                                padding: EdgeInsets.all(0),
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                label: Text(controller.itemLabelBuilder(val)),
+                                onDeleted: () {
+                                  final newValue = List<T>.from(
+                                    controller.selectedItems,
+                                  );
+                                  newValue.remove(val);
+                                  controller.selectedItems.value = newValue;
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(16),
@@ -98,13 +101,13 @@ class SelectModal<T> extends StatelessWidget {
                   final item = controller.filteredItems[index];
 
                   return ListTile(
+                    selected:
+                        !controller.isMulti &&
+                        controller.selectedItems.contains(item),
                     key: ValueKey(controller.itemLabelBuilder(item)),
                     title: Text(controller.itemLabelBuilder(item)),
                     onTap: () {
-                      controller.selectedItems.add(item);
-                      controller.filterController.clear();
-                      controller.scrollToLastSelectedItem();
-                      controller.filterControllerFocusNode.requestFocus();
+                      controller.handleSelect(item);
                     },
                   );
                 },

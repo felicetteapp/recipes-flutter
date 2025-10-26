@@ -8,6 +8,7 @@ import 'package:recipes_flutter/app/modules/home/widgets/budget_display/budget_d
 import 'package:recipes_flutter/app/modules/home/widgets/ingredients/ingredients.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/ingredients/new/new_fab.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/list/list.dart';
+import 'package:recipes_flutter/app/modules/home/widgets/list/widgets/edit_list_modal/edit_list_modal_view.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/recipes/edit_create_modal/edit_create_modal_view.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/recipes/recipes.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
@@ -146,6 +147,25 @@ class HomeView extends GetView<HomeController> {
               controller.enableRecipesSelectionMode();
             },
             child: Text(TranslationKeys.selectRecipes.tr),
+          ),
+        ),
+      ),
+
+      Obx(
+        () => Visibility(
+          visible: controller.bottomNavigationIndexIs(
+            BottomNavigationItemEnum.list,
+          ),
+          child: TextButton(
+            onPressed: () {
+              Get.dialog(
+                EditListModal(
+                  groupId: Get.find<GroupsService>().selectedGroup.value!.id,
+                ),
+                useSafeArea: false,
+              );
+            },
+            child: Text(TranslationKeys.editList.tr),
           ),
         ),
       ),

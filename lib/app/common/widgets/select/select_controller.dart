@@ -12,13 +12,23 @@ class SelectController<T> extends GetxController {
   final filterControllerFocusNode = FocusNode();
   final ScrollController selectedItemsScrollController = ScrollController();
   final String label;
+  final bool isMulti;
   final Function(List<T>) onChanged;
   final Future<T> Function(String)? createItem;
 
   List<T> get filteredItems {
-    final currentList =
-        items
-            .where((item) => !selectedItems.contains(item))
+    var currentList = items.toList();
+    if (isMulti) {
+      currentList =
+          currentList.where((item) => !selectedItems.contains(item)).toList();
+    } else {
+      currentList = currentList.toList();
+      currentList.removeWhere((item) => selectedItems.contains(item));
+      currentList.insertAll(0, selectedItems);
+    }
+
+    currentList =
+        currentList
             .where(
               (item) => itemLabelBuilder(
                 item,
@@ -34,6 +44,7 @@ class SelectController<T> extends GetxController {
     required this.items,
     required this.label,
     required this.onChanged,
+    required this.isMulti,
     this.createItem,
     List<T> initialSelectedItems = const [],
   }) : selectedItems = RxList<T>(initialSelectedItems);
@@ -43,11 +54,7 @@ class SelectController<T> extends GetxController {
       final newItem = await createItem!(filter.value);
       if (newItem != null) {
         items.add(newItem);
-        final newValue = List<T>.from(selectedItems);
-        newValue.add(newItem);
-        selectedItems.value = newValue;
-        filterController.clear();
-        scrollToLastSelectedItem();
+        handleSelect(newItem);
       }
     }
   }
@@ -63,11 +70,7 @@ class SelectController<T> extends GetxController {
       final newValue = List<T>.from(selectedItems);
       if (!newValue.contains(filteredItems.first)) {
         newValue.add(filteredItems.first);
-        selectedItems.value = newValue;
-        filterController.clear();
-        scrollToLastSelectedItem();
-
-        filterControllerFocusNode.requestFocus();
+        handleSelect(filteredItems.first);
       }
     } else {
       handleCreateItem();
@@ -76,7 +79,22 @@ class SelectController<T> extends GetxController {
     }
   }
 
+  void handleSelect(T item) {
+    if (!isMulti) {
+      selectedItems.value = [item];
+      onChanged(selectedItems);
+      filterController.clear();
+      Get.back();
+      return;
+    }
+    selectedItems.add(item);
+    filterController.clear();
+    scrollToLastSelectedItem();
+    filterControllerFocusNode.requestFocus();
+  }
+
   void scrollToLastSelectedItem() {
+    if (!isMulti) return;
     Future.delayed(const Duration(milliseconds: 100)).then((_) {
       selectedItemsScrollController.animateTo(
         selectedItemsScrollController.position.maxScrollExtent,

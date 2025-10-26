@@ -17,6 +17,16 @@ class LocalizationService extends GetxController {
 
   Locale get currentLocale => _currentLocale.value;
 
+  List<String> get availableCurrencies => [
+    'USD',
+    'EUR',
+    'GBP',
+    'JPY',
+    'CNY',
+    'BRL',
+    'ARS',
+  ];
+
   @override
   void onInit() {
     super.onInit();

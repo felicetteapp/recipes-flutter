@@ -34,6 +34,9 @@ class EsTranslations extends Translations {
       TranslationKeys.showCheckedFirst: 'Mostrar marcados primero',
       TranslationKeys.otherIngredients: 'Otros Ingredientes',
       TranslationKeys.for_: 'para ',
+      TranslationKeys.budget: 'Presupuesto',
+      TranslationKeys.no: 'No',
+      TranslationKeys.yes: 'Sí',
 
       // home view
       TranslationKeys.unknownView: 'Vista desconocida',
@@ -84,6 +87,9 @@ class EsTranslations extends Translations {
           'Ingrediente eliminado exitosamente',
       TranslationKeys.ingredientCreatedSuccessfully:
           'Ingrediente creado exitosamente',
+      TranslationKeys.confirmActualIngredientDescription:
+          '¿Es "@ingredientName" un ingrediente real que se puede usar en recetas?',
+      TranslationKeys.confirmActualIngredient: 'Confirmar Ingrediente Real',
 
       // recipes
       TranslationKeys.editRecipe: 'Editar Receta',
@@ -102,6 +108,19 @@ class EsTranslations extends Translations {
       TranslationKeys.search: 'Buscar',
       TranslationKeys.create: 'Crear',
       TranslationKeys.done: 'Listo',
+
+      // edit list
+      TranslationKeys.editList: 'Editar Lista',
+      TranslationKeys.selectCurrency: 'Seleccionar Moneda',
+
+      // currencies
+      TranslationKeys.currencyUSD: 'Dólar Estadounidense',
+      TranslationKeys.currencyEUR: 'Euro',
+      TranslationKeys.currencyGBP: 'Libra Esterlina',
+      TranslationKeys.currencyJPY: 'Yen Japonés',
+      TranslationKeys.currencyCNY: 'Yuan Chino',
+      TranslationKeys.currencyBRL: 'Real Brasileño',
+      TranslationKeys.currencyARS: 'Peso Argentino',
     },
   };
 }

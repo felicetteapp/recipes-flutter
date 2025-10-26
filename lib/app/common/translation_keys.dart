@@ -23,6 +23,9 @@ class TranslationKeys {
   static const String showCheckedFirst = 'show_checked_first';
   static const String otherIngredients = 'other_ingredients';
   static const String for_ = 'for';
+  static const String budget = 'budget';
+  static const String no = 'no';
+  static const String yes = 'yes';
 
   // login
   static const String loginErrorTitle = 'login_error';
@@ -69,6 +72,9 @@ class TranslationKeys {
       'ingredient_deleted_successfully';
   static const String ingredientCreatedSuccessfully =
       'ingredient_created_successfully';
+  static const String confirmActualIngredientDescription =
+      'confirm_actual_ingredient_description';
+  static const String confirmActualIngredient = 'confirm_actual_ingredient';
 
   // recipes
   static const String editRecipe = 'edit_recipe';
@@ -85,6 +91,19 @@ class TranslationKeys {
   static const String search = 'search';
   static const String create = 'create';
   static const String done = 'done';
+
+  // edit list
+  static const String editList = 'edit_list';
+  static const String selectCurrency = 'select_currency';
+
+  // currencies
+  static const String currencyUSD = 'currency_usd';
+  static const String currencyEUR = 'currency_eur';
+  static const String currencyGBP = 'currency_gbp';
+  static const String currencyJPY = 'currency_jpy';
+  static const String currencyCNY = 'currency_cny';
+  static const String currencyBRL = 'currency_brl';
+  static const String currencyARS = 'currency_ars';
 
   static pluralKey(String key) => '${key}_other';
 }

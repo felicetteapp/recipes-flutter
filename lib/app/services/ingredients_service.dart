@@ -16,6 +16,21 @@ class IngredientsService extends GetxService {
 
   StreamSubscription<QuerySnapshot<FRIngredient>>? _ingredientsSubscription;
 
+  List<FRIngredient> getCurrentGroupIngredients() {
+    final groupsService = Get.find<GroupsService>();
+    final selectedGroup = groupsService.selectedGroup.value;
+    if (selectedGroup == null) {
+      return [];
+    }
+    return ingredients
+        .where(
+          (ingredient) => selectedGroup.currentIngredients.any(
+            (ing) => ing.ingredientId == ingredient.id,
+          ),
+        )
+        .toList();
+  }
+
   listenToGroupIngredients(String groupId) {
     _ingredientsSubscription?.cancel();
 

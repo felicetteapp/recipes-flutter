@@ -32,6 +32,7 @@ class FRSelect<T> extends StatelessWidget {
         label: label,
         onChanged: onChanged,
         createItem: createItem,
+        isMulti: isMulti,
       ),
     );
 
@@ -56,6 +57,7 @@ class FRSelect<T> extends StatelessWidget {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(8),
                     onTap: () {
+                      controller.filterController.clear();
                       Get.dialog(
                         SelectModal(controller: controller),
                         useSafeArea: false,
