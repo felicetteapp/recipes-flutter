@@ -6,6 +6,7 @@ import 'package:recipes_flutter/app/services/groups_service.dart';
 import 'package:recipes_flutter/app/services/ingredients_service.dart';
 import 'package:recipes_flutter/app/services/localization_service.dart';
 import 'package:recipes_flutter/app/services/recipes_service.dart';
+import 'package:recipes_flutter/app/utils/snackbar.dart';
 
 class EditListModalController extends GetxController {
   final String groupId;
@@ -17,6 +18,9 @@ class EditListModalController extends GetxController {
   final IngredientsService ingredientsService = Get.find<IngredientsService>();
   final LocalizationService localizationService =
       Get.find<LocalizationService>();
+
+  final RxList<FRRecipe> selectedRecipes = RxList<FRRecipe>([]);
+  final RxList<String> selectedCurrency = RxList<String>([]);
 
   List<FRRecipe> get recipes => recipesService.getCurrentGroupRecipes();
   List<FRRecipe> get availableRecipes => recipesService.recipes;
@@ -73,17 +77,51 @@ class EditListModalController extends GetxController {
     validateBudget(value);
   }
 
-  handleOnChange(List<FRRecipe> selectedRecipes) {
-    isLoading.value = true;
+  handleRecipesOnChange(List<FRRecipe> selectedRecipes) {
+    this.selectedRecipes.assignAll(selectedRecipes);
     Get.log(
       'EditListModalController - handleOnChange: selectedRecipes=${selectedRecipes.map((e) => e.name).toList()}',
     );
   }
 
+  handleCurrencyOnChange(List<String> selectedCurrency) {
+    this.selectedCurrency.assignAll(selectedCurrency);
+    Get.log(
+      'EditListModalController - handleOnChange: selectedCurrency=$selectedCurrency',
+    );
+  }
+
+  handleOnSave() async {
+    isLoading.value = true;
+    final selectedGroup = groupsService.selectedGroup.value;
+    if (selectedGroup == null) {
+      Get.snackbar('Error', 'No group selected');
+      isLoading.value = false;
+      return;
+    }
+
+    final updatedGroup = selectedGroup.copyWith(
+      budget: getBudgetValue(),
+      currency:
+          selectedCurrency.isNotEmpty
+              ? selectedCurrency[0]
+              : selectedGroup.currency,
+      currentRecipes: selectedRecipes.map((r) => r.id).toList(),
+    );
+
+    try {
+      await groupsService.updateGroupListDetails(updatedGroup);
+      Get.back();
+      FRSnackbar.success('Success', 'List details updated successfully');
+    } catch (e) {
+      FRSnackbar.error('Error', 'Failed to update list details: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   @override
   void onInit() {
-    // TODO: implement onInit
-
     super.onInit();
 
     final currentBudget = budget;
@@ -93,6 +131,11 @@ class EditListModalController extends GetxController {
       'currency: ${listCurrency.isNotEmpty ? listCurrency[0] : 'N/A'}',
     );
     budgetController.text = currentBudget.toString();
+
+    final currentRecipes = recipes;
+    selectedRecipes.assignAll(currentRecipes);
+    final currentCurrency = listCurrency;
+    selectedCurrency.assignAll(currentCurrency);
   }
 
   @override

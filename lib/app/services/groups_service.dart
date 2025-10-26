@@ -80,6 +80,11 @@ class GroupsService extends GetxService {
     return groupApiService.updateGroupFilters(group: newGroup);
   }
 
+  Future<void> updateGroupListDetails(FRGroup group) {
+    log('Updating list details for group ${group.name}', name: 'GroupsService');
+    return groupApiService.updateGroupListDetails(group: group);
+  }
+
   @override
   void onInit() {
     super.onInit();

@@ -27,9 +27,9 @@ class GroupApiService extends ApiService {
   }
 
   Future<void> updateGroupRecipes({required FRGroup group}) {
-    return doc(
-      group.id,
-    ).set(group, SetOptions(mergeFields: ['currentRecipes']));
+    return doc(group.id).update({
+      'currentRecipes': FRGroup.toFirestore(group, null)['currentRecipes'],
+    });
   }
 
   Future<void> updateGroupFilters({required FRGroup group}) {
@@ -47,5 +47,15 @@ class GroupApiService extends ApiService {
     return doc(
       group.id,
     ).update({'filters': FRGroup.toFirestore(group, null)['filters']});
+  }
+
+  Future<void> updateGroupListDetails({required FRGroup group}) {
+    final data = FRGroup.toFirestore(group, null);
+    return doc(group.id).update({
+      'budget': data['budget'],
+      'currency': data['currency'],
+      'filters': data['filters'],
+      'currentRecipes': data['currentRecipes'],
+    });
   }
 }

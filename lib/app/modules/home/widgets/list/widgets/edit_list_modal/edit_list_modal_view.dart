@@ -31,9 +31,9 @@ class EditListModal extends StatelessWidget {
                     Obx(
                       () => FRSelect<FRRecipe>(
                         items: controller.availableRecipes,
-                        value: controller.recipes,
+                        value: controller.selectedRecipes.toList(),
                         itemLabelBuilder: (item) => item.name,
-                        onChanged: controller.handleOnChange,
+                        onChanged: controller.handleRecipesOnChange,
                         isMulti: true,
                         label: TranslationKeys.selectRecipes.tr,
                       ),
@@ -44,7 +44,6 @@ class EditListModal extends StatelessWidget {
                         value: controller.currentIngredients,
                         itemLabelBuilder: (item) => item.name,
                         onChanged: (selectedIngredients) {
-                          controller.isLoading.value = true;
                           Get.log(
                             'EditListModal - handleOnChange: selectedIngredients=${selectedIngredients.map((e) => e.name).toList()}',
                           );
@@ -99,15 +98,10 @@ class EditListModal extends StatelessWidget {
                     Obx(
                       () => FRSelect<String>(
                         items: controller.availableCurrencies,
-                        value: controller.listCurrency,
+                        value: controller.selectedCurrency.toList(),
                         itemLabelBuilder:
                             (item) => TranslationHelper.currencyLabel(item),
-                        onChanged: (selectedCurrency) {
-                          controller.isLoading.value = true;
-                          Get.log(
-                            'EditListModal - handleOnChange: selectedCurrency=$selectedCurrency',
-                          );
-                        },
+                        onChanged: controller.handleCurrencyOnChange,
                         isMulti: false,
                         label: TranslationKeys.selectCurrency.tr,
                       ),
@@ -173,6 +167,7 @@ class EditListModal extends StatelessWidget {
                           controller.isLoading.value
                               ? null
                               : () {
+                                controller.handleOnSave();
                                 //TODO: Save action
                               },
                       icon: const Icon(Icons.save),
