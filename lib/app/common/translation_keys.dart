@@ -105,5 +105,17 @@ class TranslationKeys {
   static const String currencyBRL = 'currency_brl';
   static const String currencyARS = 'currency_ars';
 
+  // validation messages
+  static const String pleaseEnterValidNumber = 'please_enter_valid_number';
+  static const String budgetMustBePositive = 'budget_must_be_positive';
+
+  // error messages
+  static const String error = 'error';
+  static const String noGroupSelected = 'no_group_selected';
+  static const String listDetailsUpdatedSuccessfully =
+      'list_details_updated_successfully';
+  static const String failedToUpdateListDetails =
+      'failed_to_update_list_details';
+
   static pluralKey(String key) => '${key}_other';
 }

@@ -119,6 +119,18 @@ class EnTranslations extends Translations {
       TranslationKeys.currencyCNY: 'Chinese Yuan',
       TranslationKeys.currencyBRL: 'Brazilian Real',
       TranslationKeys.currencyARS: 'Argentine Peso',
+
+      // validation messages
+      TranslationKeys.pleaseEnterValidNumber: 'Please enter a valid number',
+      TranslationKeys.budgetMustBePositive: 'Budget must be a positive number',
+
+      // error messages
+      TranslationKeys.error: 'Error',
+      TranslationKeys.noGroupSelected: 'No group selected',
+      TranslationKeys.listDetailsUpdatedSuccessfully:
+          'List details updated successfully',
+      TranslationKeys.failedToUpdateListDetails:
+          'Failed to update list details: @error',
     },
   };
 }

@@ -121,6 +121,20 @@ class EsTranslations extends Translations {
       TranslationKeys.currencyCNY: 'Yuan Chino',
       TranslationKeys.currencyBRL: 'Real Brasileño',
       TranslationKeys.currencyARS: 'Peso Argentino',
+
+      // validation messages
+      TranslationKeys.pleaseEnterValidNumber:
+          'Por favor ingrese un número válido',
+      TranslationKeys.budgetMustBePositive:
+          'El presupuesto debe ser un número positivo',
+
+      // error messages
+      TranslationKeys.error: 'Error',
+      TranslationKeys.noGroupSelected: 'Ningún grupo seleccionado',
+      TranslationKeys.listDetailsUpdatedSuccessfully:
+          'Detalles de la lista actualizados exitosamente',
+      TranslationKeys.failedToUpdateListDetails:
+          'Error al actualizar los detalles de la lista: @error',
     },
   };
 }

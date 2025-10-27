@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:recipes_flutter/app/common/translation_keys.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/data/models/recipe_models.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
@@ -63,11 +64,11 @@ class EditListModalController extends GetxController {
 
     final budgetValue = double.tryParse(value.trim());
     if (budgetValue == null) {
-      return 'Please enter a valid number';
+      return TranslationKeys.pleaseEnterValidNumber.tr;
     }
 
     if (budgetValue < 0) {
-      return 'Budget must be a positive number';
+      return TranslationKeys.budgetMustBePositive.tr;
     }
 
     return null;
@@ -95,7 +96,10 @@ class EditListModalController extends GetxController {
     isLoading.value = true;
     final selectedGroup = groupsService.selectedGroup.value;
     if (selectedGroup == null) {
-      Get.snackbar('Error', 'No group selected');
+      Get.snackbar(
+        TranslationKeys.error.tr,
+        TranslationKeys.noGroupSelected.tr,
+      );
       isLoading.value = false;
       return;
     }
@@ -112,9 +116,17 @@ class EditListModalController extends GetxController {
     try {
       await groupsService.updateGroupListDetails(updatedGroup);
       Get.back();
-      FRSnackbar.success('Success', 'List details updated successfully');
+      FRSnackbar.success(
+        TranslationKeys.success.tr,
+        TranslationKeys.listDetailsUpdatedSuccessfully.tr,
+      );
     } catch (e) {
-      FRSnackbar.error('Error', 'Failed to update list details: $e');
+      FRSnackbar.error(
+        TranslationKeys.error.tr,
+        TranslationKeys.failedToUpdateListDetails.trParams({
+          'error': e.toString(),
+        }),
+      );
     } finally {
       isLoading.value = false;
     }
