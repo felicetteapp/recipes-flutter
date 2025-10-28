@@ -85,6 +85,59 @@ class GroupsService extends GetxService {
     return groupApiService.updateGroupListDetails(group: group);
   }
 
+  Future<void> updateIngredientPrices({
+    required String ingredientId,
+    required List<FRIngredientPrice> prices,
+  }) {
+    final group = selectedGroup.value;
+    log(
+      'Updating ingredient prices for ingredient $ingredientId in group ${group?.name} to $prices',
+      name: 'GroupsService',
+    );
+    if (group == null) {
+      throw Exception('No selected group to update ingredient prices for');
+    }
+    return groupApiService.updateIngredientPrices(
+      group: group,
+      ingredientId: ingredientId,
+      prices: prices,
+    );
+  }
+
+  Future<void> removeIngredientPrice({required String ingredientId}) {
+    final group = selectedGroup.value;
+    log(
+      'Removing ingredient price for ingredient $ingredientId in group ${group?.name}',
+      name: 'GroupsService',
+    );
+    if (group == null) {
+      throw Exception('No selected group to remove ingredient price for');
+    }
+    return groupApiService.removeIngredientPrice(
+      group: group,
+      ingredientId: ingredientId,
+    );
+  }
+
+  Future<void> checkIngredient({
+    required String ingredientId,
+    required bool isChecked,
+  }) {
+    final group = selectedGroup.value;
+    log(
+      '${isChecked ? 'Checking' : 'Unchecking'} ingredient $ingredientId in group ${group?.name}',
+      name: 'GroupsService',
+    );
+    if (group == null) {
+      throw Exception('No selected group to check/uncheck ingredient for');
+    }
+    return groupApiService.checkIngredient(
+      group: group,
+      ingredientId: ingredientId,
+      isChecked: isChecked,
+    );
+  }
+
   @override
   void onInit() {
     super.onInit();

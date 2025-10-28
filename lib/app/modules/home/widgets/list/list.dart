@@ -38,84 +38,106 @@ class ListWidget extends StatelessWidget {
                 : 0);
       }
 
-      return ListView.builder(
-        key: const Key('list_view'),
-        itemCount: itemCount,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return _buildFilters(controller);
-          }
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return ListView.builder(
+            key: const Key('list_view'),
+            itemCount: itemCount,
+            itemBuilder: (context, index) {
+              if (index == 0) {
+                return _buildFilters(controller);
+              }
 
-          if (controller.displayType.value == ListDisplayTypeEnum.ingredients) {
-            final item = ingredients[index - staticItemsAtTop];
-            return _buildIngredientListTile(item);
-          }
-
-          final adjustedIndex = index - staticItemsAtTop;
-          final ingredientsWithoutRecipes =
-              controller.ingredientsWithoutRecipes;
-
-          var currentIndex = 0;
-          for (final recipeItem in recipes) {
-            if (adjustedIndex == currentIndex) {
-              return _buildRecipeTitle(recipeItem, controller);
-            }
-            currentIndex++;
-
-            for (final ingredient in recipeItem.ingredients) {
-              if (adjustedIndex == currentIndex) {
-                final recipeIngredient = recipeItem.recipe.ingredients
-                    .firstWhere((ri) => ri.ingredientId == ingredient.id);
-                return _buildRecipeIngredientItem(
-                  ingredient,
-                  recipeIngredient,
-                  recipeItem,
-                  controller,
+              if (controller.displayType.value ==
+                  ListDisplayTypeEnum.ingredients) {
+                final item = ingredients[index - staticItemsAtTop];
+                return _buildIngredientListTile(
+                  item,
+                  availableWidth: constraints.maxWidth,
                 );
               }
-              currentIndex++;
-            }
-          }
 
-          // Handle ingredients without recipes section
-          if (ingredientsWithoutRecipes.isNotEmpty) {
-            if (adjustedIndex == currentIndex) {
-              return _buildIngredientsWithoutRecipesTitle();
-            }
-            currentIndex++;
+              final adjustedIndex = index - staticItemsAtTop;
+              final ingredientsWithoutRecipes =
+                  controller.ingredientsWithoutRecipes;
 
-            final ingredientIndex = adjustedIndex - currentIndex;
-            if (ingredientIndex >= 0 &&
-                ingredientIndex < ingredientsWithoutRecipes.length) {
-              return _buildIngredientListTile(
-                ingredientsWithoutRecipes[ingredientIndex],
-              );
-            }
-          }
+              var currentIndex = 0;
+              for (final recipeItem in recipes) {
+                if (adjustedIndex == currentIndex) {
+                  return _buildRecipeTitle(recipeItem, controller);
+                }
+                currentIndex++;
 
-          return const SizedBox.shrink();
+                for (final ingredient in recipeItem.ingredients) {
+                  if (adjustedIndex == currentIndex) {
+                    final recipeIngredient = recipeItem.recipe.ingredients
+                        .firstWhere((ri) => ri.ingredientId == ingredient.id);
+                    return _buildRecipeIngredientItem(
+                      ingredient,
+                      recipeIngredient,
+                      recipeItem,
+                      controller,
+                    );
+                  }
+                  currentIndex++;
+                }
+              }
+
+              // Handle ingredients without recipes section
+              if (ingredientsWithoutRecipes.isNotEmpty) {
+                if (adjustedIndex == currentIndex) {
+                  return _buildIngredientsWithoutRecipesTitle();
+                }
+                currentIndex++;
+
+                final ingredientIndex = adjustedIndex - currentIndex;
+                if (ingredientIndex >= 0 &&
+                    ingredientIndex < ingredientsWithoutRecipes.length) {
+                  return _buildIngredientListTile(
+                    ingredientsWithoutRecipes[ingredientIndex],
+                    availableWidth: constraints.maxWidth,
+                  );
+                }
+              }
+
+              return const SizedBox.shrink();
+            },
+          );
         },
       );
     });
   }
 
-  CheckboxListTile _buildIngredientListTile(ListIngredientItem item) {
-    final groupService = Get.find<ListController>().groupsService;
+  ListTile _buildIngredientListTile(
+    ListIngredientItem item, {
+    required double availableWidth,
+  }) {
+    final controller = Get.find<ListController>();
+    final groupService = controller.groupsService;
     final currency = groupService.selectedGroup.value?.currency ?? 'USD';
 
-    return CheckboxListTile(
+    return ListTile(
       visualDensity: VisualDensity.compact,
+      contentPadding: EdgeInsets.symmetric(horizontal: 4),
       key: Key(item.ingredient.id),
-      controlAffinity: ListTileControlAffinity.leading,
-      value: item.isChecked,
-      onChanged: (value) {
-        // Handle checkbox state change
-      },
+      leading: Checkbox(
+        value: item.isChecked,
+        onChanged: (value) {
+          controller.handleCheckIngredient(item, value ?? false);
+        },
+      ),
       title: Text(item.ingredient.name),
-      secondary: _buildIngredientItemSecondary(
+      trailing: _buildIngredientItemSecondary(
         item.price,
         currency,
         item.isChecked,
+        onTap: () {
+          controller.openEditIngredientPriceModal(
+            groupService.selectedGroup.value!,
+            item,
+          );
+        },
+        availableWidth: availableWidth,
       ),
       subtitle: _buildIngredientItemSubtitle(
         item.ingredient,
@@ -260,56 +282,128 @@ class ListWidget extends StatelessWidget {
   }
 
   Padding _buildFilters(ListController controller) {
+    final typesList = [
+      ListDisplayTypeEnum.ingredients,
+      ListDisplayTypeEnum.recipes,
+    ];
     return Padding(
       key: const Key('list_filters'),
       padding: const EdgeInsets.only(bottom: 16),
-      child: Wrap(
-        alignment: WrapAlignment.center,
-        runAlignment: WrapAlignment.center,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: 8,
+      child: Column(
         children: [
-          SegmentedButton<ListDisplayTypeEnum>(
-            key: const Key('list_display_type_segmented_button'),
-            segments: [
-              ButtonSegment<ListDisplayTypeEnum>(
-                icon: Icon(Icons.kitchen),
-                value: ListDisplayTypeEnum.ingredients,
-                label: Text(
-                  TranslationHelper.plural(
-                    TranslationKeys.ingredient,
-                    0,
-                  ).capitalizeFirst!,
-                ),
-                tooltip: TranslationKeys.showListByIngredients.tr,
-              ),
-              ButtonSegment<ListDisplayTypeEnum>(
-                icon: Icon(Icons.book),
-                value: ListDisplayTypeEnum.recipes,
-                label: Text(
-                  TranslationHelper.plural(
-                    TranslationKeys.recipe,
-                    0,
-                  ).capitalizeFirst!,
-                ),
-                tooltip: TranslationKeys.showListByRecipes.tr,
-              ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            spacing: 2,
+            children: [
+              ...typesList.map((t) {
+                final index = typesList.indexOf(t);
+
+                final isFirst = index == 0;
+                final isLast = index == typesList.length - 1;
+                final isSelected = controller.displayType.value == t;
+
+                return FilledButton.icon(
+                  key: Key('list_display_type_button_${t.name}'),
+                  onPressed: () {
+                    controller.setDisplayType(t);
+                  },
+                  style: FilledButton.styleFrom(
+                    backgroundColor:
+                        isSelected
+                            ? Get.theme.colorScheme.primary
+                            : Get.theme.colorScheme.primaryContainer,
+                    foregroundColor:
+                        isSelected
+                            ? Get.theme.colorScheme.onPrimary
+                            : Get.theme.colorScheme.onPrimaryContainer,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          isSelected
+                              ? BorderRadius.all(Radius.circular(24))
+                              : BorderRadius.horizontal(
+                                left:
+                                    isFirst
+                                        ? Radius.circular(24)
+                                        : Radius.circular(8),
+                                right:
+                                    isLast
+                                        ? Radius.circular(24)
+                                        : Radius.circular(8),
+                              ),
+                    ),
+                  ),
+                  icon: Icon(
+                    isSelected
+                        ? Icons.check
+                        : (t == ListDisplayTypeEnum.ingredients
+                            ? Icons.kitchen
+                            : Icons.book),
+                  ),
+                  label: Text(
+                    TranslationHelper.plural(
+                      t == ListDisplayTypeEnum.ingredients
+                          ? TranslationKeys.ingredient
+                          : TranslationKeys.recipe,
+                      0,
+                    ).capitalizeFirst!,
+                  ),
+                );
+              }),
             ],
-            selected: {controller.displayType.value},
-            onSelectionChanged: (newSelection) {
-              if (newSelection.isNotEmpty) {
-                controller.setDisplayType(newSelection.first);
-              }
+          ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return Center(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 4,
+                    children: [
+                      if (controller.displayType.value ==
+                          ListDisplayTypeEnum.ingredients)
+                        ChoiceChip(
+                          label: Text(TranslationKeys.showCheckedFirst.tr),
+                          selected: controller.showCheckedFirst,
+                          onSelected: (selected) {
+                            controller.setShowCheckedFirst(selected);
+                          },
+                        ),
+                      ChoiceChip(
+                        label: Text(TranslationKeys.showBudget.tr),
+                        selected:
+                            controller
+                                .groupsService
+                                .selectedGroup
+                                .value
+                                ?.filters
+                                .showBudget ??
+                            false,
+                        onSelected: (selected) {
+                          final currentFilters =
+                              controller
+                                  .groupsService
+                                  .selectedGroup
+                                  .value
+                                  ?.filters ??
+                              FRGroupFilter();
+                          controller.groupsService.updateCurrentGroupFilters(
+                            FRGroupFilter(
+                              showCheckedsFirst:
+                                  currentFilters.showCheckedsFirst,
+                              showBudget: selected,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
             },
           ),
-          if (controller.displayType.value == ListDisplayTypeEnum.ingredients)
-            ChoiceChip(
-              label: Text(TranslationKeys.showCheckedFirst.tr),
-              selected: controller.showCheckedFirst,
-              onSelected: (selected) {
-                controller.setShowCheckedFirst(selected);
-              },
-            ),
         ],
       ),
     );
@@ -338,8 +432,9 @@ class ListWidget extends StatelessWidget {
     FRIngredient ingredient,
     FRRecipeIngredient recipeIngredient,
     ListRecipeItem recipeItem,
-    ListController controller,
-  ) {
+    ListController controller, {
+    GestureTapCallback? onPriceTap,
+  }) {
     final group = controller.groupsService.selectedGroup.value;
     final isChecked =
         group?.checkedIngredients.contains(ingredient.id) ?? false;
@@ -363,6 +458,8 @@ class ListWidget extends StatelessWidget {
         prices,
         group?.currency ?? 'USD',
         isChecked,
+        onTap: onPriceTap,
+        availableWidth: Get.width * 0.3,
       ),
       subtitle: _buildIngredientItemSubtitle(
         ingredient,
@@ -375,15 +472,17 @@ class ListWidget extends StatelessWidget {
   Widget? _buildIngredientItemSecondary(
     List<FRIngredientPrice> prices,
     String currency,
-    bool isChecked,
-  ) {
+    bool isChecked, {
+    required double availableWidth,
+    GestureTapCallback? onTap,
+  }) {
     final ls = Get.find<LocalizationService>();
 
     if (prices.isEmpty && !isChecked) {
       return null;
     } else if (prices.isEmpty && isChecked) {
       return IconButton(
-        onPressed: () {},
+        onPressed: onTap,
         icon: Icon(Icons.edit),
         color: Get.context?.theme.colorScheme.secondary,
       );
@@ -394,53 +493,64 @@ class ListWidget extends StatelessWidget {
       (sum, price) => sum + (price.unitPrice * price.quantity),
     );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          ls.formatCurrency(priceTotal, currency),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Get.context?.theme.colorScheme.error,
-            fontSize: 14,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: availableWidth * 0.4),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(4),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                ls.formatCurrency(priceTotal, currency),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Get.context?.theme.colorScheme.error,
+                  fontSize: 14,
+                ),
+              ),
+              Wrap(
+                spacing: 4,
+                children:
+                    prices.map((p) {
+                      return RichText(
+                        text: TextSpan(
+                          style: TextStyle(
+                            fontSize: 10,
+                            color:
+                                Get.context?.theme.colorScheme.onSurfaceVariant,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: p.quantity.toString(),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
+                              text: ' x ',
+                              style: TextStyle(fontWeight: FontWeight.normal),
+                            ),
+                            TextSpan(
+                              text: ls.formatCurrency(
+                                p.unitPrice.toDouble(),
+                                currency,
+                              ),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Get.context?.theme.colorScheme.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+              ),
+            ],
           ),
         ),
-        Wrap(
-          spacing: 4,
-          children:
-              prices.map((p) {
-                return RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Get.context?.theme.colorScheme.onSurfaceVariant,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: p.quantity.toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextSpan(
-                        text: ' x ',
-                        style: TextStyle(fontWeight: FontWeight.normal),
-                      ),
-                      TextSpan(
-                        text: ls.formatCurrency(
-                          p.unitPrice.toDouble(),
-                          currency,
-                        ),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Get.context?.theme.colorScheme.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-        ),
-      ],
+      ),
     );
   }
 }

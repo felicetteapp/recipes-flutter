@@ -10,6 +10,8 @@ class HomeController extends GetxController {
   final RxBool itsSelectionMode = false.obs;
   final RxList<String> selectedIds = RxList<String>();
 
+  bool get showBudget =>
+      groupsService.selectedGroup.value?.filters.showBudget ?? false;
   double get budget => groupsService.selectedGroup.value?.budget ?? 0.0;
   String get currency => groupsService.selectedGroup.value?.currency ?? '';
   double get usedBudget =>

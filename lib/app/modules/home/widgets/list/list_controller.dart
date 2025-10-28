@@ -5,6 +5,7 @@ import 'package:recipes_flutter/app/data/models/group_models.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/data/models/recipe_models.dart';
 import 'package:recipes_flutter/app/modules/home/home_controller.dart';
+import 'package:recipes_flutter/app/modules/home/widgets/list/widgets/edit_ingredient_price_modal/edit_ingredient_price_view.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
 import 'package:recipes_flutter/app/services/ingredients_service.dart';
 import 'package:recipes_flutter/app/services/recipes_service.dart';
@@ -56,7 +57,15 @@ class ListController extends GetxController {
 
   setShowCheckedFirst(bool value) {
     groupsService.updateCurrentGroupFilters(
-      FRGroupFilter(showCheckedsFirst: value),
+      groupsService.selectedGroup.value!.filters.copyWith(
+        showCheckedsFirst: value,
+      ),
+    );
+  }
+
+  setShowBudget(bool value) {
+    groupsService.updateCurrentGroupFilters(
+      groupsService.selectedGroup.value!.filters.copyWith(showBudget: value),
     );
   }
 
@@ -93,8 +102,6 @@ class ListController extends GetxController {
     }
 
     for (final ingredientId in ingredientsIds) {
-      log('Processing ingredient map: $ingredientId', name: 'ListController');
-
       final ingredient = ingredientsService.getIngredientById(ingredientId);
       if (ingredient == null) continue;
 
@@ -103,11 +110,6 @@ class ListController extends GetxController {
       final recipes = recipesService.getRecipesByIngredientId(
         ingredientId,
         currentListRecipes,
-      );
-
-      log(
-        'Ingredient: ${ingredient.name}, Price: ${prices?.map((p) => '${p.quantity} ${p.unitPrice}').join(', ')}, Recipes: ${recipes.map((r) => r.name).join(', ')}, Checked: $isChecked',
-        name: 'ListController',
       );
 
       String? quantity;
@@ -187,5 +189,35 @@ class ListController extends GetxController {
   List<ListIngredientItem> get ingredientsWithoutRecipes {
     final allIngredients = sortedIngredientList;
     return allIngredients.where((item) => item.recipes.isEmpty).toList();
+  }
+
+  handleIngredientCheckboxChange(ListIngredientItem item, bool isChecked) {
+    final group = groupsService.selectedGroup.value;
+    if (group == null) {
+      return;
+    }
+
+    if (isChecked) {
+      openEditIngredientPriceModal(group, item);
+    } else {
+      // TODO: handle remove check
+    }
+  }
+
+  openEditIngredientPriceModal(FRGroup group, ListIngredientItem item) {
+    Get.dialog(
+      useSafeArea: false,
+      EditIngredientPriceModal(group: group, item: item),
+    );
+  }
+
+  handleCheckIngredient(ListIngredientItem item, bool isChecked) async {
+    groupsService.checkIngredient(
+      ingredientId: item.ingredient.id,
+      isChecked: isChecked,
+    );
+    if (isChecked) {
+      openEditIngredientPriceModal(groupsService.selectedGroup.value!, item);
+    }
   }
 }

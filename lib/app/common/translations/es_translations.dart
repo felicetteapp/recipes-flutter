@@ -32,11 +32,14 @@ class EsTranslations extends Translations {
       TranslationKeys.showListByIngredients: 'Mostrar lista por ingredientes',
       TranslationKeys.showListByRecipes: 'Mostrar lista por recetas',
       TranslationKeys.showCheckedFirst: 'Mostrar marcados primero',
+      TranslationKeys.showBudget: 'Mostrar presupuesto',
       TranslationKeys.otherIngredients: 'Otros Ingredientes',
       TranslationKeys.for_: 'para ',
       TranslationKeys.budget: 'Presupuesto',
       TranslationKeys.no: 'No',
       TranslationKeys.yes: 'Sí',
+      TranslationKeys.more: 'Más',
+      TranslationKeys.ok: 'OK',
 
       // home view
       TranslationKeys.unknownView: 'Vista desconocida',
@@ -135,6 +138,13 @@ class EsTranslations extends Translations {
           'Detalles de la lista actualizados exitosamente',
       TranslationKeys.failedToUpdateListDetails:
           'Error al actualizar los detalles de la lista: @error',
+
+      // edit ingredient price
+      TranslationKeys.quantity: 'Cantidad',
+      TranslationKeys.unitPrice: 'Precio Unitario',
+      TranslationKeys.addPrice: 'Agregar Precio',
+      TranslationKeys.enterQuantity: 'Ingresar Cantidad',
+      TranslationKeys.saveWithoutPrice: 'Guardar Sin Precio',
     },
   };
 }

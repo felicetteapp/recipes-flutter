@@ -58,4 +58,37 @@ class GroupApiService extends ApiService {
       'currentRecipes': data['currentRecipes'],
     });
   }
+
+  Future<void> removeIngredientPrice({
+    required FRGroup group,
+    required String ingredientId,
+  }) {
+    return doc(
+      group.id,
+    ).update({'ingredientsPrices.$ingredientId': FieldValue.delete()});
+  }
+
+  Future<void> updateIngredientPrices({
+    required FRGroup group,
+    required String ingredientId,
+    required List<FRIngredientPrice> prices,
+  }) {
+    return doc(group.id).update({
+      'ingredientsPrices.$ingredientId':
+          prices.map((price) => price.toMap()).toList(),
+    });
+  }
+
+  Future<void> checkIngredient({
+    required FRGroup group,
+    required String ingredientId,
+    required bool isChecked,
+  }) {
+    return doc(group.id).update({
+      'checkedIngredients':
+          isChecked
+              ? FieldValue.arrayUnion([ingredientId])
+              : FieldValue.arrayRemove([ingredientId]),
+    });
+  }
 }

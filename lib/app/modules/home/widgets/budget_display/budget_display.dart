@@ -8,12 +8,14 @@ class BudgetDisplay extends StatelessWidget {
   final double used;
   final double total;
   final String currency;
+  final bool showBudget;
 
   const BudgetDisplay({
     super.key,
     required this.used,
     required this.total,
     required this.currency,
+    required this.showBudget,
   });
 
   @override
@@ -32,7 +34,8 @@ class BudgetDisplay extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment:
+                showBudget ? MainAxisAlignment.center : MainAxisAlignment.end,
             spacing: 8,
             children: [
               Flexible(
@@ -50,57 +53,64 @@ class BudgetDisplay extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      TextSpan(
-                        text: TranslationKeys.spentOf.tr,
-                        style: TextStyle(fontWeight: FontWeight.normal),
-                      ),
-                      TextSpan(
-                        text: ls.formatCurrency(total.toDouble(), currency),
-                        style: TextStyle(
-                          color: theme.colorScheme.secondary,
-                          fontWeight: FontWeight.bold,
+                      if (showBudget)
+                        TextSpan(
+                          text: TranslationKeys.spentOf.tr,
+                          style: TextStyle(fontWeight: FontWeight.normal),
                         ),
-                      ),
+                      if (showBudget)
+                        TextSpan(
+                          text: ls.formatCurrency(total.toDouble(), currency),
+                          style: TextStyle(
+                            color: theme.colorScheme.secondary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
-                height: 20,
-                child: VerticalDivider(
-                  thickness: 0.15,
-                  color: Colors.grey,
-                  width: 16,
+              if (showBudget)
+                SizedBox(
+                  height: 20,
+                  child: VerticalDivider(
+                    thickness: 0.15,
+                    color: Colors.grey,
+                    width: 16,
+                  ),
+                  //                  width: 16,
                 ),
-                //                  width: 16,
-              ),
-              Flexible(
-                child: RichText(
-                  textAlign: TextAlign.right,
-                  text: TextSpan(
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: theme.colorScheme.onSurface,
+              if (showBudget)
+                Flexible(
+                  child: RichText(
+                    textAlign: TextAlign.right,
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: ls.formatCurrency(
+                            available.toDouble(),
+                            currency,
+                          ),
+                          style: TextStyle(
+                            color:
+                                available < 0
+                                    ? theme.colorScheme.error
+                                    : theme.customColors.success,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: TranslationKeys.available.tr,
+                          style: TextStyle(fontWeight: FontWeight.normal),
+                        ),
+                      ],
                     ),
-                    children: [
-                      TextSpan(
-                        text: ls.formatCurrency(available.toDouble(), currency),
-                        style: TextStyle(
-                          color:
-                              available < 0
-                                  ? theme.colorScheme.error
-                                  : theme.customColors.success,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: TranslationKeys.available.tr,
-                        style: TextStyle(fontWeight: FontWeight.normal),
-                      ),
-                    ],
                   ),
                 ),
-              ),
             ],
           ),
         ),

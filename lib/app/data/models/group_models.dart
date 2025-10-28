@@ -4,17 +4,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FRGroupFilter {
   bool showCheckedsFirst;
+  bool showBudget;
 
-  FRGroupFilter({this.showCheckedsFirst = false});
+  FRGroupFilter({this.showCheckedsFirst = false, this.showBudget = false});
 
   factory FRGroupFilter.fromMap(Map<String, dynamic> data) {
     return FRGroupFilter(
       showCheckedsFirst: data['showCheckedsFirst'] as bool? ?? false,
+      showBudget: data['showBudget'] as bool? ?? false,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {'showCheckedsFirst': showCheckedsFirst};
+    return {'showCheckedsFirst': showCheckedsFirst, 'showBudget': showBudget};
+  }
+
+  FRGroupFilter copyWith({bool? showCheckedsFirst, bool? showBudget}) {
+    return FRGroupFilter(
+      showCheckedsFirst: showCheckedsFirst ?? this.showCheckedsFirst,
+      showBudget: showBudget ?? this.showBudget,
+    );
   }
 }
 
@@ -33,6 +42,13 @@ class FRIngredientPrice {
 
   Map<String, dynamic> toMap() {
     return {'q': quantity, 'u': unitPrice};
+  }
+
+  FRIngredientPrice copyWith({num? quantity, num? unitPrice}) {
+    return FRIngredientPrice(
+      quantity: quantity ?? this.quantity,
+      unitPrice: unitPrice ?? this.unitPrice,
+    );
   }
 }
 

@@ -50,6 +50,7 @@ class HomeView extends GetView<HomeController> {
               used: controller.usedBudget,
               total: controller.budget,
               currency: controller.currency,
+              showBudget: controller.showBudget,
             ),
           ),
           NavigationBar(

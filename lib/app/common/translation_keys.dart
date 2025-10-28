@@ -21,11 +21,16 @@ class TranslationKeys {
   static const String showListByIngredients = 'show_list_by_ingredients';
   static const String showListByRecipes = 'show_list_by_recipes';
   static const String showCheckedFirst = 'show_checked_first';
+  static const String showBudget = 'show_budget';
   static const String otherIngredients = 'other_ingredients';
   static const String for_ = 'for';
   static const String budget = 'budget';
   static const String no = 'no';
   static const String yes = 'yes';
+  static const String quantity = 'quantity';
+  static const String unitPrice = 'unit_price';
+  static const String more = 'more';
+  static const String ok = 'ok';
 
   // login
   static const String loginErrorTitle = 'login_error';
@@ -116,6 +121,11 @@ class TranslationKeys {
       'list_details_updated_successfully';
   static const String failedToUpdateListDetails =
       'failed_to_update_list_details';
+
+  // edit ingredient price
+  static const String addPrice = 'add_price';
+  static const String enterQuantity = 'enter_quantity';
+  static const String saveWithoutPrice = 'save_without_price';
 
   static pluralKey(String key) => '${key}_other';
 }
