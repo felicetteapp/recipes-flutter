@@ -13,33 +13,34 @@ class ListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ListController());
-    return Obx(key: Key('list_obx'), () {
-      var itemCount = 0;
-      final staticItemsAtTop = 1;
-      final ingredients = controller.sortedIngredientList;
-      final recipes = controller.sortedRecipeList;
-      if (controller.displayType.value == ListDisplayTypeEnum.ingredients) {
-        itemCount = staticItemsAtTop + ingredients.length;
-      } else {
-        final ingredientsWithoutRecipes = controller.ingredientsWithoutRecipes;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Obx(key: Key('list_obx'), () {
+          var itemCount = 0;
+          final staticItemsAtTop = 1;
+          final ingredients = controller.sortedIngredientList;
+          final recipes = controller.sortedRecipeList;
+          if (controller.displayType.value == ListDisplayTypeEnum.ingredients) {
+            itemCount = staticItemsAtTop + ingredients.length;
+          } else {
+            final ingredientsWithoutRecipes =
+                controller.ingredientsWithoutRecipes;
 
-        final totalIngredients = recipes.fold<int>(
-          0,
-          (sum, recipeItem) => sum + recipeItem.recipe.ingredients.length,
-        );
-        final hasIngredientsWithoutRecipes =
-            ingredientsWithoutRecipes.isNotEmpty;
-        itemCount =
-            staticItemsAtTop +
-            recipes.length +
-            totalIngredients +
-            (hasIngredientsWithoutRecipes
-                ? 1 + ingredientsWithoutRecipes.length
-                : 0);
-      }
+            final totalIngredients = recipes.fold<int>(
+              0,
+              (sum, recipeItem) => sum + recipeItem.recipe.ingredients.length,
+            );
+            final hasIngredientsWithoutRecipes =
+                ingredientsWithoutRecipes.isNotEmpty;
+            itemCount =
+                staticItemsAtTop +
+                recipes.length +
+                totalIngredients +
+                (hasIngredientsWithoutRecipes
+                    ? 1 + ingredientsWithoutRecipes.length
+                    : 0);
+          }
 
-      return LayoutBuilder(
-        builder: (context, constraints) {
           return ListView.builder(
             key: const Key('list_view'),
             itemCount: itemCount,
@@ -112,9 +113,9 @@ class ListWidget extends StatelessWidget {
               return const SizedBox.shrink();
             },
           );
-        },
-      );
-    });
+        });
+      },
+    );
   }
 
   ListTile _buildIngredientListTile(
