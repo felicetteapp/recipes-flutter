@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:recipes_flutter/app/utils/secure_storage.dart';
 
 class LocalizationService extends GetxController {
   static const localeEN = Locale('en', 'US');
@@ -38,8 +39,19 @@ class LocalizationService extends GetxController {
   }
 
   void _loadLocaleFromStorage() {
-    // TODO: Implement loading locale from persistent storage
-    _currentLocale.value = localeEN;
+    RFSecureStorage.read(key: LocalizationService.localeKey).then((value) {
+      if (value != null) {
+        final localeParts = value.split('_');
+        if (localeParts.length == 2) {
+          final locale = Locale(localeParts[0], localeParts[1]);
+          if (isLocaleSupported(locale)) {
+            _currentLocale.value = locale;
+            Get.updateLocale(locale);
+            return;
+          }
+        }
+      }
+    });
   }
 
   void changeLocale(Locale locale) {
@@ -51,7 +63,10 @@ class LocalizationService extends GetxController {
   }
 
   void _saveLocaleToStorage(Locale locale) {
-    // TODO: Implement saving locale to persistent storage
+    RFSecureStorage.write(
+      key: LocalizationService.localeKey,
+      value: locale.toString(),
+    );
   }
 
   String getLocaleName(Locale locale) {

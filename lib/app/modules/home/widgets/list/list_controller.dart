@@ -9,6 +9,7 @@ import 'package:recipes_flutter/app/modules/home/widgets/list/widgets/edit_ingre
 import 'package:recipes_flutter/app/services/groups_service.dart';
 import 'package:recipes_flutter/app/services/ingredients_service.dart';
 import 'package:recipes_flutter/app/services/recipes_service.dart';
+import 'package:recipes_flutter/app/utils/secure_storage.dart';
 
 enum ListDisplayTypeEnum { ingredients, recipes }
 
@@ -40,6 +41,8 @@ class ListRecipeItem {
   });
 }
 
+const String displayTypeKey = 'list_display_type';
+
 class ListController extends GetxController {
   final IngredientsService ingredientsService = Get.find<IngredientsService>();
   final GroupsService groupsService = Get.find<GroupsService>();
@@ -48,8 +51,24 @@ class ListController extends GetxController {
   final Rx<ListDisplayTypeEnum> displayType =
       ListDisplayTypeEnum.ingredients.obs;
 
+  saveDisplayTypeToStorage(ListDisplayTypeEnum type) async {
+    await RFSecureStorage.write(key: displayTypeKey, value: type.toString());
+  }
+
+  fetchDisplayTypeFromStorage() async {
+    final storedType = await RFSecureStorage.read(key: displayTypeKey);
+    if (storedType != null) {
+      if (storedType == ListDisplayTypeEnum.ingredients.toString()) {
+        displayType.value = ListDisplayTypeEnum.ingredients;
+      } else if (storedType == ListDisplayTypeEnum.recipes.toString()) {
+        displayType.value = ListDisplayTypeEnum.recipes;
+      }
+    }
+  }
+
   setDisplayType(ListDisplayTypeEnum type) {
     displayType.value = type;
+    saveDisplayTypeToStorage(type);
   }
 
   bool get showCheckedFirst =>
@@ -221,5 +240,12 @@ class ListController extends GetxController {
     } else {
       groupsService.removeIngredientPrice(ingredientId: item.ingredient.id);
     }
+  }
+
+  @override
+  void onInit() {
+    log('ListController: onInit called', name: 'ListController');
+    fetchDisplayTypeFromStorage();
+    super.onInit();
   }
 }

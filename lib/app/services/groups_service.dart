@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:recipes_flutter/app/data/models/group_models.dart';
 import 'package:recipes_flutter/app/services/api/group_api_service.dart';
 import 'package:recipes_flutter/app/services/auth_service.dart';
+import 'package:recipes_flutter/app/utils/secure_storage.dart';
 
 class GroupsService extends GetxService {
   final GroupApiService groupApiService = Get.put<GroupApiService>(
@@ -21,6 +22,9 @@ class GroupsService extends GetxService {
   void selectGroup(FRGroup? group) {
     selectedGroupId.value = group?.id;
     log('Selected group: ${group?.name}', name: 'GroupsService');
+    if (group != null) {
+      saveSelectedGroupToStorage(group.id);
+    }
   }
 
   void getUserGroups() async {
@@ -34,7 +38,20 @@ class GroupsService extends GetxService {
     }
 
     if (selectedGroup.value == null && availableGroups.isNotEmpty) {
-      selectGroup(availableGroups.first);
+      final storedGroupId = await RFSecureStorage.read(
+        key: GroupsService.selectedGroupKey,
+      );
+      if (storedGroupId != null) {
+        try {
+          final group = availableGroups.firstWhere(
+            (group) => group.id == storedGroupId,
+          );
+          selectGroup(group);
+          return;
+        } catch (e) {
+          selectGroup(availableGroups.first);
+        }
+      }
     }
 
     final names = availableGroups.map((group) => group.name).toList();
@@ -138,6 +155,24 @@ class GroupsService extends GetxService {
     );
   }
 
+  static const selectedGroupKey = 'selected_group';
+
+  fetchSelectedGroupFromStorage() async {
+    final storedGroupId = await RFSecureStorage.read(key: selectedGroupKey);
+    try {
+      final group = availableGroups.firstWhere(
+        (group) => group.id == storedGroupId,
+      );
+      selectGroup(group);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  saveSelectedGroupToStorage(String groupId) async {
+    await RFSecureStorage.write(key: selectedGroupKey, value: groupId);
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -154,6 +189,8 @@ class GroupsService extends GetxService {
         selectedGroupId.value = null;
         _currentGroupListenerSubscription?.cancel();
         _currentGroupListenerSubscription = null;
+
+        selectedGroup(null);
       }
     });
 
