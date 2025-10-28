@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/data/models/recipe_models.dart';
-import 'package:recipes_flutter/app/services/ingredients_service.dart';
-import 'package:recipes_flutter/app/services/recipes_service.dart';
-import 'package:recipes_flutter/app/utils/snackbar.dart';
+import 'package:felicette_recipes/app/data/models/recipe_models.dart';
+import 'package:felicette_recipes/app/services/ingredients_service.dart';
+import 'package:felicette_recipes/app/services/recipes_service.dart';
+import 'package:felicette_recipes/app/utils/snackbar.dart';
 
 class EditCreateRecipeModalController extends GetxController {
   final String groupId;

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:recipes_flutter/app/data/models/recipe_models.dart';
+import 'package:felicette_recipes/app/data/models/recipe_models.dart';
 
 class FRGroupFilter {
   bool showCheckedsFirst;

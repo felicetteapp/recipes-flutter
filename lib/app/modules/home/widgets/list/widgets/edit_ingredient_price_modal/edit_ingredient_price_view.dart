@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
-import 'package:recipes_flutter/app/data/models/group_models.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/list/list_controller.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/list/widgets/edit_ingredient_price_modal/edit_ingredient_price_controller.dart';
-import 'package:recipes_flutter/app/services/localization_service.dart';
-import 'package:recipes_flutter/theme.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/data/models/group_models.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/list/list_controller.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/list/widgets/edit_ingredient_price_modal/edit_ingredient_price_controller.dart';
+import 'package:felicette_recipes/app/services/localization_service.dart';
+import 'package:felicette_recipes/theme.dart';
 
 class EditIngredientPriceModal extends StatelessWidget {
   final FRGroup group;

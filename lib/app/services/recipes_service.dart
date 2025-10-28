@@ -3,11 +3,11 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/data/models/group_models.dart';
-import 'package:recipes_flutter/app/data/models/recipe_models.dart';
-import 'package:recipes_flutter/app/services/api/recipe_api_service.dart';
-import 'package:recipes_flutter/app/services/auth_service.dart';
-import 'package:recipes_flutter/app/services/groups_service.dart';
+import 'package:felicette_recipes/app/data/models/group_models.dart';
+import 'package:felicette_recipes/app/data/models/recipe_models.dart';
+import 'package:felicette_recipes/app/services/api/recipe_api_service.dart';
+import 'package:felicette_recipes/app/services/auth_service.dart';
+import 'package:felicette_recipes/app/services/groups_service.dart';
 
 class RecipesService extends GetxService {
   final RecipeApiService recipeApiService = Get.put<RecipeApiService>(

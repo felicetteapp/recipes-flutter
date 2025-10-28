@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide DrawerController;
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
-import 'package:recipes_flutter/app/services/auth_service.dart';
-import 'package:recipes_flutter/app/services/groups_service.dart';
-import 'package:recipes_flutter/app/services/localization_service.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/common/widgets/drawer/drawer_controller.dart';
+import 'package:felicette_recipes/app/services/auth_service.dart';
+import 'package:felicette_recipes/app/services/groups_service.dart';
+import 'package:felicette_recipes/app/services/localization_service.dart';
 
 class FRDrawer extends StatelessWidget {
   const FRDrawer({super.key});
@@ -77,6 +78,10 @@ class FRDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthService authService = Get.find<AuthService>();
+    final DrawerController controller = Get.put<DrawerController>(
+      DrawerController(),
+      permanent: true,
+    );
     return Drawer(
       child: Obx(() {
         return ListView(
@@ -132,61 +137,67 @@ class FRDrawer extends StatelessWidget {
               },
             ),
             const Divider(),
-            AboutListTile(
-              applicationName: TranslationKeys.applicationName.tr,
-              // TODO: get current version from pubspec.yaml
-              applicationVersion: '1.0.0',
-              applicationIcon: Image.asset(
-                'assets/images/felicette_recipes_logo.png',
-                width: 50,
-                height: 50,
-              ),
-              aboutBoxChildren: [
-                RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                    children: [
-                      TextSpan(
-                        text:
-                            '${TranslationKeys.applicationDescription.tr}\n\n',
+            Obx(() {
+              return AboutListTile(
+                applicationName: TranslationKeys.applicationName.tr,
+                applicationVersion:
+                    '${controller.packageInfo.value?.version ?? ''} (${controller.packageInfo.value?.buildNumber ?? ''})',
+                applicationIcon: Image.asset(
+                  'assets/images/felicette_recipes_logo.png',
+                  width: 50,
+                  height: 50,
+                ),
+                aboutBoxChildren: [
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
-                      TextSpan(text: TranslationKeys.developedWith.tr),
-                      TextSpan(text: ' '),
-                      TextSpan(
-                        text: TranslationKeys.loveAndCats.tr,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextSpan(text: ' '),
-                      TextSpan(text: TranslationKeys.developedIn.tr),
-                      TextSpan(text: ' '),
-                      TextSpan(
-                        text: '${TranslationKeys.developedBy.tr}\n\n',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextSpan(text: TranslationKeys.checkoutGithub.tr),
-                      WidgetSpan(
-                        child: GestureDetector(
-                          onTap: () {
-                            // Open GitHub link
-                          },
-                          child: Text(
-                            'github.com/felicetteapp/recipes-flutter',
-                            style: TextStyle(
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline,
+                      children: [
+                        TextSpan(
+                          text:
+                              '${TranslationKeys.applicationDescription.tr}\n\n',
+                        ),
+                        TextSpan(text: TranslationKeys.developedWith.tr),
+                        TextSpan(text: ' '),
+                        TextSpan(
+                          text: TranslationKeys.loveAndCats.tr,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(text: ' '),
+                        TextSpan(text: TranslationKeys.developedIn.tr),
+                        TextSpan(text: ' '),
+                        TextSpan(
+                          text: '${TranslationKeys.developedBy.tr}\n\n',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(text: TranslationKeys.checkoutGithub.tr),
+                        WidgetSpan(
+                          child: GestureDetector(
+                            onTap: () {
+                              // Open GitHub link
+                            },
+                            child: Text(
+                              'github.com/felicetteapp/recipes-flutter',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                        TextSpan(text: '\n\n'),
+                        TextSpan(
+                          text: controller.packageInfo.value?.packageName ?? '',
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-              icon: Icon(Icons.info_outline),
-              child: Text(TranslationKeys.about.tr),
-            ),
+                ],
+                icon: Icon(Icons.info_outline),
+                child: Text(TranslationKeys.about.tr),
+              );
+            }),
           ],
         );
       }),

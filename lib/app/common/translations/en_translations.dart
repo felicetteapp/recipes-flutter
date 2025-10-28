@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
 
 class EnTranslations extends Translations {
   @override

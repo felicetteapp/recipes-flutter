@@ -2,14 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
-import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
-import 'package:recipes_flutter/app/data/models/recipe_models.dart';
-import 'package:recipes_flutter/app/modules/home/home_controller.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/recipes/edit_create_modal/edit_create_modal_view.dart';
-import 'package:recipes_flutter/app/services/groups_service.dart';
-import 'package:recipes_flutter/app/services/ingredients_service.dart';
-import 'package:recipes_flutter/app/services/recipes_service.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
+import 'package:felicette_recipes/app/data/models/recipe_models.dart';
+import 'package:felicette_recipes/app/modules/home/home_controller.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/recipes/edit_create_modal/edit_create_modal_view.dart';
+import 'package:felicette_recipes/app/services/groups_service.dart';
+import 'package:felicette_recipes/app/services/ingredients_service.dart';
+import 'package:felicette_recipes/app/services/recipes_service.dart';
 
 class RecipesWidget extends StatelessWidget {
   const RecipesWidget({super.key});

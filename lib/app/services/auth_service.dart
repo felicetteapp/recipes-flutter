@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/routes/app_routes.dart';
 
 class AuthService extends GetxService {
   final RxBool isLoggedIn = false.obs;

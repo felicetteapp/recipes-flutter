@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
-import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/ingredients/edit_modal/edit_modal_view.dart';
-import 'package:recipes_flutter/app/services/groups_service.dart';
-import 'package:recipes_flutter/app/services/ingredients_service.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/ingredients/edit_modal/edit_modal_view.dart';
+import 'package:felicette_recipes/app/services/groups_service.dart';
+import 'package:felicette_recipes/app/services/ingredients_service.dart';
 
 class IngredientsWidget extends StatelessWidget {
   const IngredientsWidget({super.key});

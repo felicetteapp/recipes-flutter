@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/ingredients/new/new_modal.dart';
-import 'package:recipes_flutter/app/services/groups_service.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/ingredients/new/new_modal.dart';
+import 'package:felicette_recipes/app/services/groups_service.dart';
 
 class NewIngredientFab extends StatelessWidget {
   const NewIngredientFab({super.key});

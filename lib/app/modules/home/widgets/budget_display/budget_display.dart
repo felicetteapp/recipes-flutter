@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
-import 'package:recipes_flutter/app/services/localization_service.dart';
-import 'package:recipes_flutter/theme.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/services/localization_service.dart';
+import 'package:felicette_recipes/theme.dart';
 
 class BudgetDisplay extends StatelessWidget {
   final double used;

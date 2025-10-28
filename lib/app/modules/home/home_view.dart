@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_helper.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
-import 'package:recipes_flutter/app/common/widgets/appbar/appbar.dart';
-import 'package:recipes_flutter/app/common/widgets/drawer/drawer.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/budget_display/budget_display.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/ingredients/ingredients.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/ingredients/new/new_fab.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/list/list.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/list/widgets/edit_list_modal/edit_list_modal_view.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/recipes/edit_create_modal/edit_create_modal_view.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/recipes/recipes.dart';
-import 'package:recipes_flutter/app/services/groups_service.dart';
+import 'package:felicette_recipes/app/common/translation_helper.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
+import 'package:felicette_recipes/app/common/widgets/drawer/drawer.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/budget_display/budget_display.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/ingredients/ingredients.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/ingredients/new/new_fab.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/list/list.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/list/widgets/edit_list_modal/edit_list_modal_view.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/recipes/edit_create_modal/edit_create_modal_view.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/recipes/recipes.dart';
+import 'package:felicette_recipes/app/services/groups_service.dart';
 
 import 'home_controller.dart';
 

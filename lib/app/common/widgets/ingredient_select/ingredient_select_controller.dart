@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
-import 'package:recipes_flutter/app/data/models/recipe_models.dart';
-import 'package:recipes_flutter/app/services/ingredients_service.dart';
+import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
+import 'package:felicette_recipes/app/data/models/recipe_models.dart';
+import 'package:felicette_recipes/app/services/ingredients_service.dart';
 
 class IngredientSelectController extends GetxController {
   final RxList<BasicIngredientQuantity> selectedItems = RxList.empty();

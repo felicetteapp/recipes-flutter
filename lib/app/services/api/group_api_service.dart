@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:recipes_flutter/app/data/models/group_models.dart';
-import 'package:recipes_flutter/app/services/api/api_service.dart';
+import 'package:felicette_recipes/app/data/models/group_models.dart';
+import 'package:felicette_recipes/app/services/api/api_service.dart';
 
 class GroupApiService extends ApiService {
   CollectionReference<FRGroup> collection() {

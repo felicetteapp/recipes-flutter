@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/ingredients/new/new_modal_controller.dart';
-import 'package:recipes_flutter/theme.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/ingredients/new/new_modal_controller.dart';
+import 'package:felicette_recipes/theme.dart';
 
 class NewIngredientModal extends StatelessWidget {
   final String groupId;

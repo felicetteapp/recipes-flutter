@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/common.dart';
-import 'package:recipes_flutter/app/data/models/group_models.dart';
-import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
-import 'package:recipes_flutter/app/data/models/recipe_models.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/list/list_controller.dart';
-import 'package:recipes_flutter/app/services/localization_service.dart';
+import 'package:felicette_recipes/app/common/common.dart';
+import 'package:felicette_recipes/app/data/models/group_models.dart';
+import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
+import 'package:felicette_recipes/app/data/models/recipe_models.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/list/list_controller.dart';
+import 'package:felicette_recipes/app/services/localization_service.dart';
 
 class ListWidget extends StatelessWidget {
   const ListWidget({super.key});

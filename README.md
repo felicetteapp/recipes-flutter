@@ -1,4 +1,4 @@
-# recipes_flutter
+# felicette_recipes
 
 A new Flutter project.
 

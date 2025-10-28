@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/widgets/select/select_controller.dart';
-import 'package:recipes_flutter/app/common/widgets/select/select_modal.dart';
+import 'package:felicette_recipes/app/common/widgets/select/select_controller.dart';
+import 'package:felicette_recipes/app/common/widgets/select/select_modal.dart';
 
 class FRSelect<T> extends StatelessWidget {
   final List<T> items;

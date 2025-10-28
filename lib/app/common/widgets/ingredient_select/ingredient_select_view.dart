@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/widgets/ingredient_select/ingredient_select_modal_view.dart';
-import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
-import 'package:recipes_flutter/app/data/models/recipe_models.dart';
+import 'package:felicette_recipes/app/common/widgets/ingredient_select/ingredient_select_modal_view.dart';
+import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
+import 'package:felicette_recipes/app/data/models/recipe_models.dart';
 
 import 'ingredient_select_controller.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
-import 'package:recipes_flutter/app/services/auth_service.dart';
-import 'package:recipes_flutter/app/utils/snackbar.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/services/auth_service.dart';
+import 'package:felicette_recipes/app/utils/snackbar.dart';
 
 class LoginController extends GetxController {
   final RxBool isLoading = false.obs;

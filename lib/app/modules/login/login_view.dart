@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
 
 import 'login_controller.dart';
 

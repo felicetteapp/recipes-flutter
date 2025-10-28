@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/translation_keys.dart';
-import 'package:recipes_flutter/app/data/models/group_models.dart';
-import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
-import 'package:recipes_flutter/app/data/models/recipe_models.dart';
-import 'package:recipes_flutter/app/services/groups_service.dart';
-import 'package:recipes_flutter/app/services/ingredients_service.dart';
-import 'package:recipes_flutter/app/services/localization_service.dart';
-import 'package:recipes_flutter/app/services/recipes_service.dart';
-import 'package:recipes_flutter/app/utils/snackbar.dart';
+import 'package:felicette_recipes/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/data/models/group_models.dart';
+import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
+import 'package:felicette_recipes/app/data/models/recipe_models.dart';
+import 'package:felicette_recipes/app/services/groups_service.dart';
+import 'package:felicette_recipes/app/services/ingredients_service.dart';
+import 'package:felicette_recipes/app/services/localization_service.dart';
+import 'package:felicette_recipes/app/services/recipes_service.dart';
+import 'package:felicette_recipes/app/utils/snackbar.dart';
 
 class EditListModalController extends GetxController {
   final String groupId;

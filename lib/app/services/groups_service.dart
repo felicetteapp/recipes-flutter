@@ -3,10 +3,10 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/data/models/group_models.dart';
-import 'package:recipes_flutter/app/services/api/group_api_service.dart';
-import 'package:recipes_flutter/app/services/auth_service.dart';
-import 'package:recipes_flutter/app/utils/secure_storage.dart';
+import 'package:felicette_recipes/app/data/models/group_models.dart';
+import 'package:felicette_recipes/app/services/api/group_api_service.dart';
+import 'package:felicette_recipes/app/services/auth_service.dart';
+import 'package:felicette_recipes/app/utils/secure_storage.dart';
 
 class GroupsService extends GetxService {
   final GroupApiService groupApiService = Get.put<GroupApiService>(

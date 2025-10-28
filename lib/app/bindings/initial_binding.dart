@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/services/auth_service.dart';
-import 'package:recipes_flutter/app/services/groups_service.dart';
-import 'package:recipes_flutter/app/services/ingredients_service.dart';
-import 'package:recipes_flutter/app/services/localization_service.dart';
-import 'package:recipes_flutter/app/services/recipes_service.dart';
+import 'package:felicette_recipes/app/services/auth_service.dart';
+import 'package:felicette_recipes/app/services/groups_service.dart';
+import 'package:felicette_recipes/app/services/ingredients_service.dart';
+import 'package:felicette_recipes/app/services/localization_service.dart';
+import 'package:felicette_recipes/app/services/recipes_service.dart';
 import '../services/app_service.dart';
 
 class InitialBinding extends Bindings {

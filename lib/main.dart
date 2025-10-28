@@ -1,12 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:recipes_flutter/app/bindings/initial_binding.dart';
-import 'package:recipes_flutter/app/common/translations/app_translations.dart';
-import 'package:recipes_flutter/app/routes/app_pages.dart';
-import 'package:recipes_flutter/app/routes/app_routes.dart';
-import 'package:recipes_flutter/firebase_options.dart';
-import 'package:recipes_flutter/theme.dart';
+import 'package:felicette_recipes/app/bindings/initial_binding.dart';
+import 'package:felicette_recipes/app/common/translations/app_translations.dart';
+import 'package:felicette_recipes/app/routes/app_pages.dart';
+import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/firebase_options.dart';
+import 'package:felicette_recipes/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

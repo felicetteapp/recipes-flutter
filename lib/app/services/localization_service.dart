@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:recipes_flutter/app/utils/secure_storage.dart';
+import 'package:felicette_recipes/app/utils/secure_storage.dart';
 
 class LocalizationService extends GetxController {
   static const localeEN = Locale('en', 'US');

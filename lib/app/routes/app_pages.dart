@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/modules/home/home_binding.dart';
-import 'package:recipes_flutter/app/modules/home/home_view.dart';
-import 'package:recipes_flutter/app/modules/login/login_binding.dart';
-import 'package:recipes_flutter/app/modules/login/login_view.dart';
-import 'package:recipes_flutter/app/modules/splash/splash_binding.dart';
-import 'package:recipes_flutter/app/modules/splash/splash_view.dart';
+import 'package:felicette_recipes/app/modules/home/home_binding.dart';
+import 'package:felicette_recipes/app/modules/home/home_view.dart';
+import 'package:felicette_recipes/app/modules/login/login_binding.dart';
+import 'package:felicette_recipes/app/modules/login/login_view.dart';
+import 'package:felicette_recipes/app/modules/splash/splash_binding.dart';
+import 'package:felicette_recipes/app/modules/splash/splash_view.dart';
 import 'app_routes.dart';
 
 class AppPages {

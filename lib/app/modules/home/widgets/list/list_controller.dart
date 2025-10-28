@@ -1,15 +1,15 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/data/models/group_models.dart';
-import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
-import 'package:recipes_flutter/app/data/models/recipe_models.dart';
-import 'package:recipes_flutter/app/modules/home/home_controller.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/list/widgets/edit_ingredient_price_modal/edit_ingredient_price_view.dart';
-import 'package:recipes_flutter/app/services/groups_service.dart';
-import 'package:recipes_flutter/app/services/ingredients_service.dart';
-import 'package:recipes_flutter/app/services/recipes_service.dart';
-import 'package:recipes_flutter/app/utils/secure_storage.dart';
+import 'package:felicette_recipes/app/data/models/group_models.dart';
+import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
+import 'package:felicette_recipes/app/data/models/recipe_models.dart';
+import 'package:felicette_recipes/app/modules/home/home_controller.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/list/widgets/edit_ingredient_price_modal/edit_ingredient_price_view.dart';
+import 'package:felicette_recipes/app/services/groups_service.dart';
+import 'package:felicette_recipes/app/services/ingredients_service.dart';
+import 'package:felicette_recipes/app/services/recipes_service.dart';
+import 'package:felicette_recipes/app/utils/secure_storage.dart';
 
 enum ListDisplayTypeEnum { ingredients, recipes }
 

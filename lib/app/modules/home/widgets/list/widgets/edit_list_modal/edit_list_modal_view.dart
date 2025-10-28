@@ -3,14 +3,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/common.dart';
-import 'package:recipes_flutter/app/common/widgets/ingredient_select/ingredient_select_view.dart';
-import 'package:recipes_flutter/app/common/widgets/select/select.dart';
-import 'package:recipes_flutter/app/data/models/group_models.dart';
-import 'package:recipes_flutter/app/data/models/recipe_models.dart';
-import 'package:recipes_flutter/app/modules/home/widgets/list/widgets/edit_list_modal/edit_list_modal_controller.dart';
-import 'package:recipes_flutter/app/services/ingredients_service.dart';
-import 'package:recipes_flutter/theme.dart';
+import 'package:felicette_recipes/app/common/common.dart';
+import 'package:felicette_recipes/app/common/widgets/ingredient_select/ingredient_select_view.dart';
+import 'package:felicette_recipes/app/common/widgets/select/select.dart';
+import 'package:felicette_recipes/app/data/models/group_models.dart';
+import 'package:felicette_recipes/app/data/models/recipe_models.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/list/widgets/edit_list_modal/edit_list_modal_controller.dart';
+import 'package:felicette_recipes/app/services/ingredients_service.dart';
+import 'package:felicette_recipes/theme.dart';
 
 class EditListModal extends StatelessWidget {
   final String groupId;

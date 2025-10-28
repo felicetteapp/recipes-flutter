@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:recipes_flutter/app/common/common.dart';
-import 'package:recipes_flutter/app/services/groups_service.dart';
+import 'package:felicette_recipes/app/common/common.dart';
+import 'package:felicette_recipes/app/services/groups_service.dart';
 
 class HomeController extends GetxController {
   final RxInt bottomNavigationIndex = 1.obs;
