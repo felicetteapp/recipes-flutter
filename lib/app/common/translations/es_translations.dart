@@ -145,6 +145,9 @@ class EsTranslations extends Translations {
       TranslationKeys.addPrice: 'Agregar Precio',
       TranslationKeys.enterQuantity: 'Ingresar Cantidad',
       TranslationKeys.saveWithoutPrice: 'Guardar Sin Precio',
+      TranslationKeys.actualIngredientTitle: 'Ingrediente Real',
+      TranslationKeys.actualIngredientContent:
+          '¿Es este un ingrediente real que se puede usar en recetas?',
     },
   };
 }

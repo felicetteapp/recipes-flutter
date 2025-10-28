@@ -13,7 +13,12 @@ import 'package:recipes_flutter/theme.dart';
 
 class IngredientSelectModalView extends StatelessWidget {
   final IngredientSelectController controller;
-  const IngredientSelectModalView({super.key, required this.controller});
+  final bool isRecipe;
+  const IngredientSelectModalView({
+    super.key,
+    required this.controller,
+    this.isRecipe = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +123,46 @@ class IngredientSelectModalView extends StatelessWidget {
                                           id: '',
                                           name: name,
                                         );
+
+                                        if (isRecipe) {
+                                          newIngredient.actualIngredient = true;
+                                        } else {
+                                          newIngredient.actualIngredient =
+                                              await Get.dialog<bool>(
+                                                AlertDialog(
+                                                  title: Text(
+                                                    TranslationKeys
+                                                        .actualIngredientTitle
+                                                        .tr,
+                                                  ),
+                                                  content: Text(
+                                                    TranslationKeys
+                                                        .actualIngredientContent
+                                                        .tr,
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Get.back(result: false);
+                                                      },
+                                                      child: Text(
+                                                        TranslationKeys.no.tr,
+                                                      ),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Get.back(result: true);
+                                                      },
+                                                      child: Text(
+                                                        TranslationKeys.yes.tr,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ) ??
+                                              false;
+                                        }
+
                                         log(
                                           'Creating new ingredient: id=${newIngredient.id}, name=${newIngredient.name}',
                                         );

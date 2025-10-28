@@ -144,6 +144,9 @@ class PtTranslations extends Translations {
       TranslationKeys.addPrice: 'Adicionar Preço',
       TranslationKeys.enterQuantity: 'Inserir Quantidade',
       TranslationKeys.saveWithoutPrice: 'Salvar Sem Preço',
+      TranslationKeys.actualIngredientTitle: 'Ingrediente Real',
+      TranslationKeys.actualIngredientContent:
+          'Este é um ingrediente real que pode ser usado em receitas?',
     },
   };
 }

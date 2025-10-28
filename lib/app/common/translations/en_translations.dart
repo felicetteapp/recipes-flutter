@@ -141,6 +141,9 @@ class EnTranslations extends Translations {
       TranslationKeys.addPrice: 'Add Price',
       TranslationKeys.enterQuantity: 'Enter Quantity',
       TranslationKeys.saveWithoutPrice: 'Save Without Price',
+      TranslationKeys.actualIngredientTitle: 'Actual Ingredient',
+      TranslationKeys.actualIngredientContent:
+          'Is this an actual ingredient that can be used in recipes?',
     },
   };
 }

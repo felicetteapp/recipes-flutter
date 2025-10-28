@@ -126,6 +126,8 @@ class TranslationKeys {
   static const String addPrice = 'add_price';
   static const String enterQuantity = 'enter_quantity';
   static const String saveWithoutPrice = 'save_without_price';
+  static const String actualIngredientTitle = 'actual_ingredient_title';
+  static const String actualIngredientContent = 'actual_ingredient_content';
 
   static pluralKey(String key) => '${key}_other';
 }
