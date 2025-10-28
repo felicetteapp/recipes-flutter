@@ -210,19 +210,6 @@ class ListController extends GetxController {
     return allIngredients.where((item) => item.recipes.isEmpty).toList();
   }
 
-  handleIngredientCheckboxChange(ListIngredientItem item, bool isChecked) {
-    final group = groupsService.selectedGroup.value;
-    if (group == null) {
-      return;
-    }
-
-    if (isChecked) {
-      openEditIngredientPriceModal(group, item);
-    } else {
-      // TODO: handle remove check
-    }
-  }
-
   openEditIngredientPriceModal(FRGroup group, ListIngredientItem item) {
     Get.dialog(
       useSafeArea: false,

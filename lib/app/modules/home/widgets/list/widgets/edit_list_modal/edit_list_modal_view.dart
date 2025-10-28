@@ -148,7 +148,6 @@ class EditListModal extends StatelessWidget {
                               ? null
                               : () {
                                 controller.handleOnSave();
-                                //TODO: Save action
                               },
                       icon: const Icon(Icons.save),
                       label: Text(
