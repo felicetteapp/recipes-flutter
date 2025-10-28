@@ -49,23 +49,7 @@ class EditIngredientPriceModal extends StatelessWidget {
                           controller.ingredientPrices.toList().indexOf(price),
                         ),
                       ),
-                      Text(
-                        ls.formatCurrency(
-                          controller.ingredientPrices.fold(
-                            0.0,
-                            (previousValue, element) =>
-                                previousValue +
-                                (element.quantity.toDouble() *
-                                    element.unitPrice.toDouble()),
-                          ),
-                          group.currency,
-                        ),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Get.context?.theme.colorScheme.secondary,
-                        ),
-                      ),
+
                       TextButton.icon(
                         style: TextButton.styleFrom(
                           foregroundColor:
@@ -86,11 +70,32 @@ class EditIngredientPriceModal extends StatelessWidget {
             ),
           ),
           Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Obx(() {
+              return Text(
+                ls.formatCurrency(
+                  controller.ingredientPrices.fold(
+                    0.0,
+                    (previousValue, element) =>
+                        previousValue +
+                        (element.quantity.toDouble() *
+                            element.unitPrice.toDouble()),
+                  ),
+                  group.currency,
+                ),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Get.context?.theme.colorScheme.secondary,
+                ),
+              );
+            }),
+          ),
+          Padding(
             padding: EdgeInsets.only(
               bottom: Get.mediaQuery.padding.bottom,
               left: 16,
               right: 16,
-              top: 8,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -169,10 +174,6 @@ class EditIngredientPriceModal extends StatelessWidget {
                 autofocus: index == 0 && pricesLength == 1,
                 decoration: InputDecoration(
                   labelText: TranslationKeys.unitPrice.tr,
-                  suffixText: ls.formatCurrency(
-                    price.unitPrice.toDouble(),
-                    controller.group.currency,
-                  ),
                 ),
                 initialValue:
                     price.unitPrice == 0.0 ? null : price.unitPrice.toString(),
