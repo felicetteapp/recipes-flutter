@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:recipes_flutter/app/common/translation_keys.dart';
+import 'package:recipes_flutter/app/data/models/group_models.dart';
 import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
 import 'package:recipes_flutter/app/data/models/recipe_models.dart';
 import 'package:recipes_flutter/app/services/groups_service.dart';
@@ -38,6 +39,17 @@ class EditListModalController extends GetxController {
       localizationService.availableCurrencies;
 
   num get budget => groupsService.selectedGroup.value?.budget ?? 0;
+
+  List<FRCurrentIngredients> get ingredientsWithQuantities {
+    final selectedGroup = groupsService.selectedGroup.value;
+    if (selectedGroup == null) {
+      return [];
+    }
+    return selectedGroup.currentIngredients;
+  }
+
+  RxList<FRCurrentIngredients> selectedIngredientsWithQuantities =
+      RxList<FRCurrentIngredients>([]);
 
   EditListModalController({required this.groupId});
 
@@ -111,6 +123,7 @@ class EditListModalController extends GetxController {
               ? selectedCurrency[0]
               : selectedGroup.currency,
       currentRecipes: selectedRecipes.map((r) => r.id).toList(),
+      currentIngredients: selectedIngredientsWithQuantities.toList(),
     );
 
     try {
@@ -148,6 +161,18 @@ class EditListModalController extends GetxController {
     selectedRecipes.assignAll(currentRecipes);
     final currentCurrency = listCurrency;
     selectedCurrency.assignAll(currentCurrency);
+
+    Get.log(
+      'Initial selectedRecipes: ${selectedRecipes.map((e) => e.name).toList()}',
+    );
+
+    Get.log('Initial selectedCurrency: $selectedCurrency');
+
+    Get.log(
+      'Initial ingredientsWithQuantities: ${ingredientsWithQuantities.map((e) => '${e.ingredientId}:${e.quantity}').toList()}',
+    );
+
+    selectedIngredientsWithQuantities.assignAll(ingredientsWithQuantities);
   }
 
   @override

@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:recipes_flutter/app/common/common.dart';
+import 'package:recipes_flutter/app/common/widgets/ingredient_select/ingredient_select_view.dart';
 import 'package:recipes_flutter/app/common/widgets/select/select.dart';
-import 'package:recipes_flutter/app/data/models/ingredient_models.dart';
+import 'package:recipes_flutter/app/data/models/group_models.dart';
 import 'package:recipes_flutter/app/data/models/recipe_models.dart';
 import 'package:recipes_flutter/app/modules/home/widgets/list/widgets/edit_list_modal/edit_list_modal_controller.dart';
 import 'package:recipes_flutter/app/services/ingredients_service.dart';
@@ -39,60 +42,37 @@ class EditListModal extends StatelessWidget {
                       ),
                     ),
                     Obx(
-                      () => FRSelect<FRIngredient>(
+                      () => IngredientSelect(
                         items: controller.availableIngredients,
-                        value: controller.currentIngredients,
-                        itemLabelBuilder: (item) => item.name,
-                        onChanged: (selectedIngredients) {
-                          Get.log(
-                            'EditListModal - handleOnChange: selectedIngredients=${selectedIngredients.map((e) => e.name).toList()}',
+                        value:
+                            controller.selectedIngredientsWithQuantities
+                                .toList(),
+                        itemLabelBuilder: (item) {
+                          final ingredient = ingredientsService
+                              .getIngredientById(item.ingredientId);
+                          final ingredientName =
+                              ingredient?.name ?? 'Unknown Ingredient';
+                          return ingredientName;
+                        },
+                        onChanged: (ingredients) {
+                          log(
+                            'EditListModal - onChanged: ingredients=${ingredients.length}, selected=${ingredients.map((e) => e.ingredientId).join(', ')}',
+                            name: 'EditListModal',
                           );
+                          controller.selectedIngredientsWithQuantities
+                              .assignAll(
+                                ingredients
+                                    .map(
+                                      (e) => FRCurrentIngredients(
+                                        ingredientId: e.ingredientId,
+                                        quantity: e.quantity,
+                                      ),
+                                    )
+                                    .toList(),
+                              );
                         },
                         isMulti: true,
                         label: TranslationKeys.selectIngredients.tr,
-                        createItem: (name) async {
-                          final actualIngredient =
-                              await Get.dialog<bool>(
-                                AlertDialog(
-                                  title: Text(
-                                    TranslationKeys.confirmActualIngredient.tr,
-                                  ),
-                                  content: Text(
-                                    TranslationKeys
-                                        .confirmActualIngredientDescription
-                                        .trParams({'ingredientName': name}),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Get.back(result: false);
-                                      },
-                                      child: Text(TranslationKeys.no.tr),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Get.back(result: true);
-                                      },
-                                      child: Text(TranslationKeys.yes.tr),
-                                    ),
-                                  ],
-                                ),
-                              ) ??
-                              false;
-
-                          final tempIngredient = FRIngredient(
-                            id: '',
-                            name: name,
-                            actualIngredient: actualIngredient,
-                          );
-                          final newIngredient = await ingredientsService
-                              .createIngredient(
-                                groupId: groupId,
-                                ingredient: tempIngredient,
-                              );
-
-                          return newIngredient;
-                        },
                       ),
                     ),
                     Obx(

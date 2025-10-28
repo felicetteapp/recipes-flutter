@@ -56,6 +56,7 @@ class GroupApiService extends ApiService {
       'currency': data['currency'],
       'filters': data['filters'],
       'currentRecipes': data['currentRecipes'],
+      'currentIngredients': data['currentIngredients'],
     });
   }
 

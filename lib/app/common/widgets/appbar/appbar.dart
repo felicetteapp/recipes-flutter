@@ -24,7 +24,6 @@ class FRAppbar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: selectingMode ? Get.theme.colorScheme.secondary : null,
       foregroundColor: selectingMode ? Get.theme.colorScheme.onSecondary : null,
       title: title,
-      centerTitle: true,
       leading: getLeading(context),
       actions: actions,
     );

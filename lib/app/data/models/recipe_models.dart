@@ -1,10 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FRRecipeIngredient {
+class BasicIngredientQuantity {
   String ingredientId;
   String quantity;
 
-  FRRecipeIngredient({required this.ingredientId, required this.quantity});
+  BasicIngredientQuantity({required this.ingredientId, required this.quantity});
+
+  BasicIngredientQuantity copyWith({String? ingredientId, String? quantity}) {
+    return BasicIngredientQuantity(
+      ingredientId: ingredientId ?? this.ingredientId,
+      quantity: quantity ?? this.quantity,
+    );
+  }
+}
+
+class FRRecipeIngredient extends BasicIngredientQuantity {
+  FRRecipeIngredient({required super.ingredientId, required super.quantity});
 
   factory FRRecipeIngredient.fromMap(Map<String, dynamic> data) {
     return FRRecipeIngredient(

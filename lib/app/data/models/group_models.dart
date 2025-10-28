@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:recipes_flutter/app/data/models/recipe_models.dart';
 
 class FRGroupFilter {
   bool showCheckedsFirst;
@@ -52,11 +53,8 @@ class FRIngredientPrice {
   }
 }
 
-class FRCurrentIngredients {
-  String ingredientId;
-  String quantity;
-
-  FRCurrentIngredients({required this.ingredientId, required this.quantity});
+class FRCurrentIngredients extends BasicIngredientQuantity {
+  FRCurrentIngredients({required super.ingredientId, required super.quantity});
 
   factory FRCurrentIngredients.fromMap(Map<String, dynamic> data) {
     return FRCurrentIngredients(
@@ -154,7 +152,8 @@ class FRGroup {
       'creatorUid': group.creatorUid,
       'name': group.name,
       'currentRecipes': group.currentRecipes,
-      'currentIngredients': group.currentIngredients,
+      'currentIngredients':
+          group.currentIngredients.map((e) => e.toMap()).toList(),
       'checkedIngredients': group.checkedIngredients,
       'ingredientsPrices': group.ingredientsPrices.map(
         (key, value) =>
