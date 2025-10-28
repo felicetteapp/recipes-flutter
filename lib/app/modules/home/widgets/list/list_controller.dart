@@ -218,6 +218,8 @@ class ListController extends GetxController {
     );
     if (isChecked) {
       openEditIngredientPriceModal(groupsService.selectedGroup.value!, item);
+    } else {
+      groupsService.removeIngredientPrice(ingredientId: item.ingredient.id);
     }
   }
 }

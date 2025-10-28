@@ -77,6 +77,15 @@ class ListWidget extends StatelessWidget {
                       recipeIngredient,
                       recipeItem,
                       controller,
+                      availableWidth: constraints.maxWidth,
+                      onPriceTap: () {
+                        controller.openEditIngredientPriceModal(
+                          controller.groupsService.selectedGroup.value!,
+                          controller.sortedIngredientList.firstWhere(
+                            (ingItem) => ingItem.ingredient.id == ingredient.id,
+                          ),
+                        );
+                      },
                     );
                   }
                   currentIndex++;
@@ -434,6 +443,7 @@ class ListWidget extends StatelessWidget {
     ListRecipeItem recipeItem,
     ListController controller, {
     GestureTapCallback? onPriceTap,
+    required double availableWidth,
   }) {
     final group = controller.groupsService.selectedGroup.value;
     final isChecked =
@@ -445,21 +455,31 @@ class ListWidget extends StatelessWidget {
       controller.recipesService.getCurrentGroupRecipes(),
     );
 
-    return CheckboxListTile(
+    return ListTile(
       visualDensity: VisualDensity.compact,
       key: Key('ingredient_${ingredient.id}_in_recipe_${recipeItem.recipe.id}'),
-      controlAffinity: ListTileControlAffinity.leading,
-      value: isChecked,
-      onChanged: (value) {
-        // Handle checkbox state change
-      },
+      leading: Checkbox(
+        value: isChecked,
+        onChanged: (value) {
+          controller.handleCheckIngredient(
+            ListIngredientItem(
+              ingredient: ingredient,
+              isChecked: isChecked,
+              price: prices,
+              recipes: recipes,
+              quantity: recipeIngredient.quantity,
+            ),
+            value ?? false,
+          );
+        },
+      ),
       title: Text(ingredient.name),
-      secondary: _buildIngredientItemSecondary(
+      trailing: _buildIngredientItemSecondary(
         prices,
         group?.currency ?? 'USD',
         isChecked,
         onTap: onPriceTap,
-        availableWidth: Get.width * 0.3,
+        availableWidth: availableWidth,
       ),
       subtitle: _buildIngredientItemSubtitle(
         ingredient,
