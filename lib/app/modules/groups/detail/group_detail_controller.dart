@@ -99,7 +99,7 @@ class GroupDetailController extends GetxController {
     log('Group ID: $id', name: 'GroupDetailController');
 
     if (id.isEmpty) {
-      Get.to(AppRoutes.home);
+      Get.toNamed(AppRoutes.home);
       return;
     }
     isLoading.value = true;
@@ -131,7 +131,7 @@ class GroupDetailController extends GetxController {
   void handleInit() {
     final currentGroup = group;
     if (currentGroup == null) {
-      Get.to(AppRoutes.home);
+      Get.toNamed(AppRoutes.home);
 
       return;
     }

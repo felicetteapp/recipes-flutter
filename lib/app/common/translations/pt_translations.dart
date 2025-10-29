@@ -39,6 +39,7 @@ class PtTranslations extends Translations {
       TranslationKeys.yes: 'Sim',
       TranslationKeys.more: 'Mais',
       TranslationKeys.ok: 'OK',
+      TranslationKeys.loading: 'Carregando',
 
       // home view
       TranslationKeys.unknownView: 'Vista desconhecida',
@@ -153,6 +154,12 @@ class PtTranslations extends Translations {
       TranslationKeys.editGroup: 'Editar Grupo',
       TranslationKeys.groupName: 'Nome do Grupo',
       TranslationKeys.groupUpdated: 'Grupo atualizado com sucesso',
+      TranslationKeys.deleteGroup: 'Excluir Grupo',
+      TranslationKeys.deleteGroupMessage:
+          'Tem certeza de que deseja excluir este grupo? Esta ação não pode ser desfeita.',
+      TranslationKeys.groupDeleted: 'Grupo excluído com sucesso',
+      TranslationKeys.groupCreationLimitReached:
+          'Você atingiu o número máximo de grupos permitidos.',
     },
   };
 }

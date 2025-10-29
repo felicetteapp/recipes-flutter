@@ -40,6 +40,7 @@ class EsTranslations extends Translations {
       TranslationKeys.yes: 'Sí',
       TranslationKeys.more: 'Más',
       TranslationKeys.ok: 'OK',
+      TranslationKeys.loading: 'Cargando',
 
       // home view
       TranslationKeys.unknownView: 'Vista desconocida',
@@ -154,6 +155,12 @@ class EsTranslations extends Translations {
       TranslationKeys.editGroup: 'Editar Grupo',
       TranslationKeys.groupName: 'Nombre del Grupo',
       TranslationKeys.groupUpdated: 'Grupo actualizado exitosamente',
+      TranslationKeys.deleteGroup: 'Eliminar Grupo',
+      TranslationKeys.deleteGroupMessage:
+          '¿Estás seguro de que quieres eliminar este grupo? Esta acción no se puede deshacer.',
+      TranslationKeys.groupDeleted: 'Grupo eliminado exitosamente',
+      TranslationKeys.groupCreationLimitReached:
+          'Has alcanzado el número máximo de grupos permitidos.',
     },
   };
 }

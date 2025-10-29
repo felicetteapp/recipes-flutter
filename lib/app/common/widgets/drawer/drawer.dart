@@ -1,4 +1,5 @@
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/utils/snackbar.dart';
 import 'package:flutter/material.dart' hide DrawerController;
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
@@ -46,6 +47,14 @@ class FRDrawer extends StatelessWidget {
         trailing: TextButton(
           child: Text(TranslationKeys.createGroup.tr),
           onPressed: () async {
+            if (groupServices.availableGroups.length >= 3) {
+              FRSnackbar.error(
+                TranslationKeys.error.tr,
+                TranslationKeys.groupCreationLimitReached.tr,
+              );
+              return;
+            }
+
             final name = await Get.dialog<String>(
               ObxValue(
                 (nameState) => SimpleDialog(

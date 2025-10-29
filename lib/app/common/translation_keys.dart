@@ -138,6 +138,8 @@ class TranslationKeys {
   static const String deleteGroup = 'delete_group';
   static const String deleteGroupMessage = 'delete_group_message';
   static const String groupDeleted = 'group_deleted';
+  static const String groupCreationLimitReached =
+      'group_creation_limit_reached';
 
   static pluralKey(String key) => '${key}_other';
 }

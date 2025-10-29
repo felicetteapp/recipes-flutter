@@ -38,6 +38,7 @@ class EnTranslations extends Translations {
       TranslationKeys.yes: 'Yes',
       TranslationKeys.more: 'More',
       TranslationKeys.ok: 'OK',
+      TranslationKeys.loading: 'Loading',
 
       // home view
       TranslationKeys.unknownView: 'Unknown View',
@@ -150,6 +151,12 @@ class EnTranslations extends Translations {
       TranslationKeys.editGroup: 'Edit Group',
       TranslationKeys.groupName: 'Group Name',
       TranslationKeys.groupUpdated: 'Group updated successfully',
+      TranslationKeys.deleteGroup: 'Delete Group',
+      TranslationKeys.deleteGroupMessage:
+          'Are you sure you want to delete this group? This action cannot be undone.',
+      TranslationKeys.groupDeleted: 'Group deleted successfully',
+      TranslationKeys.groupCreationLimitReached:
+          'You have reached the maximum number of groups allowed.',
     },
   };
 }
