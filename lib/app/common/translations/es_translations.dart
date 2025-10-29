@@ -148,6 +148,9 @@ class EsTranslations extends Translations {
       TranslationKeys.actualIngredientTitle: 'Ingrediente Real',
       TranslationKeys.actualIngredientContent:
           '¿Es este un ingrediente real que se puede usar en recetas?',
+
+      // create group
+      TranslationKeys.createGroup: 'Crear Grupo',
     },
   };
 }

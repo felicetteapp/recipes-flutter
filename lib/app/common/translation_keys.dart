@@ -129,5 +129,8 @@ class TranslationKeys {
   static const String actualIngredientTitle = 'actual_ingredient_title';
   static const String actualIngredientContent = 'actual_ingredient_content';
 
+  // create group
+  static const String createGroup = 'create_group';
+
   static pluralKey(String key) => '${key}_other';
 }

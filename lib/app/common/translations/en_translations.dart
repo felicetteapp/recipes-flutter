@@ -144,6 +144,9 @@ class EnTranslations extends Translations {
       TranslationKeys.actualIngredientTitle: 'Actual Ingredient',
       TranslationKeys.actualIngredientContent:
           'Is this an actual ingredient that can be used in recipes?',
+
+      // create group
+      TranslationKeys.createGroup: 'Create Group',
     },
   };
 }

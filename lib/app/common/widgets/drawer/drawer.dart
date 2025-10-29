@@ -37,6 +37,10 @@ class FRDrawer extends StatelessWidget {
           TranslationKeys.yourGroups.tr,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        trailing: TextButton(
+          child: Text(TranslationKeys.createGroup.tr),
+          onPressed: () {},
+        ),
       ),
       ...actualGroupsTiles,
     ];

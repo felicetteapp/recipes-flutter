@@ -147,6 +147,9 @@ class PtTranslations extends Translations {
       TranslationKeys.actualIngredientTitle: 'Ingrediente Real',
       TranslationKeys.actualIngredientContent:
           'Este é um ingrediente real que pode ser usado em receitas?',
+
+      // create group
+      TranslationKeys.createGroup: 'Criar Grupo',
     },
   };
 }
