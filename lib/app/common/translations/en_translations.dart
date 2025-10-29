@@ -147,6 +147,9 @@ class EnTranslations extends Translations {
 
       // create group
       TranslationKeys.createGroup: 'Create Group',
+      TranslationKeys.editGroup: 'Edit Group',
+      TranslationKeys.groupName: 'Group Name',
+      TranslationKeys.groupUpdated: 'Group updated successfully',
     },
   };
 }

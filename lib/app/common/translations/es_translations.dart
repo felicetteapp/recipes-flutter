@@ -151,6 +151,9 @@ class EsTranslations extends Translations {
 
       // create group
       TranslationKeys.createGroup: 'Crear Grupo',
+      TranslationKeys.editGroup: 'Editar Grupo',
+      TranslationKeys.groupName: 'Nombre del Grupo',
+      TranslationKeys.groupUpdated: 'Grupo actualizado exitosamente',
     },
   };
 }

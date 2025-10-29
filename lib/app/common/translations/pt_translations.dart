@@ -150,6 +150,9 @@ class PtTranslations extends Translations {
 
       // create group
       TranslationKeys.createGroup: 'Criar Grupo',
+      TranslationKeys.editGroup: 'Editar Grupo',
+      TranslationKeys.groupName: 'Nome do Grupo',
+      TranslationKeys.groupUpdated: 'Grupo atualizado com sucesso',
     },
   };
 }
