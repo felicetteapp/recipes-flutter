@@ -61,9 +61,9 @@ final theme = ThemeData(
   useMaterial3: true,
   extensions: <ThemeExtension<dynamic>>[
     CustomColors(
-      success: Color(0xFF00FF00),
+      success: Color.fromARGB(255, 109, 226, 109),
       onSuccess: colorScheme.surface,
-      successContainer: Color(0xFF007F00),
+      successContainer: Color.fromARGB(255, 165, 192, 165),
       onSuccessContainer: colorScheme.surface,
     ),
   ],
