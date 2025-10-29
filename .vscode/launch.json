@@ -1,0 +1,64 @@
+{
+  "configurations": [
+    {
+      "name": "Flutter: run dev release",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "--release",
+        "--flavor",
+        "dev",
+        "-t",
+        "lib/main.dart",
+        "--dart-define-from-file",
+        ".env"
+      ]
+    },
+    {
+      "name": "Flutter: run prod release",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "--release",
+        "--flavor",
+        "prod",
+        "-t",
+        "lib/main.dart",
+        "--dart-define-from-file",
+        ".env"
+      ]
+    },
+    {
+      "name": "Flutter: run dev debug",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "--debug",
+        "--flavor",
+        "dev",
+        "-t",
+        "lib/main.dart",
+        "--dart-define-from-file",
+        ".env"
+      ]
+    },
+    {
+      "name": "Flutter: run prod debug",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "--debug",
+        "--flavor",
+        "prod",
+        "-t",
+        "lib/main.dart",
+        "--dart-define-from-file",
+        ".env"
+      ]
+    }
+  ]
+}

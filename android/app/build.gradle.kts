@@ -41,6 +41,17 @@ android {
         versionName = flutter.versionName
     }
 
+    flavorDimensions += "default"
+    productFlavors {
+        create("dev") {
+            dimension = "default"
+            versionNameSuffix = ".dev"
+        }
+        create("prod"){
+            dimension = "default"
+        }
+    }
+
     signingConfigs {
         create("release") {
             storeFile = file(keystoreProperties["storeFile"] as String)
