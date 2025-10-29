@@ -99,4 +99,19 @@ class GroupApiService extends ApiService {
   }) {
     return doc(group.id).update({'name': newName});
   }
+
+  Future<FRGroup> createGroup(FRGroup group) async {
+    final newUuid = collection().doc().id;
+    final newGroup = group.copyWith(id: newUuid);
+
+    await collection()
+        .doc(newUuid)
+        .set(newGroup, SetOptions(mergeFields: ['name', 'creatorUid']));
+
+    return newGroup;
+  }
+
+  Future<void> deleteGroup(String groupId) {
+    return doc(groupId).delete();
+  }
 }

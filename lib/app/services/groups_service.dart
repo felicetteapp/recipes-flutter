@@ -13,6 +13,8 @@ class GroupsService extends GetxService {
     GroupApiService(),
     permanent: true,
   );
+
+  final AuthService authService = Get.find<AuthService>();
   final RxList<FRGroup> availableGroups = <FRGroup>[].obs;
   final Rx<FRGroup?> selectedGroup = Rx<FRGroup?>(null);
   final Rxn<String> selectedGroupId = Rxn<String>();
@@ -27,17 +29,19 @@ class GroupsService extends GetxService {
     }
   }
 
-  void getUserGroups() async {
-    final authService = Get.find<AuthService>();
-    final userGroupIds = authService.userGroups;
-
-    availableGroups.clear();
+  void getUserGroups(List<String> userGroupIds) async {
+    final newGroups = <FRGroup>[];
 
     log('Fetching user groups for IDs: $userGroupIds', name: 'GroupsService');
 
     for (final groupId in userGroupIds) {
-      await handleGetGroup(groupId);
+      final group = await handleGetGroup(groupId);
+      if (group != null) {
+        newGroups.add(group);
+      }
     }
+
+    availableGroups.assignAll(newGroups);
 
     log(
       'Fetched ${availableGroups.length} groups for user',
@@ -79,12 +83,15 @@ class GroupsService extends GetxService {
     log('Available group names: $names', name: 'GroupsService');
   }
 
-  Future<void> handleGetGroup(String groupId) async {
-    final groupSnapshot = await groupApiService.getGroup(groupId);
-    if (groupSnapshot.exists) {
-      final group = groupSnapshot.data()!;
-      availableGroups.add(group);
-    }
+  Future<FRGroup?> handleGetGroup(String groupId) async {
+    try {
+      final groupSnapshot = await groupApiService.getGroup(groupId);
+      if (groupSnapshot.exists) {
+        final group = groupSnapshot.data()!;
+        return group;
+      }
+    } catch (_) {}
+    return null;
   }
 
   Future<void> updateCurrentGroupRecipes(List<String> recipeIds) {
@@ -136,6 +143,34 @@ class GroupsService extends GetxService {
     refreshGroupData(group);
 
     return response;
+  }
+
+  Future<FRGroup> createGroup(String groupName) async {
+    log('Creating new group with name $groupName', name: 'GroupsService');
+
+    final group = FRGroup(
+      id: '',
+      creatorUid: authService.currentUser.value!.uid,
+      name: groupName,
+      currentRecipes: [],
+      currentIngredients: [],
+      checkedIngredients: [],
+      ingredientsPrices: {},
+      filters: FRGroupFilter(),
+      currency: 'USD',
+      budget: 0.0,
+    );
+    return groupApiService.createGroup(group);
+  }
+
+  Future<void> deleteGroup(FRGroup group) async {
+    log('Deleting group ${group.name}', name: 'GroupsService');
+
+    await groupApiService.deleteGroup(group.id);
+
+    log('Group ${group.name} deleted successfully', name: 'GroupsService');
+
+    return;
   }
 
   Future<void> updateIngredientPrices({
@@ -224,12 +259,6 @@ class GroupsService extends GetxService {
   void onInit() {
     super.onInit();
 
-    final authService = Get.find<AuthService>();
-    authService.userGroups.listen((_) {
-      log('User groups changed, fetching user groups', name: 'GroupsService');
-      getUserGroups();
-    });
-
     authService.isLoggedIn.listen((isLoggedIn) {
       log('User login status changed: $isLoggedIn', name: 'GroupsService');
       if (!isLoggedIn) {
@@ -241,6 +270,14 @@ class GroupsService extends GetxService {
 
         selectedGroup(null);
       }
+    });
+
+    authService.userGroups.listen((ids) {
+      log(
+        'User groups changed, fetching user groups: $ids',
+        name: 'GroupsService',
+      );
+      getUserGroups(ids);
     });
 
     selectedGroupId.listen((gId) {

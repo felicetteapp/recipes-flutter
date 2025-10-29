@@ -1,12 +1,23 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:felicette_recipes/app/data/models/auth_models.dart';
+import 'package:felicette_recipes/app/services/api/auth_api_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 
 class AuthService extends GetxService {
+  final AuthApiService authApiService = Get.put<AuthApiService>(
+    AuthApiService(),
+    permanent: true,
+  );
   final RxBool isLoggedIn = false.obs;
-  final RxList<String> userGroups = <String>[].obs;
+  final RxList<String> userGroups = RxList.empty();
+  final Rxn<FRUser> currentUser = Rxn<FRUser>();
+
+  StreamSubscription<DocumentSnapshot<FRUser>>? userListenerStream;
 
   Future<UserCredential> login(String email, String password) async {
     return FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -22,6 +33,10 @@ class AuthService extends GetxService {
 
   listenToFirebaseAuthChanges() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      log(
+        'Firebase auth state changed: user is ${user == null ? 'logged out' : 'logged in'}',
+        name: 'AuthService',
+      );
       if (user == null) {
         handleUserLoggedOut();
       } else {
@@ -30,42 +45,70 @@ class AuthService extends GetxService {
     });
   }
 
-  Future<List<String>> getUserGroups() async {
+  Future<List<String>> getUserGroups({bool forceRefresh = false}) async {
+    log(
+      'Fetching user groups from ID token claims - force $forceRefresh',
+      name: 'AuthService',
+    );
     if (FirebaseAuth.instance.currentUser == null) {
       return [];
     }
 
-    final tokenResult =
-        await FirebaseAuth.instance.currentUser!.getIdTokenResult();
+    final tokenResult = await FirebaseAuth.instance.currentUser!
+        .getIdTokenResult(forceRefresh);
 
-    return tokenResult.claims?['groups']?.cast<String>() ?? [];
+    final groups = tokenResult.claims?['groups']?.cast<String>() ?? [];
+
+    log('User groups from claims: $groups', name: 'AuthService');
+    return groups;
   }
 
   handleUserLoggedOut() {
     log('User logged out', name: 'AuthService');
     isLoggedIn.value = false;
+    currentUser.value = null;
     Get.offAllNamed(AppRoutes.login);
+    userListenerStream?.cancel();
   }
 
   handleUserLoggedIn() async {
     log('User logged in', name: 'AuthService');
-    final groups = await getUserGroups();
-    log('User groups: $groups', name: 'AuthService');
-    userGroups.assignAll(groups);
-    isLoggedIn.value = true;
-    Get.offAllNamed(AppRoutes.home);
-  }
+    //    currentUser.value = FRUser(uid: FirebaseAuth.instance.currentUser!.uid, );
+    userListenerStream?.cancel();
+    userListenerStream = authApiService
+        .listenUser(userId: FirebaseAuth.instance.currentUser!.uid)
+        .listen((snapshot) async {
+          final groups = snapshot.data()?.groups ?? [];
 
-  listenToGroupsChanges() {
-    userGroups.listen((List<String> groups) {
-      log('User groups updated: $groups', name: 'AuthService');
-    });
+          var claimsGroups = await getUserGroups();
+
+          final bool shouldForceRefresh =
+              groups.toSet().difference(claimsGroups.toSet()).isNotEmpty ||
+              claimsGroups.toSet().difference(groups.toSet()).isNotEmpty;
+
+          if (shouldForceRefresh) {
+            claimsGroups = await getUserGroups(forceRefresh: true);
+          }
+
+          final needsToUpdateUserGroups =
+              groups.toSet().difference(claimsGroups.toSet()).isNotEmpty ||
+              claimsGroups.toSet().difference(groups.toSet()).isNotEmpty ||
+              userGroups.toSet().difference(claimsGroups.toSet()).isNotEmpty ||
+              claimsGroups.toSet().difference(userGroups.toSet()).isNotEmpty;
+
+          currentUser.value = snapshot.data();
+          isLoggedIn.value = true;
+          if (needsToUpdateUserGroups) {
+            userGroups.assignAll(claimsGroups);
+          }
+        });
+
+    Get.offAllNamed(AppRoutes.home);
   }
 
   @override
   void onInit() {
     super.onInit();
     listenToFirebaseAuthChanges();
-    listenToGroupsChanges();
   }
 }

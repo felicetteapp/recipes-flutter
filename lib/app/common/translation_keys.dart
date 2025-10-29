@@ -31,6 +31,7 @@ class TranslationKeys {
   static const String unitPrice = 'unit_price';
   static const String more = 'more';
   static const String ok = 'ok';
+  static const String loading = 'loading';
 
   // login
   static const String loginErrorTitle = 'login_error';
@@ -134,6 +135,9 @@ class TranslationKeys {
   static const String editGroup = 'edit_group';
   static const String groupName = 'group_name';
   static const String groupUpdated = 'group_name_updated';
+  static const String deleteGroup = 'delete_group';
+  static const String deleteGroupMessage = 'delete_group_message';
+  static const String groupDeleted = 'group_deleted';
 
   static pluralKey(String key) => '${key}_other';
 }

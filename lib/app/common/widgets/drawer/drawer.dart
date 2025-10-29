@@ -8,11 +8,10 @@ import 'package:felicette_recipes/app/services/groups_service.dart';
 import 'package:felicette_recipes/app/services/localization_service.dart';
 
 class FRDrawer extends StatelessWidget {
-  const FRDrawer({super.key});
+  final groupServices = Get.find<GroupsService>();
+  FRDrawer({super.key});
 
   List<Widget> _buildGroupListTiles(BuildContext context) {
-    final groupServices = Get.find<GroupsService>();
-
     final selectedGroup = groupServices.selectedGroup.value;
 
     final actualGroupsTiles =
@@ -46,7 +45,65 @@ class FRDrawer extends StatelessWidget {
         ),
         trailing: TextButton(
           child: Text(TranslationKeys.createGroup.tr),
-          onPressed: () {},
+          onPressed: () async {
+            final name = await Get.dialog<String>(
+              ObxValue(
+                (nameState) => SimpleDialog(
+                  title: Text(TranslationKeys.createGroup.tr),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextField(
+                        autofocus: true,
+                        onChanged: (value) => nameState.value = value,
+                        decoration: InputDecoration(
+                          labelText: TranslationKeys.groupName.tr,
+                        ),
+                        onSubmitted: (value) {
+                          Get.back(result: value);
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: Text(TranslationKeys.cancel.tr),
+                            ),
+                          ),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed:
+                                  nameState.value.trim().isEmpty
+                                      ? null
+                                      : () {
+                                        Get.back(
+                                          result: nameState.value.trim(),
+                                        );
+                                      },
+                              child: Text(TranslationKeys.create.tr),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                ''.obs,
+              ),
+            );
+
+            if (name != null && name.trim().isNotEmpty) {
+              final createdGroup = await groupServices.createGroup(name.trim());
+              await Future.delayed(const Duration(seconds: 1));
+              Get.toNamed(AppRoutes.groupDetails(createdGroup.id));
+            }
+          },
         ),
       ),
       ...actualGroupsTiles,

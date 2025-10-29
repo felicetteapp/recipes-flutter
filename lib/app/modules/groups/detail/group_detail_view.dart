@@ -21,8 +21,22 @@ class GroupDetailView extends GetView<GroupDetailController> {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    child: Obx(
-                      () => ListView(
+                    child: Obx(() {
+                      if (controller.isLoading.value) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 32.0),
+                            child: Column(
+                              children: [
+                                CircularProgressIndicator(),
+                                SizedBox(height: 16),
+                                Text(TranslationKeys.loading.tr),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                      return ListView(
                         padding: EdgeInsets.zero,
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -33,9 +47,20 @@ class GroupDetailView extends GetView<GroupDetailController> {
                               labelText: TranslationKeys.groupName.tr,
                             ),
                           ),
+                          SizedBox(height: 16),
+                          TextButton.icon(
+                            style: TextButton.styleFrom(
+                              foregroundColor: Get.theme.colorScheme.error,
+                            ),
+                            onPressed: () {
+                              controller.deleteGroup();
+                            },
+                            icon: Icon(Icons.delete),
+                            label: Text(TranslationKeys.deleteGroup.tr),
+                          ),
                         ],
-                      ),
-                    ),
+                      );
+                    }),
                   ),
                 ),
                 SizedBox(

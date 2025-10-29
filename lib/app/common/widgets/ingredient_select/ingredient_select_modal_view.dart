@@ -206,7 +206,10 @@ class IngredientSelectModalView extends StatelessWidget {
                                 );
                                 newValue.add(
                                   BasicIngredientQuantity(
-                                    ingredientId: controller.items.first.id,
+                                    ingredientId:
+                                        controller.items.isNotEmpty
+                                            ? controller.items.first.id
+                                            : '',
                                     quantity: '',
                                   ),
                                 );

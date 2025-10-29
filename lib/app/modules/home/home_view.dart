@@ -201,7 +201,7 @@ class HomeView extends GetView<HomeController> {
     return Obx(
       () => Scaffold(
         appBar: _buildAppBar(),
-        drawer: const FRDrawer(),
+        drawer: FRDrawer(),
         floatingActionButton: _buildFloatingActionButton(),
         body: _buildBody(),
         bottomNavigationBar: _buildBottomNavigationBar(),
