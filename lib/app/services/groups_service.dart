@@ -33,14 +33,29 @@ class GroupsService extends GetxService {
 
     availableGroups.clear();
 
+    log('Fetching user groups for IDs: $userGroupIds', name: 'GroupsService');
+
     for (final groupId in userGroupIds) {
       await handleGetGroup(groupId);
     }
+
+    log(
+      'Fetched ${availableGroups.length} groups for user',
+      name: 'GroupsService',
+    );
+
+    log(
+      'Current selected group before check: ${selectedGroup.value?.name}',
+      name: 'GroupsService',
+    );
 
     if (selectedGroup.value == null && availableGroups.isNotEmpty) {
       final storedGroupId = await RFSecureStorage.read(
         key: GroupsService.selectedGroupKey,
       );
+
+      log('Stored group ID: $storedGroupId', name: 'GroupsService');
+
       if (storedGroupId != null) {
         try {
           final group = availableGroups.firstWhere(
@@ -49,9 +64,15 @@ class GroupsService extends GetxService {
           selectGroup(group);
           return;
         } catch (e) {
-          selectGroup(availableGroups.first);
+          log(
+            'Stored group ID not found in available groups: $storedGroupId',
+            name: 'GroupsService',
+          );
         }
       }
+    }
+    if (availableGroups.isNotEmpty) {
+      selectGroup(availableGroups.first);
     }
 
     final names = availableGroups.map((group) => group.name).toList();
@@ -179,10 +200,12 @@ class GroupsService extends GetxService {
 
     final authService = Get.find<AuthService>();
     authService.userGroups.listen((_) {
+      log('User groups changed, fetching user groups', name: 'GroupsService');
       getUserGroups();
     });
 
     authService.isLoggedIn.listen((isLoggedIn) {
+      log('User login status changed: $isLoggedIn', name: 'GroupsService');
       if (!isLoggedIn) {
         availableGroups.clear();
         selectedGroup.value = null;
@@ -195,6 +218,7 @@ class GroupsService extends GetxService {
     });
 
     selectedGroupId.listen((gId) {
+      log('Selected group ID changed: $gId', name: 'GroupsService');
       _currentGroupListenerSubscription?.cancel();
       if (gId != null) {
         _currentGroupListenerSubscription = groupApiService
