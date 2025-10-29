@@ -123,6 +123,21 @@ class GroupsService extends GetxService {
     return groupApiService.updateGroupListDetails(group: group);
   }
 
+  Future<void> updateGroupName(FRGroup group, String newName) async {
+    log(
+      'Updating group name for group ${group.name} to $newName',
+      name: 'GroupsService',
+    );
+    final response = await groupApiService.updateGroupName(
+      group: group,
+      newName: newName,
+    );
+
+    refreshGroupData(group);
+
+    return response;
+  }
+
   Future<void> updateIngredientPrices({
     required String ingredientId,
     required List<FRIngredientPrice> prices,
@@ -188,6 +203,17 @@ class GroupsService extends GetxService {
     } catch (e) {
       return null;
     }
+  }
+
+  refreshGroupData(FRGroup group) async {
+    final index = availableGroups.indexWhere((g) => g.id == group.id);
+
+    final updatedGroup = await groupApiService.getGroup(group.id);
+
+    if (updatedGroup.exists) {
+      availableGroups[index] = updatedGroup.data()!;
+    }
+    availableGroups.refresh();
   }
 
   saveSelectedGroupToStorage(String groupId) async {

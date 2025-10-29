@@ -31,12 +31,7 @@ class IngredientSelectModalView extends StatelessWidget {
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Padding(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 16,
-              bottom: 32,
-            ),
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
             child: Column(
               children: [
                 Expanded(
@@ -230,8 +225,6 @@ class IngredientSelectModalView extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.only(
                       bottom: Get.mediaQuery.padding.bottom,
-                      left: 16,
-                      right: 16,
                       top: 8,
                     ),
                     child: ElevatedButton(

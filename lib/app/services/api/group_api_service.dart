@@ -92,4 +92,11 @@ class GroupApiService extends ApiService {
               : FieldValue.arrayRemove([ingredientId]),
     });
   }
+
+  Future<void> updateGroupName({
+    required FRGroup group,
+    required String newName,
+  }) {
+    return doc(group.id).update({'name': newName});
+  }
 }

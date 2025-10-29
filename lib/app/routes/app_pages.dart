@@ -1,3 +1,6 @@
+import 'package:felicette_recipes/app/modules/groups/detail/group_detail_binding.dart';
+import 'package:felicette_recipes/app/modules/groups/detail/group_detail_view.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/modules/home/home_binding.dart';
 import 'package:felicette_recipes/app/modules/home/home_view.dart';
@@ -20,9 +23,40 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
+      name: AppRoutes.groups,
+      page: () => const RedirectTo(AppRoutes.home),
+      children: [
+        GetPage(
+          name: AppRoutes.detailsPart,
+          page: () => const RedirectTo(AppRoutes.home),
+          children: [
+            GetPage(
+              name: '/:id',
+              page: () => const GroupDetailView(),
+              binding: GroupDetailBinding(),
+            ),
+          ],
+        ),
+      ],
+    ),
+    GetPage(
       name: AppRoutes.login,
       page: () => const LoginView(),
       binding: LoginBinding(),
     ),
   ];
+}
+
+class RedirectTo extends StatelessWidget {
+  final String routeName;
+
+  const RedirectTo(this.routeName, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.to(routeName);
+    });
+    return Container();
+  }
 }

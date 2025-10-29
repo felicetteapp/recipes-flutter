@@ -131,6 +131,9 @@ class TranslationKeys {
 
   // create group
   static const String createGroup = 'create_group';
+  static const String editGroup = 'edit_group';
+  static const String groupName = 'group_name';
+  static const String groupUpdated = 'group_name_updated';
 
   static pluralKey(String key) => '${key}_other';
 }

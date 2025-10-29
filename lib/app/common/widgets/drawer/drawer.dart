@@ -1,3 +1,4 @@
+import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:flutter/material.dart' hide DrawerController;
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
@@ -24,6 +25,12 @@ class FRDrawer extends StatelessWidget {
                   : Icons.group_outlined,
             ),
             title: Text(group.name),
+            trailing: IconButton(
+              onPressed: () {
+                Get.toNamed(AppRoutes.groupDetails(group.id));
+              },
+              icon: Icon(Icons.edit),
+            ),
             onTap: () {
               groupServices.selectGroup(group);
               Navigator.pop(context);
