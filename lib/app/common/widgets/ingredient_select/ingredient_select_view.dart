@@ -48,47 +48,42 @@ class IngredientSelect extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Expanded(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return Material(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    onTap: () {
-                      Get.dialog(
-                        IngredientSelectModalView(
-                          controller: controller,
-                          isRecipe: isRecipe,
-                        ),
-                        useSafeArea: false,
-                      );
-                    },
-                    child: Container(
-                      constraints: BoxConstraints(
-                        minHeight: 42,
-                        minWidth: constraints.maxWidth,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Material(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8),
+                  onTap: () {
+                    Get.dialog(
+                      IngredientSelectModalView(
+                        controller: controller,
+                        isRecipe: isRecipe,
                       ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
-                      ),
-                      child: Obx(
-                        () => Text(
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          controller.selectedItems
-                              .map((e) => controller.itemLabelBuilder(e))
-                              .join(', '),
-                        ),
+                      useSafeArea: false,
+                    );
+                  },
+                  child: Container(
+                    constraints: BoxConstraints(
+                      minHeight: 42,
+                      minWidth: constraints.maxWidth,
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    child: Obx(
+                      () => Text(
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        controller.selectedItems
+                            .map((e) => controller.itemLabelBuilder(e))
+                            .join(', '),
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
         Positioned(
