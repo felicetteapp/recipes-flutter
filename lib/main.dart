@@ -15,6 +15,12 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await FirebaseAppCheck.instance.activate(
+    providerApple:
+        Environment.firebaseAppCheckIosDebugToken.isNotEmpty
+            ? AppleDebugProvider(
+              debugToken: Environment.firebaseAppCheckIosDebugToken,
+            )
+            : AppleDeviceCheckProvider(),
     providerAndroid:
         Environment.firebaseAppCheckAndroidDebugToken.isNotEmpty
             ? AndroidDebugProvider(
