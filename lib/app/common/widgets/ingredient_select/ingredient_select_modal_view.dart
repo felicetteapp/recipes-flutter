@@ -67,10 +67,6 @@ class IngredientSelectModalView extends StatelessWidget {
                                   Flexible(
                                     child: TextFormField(
                                       initialValue: item.quantity.toString(),
-                                      keyboardType:
-                                          TextInputType.numberWithOptions(
-                                            decimal: true,
-                                          ),
                                       decoration: InputDecoration(
                                         labelText: TranslationKeys.quantity.tr,
                                       ),

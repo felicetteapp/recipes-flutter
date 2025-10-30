@@ -14,6 +14,7 @@ class IngredientSelect extends StatelessWidget {
   final Future<FRIngredient> Function(String)? createItem;
   final bool isMulti;
   final String label;
+  final bool isRecipe;
   const IngredientSelect({
     super.key,
     required this.items,
@@ -22,6 +23,7 @@ class IngredientSelect extends StatelessWidget {
     required this.onChanged,
     required this.isMulti,
     required this.label,
+    required this.isRecipe,
     this.createItem,
   });
 
@@ -57,7 +59,10 @@ class IngredientSelect extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     onTap: () {
                       Get.dialog(
-                        IngredientSelectModalView(controller: controller),
+                        IngredientSelectModalView(
+                          controller: controller,
+                          isRecipe: isRecipe,
+                        ),
                         useSafeArea: false,
                       );
                     },
@@ -72,7 +77,7 @@ class IngredientSelect extends StatelessWidget {
                       ),
                       child: Obx(
                         () => Text(
-                          maxLines: 1,
+                          maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           controller.selectedItems
                               .map((e) => controller.itemLabelBuilder(e))

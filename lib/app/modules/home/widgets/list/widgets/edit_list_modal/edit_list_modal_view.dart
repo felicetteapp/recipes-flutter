@@ -43,6 +43,7 @@ class EditListModal extends StatelessWidget {
                     ),
                     Obx(
                       () => IngredientSelect(
+                        isRecipe: false,
                         items: controller.availableIngredients,
                         value:
                             controller.selectedIngredientsWithQuantities

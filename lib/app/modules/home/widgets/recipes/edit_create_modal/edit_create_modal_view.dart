@@ -1,10 +1,10 @@
 import 'dart:developer';
 
+import 'package:felicette_recipes/app/common/translation_helper.dart';
+import 'package:felicette_recipes/app/common/widgets/ingredient_select/ingredient_select_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
-import 'package:felicette_recipes/app/common/widgets/select/select.dart';
-import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
 import 'package:felicette_recipes/app/data/models/recipe_models.dart';
 import 'package:felicette_recipes/app/modules/home/widgets/recipes/edit_create_modal/edit_create_modal_controller.dart';
 import 'package:felicette_recipes/app/services/ingredients_service.dart';
@@ -48,115 +48,39 @@ class EditCreateRecipeModal extends StatelessWidget {
                         labelText: TranslationKeys.recipeName.tr,
                       ),
                     ),
-                    Text(
-                      TranslationKeys.chooseIngredientsText.tr,
-                      style: Get.theme.textTheme.bodyMedium,
-                    ),
                     Obx(
-                      () => FRSelect<FRIngredient>(
-                        label: TranslationKeys.selectIngredients.tr,
-                        items:
-                            ingredientsService.ingredients
-                                .where((i) => i.actualIngredient)
-                                .toList(),
-                        value:
-                            controller.ingredients
+                      () => IngredientSelect(
+                        isRecipe: true,
+                        items: ingredientsService.ingredients.toList(),
+                        value: controller.ingredients.toList(),
+                        isMulti: true,
+                        label: TranslationHelper.plural(
+                          TranslationKeys.ingredient,
+                          controller.ingredients.length,
+                        ),
+                        itemLabelBuilder: (item) {
+                          final ingredient = ingredientsService
+                              .getIngredientById(item.ingredientId);
+                          final ingredientName =
+                              ingredient?.name ?? 'Unknown Ingredient';
+                          return ingredientName;
+                        },
+                        onChanged: (selectedIngredients) {
+                          log(
+                            'EditCreateRecipeModal - onChanged: selectedIngredients=${selectedIngredients.length}, selected=${selectedIngredients.map((e) => e.ingredientId).join(', ')}',
+                            name: 'EditCreateRecipeModal',
+                          );
+                          controller.ingredients.assignAll(
+                            selectedIngredients
                                 .map(
-                                  (ri) => ingredientsService.getIngredientById(
-                                    ri.ingredientId,
+                                  (i) => FRRecipeIngredient(
+                                    ingredientId: i.ingredientId,
+                                    quantity: i.quantity,
                                   ),
                                 )
-                                .whereType<FRIngredient>()
                                 .toList(),
-                        itemLabelBuilder: (ingredient) {
-                          return ingredient.name;
-                        },
-                        isMulti: true,
-                        createItem: (name) async {
-                          final tempIngredient = FRIngredient(
-                            id: '',
-                            name: name,
-                            actualIngredient: true,
-                          );
-                          final newIngredient = await ingredientsService
-                              .createIngredient(
-                                groupId: groupId,
-                                ingredient: tempIngredient,
-                              );
-
-                          log(
-                            'Created new ingredient: ${newIngredient.id} - ${newIngredient.name}',
-                          );
-                          return newIngredient;
-                        },
-                        onChanged: (selected) {
-                          log('Selected ingredients: $selected');
-                          final currentSelected =
-                              controller.ingredients
-                                  .where(
-                                    (ri) => selected.any(
-                                      (ing) => ing.id == ri.ingredientId,
-                                    ),
-                                  )
-                                  .toList();
-
-                          final newRecipeIngredients =
-                              selected.map((ing) {
-                                final existing = currentSelected
-                                    .firstWhereOrNull(
-                                      (ri) => ri.ingredientId == ing.id,
-                                    );
-                                if (existing != null) {
-                                  return existing;
-                                } else {
-                                  return FRRecipeIngredient(
-                                    ingredientId: ing.id,
-                                    quantity: '',
-                                  );
-                                }
-                              }).toList();
-                          controller.ingredients.assignAll(
-                            newRecipeIngredients,
                           );
                         },
-                      ),
-                    ),
-                    Divider(),
-                    Text(
-                      TranslationKeys.optionalQuantitiesText.tr,
-                      style: Get.theme.textTheme.bodyMedium,
-                    ),
-                    Text(
-                      TranslationKeys.quantitiesShoppingListText.tr,
-                      style: Get.theme.textTheme.bodySmall,
-                    ),
-
-                    Obx(
-                      () => Column(
-                        spacing: 16,
-                        children:
-                            controller.ingredients.map((ri) {
-                              final ingredient = ingredientsService
-                                  .getIngredientById(ri.ingredientId);
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 8),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    labelText: TranslationKeys.quantityFor
-                                        .trParams({
-                                          'ingredient':
-                                              ingredient?.name ?? 'Unknown',
-                                        }),
-                                  ),
-                                  onChanged: (value) {
-                                    ri.quantity = value;
-                                  },
-                                  controller: TextEditingController(
-                                    text: ri.quantity,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
                       ),
                     ),
                   ],
