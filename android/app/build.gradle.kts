@@ -46,9 +46,11 @@ android {
         create("dev") {
             dimension = "default"
             versionNameSuffix = ".dev"
+            resValue("string", "app_name", "Felicette Recipes Dev")
         }
         create("prod"){
             dimension = "default"
+            resValue("string", "app_name", "Felicette Recipes")
         }
     }
 
