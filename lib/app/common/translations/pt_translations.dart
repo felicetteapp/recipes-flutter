@@ -51,6 +51,13 @@ class PtTranslations extends Translations {
 
       // login
       TranslationKeys.loginErrorTitle: 'Falha no login',
+      TranslationKeys.forgotPassword: 'Esqueceu a senha?',
+      TranslationKeys.alreadyHaveAccount: 'Já tem uma conta?',
+      TranslationKeys.resetPassword: 'Redefinir Senha',
+      TranslationKeys.resetPasswordSuccess:
+          'Email de redefinição de senha enviado! Por favor, verifique sua caixa de entrada.',
+      TranslationKeys.resetPasswordError:
+          'Falha ao enviar email de redefinição de senha',
 
       // drawer
       TranslationKeys.yourGroups: 'Seus Grupos',

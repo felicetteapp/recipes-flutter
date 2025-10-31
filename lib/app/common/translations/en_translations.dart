@@ -50,6 +50,12 @@ class EnTranslations extends Translations {
 
       // login
       TranslationKeys.loginErrorTitle: 'Login failed',
+      TranslationKeys.forgotPassword: 'Forgot Password?',
+      TranslationKeys.alreadyHaveAccount: 'Already have an account?',
+      TranslationKeys.resetPassword: 'Reset Password',
+      TranslationKeys.resetPasswordSuccess:
+          'Password reset email sent! Please check your inbox.',
+      TranslationKeys.resetPasswordError: 'Failed to send password reset email',
 
       // drawer
       TranslationKeys.yourGroups: 'Your Groups',

@@ -1,5 +1,7 @@
 import 'package:felicette_recipes/app/modules/groups/detail/group_detail_binding.dart';
 import 'package:felicette_recipes/app/modules/groups/detail/group_detail_view.dart';
+import 'package:felicette_recipes/app/modules/password_recovery/password_recovery_binding.dart';
+import 'package:felicette_recipes/app/modules/password_recovery/password_recovery_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/modules/home/home_binding.dart';
@@ -38,6 +40,11 @@ class AppPages {
           ],
         ),
       ],
+    ),
+    GetPage(
+      name: AppRoutes.passwordRecovery,
+      page: () => const PasswordRecoveryView(),
+      binding: PasswordRecoveryBinding(),
     ),
     GetPage(
       name: AppRoutes.login,

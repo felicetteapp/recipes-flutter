@@ -1,15 +1,15 @@
+import 'package:felicette_recipes/app/modules/password_recovery/password_recovery_controller.dart';
+import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
 
-import 'login_controller.dart';
-
-class LoginView extends GetView<LoginController> {
-  const LoginView({super.key});
+class PasswordRecoveryView extends GetView<PasswordRecoveryController> {
+  const PasswordRecoveryView({super.key});
 
   afterRender() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.resetState();
+      controller.handleFirstRender();
     });
   }
 
@@ -80,46 +80,23 @@ class LoginView extends GetView<LoginController> {
                           ],
                         ),
                         Obx(
-                          () => TextFormField(
-                            autocorrect: false,
-                            controller: controller.passwordController,
-                            decoration: InputDecoration(
-                              labelText: TranslationKeys.password.tr,
-                              suffix: IconButton(
-                                iconSize: 18,
-                                style: ButtonStyle(
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                ),
-                                padding: EdgeInsets.zero,
-                                visualDensity: VisualDensity.compact,
-                                onPressed: () {
-                                  controller.isPasswordHidden.value =
-                                      !controller.isPasswordHidden.value;
-                                },
-                                icon: Icon(
-                                  controller.isPasswordHidden.value
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                ),
-                              ),
-                            ),
-                            obscureText: controller.isPasswordHidden.value,
-                            autofillHints: const [AutofillHints.password],
-                          ),
-                        ),
-                        Obx(
                           () =>
                               controller.isLoading.value
                                   ? const CircularProgressIndicator()
                                   : ElevatedButton(
-                                    onPressed: controller.login,
-                                    child: Text(TranslationKeys.login.tr),
+                                    onPressed: () {
+                                      controller.handlePasswordRecovery();
+                                    },
+                                    child: Text(
+                                      TranslationKeys.resetPassword.tr,
+                                    ),
                                   ),
                         ),
                         TextButton(
-                          onPressed: controller.handleForgotPassword,
-                          child: Text(TranslationKeys.forgotPassword.tr),
+                          onPressed: () {
+                            Get.toNamed(AppRoutes.login);
+                          },
+                          child: Text(TranslationKeys.alreadyHaveAccount.tr),
                         ),
                       ],
                     ),

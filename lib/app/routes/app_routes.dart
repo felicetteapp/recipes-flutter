@@ -2,8 +2,10 @@ class AppRoutes {
   static const String splash = '/';
   static const String home = '/home';
   static const String login = '/login';
+  static const String passwordRecovery = '/password-recovery';
   static const String groups = '/groups';
   static const String detailsPart = '/details';
 
-  static String groupDetails(String groupId) => '$groups/details/$groupId';
+  static String groupDetails(String groupId) =>
+      [groups, detailsPart, groupId].join('/');
 }

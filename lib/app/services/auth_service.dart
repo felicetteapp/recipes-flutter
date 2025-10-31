@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:felicette_recipes/app/data/models/auth_models.dart';
 import 'package:felicette_recipes/app/services/api/auth_api_service.dart';
+import 'package:felicette_recipes/app/services/localization_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
@@ -104,6 +105,14 @@ class AuthService extends GetxService {
         });
 
     Get.offAllNamed(AppRoutes.home);
+  }
+
+  handlePasswordRecovery(String email) async {
+    final ls = Get.find<LocalizationService>();
+    final languageCode = ls.currentLocale.languageCode;
+    await FirebaseAuth.instance.setLanguageCode(languageCode);
+
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
   @override

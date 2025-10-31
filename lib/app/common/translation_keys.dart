@@ -35,6 +35,11 @@ class TranslationKeys {
 
   // login
   static const String loginErrorTitle = 'login_error';
+  static const String forgotPassword = 'forgot_password';
+  static const String alreadyHaveAccount = 'already_have_account';
+  static const String resetPassword = 'reset_password';
+  static const String resetPasswordSuccess = 'reset_password_success';
+  static const String resetPasswordError = 'reset_password_error';
 
   // home view
   static const String unknownView = 'unknown_view';

@@ -52,6 +52,13 @@ class EsTranslations extends Translations {
 
       // login
       TranslationKeys.loginErrorTitle: 'Error de inicio de sesión',
+      TranslationKeys.forgotPassword: '¿Olvidaste tu contraseña?',
+      TranslationKeys.alreadyHaveAccount: '¿Ya tienes una cuenta?',
+      TranslationKeys.resetPassword: 'Restablecer Contraseña',
+      TranslationKeys.resetPasswordSuccess:
+          '¡Correo de restablecimiento de contraseña enviado! Por favor revisa tu bandeja de entrada.',
+      TranslationKeys.resetPasswordError:
+          'Error al enviar correo de restablecimiento de contraseña',
 
       // drawer
       TranslationKeys.yourGroups: 'Tus Grupos',

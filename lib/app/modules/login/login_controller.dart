@@ -1,3 +1,5 @@
+import 'package:felicette_recipes/app/modules/password_recovery/password_recovery_arguments.dart';
+import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
@@ -30,5 +32,19 @@ class LoginController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  resetState() {
+    isLoading.value = false;
+    isPasswordHidden.value = true;
+    emailController.clear();
+    passwordController.clear();
+  }
+
+  handleForgotPassword() {
+    Get.toNamed(
+      AppRoutes.passwordRecovery,
+      arguments: PasswordRecoveryArguments(email: emailController.text),
+    );
   }
 }
