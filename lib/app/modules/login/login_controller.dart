@@ -6,6 +6,7 @@ import 'package:felicette_recipes/app/utils/snackbar.dart';
 
 class LoginController extends GetxController {
   final RxBool isLoading = false.obs;
+  final RxBool isPasswordHidden = true.obs;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
