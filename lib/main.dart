@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:felicette_recipes/app/common/environment.dart';
 import 'package:felicette_recipes/app/services/app_service.dart';
 import 'package:felicette_recipes/app/utils/secure_storage.dart';
@@ -15,8 +16,14 @@ import 'package:felicette_recipes/theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  final userHasDarkModeSettingEnabled =
+      PlatformDispatcher.instance.platformBrightness == Brightness.dark;
+
+  final storedDarkModeSetting = await FRSecureStorage.read(key: isDarkModeKey);
+
   final initialThemeIsDark =
-      await FRSecureStorage.read(key: isDarkModeKey) == 'true';
+      storedDarkModeSetting == 'true' ||
+      (storedDarkModeSetting != 'false' && userHasDarkModeSettingEnabled);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
