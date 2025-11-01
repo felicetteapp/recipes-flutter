@@ -32,6 +32,9 @@ class TranslationKeys {
   static const String more = 'more';
   static const String ok = 'ok';
   static const String loading = 'loading';
+  static const String theme = 'theme';
+  static const String darkMode = 'dark_mode';
+  static const String lightMode = 'light_mode';
 
   // login
   static const String loginErrorTitle = 'login_error';

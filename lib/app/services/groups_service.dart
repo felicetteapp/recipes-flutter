@@ -54,7 +54,7 @@ class GroupsService extends GetxService {
     );
 
     if (selectedGroup.value == null && availableGroups.isNotEmpty) {
-      final storedGroupId = await RFSecureStorage.read(
+      final storedGroupId = await FRSecureStorage.read(
         key: GroupsService.selectedGroupKey,
       );
 
@@ -229,7 +229,7 @@ class GroupsService extends GetxService {
   static const selectedGroupKey = 'selected_group';
 
   fetchSelectedGroupFromStorage() async {
-    final storedGroupId = await RFSecureStorage.read(key: selectedGroupKey);
+    final storedGroupId = await FRSecureStorage.read(key: selectedGroupKey);
     try {
       final group = availableGroups.firstWhere(
         (group) => group.id == storedGroupId,
@@ -252,7 +252,7 @@ class GroupsService extends GetxService {
   }
 
   saveSelectedGroupToStorage(String groupId) async {
-    await RFSecureStorage.write(key: selectedGroupKey, value: groupId);
+    await FRSecureStorage.write(key: selectedGroupKey, value: groupId);
   }
 
   @override

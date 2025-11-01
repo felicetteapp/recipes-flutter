@@ -49,32 +49,91 @@ class CustomColors extends ThemeExtension<CustomColors> {
   }
 }
 
-final colorScheme = ColorScheme.fromSeed(
+final colorSchemeDark = ColorScheme.fromSeed(
   seedColor: mainColor,
   secondary: secondaryColor,
   brightness: Brightness.dark,
 );
 
-final theme = ThemeData(
-  colorScheme: colorScheme,
+final colorSchemeLight = ColorScheme.fromSeed(
+  seedColor: mainColor,
+  secondary: secondaryColor,
+  brightness: Brightness.light,
+);
+
+final themeLight = ThemeData(
+  colorScheme: colorSchemeLight,
   fontFamily: 'NunitoSans',
   useMaterial3: true,
   extensions: <ThemeExtension<dynamic>>[
     CustomColors(
-      success: Color.fromARGB(255, 109, 226, 109),
-      onSuccess: colorScheme.surface,
-      successContainer: Color.fromARGB(255, 165, 192, 165),
-      onSuccessContainer: colorScheme.surface,
+      success: Color.fromARGB(255, 27, 160, 27),
+      onSuccess: colorSchemeLight.onSurface,
+      successContainer: Color.fromARGB(255, 144, 219, 144),
+      onSuccessContainer: colorSchemeLight.onSurface,
     ),
   ],
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: colorScheme.surfaceContainer, width: 1.5),
+      borderSide: BorderSide(
+        color: colorSchemeLight.surfaceContainer,
+        width: 1.5,
+      ),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: colorScheme.surfaceContainer, width: 1.5),
+      borderSide: BorderSide(
+        color: colorSchemeLight.surfaceContainer,
+        width: 1.5,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(
+        color: mainColor, // Use your main color
+        width: 2.0,
+      ),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: Colors.red, width: 2.0),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: Colors.red, width: 2.0),
+    ),
+    filled: false,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+  ),
+);
+
+final themeDark = ThemeData(
+  colorScheme: colorSchemeDark,
+  fontFamily: 'NunitoSans',
+  useMaterial3: true,
+  extensions: <ThemeExtension<dynamic>>[
+    CustomColors(
+      success: Color.fromARGB(255, 109, 226, 109),
+      onSuccess: colorSchemeDark.surface,
+      successContainer: Color.fromARGB(255, 165, 192, 165),
+      onSuccessContainer: colorSchemeDark.surface,
+    ),
+  ],
+  inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(
+        color: colorSchemeDark.surfaceContainer,
+        width: 1.5,
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(
+        color: colorSchemeDark.surfaceContainer,
+        width: 1.5,
+      ),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),

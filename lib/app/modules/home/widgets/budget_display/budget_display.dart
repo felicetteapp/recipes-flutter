@@ -75,7 +75,7 @@ class BudgetDisplay extends StatelessWidget {
                   height: 20,
                   child: VerticalDivider(
                     thickness: 0.15,
-                    color: Colors.grey,
+                    color: theme.colorScheme.outlineVariant,
                     width: 16,
                   ),
                   //                  width: 16,

@@ -1,4 +1,5 @@
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/services/app_service.dart';
 import 'package:felicette_recipes/app/utils/snackbar.dart';
 import 'package:flutter/material.dart' hide DrawerController;
 import 'package:get/get.dart';
@@ -152,6 +153,23 @@ class FRDrawer extends StatelessWidget {
     );
   }
 
+  Widget _buildThemeListTile(BuildContext context) {
+    final appService = Get.find<AppService>();
+
+    final isDarkMode = Get.isDarkMode;
+    return ListTile(
+      leading: Icon(Icons.brightness_6),
+      title: Text(TranslationKeys.theme.tr),
+      subtitle: Text(
+        isDarkMode ? TranslationKeys.darkMode.tr : TranslationKeys.lightMode.tr,
+      ),
+      onTap: () async {
+        await appService.toggleTheme();
+        Get.offAndToNamed(AppRoutes.home);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final AuthService authService = Get.find<AuthService>();
@@ -206,6 +224,8 @@ class FRDrawer extends StatelessWidget {
             const Divider(),
             _buildLanguageListTile(context),
             const Divider(),
+            _buildThemeListTile(context),
+            const Divider(),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text(TranslationKeys.logout.tr),
@@ -257,7 +277,7 @@ class FRDrawer extends StatelessWidget {
                             child: Text(
                               'github.com/felicetteapp/recipes-flutter',
                               style: TextStyle(
-                                color: Colors.blue,
+                                color: Theme.of(context).colorScheme.primary,
                                 decoration: TextDecoration.underline,
                               ),
                             ),

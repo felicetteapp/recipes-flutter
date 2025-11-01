@@ -7,5 +7,5 @@ class AppRoutes {
   static const String detailsPart = '/details';
 
   static String groupDetails(String groupId) =>
-      [groups, detailsPart, groupId].join('/');
+      [groups, detailsPart, groupId].join('/').replaceAll('//', '/');
 }

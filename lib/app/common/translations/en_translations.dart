@@ -39,6 +39,9 @@ class EnTranslations extends Translations {
       TranslationKeys.more: 'More',
       TranslationKeys.ok: 'OK',
       TranslationKeys.loading: 'Loading',
+      TranslationKeys.theme: 'Theme',
+      TranslationKeys.darkMode: 'Dark Mode',
+      TranslationKeys.lightMode: 'Light Mode',
 
       // home view
       TranslationKeys.unknownView: 'Unknown View',

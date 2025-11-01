@@ -52,11 +52,11 @@ class ListController extends GetxController {
       ListDisplayTypeEnum.ingredients.obs;
 
   saveDisplayTypeToStorage(ListDisplayTypeEnum type) async {
-    await RFSecureStorage.write(key: displayTypeKey, value: type.toString());
+    await FRSecureStorage.write(key: displayTypeKey, value: type.toString());
   }
 
   fetchDisplayTypeFromStorage() async {
-    final storedType = await RFSecureStorage.read(key: displayTypeKey);
+    final storedType = await FRSecureStorage.read(key: displayTypeKey);
     if (storedType != null) {
       if (storedType == ListDisplayTypeEnum.ingredients.toString()) {
         displayType.value = ListDisplayTypeEnum.ingredients;

@@ -40,6 +40,9 @@ class PtTranslations extends Translations {
       TranslationKeys.more: 'Mais',
       TranslationKeys.ok: 'OK',
       TranslationKeys.loading: 'Carregando',
+      TranslationKeys.theme: 'Tema',
+      TranslationKeys.darkMode: 'Modo Escuro',
+      TranslationKeys.lightMode: 'Modo Claro',
 
       // home view
       TranslationKeys.unknownView: 'Vista desconhecida',

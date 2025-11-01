@@ -41,6 +41,9 @@ class EsTranslations extends Translations {
       TranslationKeys.more: 'Más',
       TranslationKeys.ok: 'OK',
       TranslationKeys.loading: 'Cargando',
+      TranslationKeys.theme: 'Tema',
+      TranslationKeys.darkMode: 'Modo Oscuro',
+      TranslationKeys.lightMode: 'Modo Claro',
 
       // home view
       TranslationKeys.unknownView: 'Vista desconocida',

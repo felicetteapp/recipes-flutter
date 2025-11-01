@@ -39,7 +39,7 @@ class LocalizationService extends GetxController {
   }
 
   void _loadLocaleFromStorage() {
-    RFSecureStorage.read(key: LocalizationService.localeKey).then((value) {
+    FRSecureStorage.read(key: LocalizationService.localeKey).then((value) {
       if (value != null) {
         final localeParts = value.split('_');
         if (localeParts.length == 2) {
@@ -63,7 +63,7 @@ class LocalizationService extends GetxController {
   }
 
   void _saveLocaleToStorage(Locale locale) {
-    RFSecureStorage.write(
+    FRSecureStorage.write(
       key: LocalizationService.localeKey,
       value: locale.toString(),
     );
