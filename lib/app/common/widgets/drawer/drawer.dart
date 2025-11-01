@@ -183,7 +183,9 @@ class FRDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
               child: Row(
                 spacing: 8,
                 children: [
@@ -203,14 +205,14 @@ class FRDrawer extends StatelessWidget {
                             text: 'Felicette',
                             style: TextStyle(
                               fontWeight: FontWeight.normal,
-                              color: Get.theme.colorScheme.primary,
+                              color: Get.theme.colorScheme.onSecondary,
                             ),
                           ),
                           TextSpan(
-                            text: ' Recipes',
+                            text: 'Recipes',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Get.theme.colorScheme.secondary,
+                              color: Get.theme.colorScheme.onSecondary,
                             ),
                           ),
                         ],
