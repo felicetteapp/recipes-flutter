@@ -458,6 +458,7 @@ class ListWidget extends StatelessWidget {
 
     return ListTile(
       visualDensity: VisualDensity.compact,
+      contentPadding: EdgeInsets.symmetric(horizontal: 4),
       key: Key('ingredient_${ingredient.id}_in_recipe_${recipeItem.recipe.id}'),
       leading: Checkbox(
         value: isChecked,
