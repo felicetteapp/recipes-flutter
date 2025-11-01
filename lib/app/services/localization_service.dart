@@ -46,9 +46,14 @@ class LocalizationService extends GetxController {
           final locale = Locale(localeParts[0], localeParts[1]);
           if (isLocaleSupported(locale)) {
             _currentLocale.value = locale;
-            Get.updateLocale(locale);
             return;
           }
+        }
+      } else {
+        final deviceLocale = Get.deviceLocale;
+        if (deviceLocale != null && isLocaleSupported(deviceLocale)) {
+          _currentLocale.value = deviceLocale;
+          return;
         }
       }
     });
