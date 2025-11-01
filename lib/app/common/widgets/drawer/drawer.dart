@@ -148,7 +148,6 @@ class FRDrawer extends StatelessWidget {
         if (response != null) {
           localizationService.changeLocale(response);
         }
-        // Open language selection dialog
       },
     );
   }
@@ -209,7 +208,7 @@ class FRDrawer extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: 'Recipes',
+                            text: ' Recipes',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Get.theme.colorScheme.onSecondary,
@@ -225,7 +224,6 @@ class FRDrawer extends StatelessWidget {
             ..._buildGroupListTiles(context),
             const Divider(),
             _buildLanguageListTile(context),
-            const Divider(),
             _buildThemeListTile(context),
             const Divider(),
             ListTile(

@@ -1,3 +1,4 @@
+import 'package:felicette_recipes/app/common/widgets/footer/footer.dart';
 import 'package:felicette_recipes/app/modules/password_recovery/password_recovery_controller.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +84,7 @@ class PasswordRecoveryView extends GetView<PasswordRecoveryController> {
                           () =>
                               controller.isLoading.value
                                   ? const CircularProgressIndicator()
-                                  : ElevatedButton(
+                                  : FilledButton(
                                     onPressed: () {
                                       controller.handlePasswordRecovery();
                                     },
@@ -98,6 +99,7 @@ class PasswordRecoveryView extends GetView<PasswordRecoveryController> {
                           },
                           child: Text(TranslationKeys.alreadyHaveAccount.tr),
                         ),
+                        const FRFooter(),
                       ],
                     ),
                   ),

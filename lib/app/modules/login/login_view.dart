@@ -1,3 +1,4 @@
+import 'package:felicette_recipes/app/common/widgets/footer/footer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
@@ -112,7 +113,7 @@ class LoginView extends GetView<LoginController> {
                           () =>
                               controller.isLoading.value
                                   ? const CircularProgressIndicator()
-                                  : ElevatedButton(
+                                  : FilledButton(
                                     onPressed: controller.login,
                                     child: Text(TranslationKeys.login.tr),
                                   ),
@@ -121,6 +122,7 @@ class LoginView extends GetView<LoginController> {
                           onPressed: controller.handleForgotPassword,
                           child: Text(TranslationKeys.forgotPassword.tr),
                         ),
+                        const FRFooter(),
                       ],
                     ),
                   ),
