@@ -1,3 +1,5 @@
+import 'package:felicette_recipes/app/modules/create_account/create_account_binding.dart';
+import 'package:felicette_recipes/app/modules/create_account/create_account_view.dart';
 import 'package:felicette_recipes/app/modules/groups/detail/group_detail_binding.dart';
 import 'package:felicette_recipes/app/modules/groups/detail/group_detail_view.dart';
 import 'package:felicette_recipes/app/modules/password_recovery/password_recovery_binding.dart';
@@ -45,6 +47,11 @@ class AppPages {
       name: AppRoutes.passwordRecovery,
       page: () => const PasswordRecoveryView(),
       binding: PasswordRecoveryBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.createAccount,
+      page: () => const CreateAccountView(),
+      binding: CreateAccountBinding(),
     ),
     GetPage(
       name: AppRoutes.login,

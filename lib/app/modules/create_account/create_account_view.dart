@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
 
-import 'login_controller.dart';
+import 'create_account_controller.dart';
 
-class LoginView extends GetView<LoginController> {
-  const LoginView({super.key});
+class CreateAccountView extends GetView<CreateAccountController> {
+  const CreateAccountView({super.key});
 
   afterRender(GlobalKey<FormState> formKey) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.resetState();
       controller.formKey.value = formKey;
+      controller.resetState();
     });
   }
 
@@ -78,12 +78,12 @@ class LoginView extends GetView<LoginController> {
                           decoration: InputDecoration(
                             labelText: TranslationKeys.email.tr,
                           ),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.emailAddress,
                           autofillHints: const [
                             AutofillHints.email,
                             AutofillHints.username,
                           ],
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (v) {
                             return FRValidations.validateEmail(
                               v,
@@ -95,6 +95,8 @@ class LoginView extends GetView<LoginController> {
                           () => TextFormField(
                             autocorrect: false,
                             controller: controller.passwordController,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
                               labelText: TranslationKeys.password.tr,
                               suffix: IconButton(
@@ -118,11 +120,64 @@ class LoginView extends GetView<LoginController> {
                             ),
                             obscureText: controller.isPasswordHidden.value,
                             autofillHints: const [AutofillHints.password],
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return TranslationKeys.inputRequiredError.tr;
+                              }
+                              if (controller
+                                      .confirmPasswordController
+                                      .text
+                                      .isNotEmpty &&
+                                  value !=
+                                      controller
+                                          .confirmPasswordController
+                                          .text) {
+                                return TranslationKeys
+                                    .passwordsDoNotMatchError
+                                    .tr;
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Obx(
+                          () => TextFormField(
+                            autocorrect: false,
+                            controller: controller.confirmPasswordController,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
-                            validator: (v) {
-                              if (v == null || v.isEmpty) {
+                            decoration: InputDecoration(
+                              labelText: TranslationKeys.confirmPassword.tr,
+                              suffix: IconButton(
+                                iconSize: 18,
+                                style: ButtonStyle(
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                ),
+                                padding: EdgeInsets.zero,
+                                visualDensity: VisualDensity.compact,
+                                onPressed: () {
+                                  controller.isConfirmPasswordHidden.value =
+                                      !controller.isConfirmPasswordHidden.value;
+                                },
+                                icon: Icon(
+                                  controller.isConfirmPasswordHidden.value
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                              ),
+                            ),
+                            obscureText:
+                                controller.isConfirmPasswordHidden.value,
+                            autofillHints: const [AutofillHints.password],
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
                                 return TranslationKeys.inputRequiredError.tr;
+                              }
+                              if (value != controller.passwordController.text) {
+                                return TranslationKeys
+                                    .passwordsDoNotMatchError
+                                    .tr;
                               }
                               return null;
                             },
@@ -133,27 +188,15 @@ class LoginView extends GetView<LoginController> {
                               controller.isLoading.value
                                   ? const CircularProgressIndicator()
                                   : FilledButton(
-                                    onPressed: controller.login,
-                                    child: Text(TranslationKeys.login.tr),
+                                    onPressed: controller.handleCreateAccount,
+                                    child: Text(
+                                      TranslationKeys.createAccount.tr,
+                                    ),
                                   ),
                         ),
-                        Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: 8,
-                          children: [
-                            TextButton(
-                              onPressed: controller.handleForgotPassword,
-                              child: Text(TranslationKeys.forgotPassword.tr),
-                            ),
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                foregroundColor:
-                                    Get.context!.theme.colorScheme.secondary,
-                              ),
-                              onPressed: controller.handleCreateAccount,
-                              child: Text(TranslationKeys.createAccount.tr),
-                            ),
-                          ],
+                        TextButton(
+                          onPressed: controller.handleAlreadyHaveAccount,
+                          child: Text(TranslationKeys.alreadyHaveAccount.tr),
                         ),
                         const FRFooter(),
                       ],

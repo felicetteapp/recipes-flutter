@@ -1,6 +1,7 @@
 import 'package:felicette_recipes/app/common/widgets/footer/footer.dart';
 import 'package:felicette_recipes/app/modules/password_recovery/password_recovery_controller.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/utils/validations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
@@ -8,21 +9,24 @@ import 'package:felicette_recipes/app/common/translation_keys.dart';
 class PasswordRecoveryView extends GetView<PasswordRecoveryController> {
   const PasswordRecoveryView({super.key});
 
-  afterRender() {
+  afterRender(GlobalKey<FormState> formKey) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.formKey.value = formKey;
       controller.handleFirstRender();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    afterRender();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    afterRender(formKey);
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
               child: Form(
+                key: formKey,
                 child: AutofillGroup(
                   child: Container(
                     constraints: BoxConstraints(
@@ -79,6 +83,12 @@ class PasswordRecoveryView extends GetView<PasswordRecoveryController> {
                             AutofillHints.email,
                             AutofillHints.username,
                           ],
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator:
+                              (v) => FRValidations.validateEmail(
+                                v,
+                                isRequired: true,
+                              ),
                         ),
                         Obx(
                           () =>
@@ -93,11 +103,27 @@ class PasswordRecoveryView extends GetView<PasswordRecoveryController> {
                                     ),
                                   ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Get.toNamed(AppRoutes.login);
-                          },
-                          child: Text(TranslationKeys.alreadyHaveAccount.tr),
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 8,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                Get.toNamed(AppRoutes.login);
+                              },
+                              child: Text(
+                                TranslationKeys.alreadyHaveAccount.tr,
+                              ),
+                            ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor:
+                                    Get.context!.theme.colorScheme.secondary,
+                              ),
+                              onPressed: controller.handleCreateAccount,
+                              child: Text(TranslationKeys.createAccount.tr),
+                            ),
+                          ],
                         ),
                         const FRFooter(),
                       ],

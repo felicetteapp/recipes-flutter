@@ -137,6 +137,8 @@ class HomeView extends GetView<HomeController> {
   }
 
   List<Widget>? _buildAppBarActions() {
+    final GroupsService groupsService = Get.find<GroupsService>();
+
     return [
       Obx(
         () => Visibility(
@@ -154,15 +156,15 @@ class HomeView extends GetView<HomeController> {
 
       Obx(
         () => Visibility(
-          visible: controller.bottomNavigationIndexIs(
-            BottomNavigationItemEnum.list,
-          ),
+          visible:
+              controller.bottomNavigationIndexIs(
+                BottomNavigationItemEnum.list,
+              ) &&
+              groupsService.selectedGroup.value != null,
           child: TextButton(
             onPressed: () {
               Get.dialog(
-                EditListModal(
-                  groupId: Get.find<GroupsService>().selectedGroup.value!.id,
-                ),
+                EditListModal(groupId: groupsService.selectedGroup.value!.id),
                 useSafeArea: false,
               );
             },

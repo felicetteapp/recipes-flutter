@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 class PasswordRecoveryController extends GetxController {
   final RxBool isLoading = false.obs;
   final TextEditingController emailController = TextEditingController();
+  final Rxn<GlobalKey<FormState>> formKey = Rxn<GlobalKey<FormState>>();
 
   @override
   void onClose() {
@@ -35,7 +36,15 @@ class PasswordRecoveryController extends GetxController {
     }
   }
 
+  handleCreateAccount() {
+    Get.toNamed(AppRoutes.createAccount);
+  }
+
   handlePasswordRecovery() async {
+    final actualFormKey = formKey.value;
+    if (actualFormKey == null) return;
+    if (!actualFormKey.currentState!.validate()) return;
+
     final AuthService authService = Get.find<AuthService>();
     isLoading.value = true;
     try {

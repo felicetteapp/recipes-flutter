@@ -27,6 +27,13 @@ class AuthService extends GetxService {
     );
   }
 
+  Future<UserCredential> createAccount(String email, String password) async {
+    return FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+  }
+
   Future<void> logout() async {
     isLoggedIn.value = false;
     return FirebaseAuth.instance.signOut();
@@ -58,7 +65,8 @@ class AuthService extends GetxService {
     final tokenResult = await FirebaseAuth.instance.currentUser!
         .getIdTokenResult(forceRefresh);
 
-    final groups = tokenResult.claims?['groups']?.cast<String>() ?? [];
+    final List<String> groups =
+        tokenResult.claims?['groups']?.cast<String>() ?? [];
 
     log('User groups from claims: $groups', name: 'AuthService');
     return groups;
@@ -97,7 +105,31 @@ class AuthService extends GetxService {
               userGroups.toSet().difference(claimsGroups.toSet()).isNotEmpty ||
               claimsGroups.toSet().difference(userGroups.toSet()).isNotEmpty;
 
-          currentUser.value = snapshot.data();
+          var partialUserData = snapshot.data();
+          log(
+            'Fetched user data from Firestore: ${partialUserData.toString()}',
+            name: 'AuthService',
+          );
+          if (partialUserData == null) {
+            log(
+              'No user data found in Firestore for user ${FirebaseAuth.instance.currentUser!.uid}',
+              name: 'AuthService',
+            );
+            return;
+          }
+          partialUserData = partialUserData.copyWith(
+            email: FirebaseAuth.instance.currentUser!.email ?? '',
+          );
+
+          log(
+            'auth email: ${FirebaseAuth.instance.currentUser!.email}',
+            name: 'AuthService',
+          );
+          log(
+            'email for current user set to ${partialUserData.email}',
+            name: 'AuthService',
+          );
+          currentUser.value = partialUserData;
           isLoggedIn.value = true;
           if (needsToUpdateUserGroups) {
             userGroups.assignAll(claimsGroups);

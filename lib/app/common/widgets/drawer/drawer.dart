@@ -226,13 +226,16 @@ class FRDrawer extends StatelessWidget {
             _buildLanguageListTile(context),
             _buildThemeListTile(context),
             const Divider(),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text(TranslationKeys.logout.tr),
-              onTap: () {
-                authService.logout();
-              },
-            ),
+            Obx(() {
+              return ListTile(
+                leading: Icon(Icons.logout),
+                title: Text(TranslationKeys.logout.tr),
+                subtitle: Text(authService.currentUser.value?.email ?? ''),
+                onTap: () {
+                  authService.logout();
+                },
+              );
+            }),
             const Divider(),
             Obx(() {
               return AboutListTile(

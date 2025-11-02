@@ -44,6 +44,11 @@ class PtTranslations extends Translations {
       TranslationKeys.darkMode: 'Modo Escuro',
       TranslationKeys.lightMode: 'Modo Claro',
 
+      // validation
+      TranslationKeys.inputRequiredError: 'Este campo é obrigatório',
+      TranslationKeys.invalidEmailError:
+          'Por favor, insira um endereço de email válido',
+
       // home view
       TranslationKeys.unknownView: 'Vista desconhecida',
       TranslationKeys.addRecipe: 'Adicionar receita',
@@ -61,6 +66,11 @@ class PtTranslations extends Translations {
           'Email de redefinição de senha enviado! Por favor, verifique sua caixa de entrada.',
       TranslationKeys.resetPasswordError:
           'Falha ao enviar email de redefinição de senha',
+      TranslationKeys.createAccount: 'Criar Conta',
+      TranslationKeys.confirmPassword: 'Confirmar Senha',
+      TranslationKeys.passwordsDoNotMatchError: 'As senhas não correspondem',
+      TranslationKeys.createAccountErrorTitle: 'Falha ao criar conta',
+      TranslationKeys.createAccountSuccess: 'Conta criada com sucesso!',
 
       // drawer
       TranslationKeys.yourGroups: 'Seus Grupos',

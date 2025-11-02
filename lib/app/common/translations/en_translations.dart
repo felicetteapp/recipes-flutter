@@ -43,6 +43,10 @@ class EnTranslations extends Translations {
       TranslationKeys.darkMode: 'Dark Mode',
       TranslationKeys.lightMode: 'Light Mode',
 
+      // validation
+      TranslationKeys.inputRequiredError: 'This field is required',
+      TranslationKeys.invalidEmailError: 'Please enter a valid email address',
+
       // home view
       TranslationKeys.unknownView: 'Unknown View',
       TranslationKeys.addRecipe: 'Add Recipe',
@@ -59,6 +63,11 @@ class EnTranslations extends Translations {
       TranslationKeys.resetPasswordSuccess:
           'Password reset email sent! Please check your inbox.',
       TranslationKeys.resetPasswordError: 'Failed to send password reset email',
+      TranslationKeys.createAccount: 'Create Account',
+      TranslationKeys.confirmPassword: 'Confirm Password',
+      TranslationKeys.passwordsDoNotMatchError: 'Passwords do not match',
+      TranslationKeys.createAccountErrorTitle: 'Failed to create account',
+      TranslationKeys.createAccountSuccess: 'Account created successfully!',
 
       // drawer
       TranslationKeys.yourGroups: 'Your Groups',

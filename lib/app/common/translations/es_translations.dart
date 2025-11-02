@@ -45,6 +45,11 @@ class EsTranslations extends Translations {
       TranslationKeys.darkMode: 'Modo Oscuro',
       TranslationKeys.lightMode: 'Modo Claro',
 
+      // validation
+      TranslationKeys.inputRequiredError: 'Este campo es obligatorio',
+      TranslationKeys.invalidEmailError:
+          'Por favor ingrese una dirección de correo válida',
+
       // home view
       TranslationKeys.unknownView: 'Vista desconocida',
       TranslationKeys.addRecipe: 'Agregar receta',
@@ -62,6 +67,11 @@ class EsTranslations extends Translations {
           '¡Correo de restablecimiento de contraseña enviado! Por favor revisa tu bandeja de entrada.',
       TranslationKeys.resetPasswordError:
           'Error al enviar correo de restablecimiento de contraseña',
+      TranslationKeys.createAccount: 'Crear Cuenta',
+      TranslationKeys.confirmPassword: 'Confirmar Contraseña',
+      TranslationKeys.passwordsDoNotMatchError: 'Las contraseñas no coinciden',
+      TranslationKeys.createAccountErrorTitle: 'Error al crear cuenta',
+      TranslationKeys.createAccountSuccess: '¡Cuenta creada exitosamente!',
 
       // drawer
       TranslationKeys.yourGroups: 'Tus Grupos',
