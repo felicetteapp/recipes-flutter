@@ -2,9 +2,13 @@ import 'package:felicette_recipes/app/common/translation_keys.dart';
 import 'package:get/get.dart';
 
 class FRValidations {
-  static String? validateEmail(String? value, {bool isRequired = true}) {
+  static String? validateEmail(
+    String? value, {
+    bool isRequired = true,
+    String? isRequiredErrorMessage,
+  }) {
     if (isRequired && (value == null || value.isEmpty)) {
-      return TranslationKeys.inputRequiredError.tr;
+      return isRequiredErrorMessage ?? TranslationKeys.inputRequiredError.tr;
     }
     final emailRegex = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+",

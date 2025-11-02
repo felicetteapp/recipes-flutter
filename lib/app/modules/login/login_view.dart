@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:felicette_recipes/app/common/widgets/footer/footer.dart';
 import 'package:felicette_recipes/app/utils/validations.dart';
 import 'package:flutter/material.dart';
@@ -128,14 +130,48 @@ class LoginView extends GetView<LoginController> {
                             },
                           ),
                         ),
-                        Obx(
-                          () =>
-                              controller.isLoading.value
-                                  ? const CircularProgressIndicator()
-                                  : FilledButton(
-                                    onPressed: controller.login,
-                                    child: Text(TranslationKeys.login.tr),
-                                  ),
+                        Wrap(
+                          spacing: 8,
+                          runAlignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          alignment: WrapAlignment.center,
+                          children: [
+                            Obx(
+                              () =>
+                                  controller.isLoading.value
+                                      ? SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child:
+                                            const CircularProgressIndicator(),
+                                      )
+                                      : FilledButton(
+                                        onPressed: controller.login,
+                                        child: Text(TranslationKeys.login.tr),
+                                      ),
+                            ),
+                            Obx(
+                              () =>
+                                  controller.isLoading.value
+                                      ? SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child:
+                                            const CircularProgressIndicator(),
+                                      )
+                                      : OutlinedButton(
+                                        onPressed: () {
+                                          controller
+                                              .handleLoginWithoutPassword();
+                                        },
+                                        child: Text(
+                                          TranslationKeys
+                                              .loginWithoutPassword
+                                              .tr,
+                                        ),
+                                      ),
+                            ),
+                          ],
                         ),
                         Wrap(
                           alignment: WrapAlignment.center,

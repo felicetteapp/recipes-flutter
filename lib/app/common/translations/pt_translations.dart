@@ -71,6 +71,7 @@ class PtTranslations extends Translations {
       TranslationKeys.passwordsDoNotMatchError: 'As senhas não correspondem',
       TranslationKeys.createAccountErrorTitle: 'Falha ao criar conta',
       TranslationKeys.createAccountSuccess: 'Conta criada com sucesso!',
+      TranslationKeys.loginWithoutPassword: 'Login sem senha',
 
       // drawer
       TranslationKeys.yourGroups: 'Seus Grupos',

@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:felicette_recipes/app/common/environment.dart';
 import 'package:felicette_recipes/app/data/models/auth_models.dart';
 import 'package:felicette_recipes/app/services/api/auth_api_service.dart';
 import 'package:felicette_recipes/app/services/localization_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AuthService extends GetxService {
   final AuthApiService authApiService = Get.put<AuthApiService>(
@@ -31,6 +33,45 @@ class AuthService extends GetxService {
     return FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
+    );
+  }
+
+  loginWithEmailLink(String email, String emailLink) async {
+    final isLink = FirebaseAuth.instance.isSignInWithEmailLink(emailLink);
+    if (!isLink) {
+      throw Exception('Invalid email link');
+    }
+    return FirebaseAuth.instance.signInWithEmailLink(
+      email: email,
+      emailLink: emailLink,
+    );
+  }
+
+  Future<void> loginWithoutPassword(String email) async {
+    final ls = Get.find<LocalizationService>();
+    final packageInfo = await PackageInfo.fromPlatform();
+    final androidPackageName = packageInfo.packageName;
+
+    final isAndroid = GetPlatform.isAndroid;
+
+    if (!isAndroid) {
+      // TODO: implement for iOS
+      throw Exception('loginWithoutPassword is only supported on Android');
+    }
+
+    final ActionCodeSettings acs = ActionCodeSettings(
+      url: 'https://${Environment.androidDeepLinkUrl}/login?email=$email',
+      handleCodeInApp: true,
+      androidPackageName: androidPackageName,
+      androidInstallApp: true,
+      androidMinimumVersion: '12',
+    );
+
+    await FirebaseAuth.instance.setLanguageCode(ls.currentLocale.languageCode);
+
+    await FirebaseAuth.instance.sendSignInLinkToEmail(
+      email: email,
+      actionCodeSettings: acs,
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:felicette_recipes/app/modules/password_recovery/password_recovery_arguments.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/utils/validations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
@@ -50,6 +51,33 @@ class LoginController extends GetxController {
       AppRoutes.passwordRecovery,
       arguments: PasswordRecoveryArguments(email: emailController.text),
     );
+  }
+
+  handleLoginWithoutPassword() async {
+    final AuthService authService = Get.find<AuthService>();
+    isLoading.value = true;
+
+    final isEmailInValid = FRValidations.validateEmail(
+      emailController.text,
+      isRequired: true,
+      isRequiredErrorMessage: TranslationKeys.emailIsRequiredError.tr,
+    );
+    if (isEmailInValid != null) {
+      FRSnackbar.error(TranslationKeys.loginErrorTitle.tr, isEmailInValid);
+      isLoading.value = false;
+      return;
+    }
+
+    try {
+      //      await authService.loginWithoutPassword(emailController.text);
+    } catch (e) {
+      FRSnackbar.error(
+        TranslationKeys.loginErrorTitle.tr,
+        TranslationKeys.tryAgain.tr,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   handleCreateAccount() {

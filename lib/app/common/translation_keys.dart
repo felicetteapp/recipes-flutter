@@ -39,6 +39,7 @@ class TranslationKeys {
   //validation
   static const String inputRequiredError = 'input_required_error';
   static const String invalidEmailError = 'invalid_email_error';
+  static const String emailIsRequiredError = 'email_is_required_error';
 
   // login
   static const String loginErrorTitle = 'login_error';
@@ -52,6 +53,7 @@ class TranslationKeys {
   static const String passwordsDoNotMatchError = 'passwords_do_not_match_error';
   static const String createAccountErrorTitle = 'create_account_error';
   static const String createAccountSuccess = 'create_account_success';
+  static const String loginWithoutPassword = 'login_without_password';
 
   // home view
   static const String unknownView = 'unknown_view';

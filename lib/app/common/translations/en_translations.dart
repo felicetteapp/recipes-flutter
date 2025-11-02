@@ -68,6 +68,7 @@ class EnTranslations extends Translations {
       TranslationKeys.passwordsDoNotMatchError: 'Passwords do not match',
       TranslationKeys.createAccountErrorTitle: 'Failed to create account',
       TranslationKeys.createAccountSuccess: 'Account created successfully!',
+      TranslationKeys.loginWithoutPassword: 'Login without password',
 
       // drawer
       TranslationKeys.yourGroups: 'Your Groups',

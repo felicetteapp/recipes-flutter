@@ -7,4 +7,8 @@ final class Environment {
     'FIREBASE_APP_CHECK_IOS_DT',
     defaultValue: '',
   );
+  static const androidDeepLinkUrl = String.fromEnvironment(
+    'ANDROID_DEEP_LINK_URL',
+    defaultValue: 'app.recipes.felicette.app',
+  );
 }

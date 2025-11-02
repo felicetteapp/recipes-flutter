@@ -72,6 +72,7 @@ class EsTranslations extends Translations {
       TranslationKeys.passwordsDoNotMatchError: 'Las contraseñas no coinciden',
       TranslationKeys.createAccountErrorTitle: 'Error al crear cuenta',
       TranslationKeys.createAccountSuccess: '¡Cuenta creada exitosamente!',
+      TranslationKeys.loginWithoutPassword: 'Iniciar sesión sin contraseña',
 
       // drawer
       TranslationKeys.yourGroups: 'Tus Grupos',
