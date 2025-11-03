@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:felicette_recipes/app/common/widgets/footer/footer.dart';
 import 'package:felicette_recipes/app/utils/validations.dart';
 import 'package:flutter/material.dart';
