@@ -37,6 +37,10 @@ class AuthService extends GetxService {
   }
 
   loginWithEmailLink(String email, String emailLink) async {
+    log(
+      'Logging in with email link for email: $email',
+      name: 'AuthService.loginWithEmailLink',
+    );
     final isLink = FirebaseAuth.instance.isSignInWithEmailLink(emailLink);
     if (!isLink) {
       throw Exception('Invalid email link');
@@ -60,11 +64,13 @@ class AuthService extends GetxService {
     }
 
     final ActionCodeSettings acs = ActionCodeSettings(
-      url: 'https://${Environment.androidDeepLinkUrl}/login?email=$email',
+      url:
+          'https://${Environment.androidDeepLinkUrl}/__/auth/links?email=$email',
       handleCodeInApp: true,
       androidPackageName: androidPackageName,
       androidInstallApp: true,
       androidMinimumVersion: '12',
+      linkDomain: Environment.androidDeepLinkUrl,
     );
 
     await FirebaseAuth.instance.setLanguageCode(ls.currentLocale.languageCode);

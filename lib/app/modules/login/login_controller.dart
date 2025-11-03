@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:felicette_recipes/app/modules/password_recovery/password_recovery_arguments.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/app/utils/validations.dart';
@@ -69,8 +71,13 @@ class LoginController extends GetxController {
     }
 
     try {
-      //      await authService.loginWithoutPassword(emailController.text);
+      await authService.loginWithoutPassword(emailController.text);
     } catch (e) {
+      log(
+        e.toString(),
+        error: e,
+        name: 'LoginController.handleLoginWithoutPassword',
+      );
       FRSnackbar.error(
         TranslationKeys.loginErrorTitle.tr,
         TranslationKeys.tryAgain.tr,
