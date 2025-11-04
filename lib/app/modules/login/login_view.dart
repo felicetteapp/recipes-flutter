@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:felicette_recipes/app/common/widgets/footer/footer.dart';
 import 'package:felicette_recipes/app/utils/validations.dart';
 import 'package:flutter/material.dart';
@@ -9,17 +11,24 @@ import 'login_controller.dart';
 class LoginView extends GetView<LoginController> {
   const LoginView({super.key});
 
-  afterRender(GlobalKey<FormState> formKey) {
+  afterRender({
+    required GlobalKey<FormState> formKey,
+    required GlobalKey<FormFieldState<String>> emailFieldKey,
+  }) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      log('aqui?');
       controller.resetState();
       controller.formKey.value = formKey;
+      controller.emailFieldKey.value = emailFieldKey;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    afterRender(formKey);
+    final GlobalKey<FormFieldState<String>> emailFieldKey =
+        GlobalKey<FormFieldState<String>>();
+    afterRender(formKey: formKey, emailFieldKey: emailFieldKey);
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(
@@ -44,7 +53,7 @@ class LoginView extends GetView<LoginController> {
                           spacing: 16,
                           children: [
                             Image.asset(
-                              'assets/images/felicette_recipes_logo.png',
+                              'assets/images/logo.png',
                               width: 100,
                               height: 100,
                             ),
@@ -73,6 +82,7 @@ class LoginView extends GetView<LoginController> {
                           ],
                         ),
                         TextFormField(
+                          key: emailFieldKey,
                           autocorrect: false,
                           controller: controller.emailController,
                           decoration: InputDecoration(
@@ -128,49 +138,36 @@ class LoginView extends GetView<LoginController> {
                             },
                           ),
                         ),
-                        Wrap(
-                          spacing: 8,
-                          runAlignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Obx(
-                              () =>
-                                  controller.isLoading.value
-                                      ? SizedBox(
-                                        width: 16,
-                                        height: 16,
-                                        child:
-                                            const CircularProgressIndicator(),
-                                      )
-                                      : FilledButton(
-                                        onPressed: controller.login,
-                                        child: Text(TranslationKeys.login.tr),
-                                      ),
-                            ),
-                            Obx(
-                              () =>
-                                  controller.isLoading.value
-                                      ? SizedBox(
-                                        width: 16,
-                                        height: 16,
-                                        child:
-                                            const CircularProgressIndicator(),
-                                      )
-                                      : OutlinedButton(
-                                        onPressed: () {
-                                          controller
-                                              .handleLoginWithoutPassword();
-                                        },
-                                        child: Text(
-                                          TranslationKeys
-                                              .loginWithoutPassword
-                                              .tr,
-                                        ),
-                                      ),
-                            ),
-                          ],
-                        ),
+                        Obx(() {
+                          return Wrap(
+                            spacing: 8,
+                            runAlignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            alignment: WrapAlignment.center,
+                            children: [
+                              if (controller.isLoading.value) ...[
+                                SizedBox(
+                                  width: 48,
+                                  height: 48,
+                                  child: const CircularProgressIndicator(),
+                                ),
+                              ] else ...[
+                                FilledButton(
+                                  onPressed: controller.login,
+                                  child: Text(TranslationKeys.login.tr),
+                                ),
+                                OutlinedButton(
+                                  onPressed: () {
+                                    controller.handleLoginWithoutPassword();
+                                  },
+                                  child: Text(
+                                    TranslationKeys.loginWithoutPassword.tr,
+                                  ),
+                                ),
+                              ],
+                            ],
+                          );
+                        }),
                         Wrap(
                           alignment: WrapAlignment.center,
                           spacing: 8,

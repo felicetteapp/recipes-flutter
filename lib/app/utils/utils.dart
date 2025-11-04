@@ -13,7 +13,7 @@ class FRUtils {
         applicationVersion:
             '${packageInfo.version} (${packageInfo.buildNumber})',
         applicationIcon: Image.asset(
-          'assets/images/felicette_recipes_logo.png',
+          'assets/images/logo.png',
           width: 50,
           height: 50,
         ),

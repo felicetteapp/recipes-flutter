@@ -13,11 +13,7 @@ class SplashView extends GetView<SplashController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/felicette_recipes_logo.png',
-              width: 100,
-              height: 100,
-            ),
+            Image.asset('assets/images/logo.png', width: 100, height: 100),
           ],
         ),
       ),

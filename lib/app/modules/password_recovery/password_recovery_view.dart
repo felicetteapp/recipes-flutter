@@ -44,7 +44,7 @@ class PasswordRecoveryView extends GetView<PasswordRecoveryController> {
                           spacing: 16,
                           children: [
                             Image.asset(
-                              'assets/images/felicette_recipes_logo.png',
+                              'assets/images/logo.png',
                               width: 100,
                               height: 100,
                             ),

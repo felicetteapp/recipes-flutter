@@ -189,7 +189,7 @@ class FRDrawer extends StatelessWidget {
                 spacing: 8,
                 children: [
                   Image.asset(
-                    'assets/images/felicette_recipes_logo.png',
+                    'assets/images/logo.png',
                     width: 100,
                     height: 100,
                   ),
@@ -243,7 +243,7 @@ class FRDrawer extends StatelessWidget {
                 applicationVersion:
                     '${controller.packageInfo.value?.version ?? ''} (${controller.packageInfo.value?.buildNumber ?? ''})',
                 applicationIcon: Image.asset(
-                  'assets/images/felicette_recipes_logo.png',
+                  'assets/images/logo.png',
                   width: 50,
                   height: 50,
                 ),

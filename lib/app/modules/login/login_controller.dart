@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:felicette_recipes/app/modules/password_recovery/password_recovery_arguments.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
-import 'package:felicette_recipes/app/utils/validations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
@@ -15,6 +14,8 @@ class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final Rxn<GlobalKey<FormState>> formKey = Rxn<GlobalKey<FormState>>();
+  final Rxn<GlobalKey<FormFieldState<String>>> emailFieldKey =
+      Rxn<GlobalKey<FormFieldState<String>>>();
 
   @override
   void onClose() {
@@ -46,6 +47,8 @@ class LoginController extends GetxController {
     isPasswordHidden.value = true;
     emailController.clear();
     passwordController.clear();
+    formKey.value?.currentState?.reset();
+    emailFieldKey.value?.currentState?.reset();
   }
 
   handleForgotPassword() {
@@ -59,19 +62,19 @@ class LoginController extends GetxController {
     final AuthService authService = Get.find<AuthService>();
     isLoading.value = true;
 
-    final isEmailInValid = FRValidations.validateEmail(
-      emailController.text,
-      isRequired: true,
-      isRequiredErrorMessage: TranslationKeys.emailIsRequiredError.tr,
-    );
-    if (isEmailInValid != null) {
-      FRSnackbar.error(TranslationKeys.loginErrorTitle.tr, isEmailInValid);
+    final isEmailInValid =
+        emailFieldKey.value?.currentState?.validate() != true;
+    if (isEmailInValid) {
       isLoading.value = false;
       return;
     }
 
     try {
       await authService.loginWithoutPassword(emailController.text);
+      FRSnackbar.success(
+        TranslationKeys.success.tr,
+        TranslationKeys.loginWithoutPassword.tr,
+      );
     } catch (e) {
       log(
         e.toString(),

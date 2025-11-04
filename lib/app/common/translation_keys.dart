@@ -54,6 +54,8 @@ class TranslationKeys {
   static const String createAccountErrorTitle = 'create_account_error';
   static const String createAccountSuccess = 'create_account_success';
   static const String loginWithoutPassword = 'login_without_password';
+  static const String loginWithoutPasswordSuccessMessage =
+      'login_without_password_success_message';
 
   // home view
   static const String unknownView = 'unknown_view';

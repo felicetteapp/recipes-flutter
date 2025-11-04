@@ -46,6 +46,7 @@ class EnTranslations extends Translations {
       // validation
       TranslationKeys.inputRequiredError: 'This field is required',
       TranslationKeys.invalidEmailError: 'Please enter a valid email address',
+      TranslationKeys.emailIsRequiredError: 'Email is required',
 
       // home view
       TranslationKeys.unknownView: 'Unknown View',
@@ -69,6 +70,8 @@ class EnTranslations extends Translations {
       TranslationKeys.createAccountErrorTitle: 'Failed to create account',
       TranslationKeys.createAccountSuccess: 'Account created successfully!',
       TranslationKeys.loginWithoutPassword: 'Login without password',
+      TranslationKeys.loginWithoutPasswordSuccessMessage:
+          'Login link sent! Please check your email.',
 
       // drawer
       TranslationKeys.yourGroups: 'Your Groups',

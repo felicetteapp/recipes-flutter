@@ -48,6 +48,7 @@ class PtTranslations extends Translations {
       TranslationKeys.inputRequiredError: 'Este campo é obrigatório',
       TranslationKeys.invalidEmailError:
           'Por favor, insira um endereço de email válido',
+      TranslationKeys.emailIsRequiredError: 'Email é obrigatório',
 
       // home view
       TranslationKeys.unknownView: 'Vista desconhecida',
@@ -72,6 +73,8 @@ class PtTranslations extends Translations {
       TranslationKeys.createAccountErrorTitle: 'Falha ao criar conta',
       TranslationKeys.createAccountSuccess: 'Conta criada com sucesso!',
       TranslationKeys.loginWithoutPassword: 'Login sem senha',
+      TranslationKeys.loginWithoutPasswordSuccessMessage:
+          'Link de login enviado! Por favor, verifique seu email.',
 
       // drawer
       TranslationKeys.yourGroups: 'Seus Grupos',
