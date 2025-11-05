@@ -18,8 +18,59 @@ import 'home_controller.dart';
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
 
+  _buildBodyWithNoGroups() {
+    final isLoading = false.obs;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+              minWidth: constraints.maxWidth,
+              maxWidth: constraints.maxWidth,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              spacing: 16,
+              children: [
+                Text(
+                  TranslationKeys.noGroupsCreated.tr,
+                  style: Get.textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+                Obx(() {
+                  return FilledButton(
+                    onPressed:
+                        isLoading.value
+                            ? null
+                            : () async {
+                              isLoading.value = true;
+                              await controller.handleCreateFirstGroup();
+                              isLoading.value = false;
+                            },
+                    child: Text(
+                      isLoading.value
+                          ? TranslationKeys.loading.tr
+                          : TranslationKeys.createGroup.tr,
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   _buildBody() {
     return Obx(() {
+      if (controller.userHasAnyGroup == false) {
+        return _buildBodyWithNoGroups();
+      }
+
       if (controller.bottomNavigationIndexIs(
         BottomNavigationItemEnum.recipes,
       )) {
@@ -38,14 +89,16 @@ class HomeView extends GetView<HomeController> {
   }
 
   _buildBottomNavigationBar() {
-    return Obx(
-      () => Column(
+    return Obx(() {
+      return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Visibility(
-            visible: controller.bottomNavigationIndexIs(
-              BottomNavigationItemEnum.list,
-            ),
+            visible:
+                controller.bottomNavigationIndexIs(
+                  BottomNavigationItemEnum.list,
+                ) &&
+                controller.userHasAnyGroup,
             child: BudgetDisplay(
               used: controller.usedBudget,
               total: controller.budget,
@@ -59,7 +112,12 @@ class HomeView extends GetView<HomeController> {
             onDestinationSelected: controller.setBottomNavigationIndex,
             destinations: [
               NavigationDestination(
-                icon: Icon(Icons.book),
+                enabled: controller.userHasAnyGroup,
+                icon: Badge(
+                  isLabelVisible:
+                      !controller.groupHasRecipes && controller.userHasAnyGroup,
+                  child: Icon(Icons.book),
+                ),
                 label:
                     TranslationHelper.plural(
                       TranslationKeys.recipe,
@@ -75,7 +133,13 @@ class HomeView extends GetView<HomeController> {
                     ).capitalizeFirst!,
               ),
               NavigationDestination(
-                icon: Icon(Icons.kitchen),
+                enabled: controller.userHasAnyGroup,
+                icon: Badge(
+                  isLabelVisible:
+                      !controller.groupHasIngredients &&
+                      controller.userHasAnyGroup,
+                  child: Icon(Icons.kitchen),
+                ),
                 label:
                     TranslationHelper.plural(
                       TranslationKeys.ingredient,
@@ -85,14 +149,18 @@ class HomeView extends GetView<HomeController> {
             ],
           ),
         ],
-      ),
-    );
+      );
+    });
   }
 
   _buildFloatingActionButton() {
     final groupsService = Get.find<GroupsService>();
 
     return Obx(() {
+      if (controller.userHasAnyGroup == false) {
+        return SizedBox.shrink();
+      }
+
       if (controller.bottomNavigationIndexIs(
         BottomNavigationItemEnum.ingredients,
       )) {
@@ -142,9 +210,11 @@ class HomeView extends GetView<HomeController> {
     return [
       Obx(
         () => Visibility(
-          visible: controller.bottomNavigationIndexIs(
-            BottomNavigationItemEnum.recipes,
-          ),
+          visible:
+              controller.bottomNavigationIndexIs(
+                BottomNavigationItemEnum.recipes,
+              ) &&
+              controller.userHasAnyGroup,
           child: TextButton(
             onPressed: () {
               controller.enableRecipesSelectionMode();
@@ -160,7 +230,8 @@ class HomeView extends GetView<HomeController> {
               controller.bottomNavigationIndexIs(
                 BottomNavigationItemEnum.list,
               ) &&
-              groupsService.selectedGroup.value != null,
+              groupsService.selectedGroup.value != null &&
+              controller.userHasAnyGroup,
           child: TextButton(
             onPressed: () {
               Get.dialog(

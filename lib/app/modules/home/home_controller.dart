@@ -1,5 +1,8 @@
 import 'dart:developer';
 
+import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/services/ingredients_service.dart';
+import 'package:felicette_recipes/app/services/recipes_service.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/common.dart';
 import 'package:felicette_recipes/app/services/groups_service.dart';
@@ -7,8 +10,14 @@ import 'package:felicette_recipes/app/services/groups_service.dart';
 class HomeController extends GetxController {
   final RxInt bottomNavigationIndex = 1.obs;
   final GroupsService groupsService = Get.find<GroupsService>();
+  final RecipesService recipesService = Get.find<RecipesService>();
+  final IngredientsService ingredientsService = Get.find<IngredientsService>();
   final RxBool itsSelectionMode = false.obs;
   final RxList<String> selectedIds = RxList<String>();
+
+  bool get userHasAnyGroup => groupsService.userHasAnyGroup;
+  bool get groupHasRecipes => recipesService.recipes.isNotEmpty;
+  bool get groupHasIngredients => ingredientsService.ingredients.isNotEmpty;
 
   bool get showBudget =>
       groupsService.selectedGroup.value?.filters.showBudget ?? false;
@@ -31,6 +40,13 @@ class HomeController extends GetxController {
 
   void setBottomNavigationIndex(int index) {
     bottomNavigationIndex.value = index;
+  }
+
+  Future<void> handleCreateFirstGroup() async {
+    final name = TranslationKeys.myFirstGroup.tr;
+    final createdGroup = await groupsService.createGroup(name);
+    await Future.delayed(const Duration(seconds: 1));
+    Get.toNamed(AppRoutes.groupDetails(createdGroup.id));
   }
 
   void bottomNavigationGoTo(BottomNavigationItemEnum item) {

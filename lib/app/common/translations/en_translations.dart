@@ -42,6 +42,7 @@ class EnTranslations extends Translations {
       TranslationKeys.theme: 'Theme',
       TranslationKeys.darkMode: 'Dark Mode',
       TranslationKeys.lightMode: 'Light Mode',
+      TranslationKeys.myFirstGroup: 'My First Group',
 
       // validation
       TranslationKeys.inputRequiredError: 'This field is required',
@@ -55,6 +56,7 @@ class EnTranslations extends Translations {
       TranslationKeys.selectRecipes: 'Select recipes',
       TranslationKeys.itemsSelected: '@count selected',
       '${TranslationKeys.itemsSelected}_other': '@count selected',
+      TranslationKeys.noGroupsCreated: 'No groups created',
 
       // login
       TranslationKeys.loginErrorTitle: 'Login failed',
@@ -114,6 +116,9 @@ class EnTranslations extends Translations {
       TranslationKeys.confirmActualIngredientDescription:
           'Is "@ingredientName" an actual ingredient that can be used in recipes?',
       TranslationKeys.confirmActualIngredient: 'Confirm Actual Ingredient',
+      TranslationKeys.noIngredientsCreated: 'No ingredients created',
+      TranslationKeys.noIngredientsCreatedDescription:
+          'Create your first ingredient to get started with recipes and shopping lists.',
 
       // recipes
       TranslationKeys.editRecipe: 'Edit Recipe',
@@ -127,6 +132,9 @@ class EnTranslations extends Translations {
       TranslationKeys.quantitiesShoppingListText:
           'The quantities will appear in the shopping list when the recipe is selected.',
       TranslationKeys.quantityFor: 'Quantity for @ingredient',
+      TranslationKeys.noRecipesCreated: 'No recipes created',
+      TranslationKeys.noRecipesCreatedDescription:
+          'Create your first recipe to organize your cooking and generate shopping lists.',
 
       // select modal
       TranslationKeys.search: 'Search',

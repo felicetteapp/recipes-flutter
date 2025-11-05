@@ -29,6 +29,8 @@ class GroupsService extends GetxService {
     }
   }
 
+  bool get userHasAnyGroup => authService.userGroups.isNotEmpty;
+
   void getUserGroups(List<String> userGroupIds) async {
     final newGroups = <FRGroup>[];
 

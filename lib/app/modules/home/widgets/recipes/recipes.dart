@@ -27,6 +27,10 @@ class RecipesWidget extends StatelessWidget {
 
       log('RecipesWidget rebuild: itemCount=$itemCount');
 
+      if (itemCount == 0) {
+        return _buildEmptyState();
+      }
+
       return ListView.builder(
         padding: EdgeInsets.only(bottom: 72),
         itemBuilder: (context, index) {
@@ -43,6 +47,36 @@ class RecipesWidget extends StatelessWidget {
         itemCount: itemCount,
       );
     });
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    TranslationKeys.noRecipesCreated.tr,
+                    style: Get.textTheme.titleMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    TranslationKeys.noRecipesCreatedDescription.tr,
+                    style: Get.textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   Widget _recipeItemBuilder({

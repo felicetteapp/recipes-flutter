@@ -35,6 +35,7 @@ class TranslationKeys {
   static const String theme = 'theme';
   static const String darkMode = 'dark_mode';
   static const String lightMode = 'light_mode';
+  static const String myFirstGroup = 'my_first_group';
 
   //validation
   static const String inputRequiredError = 'input_required_error';
@@ -63,6 +64,7 @@ class TranslationKeys {
   static const String addIngredient = 'add_ingredient';
   static const String selectRecipes = 'select_recipes';
   static const String itemsSelected = 'items_selected';
+  static const String noGroupsCreated = 'no_groups_created';
 
   // drawer
   static const String yourGroups = 'your_groups';
@@ -102,6 +104,9 @@ class TranslationKeys {
   static const String confirmActualIngredientDescription =
       'confirm_actual_ingredient_description';
   static const String confirmActualIngredient = 'confirm_actual_ingredient';
+  static const String noIngredientsCreated = 'no_ingredients_created';
+  static const String noIngredientsCreatedDescription =
+      'no_ingredients_created_description';
 
   // recipes
   static const String editRecipe = 'edit_recipe';
@@ -113,6 +118,9 @@ class TranslationKeys {
   static const String quantitiesShoppingListText =
       'quantities_shopping_list_text';
   static const String quantityFor = 'quantity_for';
+  static const String noRecipesCreated = 'no_recipes_created';
+  static const String noRecipesCreatedDescription =
+      'no_recipes_created_description';
 
   // select modal
   static const String search = 'search';

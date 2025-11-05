@@ -15,6 +15,8 @@ class GroupDetailController extends GetxController {
   final TextEditingController groupNameController = TextEditingController();
   final RxBool isLoading = false.obs;
 
+  bool get canExcludeGroup => groupServices.availableGroups.length > 1;
+
   FRGroup? get group {
     try {
       return groupServices.availableGroups.firstWhere((g) => g.id == id);

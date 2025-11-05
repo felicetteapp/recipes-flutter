@@ -26,6 +26,10 @@ class IngredientsWidget extends StatelessWidget {
 
       log('IngredientsWidget rebuild: itemCount=$itemCount');
 
+      if (ingredients.isEmpty) {
+        return _buildEmptyState();
+      }
+
       return ListView.builder(
         padding: EdgeInsets.only(bottom: 72),
         itemBuilder: (context, index) {
@@ -71,6 +75,36 @@ class IngredientsWidget extends StatelessWidget {
         itemCount: itemCount,
       );
     });
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    TranslationKeys.noIngredientsCreated.tr,
+                    style: Get.textTheme.titleMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    TranslationKeys.noIngredientsCreatedDescription.tr,
+                    style: Get.textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   Widget _ingredientItemBuilder({

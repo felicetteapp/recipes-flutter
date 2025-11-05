@@ -48,15 +48,20 @@ class GroupDetailView extends GetView<GroupDetailController> {
                             ),
                           ),
                           SizedBox(height: 16),
-                          TextButton.icon(
-                            style: TextButton.styleFrom(
-                              foregroundColor: Get.theme.colorScheme.error,
+                          Obx(
+                            () => TextButton.icon(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Get.theme.colorScheme.error,
+                              ),
+                              onPressed:
+                                  controller.canExcludeGroup
+                                      ? () {
+                                        controller.deleteGroup();
+                                      }
+                                      : null,
+                              icon: Icon(Icons.delete),
+                              label: Text(TranslationKeys.deleteGroup.tr),
                             ),
-                            onPressed: () {
-                              controller.deleteGroup();
-                            },
-                            icon: Icon(Icons.delete),
-                            label: Text(TranslationKeys.deleteGroup.tr),
                           ),
                         ],
                       );
