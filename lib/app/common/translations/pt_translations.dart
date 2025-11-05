@@ -43,6 +43,7 @@ class PtTranslations extends Translations {
       TranslationKeys.theme: 'Tema',
       TranslationKeys.darkMode: 'Modo Escuro',
       TranslationKeys.lightMode: 'Modo Claro',
+      TranslationKeys.myFirstGroup: 'Meu Primeiro Grupo',
 
       // validation
       TranslationKeys.inputRequiredError: 'Este campo é obrigatório',
@@ -57,6 +58,7 @@ class PtTranslations extends Translations {
       TranslationKeys.selectRecipes: 'Selecionar receitas',
       TranslationKeys.itemsSelected: '@count selecionado',
       '${TranslationKeys.itemsSelected}_other': '@count selecionados',
+      TranslationKeys.noGroupsCreated: 'Nenhum grupo criado',
 
       // login
       TranslationKeys.loginErrorTitle: 'Falha no login',
@@ -115,8 +117,11 @@ class PtTranslations extends Translations {
       TranslationKeys.ingredientCreatedSuccessfully:
           'Ingrediente criado com sucesso',
       TranslationKeys.confirmActualIngredientDescription:
-          '“@ingredientName” é um ingrediente real que pode ser usado em receitas?',
+          'É "@ingredientName" um ingrediente real que pode ser usado em receitas?',
       TranslationKeys.confirmActualIngredient: 'Confirmar Ingrediente Real',
+      TranslationKeys.noIngredientsCreated: 'Nenhum ingrediente criado',
+      TranslationKeys.noIngredientsCreatedDescription:
+          'Crie seu primeiro ingrediente para começar com receitas e listas de compras.',
 
       // recipes
       TranslationKeys.editRecipe: 'Editar Receita',
@@ -130,6 +135,9 @@ class PtTranslations extends Translations {
       TranslationKeys.quantitiesShoppingListText:
           'As quantidades aparecerão na lista de compras quando a receita for selecionada.',
       TranslationKeys.quantityFor: 'Quantidade para @ingredient',
+      TranslationKeys.noRecipesCreated: 'Nenhuma receita criada',
+      TranslationKeys.noRecipesCreatedDescription:
+          'Crie sua primeira receita para organizar sua culinária e gerar listas de compras.',
 
       // select modal
       TranslationKeys.search: 'Buscar',

@@ -44,6 +44,7 @@ class EsTranslations extends Translations {
       TranslationKeys.theme: 'Tema',
       TranslationKeys.darkMode: 'Modo Oscuro',
       TranslationKeys.lightMode: 'Modo Claro',
+      TranslationKeys.myFirstGroup: 'Mi Primer Grupo',
 
       // validation
       TranslationKeys.inputRequiredError: 'Este campo es obligatorio',
@@ -58,6 +59,7 @@ class EsTranslations extends Translations {
       TranslationKeys.selectRecipes: 'Seleccionar recetas',
       TranslationKeys.itemsSelected: '@count seleccionado',
       '${TranslationKeys.itemsSelected}_other': '@count seleccionados',
+      TranslationKeys.noGroupsCreated: 'No se han creado grupos',
 
       // login
       TranslationKeys.loginErrorTitle: 'Error de inicio de sesión',
@@ -118,6 +120,9 @@ class EsTranslations extends Translations {
       TranslationKeys.confirmActualIngredientDescription:
           '¿Es "@ingredientName" un ingrediente real que se puede usar en recetas?',
       TranslationKeys.confirmActualIngredient: 'Confirmar Ingrediente Real',
+      TranslationKeys.noIngredientsCreated: 'No se han creado ingredientes',
+      TranslationKeys.noIngredientsCreatedDescription:
+          'Crea tu primer ingrediente para comenzar con recetas y listas de compras.',
 
       // recipes
       TranslationKeys.editRecipe: 'Editar Receta',
@@ -131,6 +136,9 @@ class EsTranslations extends Translations {
       TranslationKeys.quantitiesShoppingListText:
           'Las cantidades aparecerán en la lista de compras cuando la receta esté seleccionada.',
       TranslationKeys.quantityFor: 'Cantidad para @ingredient',
+      TranslationKeys.noRecipesCreated: 'No se han creado recetas',
+      TranslationKeys.noRecipesCreatedDescription:
+          'Crea tu primera receta para organizar tu cocina y generar listas de compras.',
 
       // select modal
       TranslationKeys.search: 'Buscar',
