@@ -96,10 +96,10 @@ class EsTranslations extends Translations {
       TranslationKeys.available: ' disponible',
 
       // ingredients
-      TranslationKeys.actualIngredients: 'Ingredientes Reales',
+      TranslationKeys.actualIngredients: 'Ingredientes',
       TranslationKeys.actualIngredientsSubtitle:
           'Estos elementos se pueden usar en recetas y agregar a la lista de compras',
-      TranslationKeys.nonActualIngredients: 'Ingredientes No Reales',
+      TranslationKeys.nonActualIngredients: 'No Ingredientes',
       TranslationKeys.nonActualIngredientsSubtitle:
           'Estos elementos se pueden agregar a la lista de compras pero no se pueden usar en recetas',
       TranslationKeys.newIngredient: 'Nuevo Ingrediente',

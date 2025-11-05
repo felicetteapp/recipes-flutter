@@ -171,7 +171,12 @@ class RecipesWidget extends StatelessWidget {
                   homeViewController.enableRecipesSelectionMode();
                 },
         subtitle: Text(ingredients.map((i) => i.name).join(', ')),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16),
+        //        contentPadding: EdgeInsets.symmetric(horizontal: 16),
+        visualDensity: VisualDensity.compact,
+        contentPadding: EdgeInsets.only(
+          left: !homeViewController.itsSelectionMode.value ? 20 : 4,
+          right: 4,
+        ),
         trailing:
             !homeViewController.itsSelectionMode.value
                 ? Row(

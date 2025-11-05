@@ -97,9 +97,9 @@ class EnTranslations extends Translations {
       TranslationKeys.actualIngredients: 'Actual Ingredients',
       TranslationKeys.actualIngredientsSubtitle:
           'These items can be used in recipes and added to the shopping list',
-      TranslationKeys.nonActualIngredients: 'Non-Actual Ingredients',
+      TranslationKeys.nonActualIngredients: 'Non-Ingredients',
       TranslationKeys.nonActualIngredientsSubtitle:
-          'This items can be added to the sopping list but can\'t be used in recipes',
+          'This items can be added to the shopping list but can\'t be used in recipes',
       TranslationKeys.newIngredient: 'New Ingredient',
       TranslationKeys.ingredientName: 'Ingredient Name',
       TranslationKeys.isActualIngredient: 'Is Actual Ingredient',

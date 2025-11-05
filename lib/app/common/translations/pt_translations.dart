@@ -95,10 +95,10 @@ class PtTranslations extends Translations {
       TranslationKeys.available: ' disponível',
 
       // ingredients
-      TranslationKeys.actualIngredients: 'Ingredientes Reais',
+      TranslationKeys.actualIngredients: 'Ingredientes',
       TranslationKeys.actualIngredientsSubtitle:
           'Estes itens podem ser usados em receitas e adicionados à lista de compras',
-      TranslationKeys.nonActualIngredients: 'Ingredientes Não-Reais',
+      TranslationKeys.nonActualIngredients: 'Não Ingredientes',
       TranslationKeys.nonActualIngredientsSubtitle:
           'Estes itens podem ser adicionados à lista de compras, mas não podem ser usados em receitas',
       TranslationKeys.newIngredient: 'Novo Ingrediente',

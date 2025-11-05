@@ -113,13 +113,18 @@ class IngredientsWidget extends StatelessWidget {
     required GroupsService groupsService,
   }) {
     return ListTile(
+      visualDensity: VisualDensity.compact,
+      contentPadding: EdgeInsets.only(left: 4, right: 4),
       title: Text(ingredient.name),
-      leading: Icon(
-        ingredient.actualIngredient ? Icons.kitchen : Icons.shopping_cart,
-        color:
-            ingredient.actualIngredient
-                ? Get.theme.colorScheme.primary
-                : Get.theme.colorScheme.secondary,
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 12, right: 6),
+        child: Icon(
+          ingredient.actualIngredient ? Icons.kitchen : Icons.shopping_cart,
+          color:
+              ingredient.actualIngredient
+                  ? Get.theme.colorScheme.primary
+                  : Get.theme.colorScheme.secondary,
+        ),
       ),
       trailing: IconButton(
         onPressed: () {
