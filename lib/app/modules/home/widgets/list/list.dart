@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:felicette_recipes/app/common/widgets/ingredient_select/ingredient_select_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/common.dart';
@@ -18,10 +21,12 @@ class ListWidget extends StatelessWidget {
         return Obx(key: Key('list_obx'), () {
           var itemCount = 0;
           final staticItemsAtTop = 1;
+          final staticItemsAtBottom = 2;
           final ingredients = controller.sortedIngredientList;
           final recipes = controller.sortedRecipeList;
           if (controller.displayType.value == ListDisplayTypeEnum.ingredients) {
-            itemCount = staticItemsAtTop + ingredients.length;
+            itemCount =
+                staticItemsAtTop + ingredients.length + staticItemsAtBottom;
           } else {
             final ingredientsWithoutRecipes =
                 controller.ingredientsWithoutRecipes;
@@ -34,6 +39,7 @@ class ListWidget extends StatelessWidget {
                 ingredientsWithoutRecipes.isNotEmpty;
             itemCount =
                 staticItemsAtTop +
+                staticItemsAtBottom +
                 recipes.length +
                 totalIngredients +
                 (hasIngredientsWithoutRecipes
@@ -47,6 +53,14 @@ class ListWidget extends StatelessWidget {
             itemBuilder: (context, index) {
               if (index == 0) {
                 return _buildFilters(controller);
+              }
+
+              if (index == itemCount - 1) {
+                return _buildClearAllChecksButton(controller);
+              }
+
+              if (index == itemCount - 2) {
+                return _buildAddItemButton(controller);
               }
 
               if (controller.displayType.value ==
@@ -115,6 +129,72 @@ class ListWidget extends StatelessWidget {
           );
         });
       },
+    );
+  }
+
+  Widget _buildAddItemButton(ListController controller) {
+    return Center(
+      child: TextButton.icon(
+        style: TextButton.styleFrom(
+          foregroundColor: Get.context?.theme.colorScheme.primary,
+        ),
+        key: Key('add_item_button'),
+        icon: Icon(Icons.add),
+        label: Text(TranslationKeys.addIngredient.tr),
+        onPressed: () {
+          Get.dialog(
+            Scaffold(
+              body: IngredientSelect(
+                startOpened: true,
+                onModalClosed: () {
+                  log('IngredientSelect modal closed', name: 'ListWidget');
+                  Get.back();
+                },
+                items: controller.ingredientsService.ingredients,
+                value: [
+                  ...controller
+                          .groupsService
+                          .selectedGroup
+                          .value
+                          ?.currentIngredients ??
+                      [],
+                  BasicIngredientQuantity(ingredientId: '', quantity: ''),
+                ],
+                itemLabelBuilder: (item) {
+                  return controller.ingredientsService
+                          .getIngredientById(item.ingredientId)
+                          ?.name ??
+                      '';
+                },
+                onChanged:
+                    (val) => {
+                      log(val.toString(), name: 'IngredientSelect onChanged'),
+                    },
+                isMulti: true,
+                label: TranslationKeys.selectIngredients.tr,
+                isRecipe: false,
+              ),
+            ),
+          );
+          //   controller.openAddItemModal();
+        },
+      ),
+    );
+  }
+
+  Widget _buildClearAllChecksButton(ListController controller) {
+    return Center(
+      child: TextButton.icon(
+        style: TextButton.styleFrom(
+          foregroundColor: Get.context?.theme.colorScheme.error,
+        ),
+        key: Key('clear_all_checks_button'),
+        icon: Icon(Icons.clear_all),
+        label: Text(TranslationKeys.clearAllChecks.tr),
+        onPressed: () {
+          //          controller.clearAllChecks();
+        },
+      ),
     );
   }
 

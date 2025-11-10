@@ -130,6 +130,7 @@ class TranslationKeys {
   // edit list
   static const String editList = 'edit_list';
   static const String selectCurrency = 'select_currency';
+  static const String clearAllChecks = 'clear_all_checks';
 
   // currencies
   static const String currencyUSD = 'currency_usd';

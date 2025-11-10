@@ -15,6 +15,8 @@ class IngredientSelect extends StatelessWidget {
   final bool isMulti;
   final String label;
   final bool isRecipe;
+  final bool startOpened;
+  final void Function()? onModalClosed;
   const IngredientSelect({
     super.key,
     required this.items,
@@ -24,8 +26,32 @@ class IngredientSelect extends StatelessWidget {
     required this.isMulti,
     required this.label,
     required this.isRecipe,
+    this.onModalClosed,
+    this.startOpened = false,
     this.createItem,
   });
+
+  handleOpen(IngredientSelectController controller) async {
+    await Get.dialog(
+      IngredientSelectModalView(
+        controller: controller,
+        isRecipe: isRecipe,
+        scrollToBottom: startOpened,
+      ),
+      useSafeArea: false,
+    );
+    if (onModalClosed != null) {
+      onModalClosed!();
+    }
+  }
+
+  afterInit(IngredientSelectController controller) {
+    if (startOpened) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        handleOpen(controller);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +63,10 @@ class IngredientSelect extends StatelessWidget {
         onChanged: onChanged,
       ),
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      afterInit(controller);
+    });
     return Stack(
       children: [
         Container(
@@ -57,13 +87,7 @@ class IngredientSelect extends StatelessWidget {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(8),
                   onTap: () {
-                    Get.dialog(
-                      IngredientSelectModalView(
-                        controller: controller,
-                        isRecipe: isRecipe,
-                      ),
-                      useSafeArea: false,
-                    );
+                    handleOpen(controller);
                   },
                   child: Container(
                     constraints: BoxConstraints(

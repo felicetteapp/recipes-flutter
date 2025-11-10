@@ -14,10 +14,12 @@ import 'package:felicette_recipes/theme.dart';
 class IngredientSelectModalView extends StatelessWidget {
   final IngredientSelectController controller;
   final bool isRecipe;
+  final bool scrollToBottom;
   const IngredientSelectModalView({
     super.key,
     required this.controller,
     this.isRecipe = false,
+    this.scrollToBottom = false,
   });
 
   @override
@@ -25,6 +27,17 @@ class IngredientSelectModalView extends StatelessWidget {
     final IngredientsService ingredientsService =
         Get.find<IngredientsService>();
     final GroupsService groupsService = Get.find<GroupsService>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollToBottom) {
+        Scrollable.ensureVisible(
+          controller.itemKeys.last.currentContext!,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(title: Text(controller.label)),
       extendBodyBehindAppBar: false,
@@ -54,10 +67,16 @@ class IngredientSelectModalView extends StatelessWidget {
                             final availableIngredients =
                                 controller.items.toList();
 
+                            //create key if necessary
+                            if (controller.itemKeys.length <= index) {
+                              controller.itemKeys.add(GlobalKey());
+                            }
+
                             log(
                               'Rendering item at index $index: ingredientId=${item.ingredientId}, quantity=${item.quantity}, ingredientName=${ingredientValue.map((e) => e.name).join(', ')}',
                             );
                             return Padding(
+                              key: controller.itemKeys[index],
                               padding: const EdgeInsets.symmetric(vertical: 4),
                               child: Row(
                                 spacing: 8,
@@ -202,10 +221,7 @@ class IngredientSelectModalView extends StatelessWidget {
                                 );
                                 newValue.add(
                                   BasicIngredientQuantity(
-                                    ingredientId:
-                                        controller.items.isNotEmpty
-                                            ? controller.items.first.id
-                                            : '',
+                                    ingredientId: '',
                                     quantity: '',
                                   ),
                                 );

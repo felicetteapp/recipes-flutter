@@ -13,6 +13,7 @@ class FRSelect<T> extends StatelessWidget {
   final Future<T> Function(String)? createItem;
   final bool isMulti;
   final String label;
+  final bool startOpened;
   const FRSelect({
     super.key,
     required this.items,
@@ -21,11 +22,22 @@ class FRSelect<T> extends StatelessWidget {
     required this.onChanged,
     required this.isMulti,
     required this.label,
+    this.startOpened = false,
     this.createItem,
   });
 
   void afterInit(SelectController<T> controller) {
     controller.items.assignAll(items);
+    if (startOpened) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        handleOpen(controller);
+      });
+    }
+  }
+
+  handleOpen(SelectController<T> controller) {
+    controller.filterController.clear();
+    Get.dialog(SelectModal(controller: controller), useSafeArea: false);
   }
 
   @override
@@ -67,11 +79,7 @@ class FRSelect<T> extends StatelessWidget {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(8),
                   onTap: () {
-                    controller.filterController.clear();
-                    Get.dialog(
-                      SelectModal(controller: controller),
-                      useSafeArea: false,
-                    );
+                    handleOpen(controller);
                   },
                   child: Builder(
                     builder: (context) {

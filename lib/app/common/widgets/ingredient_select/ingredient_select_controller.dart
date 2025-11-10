@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
 import 'package:felicette_recipes/app/data/models/recipe_models.dart';
@@ -12,6 +13,7 @@ class IngredientSelectController extends GetxController {
   final List<BasicIngredientQuantity> value;
   final String Function(BasicIngredientQuantity) itemLabelBuilder;
   final String label;
+  final List<GlobalKey> itemKeys = [];
 
   final RxList<FRIngredient> items = RxList.empty();
 
