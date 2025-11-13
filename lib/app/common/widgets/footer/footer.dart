@@ -18,14 +18,14 @@ class FRFooter extends StatelessWidget {
       foregroundColor: Theme.of(context).colorScheme.tertiary,
     );
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      alignment: Alignment.center,
+      padding: const .symmetric(vertical: 16.0),
+      alignment: .center,
       child: Column(
         spacing: 8,
         children: [
           Row(
             spacing: 8,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: .spaceBetween,
             children: [
               Expanded(child: Divider()),
               Text(
@@ -36,9 +36,9 @@ class FRFooter extends StatelessWidget {
             ],
           ),
           Wrap(
-            alignment: WrapAlignment.center,
-            runAlignment: WrapAlignment.center,
-            crossAxisAlignment: WrapCrossAlignment.center,
+            alignment: .center,
+            runAlignment: .center,
+            crossAxisAlignment: .center,
             spacing: 8,
             children: [
               TextButton.icon(
@@ -56,17 +56,18 @@ class FRFooter extends StatelessWidget {
                   final response = await Get.dialog<Locale>(
                     SimpleDialog(
                       title: Text(TranslationKeys.selectLanguage.tr),
-                      children:
-                          LocalizationService.supportedLocales.map((locale) {
-                            return SimpleDialogOption(
-                              onPressed: () {
-                                Get.back(result: locale);
-                              },
-                              child: Text(
-                                localizationService.getLocaleName(locale),
-                              ),
-                            );
-                          }).toList(),
+                      children: LocalizationService.supportedLocales.map((
+                        locale,
+                      ) {
+                        return SimpleDialogOption(
+                          onPressed: () {
+                            Get.back(result: locale);
+                          },
+                          child: Text(
+                            localizationService.getLocaleName(locale),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   );
 
