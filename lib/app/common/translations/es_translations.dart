@@ -152,6 +152,7 @@ class EsTranslations extends Translations {
       TranslationKeys.editList: 'Editar Lista',
       TranslationKeys.selectCurrency: 'Seleccionar Moneda',
       TranslationKeys.clearAllChecks: 'Desmarcar Todo',
+      TranslationKeys.allChecksCleared: 'Se han desmarcado todos los elementos',
 
       // currencies
       TranslationKeys.currencyUSD: 'Dólar Estadounidense',

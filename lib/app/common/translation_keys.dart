@@ -134,6 +134,7 @@ class TranslationKeys {
   static const String editList = 'edit_list';
   static const String selectCurrency = 'select_currency';
   static const String clearAllChecks = 'clear_all_checks';
+  static const String allChecksCleared = 'all_checks_cleared';
 
   // currencies
   static const String currencyUSD = 'currency_usd';

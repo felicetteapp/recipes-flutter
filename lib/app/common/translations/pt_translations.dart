@@ -151,6 +151,7 @@ class PtTranslations extends Translations {
       TranslationKeys.editList: 'Editar Lista',
       TranslationKeys.selectCurrency: 'Selecionar Moeda',
       TranslationKeys.clearAllChecks: 'Desmarcar Tudo',
+      TranslationKeys.allChecksCleared: 'Todos os itens foram desmarcados',
 
       // currencies
       TranslationKeys.currencyUSD: 'Dólar Americano',

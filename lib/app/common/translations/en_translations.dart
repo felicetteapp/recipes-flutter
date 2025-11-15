@@ -148,6 +148,7 @@ class EnTranslations extends Translations {
       TranslationKeys.editList: 'Edit List',
       TranslationKeys.selectCurrency: 'Select Currency',
       TranslationKeys.clearAllChecks: 'Clear All Checks',
+      TranslationKeys.allChecksCleared: 'All checks have been cleared',
 
       // currencies
       TranslationKeys.currencyUSD: 'US Dollar',
