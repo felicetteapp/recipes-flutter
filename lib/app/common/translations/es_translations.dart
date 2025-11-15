@@ -45,6 +45,9 @@ class EsTranslations extends Translations {
       TranslationKeys.darkMode: 'Modo Oscuro',
       TranslationKeys.lightMode: 'Modo Claro',
       TranslationKeys.myFirstGroup: 'Mi Primer Grupo',
+      TranslationKeys.wearOSSync: 'Sincronización con Wear OS',
+      TranslationKeys.connected: 'Conectado',
+      TranslationKeys.notConnected: 'No Conectado',
 
       // validation
       TranslationKeys.inputRequiredError: 'Este campo es obligatorio',
@@ -148,6 +151,7 @@ class EsTranslations extends Translations {
       // edit list
       TranslationKeys.editList: 'Editar Lista',
       TranslationKeys.selectCurrency: 'Seleccionar Moneda',
+      TranslationKeys.clearAllChecks: 'Desmarcar Todo',
 
       // currencies
       TranslationKeys.currencyUSD: 'Dólar Estadounidense',

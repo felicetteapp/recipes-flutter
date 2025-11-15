@@ -36,6 +36,9 @@ class TranslationKeys {
   static const String darkMode = 'dark_mode';
   static const String lightMode = 'light_mode';
   static const String myFirstGroup = 'my_first_group';
+  static const String wearOSSync = 'wear_os_sync';
+  static const String connected = 'connected';
+  static const String notConnected = 'not_connected';
 
   //validation
   static const String inputRequiredError = 'input_required_error';

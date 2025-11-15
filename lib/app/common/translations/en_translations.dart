@@ -43,6 +43,9 @@ class EnTranslations extends Translations {
       TranslationKeys.darkMode: 'Dark Mode',
       TranslationKeys.lightMode: 'Light Mode',
       TranslationKeys.myFirstGroup: 'My First Group',
+      TranslationKeys.wearOSSync: 'Wear OS Sync',
+      TranslationKeys.connected: 'Connected',
+      TranslationKeys.notConnected: 'Not Connected',
 
       // validation
       TranslationKeys.inputRequiredError: 'This field is required',
@@ -144,6 +147,7 @@ class EnTranslations extends Translations {
       // edit list
       TranslationKeys.editList: 'Edit List',
       TranslationKeys.selectCurrency: 'Select Currency',
+      TranslationKeys.clearAllChecks: 'Clear All Checks',
 
       // currencies
       TranslationKeys.currencyUSD: 'US Dollar',
