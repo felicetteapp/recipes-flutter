@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:felicette_recipes/app/modules/home/widgets/list/list_controller.dart';
+import 'package:felicette_recipes/app/services/recipes_service.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/data/models/group_models.dart';
 import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
@@ -109,6 +111,92 @@ class IngredientsService extends GetxService {
       );
       return null;
     }
+  }
+
+  List<ListIngredientItem> getListIngredientsItems({
+    required bool showCheckedFirst,
+  }) {
+    log('Building sortedIngredientList', name: 'IngredientsService');
+
+    final GroupsService groupsService = Get.find<GroupsService>();
+    final RecipesService recipesService = Get.find<RecipesService>();
+
+    final List<ListIngredientItem> list = <ListIngredientItem>[];
+
+    final group = groupsService.selectedGroup.value;
+
+    log('Selected group: ${group?.name}', name: 'IngredientsService');
+    if (group == null) {
+      return list;
+    }
+
+    log(
+      'Building sortedIngredientList for group: ${group.name}',
+      name: 'IngredientsService',
+    );
+
+    final currentListRecipes = recipesService.getCurrentGroupRecipes();
+
+    final ingredientsIds = [
+      ...group.currentIngredients.map(
+        (ingredientMap) => ingredientMap.ingredientId,
+      ),
+    ];
+
+    for (final recipe in currentListRecipes) {
+      for (final ri in recipe.ingredients) {
+        if (!ingredientsIds.contains(ri.ingredientId)) {
+          ingredientsIds.add(ri.ingredientId);
+        }
+      }
+    }
+
+    for (final ingredientId in ingredientsIds) {
+      final ingredient = getIngredientById(ingredientId);
+      if (ingredient == null) continue;
+
+      final prices = group.ingredientsPrices[ingredientId];
+      final isChecked = group.checkedIngredients.contains(ingredientId);
+      final recipes = recipesService.getRecipesByIngredientId(
+        ingredientId,
+        currentListRecipes,
+      );
+
+      String? quantity;
+
+      if (group.currentIngredients.any(
+        (ingMap) => ingMap.ingredientId == ingredientId,
+      )) {
+        quantity =
+            group.currentIngredients
+                .firstWhere((ingMap) => ingMap.ingredientId == ingredientId)
+                .quantity;
+      }
+
+      list.add(
+        ListIngredientItem(
+          ingredient: ingredient,
+          price: prices ?? [],
+          isChecked: isChecked,
+          recipes: recipes,
+          quantity: quantity,
+        ),
+      );
+    }
+
+    if (showCheckedFirst) {
+      list.sort((a, b) {
+        if (a.isChecked && !b.isChecked) {
+          return -1;
+        } else if (!a.isChecked && b.isChecked) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+    }
+
+    return list;
   }
 
   @override

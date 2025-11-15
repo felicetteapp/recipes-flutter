@@ -1,5 +1,8 @@
 import 'dart:developer';
 
+import 'package:felicette_recipes/app/common/translation_keys.dart';
+import 'package:felicette_recipes/app/utils/snackbar.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/data/models/group_models.dart';
 import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
@@ -88,84 +91,50 @@ class ListController extends GetxController {
     );
   }
 
-  List<ListIngredientItem> get sortedIngredientList {
-    log('Building sortedIngredientList', name: 'ListController');
-    final List<ListIngredientItem> list = <ListIngredientItem>[];
-
+  clearAllChecks() async {
     final group = groupsService.selectedGroup.value;
-
-    log('Selected group: ${group?.name}', name: 'ListController');
     if (group == null) {
-      return list;
+      return;
     }
 
-    log(
-      'Building sortedIngredientList for group: ${group.name}',
-      name: 'ListController',
+    final confirmed = await Get.dialog<bool>(
+      barrierDismissible: false,
+      AlertDialog(
+        title: Text(TranslationKeys.clearAllChecks.tr),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back(result: false);
+            },
+            child: Text(TranslationKeys.cancel.tr),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Get.back(result: true);
+            },
+            child: Text(TranslationKeys.confirm.tr),
+          ),
+        ],
+      ),
     );
 
-    final currentListRecipes = recipesService.getCurrentGroupRecipes();
-
-    final ingredientsIds = [
-      ...group.currentIngredients.map(
-        (ingredientMap) => ingredientMap.ingredientId,
-      ),
-    ];
-
-    for (final recipe in currentListRecipes) {
-      for (final ri in recipe.ingredients) {
-        if (!ingredientsIds.contains(ri.ingredientId)) {
-          ingredientsIds.add(ri.ingredientId);
-        }
-      }
+    if (confirmed != true) {
+      return;
     }
 
-    for (final ingredientId in ingredientsIds) {
-      final ingredient = ingredientsService.getIngredientById(ingredientId);
-      if (ingredient == null) continue;
+    await groupsService.clearAllChecks();
 
-      final prices = group.ingredientsPrices[ingredientId];
-      final isChecked = group.checkedIngredients.contains(ingredientId);
-      final recipes = recipesService.getRecipesByIngredientId(
-        ingredientId,
-        currentListRecipes,
-      );
+    log('Cleared all checks for group ${group.name}', name: 'ListController');
+    FRSnackbar.success(
+      TranslationKeys.success.tr,
+      TranslationKeys.allChecksCleared.tr,
+    );
+  }
 
-      String? quantity;
-
-      if (group.currentIngredients.any(
-        (ingMap) => ingMap.ingredientId == ingredientId,
-      )) {
-        quantity =
-            group.currentIngredients
-                .firstWhere((ingMap) => ingMap.ingredientId == ingredientId)
-                .quantity;
-      }
-
-      list.add(
-        ListIngredientItem(
-          ingredient: ingredient,
-          price: prices ?? [],
-          isChecked: isChecked,
-          recipes: recipes,
-          quantity: quantity,
-        ),
-      );
-    }
-
-    if (showCheckedFirst) {
-      list.sort((a, b) {
-        if (a.isChecked && !b.isChecked) {
-          return -1;
-        } else if (!a.isChecked && b.isChecked) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
-    }
-
-    return list;
+  List<ListIngredientItem> get sortedIngredientList {
+    return ingredientsService.getListIngredientsItems(
+      showCheckedFirst: showCheckedFirst,
+    );
   }
 
   List<ListRecipeItem> get sortedRecipeList {
@@ -181,13 +150,10 @@ class ListController extends GetxController {
 
     for (final recipe in currentListRecipes) {
       final isChecked = group.currentRecipes.contains(recipe.id);
-      final ingredients =
-          recipe.ingredients
-              .map(
-                (ri) => ingredientsService.getIngredientById(ri.ingredientId),
-              )
-              .whereType<FRIngredient>()
-              .toList();
+      final ingredients = recipe.ingredients
+          .map((ri) => ingredientsService.getIngredientById(ri.ingredientId))
+          .whereType<FRIngredient>()
+          .toList();
 
       list.add(
         ListRecipeItem(
@@ -210,14 +176,20 @@ class ListController extends GetxController {
     return allIngredients.where((item) => item.recipes.isEmpty).toList();
   }
 
-  openEditIngredientPriceModal(FRGroup group, ListIngredientItem item) {
-    Get.dialog(
+  openEditIngredientPriceModal(FRGroup group, ListIngredientItem item) async {
+    log('opened edit pencil', name: 'ListController');
+    await Get.dialog(
       useSafeArea: false,
       EditIngredientPriceModal(group: group, item: item),
     );
+    log('closed edit pencil', name: 'ListController');
   }
 
   handleCheckIngredient(ListIngredientItem item, bool isChecked) async {
+    log(
+      'handleCheckIngredient: ${item.ingredient.name}, isChecked: $isChecked',
+      name: 'ListController',
+    );
     groupsService.checkIngredient(
       ingredientId: item.ingredient.id,
       isChecked: isChecked,
@@ -225,7 +197,13 @@ class ListController extends GetxController {
     if (isChecked) {
       openEditIngredientPriceModal(groupsService.selectedGroup.value!, item);
     } else {
-      groupsService.removeIngredientPrice(ingredientId: item.ingredient.id);
+      await groupsService.removeIngredientPrice(
+        ingredientId: item.ingredient.id,
+      );
+      log(
+        'Removed ingredient price for ${item.ingredient.name}',
+        name: 'ListController',
+      );
     }
   }
 

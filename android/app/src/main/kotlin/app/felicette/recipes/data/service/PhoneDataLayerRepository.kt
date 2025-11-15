@@ -1,0 +1,175 @@
+package app.felicette.recipes.data.service
+
+import android.content.Context
+import android.util.Log
+import com.google.android.gms.wearable.*
+import app.felicette.recipes.data.model.WearIngredient
+import kotlinx.coroutines.tasks.await
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
+/**
+ * Repository to handle communication with WearOS devices via Wearable Data Layer.
+ * This class sends ingredient data to connected WearOS watches.
+ */
+class PhoneDataLayerRepository private constructor(context: Context) {
+
+    private val dataClient: DataClient = Wearable.getDataClient(context)
+    private val messageClient: MessageClient = Wearable.getMessageClient(context)
+    private val nodeClient: NodeClient = Wearable.getNodeClient(context)
+    private val applicationContext = context.applicationContext
+
+    private val json = Json {
+        ignoreUnknownKeys = true
+        encodeDefaults = true
+        prettyPrint = false // Compact JSON for efficiency
+    }
+
+    /**
+     * Send ingredients list to all connected WearOS devices.
+     * The data is serialized to JSON and sent as a DataItem.
+     * 
+     * @param ingredients List of ingredients to send to the watch
+     * @throws SendToWatchException if sending fails
+     */
+    suspend fun sendIngredientsToWatch(ingredients: List<WearIngredient>) {
+        try {
+            Log.d(TAG, "Sending ${ingredients.size} ingredients to watch")
+            
+            val ingredientsJson = json.encodeToString(ingredients)
+            Log.v(TAG, "Serialized JSON (${ingredientsJson.length} chars): $ingredientsJson")
+            
+            val putDataReq = PutDataMapRequest.create(INGREDIENTS_PATH).apply {
+                dataMap.putString(INGREDIENTS_KEY, ingredientsJson)
+                dataMap.putLong(TIMESTAMP_KEY, System.currentTimeMillis())
+            }
+
+            val request = putDataReq.asPutDataRequest().setUrgent()
+            val result = dataClient.putDataItem(request).await()
+            
+            Log.d(TAG, "Ingredients sent successfully: ${result.uri}")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to send ingredients to watch", e)
+            throw SendToWatchException("Failed to send ingredients", e)
+        }
+    }
+
+    /**
+     * Request sync from all connected WearOS devices.
+     * This triggers the watch to request fresh data from the phone.
+     */
+    suspend fun requestSyncFromWatch() {
+        try {
+            val nodes = getConnectedNodes()
+            
+            if (nodes.isEmpty()) {
+                Log.w(TAG, "No connected watches to sync with")
+                return
+            }
+            
+            nodes.forEach { node ->
+                try {
+                    messageClient.sendMessage(
+                        node.id,
+                        INGREDIENTS_REQUEST_PATH,
+                        null
+                    ).await()
+                    Log.d(TAG, "Sync request sent to ${node.displayName} (${node.id})")
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to send sync request to ${node.displayName}", e)
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to request sync from watch", e)
+        }
+    }
+
+    /**
+     * Check if any WearOS devices are currently connected.
+     * 
+     * @return true if at least one watch is connected, false otherwise
+     */
+    suspend fun hasConnectedWatch(): Boolean {
+        return try {
+            getConnectedNodes().isNotEmpty()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error checking connected watches", e)
+            false
+        }
+    }
+
+    /**
+     * Get list of connected WearOS devices.
+     * 
+     * @return List of connected Node objects
+     */
+    suspend fun getConnectedNodes(): List<Node> {
+        return try {
+            nodeClient.connectedNodes.await().also { nodes ->
+                Log.d(TAG, "Found ${nodes.size} connected nodes")
+                nodes.forEach { node ->
+                    Log.v(TAG, "  - ${node.displayName} (${node.id})")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to get connected nodes", e)
+            emptyList()
+        }
+    }
+
+    /**
+     * Get capabilities of connected devices.
+     * Useful for checking if the Felicette Recipes watch app is installed.
+     * 
+     * @return Set of nodes that have the Felicette Recipes capability
+     */
+    suspend fun getWatchCapabilities(): Set<Node> {
+        return try {
+            val capabilityClient = Wearable.getCapabilityClient(applicationContext)
+            val capabilityInfo = capabilityClient
+                .getCapability(WEAR_CAPABILITY, CapabilityClient.FILTER_REACHABLE)
+                .await()
+            
+            capabilityInfo.nodes.also { nodes ->
+                Log.d(TAG, "Found ${nodes.size} nodes with capability '$WEAR_CAPABILITY'")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to get watch capabilities", e)
+            emptySet()
+        }
+    }
+
+    companion object {
+        private const val TAG = "PhoneDataRepository"
+        
+        // Communication paths - must match WearOS app exactly
+        private const val INGREDIENTS_PATH = "/ingredients"
+        private const val INGREDIENTS_KEY = "ingredients_data"
+        private const val TIMESTAMP_KEY = "timestamp"
+        private const val INGREDIENTS_REQUEST_PATH = "/ingredients/request"
+        private const val INGREDIENT_STATUS_PATH = "/ingredient/status"
+        
+        // Capability to identify compatible watch apps
+        private const val WEAR_CAPABILITY = "felicette_recipes_wear"
+
+        @Volatile
+        private var instance: PhoneDataLayerRepository? = null
+
+        /**
+         * Get singleton instance of the repository.
+         * Thread-safe double-checked locking pattern.
+         */
+        fun getInstance(context: Context): PhoneDataLayerRepository {
+            return instance ?: synchronized(this) {
+                instance ?: PhoneDataLayerRepository(context).also { 
+                    instance = it 
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Custom exception for watch communication errors.
+ */
+class SendToWatchException(message: String, cause: Throwable? = null) : Exception(message, cause)

@@ -75,8 +75,9 @@ class GroupApiService extends ApiService {
     required List<FRIngredientPrice> prices,
   }) {
     return doc(group.id).update({
-      'ingredientsPrices.$ingredientId':
-          prices.map((price) => price.toMap()).toList(),
+      'ingredientsPrices.$ingredientId': prices
+          .map((price) => price.toMap())
+          .toList(),
     });
   }
 
@@ -86,10 +87,9 @@ class GroupApiService extends ApiService {
     required bool isChecked,
   }) {
     return doc(group.id).update({
-      'checkedIngredients':
-          isChecked
-              ? FieldValue.arrayUnion([ingredientId])
-              : FieldValue.arrayRemove([ingredientId]),
+      'checkedIngredients': isChecked
+          ? FieldValue.arrayUnion([ingredientId])
+          : FieldValue.arrayRemove([ingredientId]),
     });
   }
 
@@ -113,5 +113,11 @@ class GroupApiService extends ApiService {
 
   Future<void> deleteGroup(String groupId) {
     return doc(groupId).delete();
+  }
+
+  Future<void> clearAllChecks({required FRGroup group}) {
+    return doc(
+      group.id,
+    ).update({'checkedIngredients': [], 'ingredientsPrices': {}});
   }
 }

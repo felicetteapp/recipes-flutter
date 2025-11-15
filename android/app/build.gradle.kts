@@ -6,6 +6,8 @@ plugins {
     id("com.google.gms.google-services")
     // END: FlutterFire Configuration
     id("kotlin-android")
+    // Kotlinx Serialization for WearOS communication
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
@@ -17,7 +19,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.felicette_recipes"
+    namespace = "app.felicette.recipes"
     compileSdk = flutter.compileSdkVersion
 //    ndkVersion = flutter.ndkVersion
     ndkVersion = "27.0.12077973"
@@ -76,4 +78,15 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // WearOS Data Layer communication
+    implementation("com.google.android.gms:play-services-wearable:18.1.0")
+    
+    // Coroutines support for Google Play Services
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    
+    // JSON Serialization for WearOS communication
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }

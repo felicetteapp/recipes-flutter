@@ -105,12 +105,11 @@ class EditIngredientPriceModal extends StatelessWidget {
                 Expanded(
                   child: Obx(() {
                     return TextButton.icon(
-                      onPressed:
-                          controller.isLoading.value
-                              ? null
-                              : () {
-                                controller.handleSaveWithoutPrice();
-                              },
+                      onPressed: controller.isLoading.value
+                          ? null
+                          : () {
+                              controller.handleSaveWithoutPrice();
+                            },
                       icon: const Icon(Icons.save_outlined),
                       label: Text(
                         TranslationKeys.saveWithoutPrice.tr,
@@ -127,12 +126,11 @@ class EditIngredientPriceModal extends StatelessWidget {
                         backgroundColor: Get.theme.customColors.success,
                         foregroundColor: Get.theme.customColors.onSuccess,
                       ),
-                      onPressed:
-                          controller.isLoading.value
-                              ? null
-                              : () {
-                                controller.handleSave();
-                              },
+                      onPressed: controller.isLoading.value
+                          ? null
+                          : () {
+                              controller.handleSave();
+                            },
                       icon: const Icon(Icons.save),
                       label: Text(
                         TranslationKeys.save.tr,
@@ -164,6 +162,7 @@ class EditIngredientPriceModal extends StatelessWidget {
       final fixedQuantities = [1, 2, 3, 4];
       final buttons = [...fixedQuantities, 5];
       return Card(
+        //        color: Get.theme.colorScheme.onInverseSurface,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Column(
@@ -175,8 +174,9 @@ class EditIngredientPriceModal extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: TranslationKeys.unitPrice.tr,
                 ),
-                initialValue:
-                    price.unitPrice == 0.0 ? null : price.unitPrice.toString(),
+                initialValue: price.unitPrice == 0.0
+                    ? null
+                    : price.unitPrice.toString(),
                 keyboardType: TextInputType.number,
                 onChanged: (value) {
                   final unitPrice = double.tryParse(value) ?? 0.0;
@@ -230,8 +230,9 @@ class EditIngredientPriceModal extends StatelessWidget {
                               }
 
                               if (i == 5) {
-                                final isSelected =
-                                    !fixedQuantities.contains(price.quantity);
+                                final isSelected = !fixedQuantities.contains(
+                                  price.quantity,
+                                );
                                 return Expanded(
                                   child: FilledButton.icon(
                                     icon: const Icon(Icons.edit),
@@ -265,9 +266,9 @@ class EditIngredientPriceModal extends StatelessWidget {
                                                       ),
                                                       SizedBox(height: 16),
                                                       TextFormField(
-                                                        initialValue:
-                                                            context.value
-                                                                .toString(),
+                                                        initialValue: context
+                                                            .value
+                                                            .toString(),
                                                         keyboardType:
                                                             TextInputType
                                                                 .number,
@@ -280,16 +281,18 @@ class EditIngredientPriceModal extends StatelessWidget {
                                                               price.quantity;
                                                           context.value = qty;
                                                         },
-                                                        onFieldSubmitted: (
-                                                          value,
-                                                        ) {
-                                                          final qty =
-                                                              double.tryParse(
-                                                                value,
-                                                              ) ??
-                                                              price.quantity;
-                                                          Get.back(result: qty);
-                                                        },
+                                                        onFieldSubmitted:
+                                                            (value) {
+                                                              final qty =
+                                                                  double.tryParse(
+                                                                    value,
+                                                                  ) ??
+                                                                  price
+                                                                      .quantity;
+                                                              Get.back(
+                                                                result: qty,
+                                                              );
+                                                            },
                                                       ),
 
                                                       SizedBox(height: 16),
@@ -322,9 +325,10 @@ class EditIngredientPriceModal extends StatelessWidget {
                                       );
 
                                       if (newQuantity != null) {
-                                        controller
-                                            .ingredientPrices[index] = price
-                                            .copyWith(quantity: newQuantity);
+                                        controller.ingredientPrices[index] =
+                                            price.copyWith(
+                                              quantity: newQuantity,
+                                            );
                                       }
                                     },
                                     style: ButtonStyle(
@@ -341,17 +345,17 @@ class EditIngredientPriceModal extends StatelessWidget {
                                         isSelected
                                             ? Get.theme.colorScheme.onPrimary
                                             : Get
-                                                .theme
-                                                .colorScheme
-                                                .onPrimaryContainer,
+                                                  .theme
+                                                  .colorScheme
+                                                  .onPrimaryContainer,
                                       ),
                                       backgroundColor: WidgetStatePropertyAll(
                                         isSelected
                                             ? Get.theme.colorScheme.primary
                                             : Get
-                                                .theme
-                                                .colorScheme
-                                                .primaryContainer,
+                                                  .theme
+                                                  .colorScheme
+                                                  .primaryContainer,
                                       ),
                                     ),
                                     label: Text(
@@ -387,17 +391,17 @@ class EditIngredientPriceModal extends StatelessWidget {
                                     i == price.quantity
                                         ? Get.theme.colorScheme.onPrimary
                                         : Get
-                                            .theme
-                                            .colorScheme
-                                            .onPrimaryContainer,
+                                              .theme
+                                              .colorScheme
+                                              .onPrimaryContainer,
                                   ),
                                   backgroundColor: WidgetStatePropertyAll(
                                     i == price.quantity
                                         ? Get.theme.colorScheme.primary
                                         : Get
-                                            .theme
-                                            .colorScheme
-                                            .primaryContainer,
+                                              .theme
+                                              .colorScheme
+                                              .primaryContainer,
                                   ),
                                 ),
                                 child: Text(i.toString()),

@@ -17,6 +17,7 @@ class ListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ListController());
     return LayoutBuilder(
+      key: const Key('list_layout_builder'),
       builder: (context, constraints) {
         return Obx(key: Key('list_obx'), () {
           var itemCount = 0;
@@ -50,6 +51,7 @@ class ListWidget extends StatelessWidget {
           return ListView.builder(
             key: const Key('list_view'),
             itemCount: itemCount,
+            restorationId: 'home_list_view',
             itemBuilder: (context, index) {
               if (index == 0) {
                 return _buildFilters(controller);
@@ -166,10 +168,9 @@ class ListWidget extends StatelessWidget {
                           ?.name ??
                       '';
                 },
-                onChanged:
-                    (val) => {
-                      log(val.toString(), name: 'IngredientSelect onChanged'),
-                    },
+                onChanged: (val) => {
+                  log(val.toString(), name: 'IngredientSelect onChanged'),
+                },
                 isMulti: true,
                 label: TranslationKeys.selectIngredients.tr,
                 isRecipe: false,
@@ -192,7 +193,7 @@ class ListWidget extends StatelessWidget {
         icon: Icon(Icons.clear_all),
         label: Text(TranslationKeys.clearAllChecks.tr),
         onPressed: () {
-          //          controller.clearAllChecks();
+          controller.clearAllChecks();
         },
       ),
     );
@@ -265,29 +266,26 @@ class ListWidget extends StatelessWidget {
       );
     }
 
-    final quantityOfThisIngriedient =
-        recipe.ingredients
-            .firstWhere((ri) => ri.ingredientId == ingredient.id)
-            .quantity;
+    final quantityOfThisIngriedient = recipe.ingredients
+        .firstWhere((ri) => ri.ingredientId == ingredient.id)
+        .quantity;
 
     return RichText(
       text: TextSpan(
         style: TextStyle(
           fontSize: 12,
-          color:
-              isMainRecipe
-                  ? Get.context?.theme.colorScheme.secondary
-                  : Get.context?.theme.colorScheme.onSurfaceVariant,
+          color: isMainRecipe
+              ? Get.context?.theme.colorScheme.secondary
+              : Get.context?.theme.colorScheme.onSurfaceVariant,
           height: 1,
         ),
         children: [
           ...[
             if (quantityOfThisIngriedient.isNotEmpty)
               TextSpan(
-                text:
-                    isMainRecipe
-                        ? quantityOfThisIngriedient
-                        : '$quantityOfThisIngriedient ',
+                text: isMainRecipe
+                    ? quantityOfThisIngriedient
+                    : '$quantityOfThisIngriedient ',
                 style: TextStyle(
                   fontWeight: isMainRecipe ? FontWeight.w800 : FontWeight.w600,
                 ),
@@ -399,36 +397,31 @@ class ListWidget extends StatelessWidget {
                     controller.setDisplayType(t);
                   },
                   style: FilledButton.styleFrom(
-                    backgroundColor:
-                        isSelected
-                            ? Get.theme.colorScheme.primary
-                            : Get.theme.colorScheme.primaryContainer,
-                    foregroundColor:
-                        isSelected
-                            ? Get.theme.colorScheme.onPrimary
-                            : Get.theme.colorScheme.onPrimaryContainer,
+                    backgroundColor: isSelected
+                        ? Get.theme.colorScheme.primary
+                        : Get.theme.colorScheme.primaryContainer,
+                    foregroundColor: isSelected
+                        ? Get.theme.colorScheme.onPrimary
+                        : Get.theme.colorScheme.onPrimaryContainer,
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          isSelected
-                              ? BorderRadius.all(Radius.circular(24))
-                              : BorderRadius.horizontal(
-                                left:
-                                    isFirst
-                                        ? Radius.circular(24)
-                                        : Radius.circular(8),
-                                right:
-                                    isLast
-                                        ? Radius.circular(24)
-                                        : Radius.circular(8),
-                              ),
+                      borderRadius: isSelected
+                          ? BorderRadius.all(Radius.circular(24))
+                          : BorderRadius.horizontal(
+                              left: isFirst
+                                  ? Radius.circular(24)
+                                  : Radius.circular(8),
+                              right: isLast
+                                  ? Radius.circular(24)
+                                  : Radius.circular(8),
+                            ),
                     ),
                   ),
                   icon: Icon(
                     isSelected
                         ? Icons.check
                         : (t == ListDisplayTypeEnum.ingredients
-                            ? Icons.kitchen
-                            : Icons.book),
+                              ? Icons.kitchen
+                              : Icons.book),
                   ),
                   label: Text(
                     TranslationHelper.plural(
@@ -616,38 +609,36 @@ class ListWidget extends StatelessWidget {
               ),
               Wrap(
                 spacing: 4,
-                children:
-                    prices.map((p) {
-                      return RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            fontSize: 10,
-                            color:
-                                Get.context?.theme.colorScheme.onSurfaceVariant,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: p.quantity.toString(),
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            TextSpan(
-                              text: ' x ',
-                              style: TextStyle(fontWeight: FontWeight.normal),
-                            ),
-                            TextSpan(
-                              text: ls.formatCurrency(
-                                p.unitPrice.toDouble(),
-                                currency,
-                              ),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Get.context?.theme.colorScheme.primary,
-                              ),
-                            ),
-                          ],
+                children: prices.map((p) {
+                  return RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Get.context?.theme.colorScheme.onSurfaceVariant,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: p.quantity.toString(),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                      );
-                    }).toList(),
+                        TextSpan(
+                          text: ' x ',
+                          style: TextStyle(fontWeight: FontWeight.normal),
+                        ),
+                        TextSpan(
+                          text: ls.formatCurrency(
+                            p.unitPrice.toDouble(),
+                            currency,
+                          ),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Get.context?.theme.colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
               ),
             ],
           ),

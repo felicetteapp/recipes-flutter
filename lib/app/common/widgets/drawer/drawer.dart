@@ -1,5 +1,6 @@
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/app/services/app_service.dart';
+import 'package:felicette_recipes/app/services/wearos_service.dart';
 import 'package:felicette_recipes/app/utils/snackbar.dart';
 import 'package:flutter/material.dart' hide DrawerController;
 import 'package:get/get.dart';
@@ -11,36 +12,36 @@ import 'package:felicette_recipes/app/services/localization_service.dart';
 
 class FRDrawer extends StatelessWidget {
   final groupServices = Get.find<GroupsService>();
+  final EdgeInsetsGeometry listTileContentPadding = .only(right: 8, left: 16);
   FRDrawer({super.key});
 
   List<Widget> _buildGroupListTiles(BuildContext context) {
     final selectedGroup = groupServices.selectedGroup.value;
 
-    final actualGroupsTiles =
-        groupServices.availableGroups.map((group) {
-          return ListTile(
-            selected: group.id == selectedGroup?.id,
-            leading: Icon(
-              group.id == selectedGroup?.id
-                  ? Icons.group
-                  : Icons.group_outlined,
-            ),
-            title: Text(group.name),
-            trailing: IconButton(
-              onPressed: () {
-                Get.toNamed(AppRoutes.groupDetails(group.id));
-              },
-              icon: Icon(Icons.edit),
-            ),
-            onTap: () {
-              groupServices.selectGroup(group);
-              Navigator.pop(context);
-            },
-          );
-        }).toList();
+    final actualGroupsTiles = groupServices.availableGroups.map((group) {
+      return ListTile(
+        contentPadding: listTileContentPadding,
+        selected: group.id == selectedGroup?.id,
+        leading: Icon(
+          group.id == selectedGroup?.id ? Icons.group : Icons.group_outlined,
+        ),
+        title: Text(group.name),
+        trailing: IconButton(
+          onPressed: () {
+            Get.toNamed(AppRoutes.groupDetails(group.id));
+          },
+          icon: Icon(Icons.edit),
+        ),
+        onTap: () {
+          groupServices.selectGroup(group);
+          Navigator.pop(context);
+        },
+      );
+    }).toList();
 
     return [
       ListTile(
+        contentPadding: listTileContentPadding,
         title: Text(
           TranslationKeys.yourGroups.tr,
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -88,14 +89,11 @@ class FRDrawer extends StatelessWidget {
                           ),
                           Expanded(
                             child: ElevatedButton(
-                              onPressed:
-                                  nameState.value.trim().isEmpty
-                                      ? null
-                                      : () {
-                                        Get.back(
-                                          result: nameState.value.trim(),
-                                        );
-                                      },
+                              onPressed: nameState.value.trim().isEmpty
+                                  ? null
+                                  : () {
+                                      Get.back(result: nameState.value.trim());
+                                    },
                               child: Text(TranslationKeys.create.tr),
                             ),
                           ),
@@ -124,6 +122,7 @@ class FRDrawer extends StatelessWidget {
     final localizationService = Get.find<LocalizationService>();
 
     return ListTile(
+      contentPadding: listTileContentPadding,
       leading: Icon(Icons.language),
       title: Text(TranslationKeys.language.tr),
       subtitle: Text(
@@ -133,15 +132,14 @@ class FRDrawer extends StatelessWidget {
         final response = await Get.dialog<Locale>(
           SimpleDialog(
             title: Text(TranslationKeys.selectLanguage.tr),
-            children:
-                LocalizationService.supportedLocales.map((locale) {
-                  return SimpleDialogOption(
-                    onPressed: () {
-                      Get.back(result: locale);
-                    },
-                    child: Text(localizationService.getLocaleName(locale)),
-                  );
-                }).toList(),
+            children: LocalizationService.supportedLocales.map((locale) {
+              return SimpleDialogOption(
+                onPressed: () {
+                  Get.back(result: locale);
+                },
+                child: Text(localizationService.getLocaleName(locale)),
+              );
+            }).toList(),
           ),
         );
 
@@ -152,11 +150,32 @@ class FRDrawer extends StatelessWidget {
     );
   }
 
+  Widget _buildWearOsListTile(BuildContext context) {
+    final WearOSService wearOSService = Get.find<WearOSService>();
+
+    return ListTile(
+      contentPadding: listTileContentPadding,
+      leading: Icon(Icons.watch),
+      title: Text(TranslationKeys.wearOSSync.tr),
+      subtitle: Text(
+        wearOSService.hasConnectedWatch.value
+            ? TranslationKeys.connected.tr
+            : TranslationKeys.notConnected.tr,
+      ),
+      onTap: wearOSService.hasConnectedWatch.value
+          ? () async {
+              await wearOSService.sendCurrentIngredients();
+            }
+          : null,
+    );
+  }
+
   Widget _buildThemeListTile(BuildContext context) {
     final appService = Get.find<AppService>();
 
     final isDarkMode = Get.isDarkMode;
     return ListTile(
+      contentPadding: listTileContentPadding,
       leading: Icon(Icons.brightness_6),
       title: Text(TranslationKeys.theme.tr),
       subtitle: Text(
@@ -225,9 +244,11 @@ class FRDrawer extends StatelessWidget {
             const Divider(),
             _buildLanguageListTile(context),
             _buildThemeListTile(context),
+            _buildWearOsListTile(context),
             const Divider(),
             Obx(() {
               return ListTile(
+                contentPadding: listTileContentPadding,
                 leading: Icon(Icons.logout),
                 title: Text(TranslationKeys.logout.tr),
                 subtitle: Text(authService.currentUser.value?.email ?? ''),

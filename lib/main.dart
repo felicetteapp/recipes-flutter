@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:felicette_recipes/app/common/environment.dart';
 import 'package:felicette_recipes/app/services/app_service.dart';
 import 'package:felicette_recipes/app/utils/secure_storage.dart';
@@ -28,18 +29,16 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await FirebaseAppCheck.instance.activate(
-    providerApple:
-        Environment.firebaseAppCheckIosDebugToken.isNotEmpty
-            ? AppleDebugProvider(
-              debugToken: Environment.firebaseAppCheckIosDebugToken,
-            )
-            : AppleDeviceCheckProvider(),
-    providerAndroid:
-        Environment.firebaseAppCheckAndroidDebugToken.isNotEmpty
-            ? AndroidDebugProvider(
-              debugToken: Environment.firebaseAppCheckAndroidDebugToken,
-            )
-            : AndroidPlayIntegrityProvider(),
+    providerApple: Environment.firebaseAppCheckIosDebugToken.isNotEmpty
+        ? AppleDebugProvider(
+            debugToken: Environment.firebaseAppCheckIosDebugToken,
+          )
+        : AppleDeviceCheckProvider(),
+    providerAndroid: Environment.firebaseAppCheckAndroidDebugToken.isNotEmpty
+        ? AndroidDebugProvider(
+            debugToken: Environment.firebaseAppCheckAndroidDebugToken,
+          )
+        : AndroidPlayIntegrityProvider(),
   );
   runApp(MyApp(initialThemeIsDark: initialThemeIsDark));
 }
@@ -50,18 +49,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Felicette Recipes',
-      theme: themeLight,
-      darkTheme: themeDark,
-      themeMode: initialThemeIsDark ? ThemeMode.dark : ThemeMode.light,
-      translations: AppTranslations(),
-      locale: const Locale('en', 'US'),
-      fallbackLocale: const Locale('en', 'US'),
-      initialBinding: InitialBinding(),
-      initialRoute: AppRoutes.splash,
-      getPages: AppPages.routes,
-      debugShowCheckedModeBanner: false,
+    return DynamicColorBuilder(
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        final ThemeData actualThemeLight = getLightThemeData(lightDynamic);
+
+        final ThemeData actualThemeDark = getDarkThemeData(darkDynamic);
+
+        return GetMaterialApp(
+          title: 'Felicette Recipes',
+          theme: actualThemeLight,
+          darkTheme: actualThemeDark,
+          themeMode: initialThemeIsDark ? ThemeMode.dark : ThemeMode.light,
+          translations: AppTranslations(),
+          locale: const Locale('en', 'US'),
+          fallbackLocale: const Locale('en', 'US'),
+          initialBinding: InitialBinding(),
+          initialRoute: AppRoutes.splash,
+          getPages: AppPages.routes,
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }

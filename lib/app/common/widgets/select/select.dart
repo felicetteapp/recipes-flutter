@@ -71,7 +71,7 @@ class FRSelect<T> extends StatelessWidget {
               child: Material(
                 shape: RoundedRectangleBorder(
                   side: BorderSide(
-                    color: Get.theme.colorScheme.surfaceContainer,
+                    color: Get.theme.colorScheme.outlineVariant,
                     width: 1.5,
                   ),
                   borderRadius: BorderRadius.circular(8),

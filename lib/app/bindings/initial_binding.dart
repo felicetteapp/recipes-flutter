@@ -1,3 +1,4 @@
+import 'package:felicette_recipes/app/services/wearos_service.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/services/auth_service.dart';
 import 'package:felicette_recipes/app/services/groups_service.dart';
@@ -15,5 +16,6 @@ class InitialBinding extends Bindings {
     Get.put<GroupsService>(GroupsService(), permanent: true);
     Get.put<IngredientsService>(IngredientsService(), permanent: true);
     Get.put<RecipesService>(RecipesService(), permanent: true);
+    Get.put<WearOSService>(WearOSService(), permanent: true);
   }
 }

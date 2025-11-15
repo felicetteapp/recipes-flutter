@@ -69,7 +69,7 @@ class RedirectTo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.to(routeName);
+      Get.toNamed(routeName);
     });
     return Container();
   }

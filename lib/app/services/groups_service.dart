@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:felicette_recipes/app/services/wearos_service.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/data/models/group_models.dart';
 import 'package:felicette_recipes/app/services/api/group_api_service.dart';
@@ -18,6 +19,7 @@ class GroupsService extends GetxService {
   final RxList<FRGroup> availableGroups = <FRGroup>[].obs;
   final Rx<FRGroup?> selectedGroup = Rx<FRGroup?>(null);
   final Rxn<String> selectedGroupId = Rxn<String>();
+  final Rxn<Worker> selectedGroupDebounce = Rxn<Worker>();
   StreamSubscription<DocumentSnapshot<FRGroup>>?
   _currentGroupListenerSubscription;
 
@@ -30,6 +32,18 @@ class GroupsService extends GetxService {
   }
 
   bool get userHasAnyGroup => authService.userGroups.isNotEmpty;
+
+  Future<void> clearAllChecks() async {
+    final group = selectedGroup.value;
+    log(
+      'Clearing all checked ingredients in group ${group?.name}',
+      name: 'GroupsService',
+    );
+    if (group == null) {
+      throw Exception('No selected group to clear checked ingredients for');
+    }
+    return groupApiService.clearAllChecks(group: group);
+  }
 
   void getUserGroups(List<String> userGroupIds) async {
     final newGroups = <FRGroup>[];
@@ -302,5 +316,21 @@ class GroupsService extends GetxService {
         selectedGroup.value = null;
       }
     });
+
+    selectedGroupDebounce.value = debounce(selectedGroup, (FRGroup? group) {
+      log(
+        'Selected group debounce changed: ${group?.name}',
+        name: 'GroupsService',
+      );
+      final WearOSService wearOSService = Get.find<WearOSService>();
+      wearOSService.sendCurrentIngredients();
+    }, time: const Duration(seconds: 5));
+  }
+
+  @override
+  void onClose() {
+    _currentGroupListenerSubscription?.cancel();
+    selectedGroupDebounce.value?.dispose();
+    super.onClose();
   }
 }

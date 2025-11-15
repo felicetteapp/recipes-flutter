@@ -16,6 +16,7 @@ import 'package:felicette_recipes/app/services/groups_service.dart';
 import 'home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
+  final bottomNavigationHeight = 80.0;
   const HomeView({super.key});
 
   _buildBodyWithNoGroups() {
@@ -42,14 +43,13 @@ class HomeView extends GetView<HomeController> {
                 ),
                 Obx(() {
                   return FilledButton(
-                    onPressed:
-                        isLoading.value
-                            ? null
-                            : () async {
-                              isLoading.value = true;
-                              await controller.handleCreateFirstGroup();
-                              isLoading.value = false;
-                            },
+                    onPressed: isLoading.value
+                        ? null
+                        : () async {
+                            isLoading.value = true;
+                            await controller.handleCreateFirstGroup();
+                            isLoading.value = false;
+                          },
                     child: Text(
                       isLoading.value
                           ? TranslationKeys.loading.tr
@@ -107,7 +107,7 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           NavigationBar(
-            height: 80,
+            height: bottomNavigationHeight,
             selectedIndex: controller.bottomNavigationIndex.value,
             onDestinationSelected: controller.setBottomNavigationIndex,
             destinations: [
@@ -118,19 +118,17 @@ class HomeView extends GetView<HomeController> {
                       !controller.groupHasRecipes && controller.userHasAnyGroup,
                   child: Icon(Icons.book),
                 ),
-                label:
-                    TranslationHelper.plural(
-                      TranslationKeys.recipe,
-                      0,
-                    ).capitalizeFirst!,
+                label: TranslationHelper.plural(
+                  TranslationKeys.recipe,
+                  0,
+                ).capitalizeFirst!,
               ),
               NavigationDestination(
                 icon: Icon(Icons.list),
-                label:
-                    TranslationHelper.plural(
-                      TranslationKeys.list,
-                      1,
-                    ).capitalizeFirst!,
+                label: TranslationHelper.plural(
+                  TranslationKeys.list,
+                  1,
+                ).capitalizeFirst!,
               ),
               NavigationDestination(
                 enabled: controller.userHasAnyGroup,
@@ -140,11 +138,10 @@ class HomeView extends GetView<HomeController> {
                       controller.userHasAnyGroup,
                   child: Icon(Icons.kitchen),
                 ),
-                label:
-                    TranslationHelper.plural(
-                      TranslationKeys.ingredient,
-                      0,
-                    ).capitalizeFirst!,
+                label: TranslationHelper.plural(
+                  TranslationKeys.ingredient,
+                  0,
+                ).capitalizeFirst!,
               ),
             ],
           ),
@@ -273,6 +270,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
+        extendBody: true,
         appBar: _buildAppBar(),
         drawer: FRDrawer(),
         floatingActionButton: _buildFloatingActionButton(),

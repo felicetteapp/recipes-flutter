@@ -73,7 +73,7 @@ class IngredientSelect extends StatelessWidget {
           margin: EdgeInsets.only(top: 8),
           decoration: BoxDecoration(
             border: Border.all(
-              color: Get.theme.colorScheme.surfaceContainer,
+              color: Get.theme.colorScheme.outlineVariant,
               width: 1.5,
             ),
             borderRadius: BorderRadius.circular(8),

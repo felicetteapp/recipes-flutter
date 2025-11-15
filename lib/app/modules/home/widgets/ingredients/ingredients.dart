@@ -17,10 +17,12 @@ class IngredientsWidget extends StatelessWidget {
     final groupsService = Get.find<GroupsService>();
     return Obx(() {
       final ingredients = ingredientsService.ingredients;
-      final actualIngredients =
-          ingredients.where((ing) => ing.actualIngredient).toList();
-      final nonActualIngredients =
-          ingredients.where((ing) => !ing.actualIngredient).toList();
+      final actualIngredients = ingredients
+          .where((ing) => ing.actualIngredient)
+          .toList();
+      final nonActualIngredients = ingredients
+          .where((ing) => !ing.actualIngredient)
+          .toList();
 
       final itemCount = ingredients.length + 2;
 
@@ -31,7 +33,7 @@ class IngredientsWidget extends StatelessWidget {
       }
 
       return ListView.builder(
-        padding: EdgeInsets.only(bottom: 72),
+        padding: EdgeInsets.only(bottom: 72 + 80 + 32),
         itemBuilder: (context, index) {
           if (index == 0) {
             return ListTile(
@@ -120,10 +122,9 @@ class IngredientsWidget extends StatelessWidget {
         padding: const EdgeInsets.only(left: 12, right: 6),
         child: Icon(
           ingredient.actualIngredient ? Icons.kitchen : Icons.shopping_cart,
-          color:
-              ingredient.actualIngredient
-                  ? Get.theme.colorScheme.primary
-                  : Get.theme.colorScheme.secondary,
+          color: ingredient.actualIngredient
+              ? Get.theme.colorScheme.primary
+              : Get.theme.colorScheme.secondary,
         ),
       ),
       trailing: IconButton(

@@ -32,7 +32,7 @@ class RecipesWidget extends StatelessWidget {
       }
 
       return ListView.builder(
-        padding: EdgeInsets.only(bottom: 72),
+        padding: EdgeInsets.only(bottom: 72 + 80 + 32),
         itemBuilder: (context, index) {
           final recipe = recipes[index];
           return _recipeItemBuilder(
@@ -88,35 +88,33 @@ class RecipesWidget extends StatelessWidget {
     required HomeController homeViewController,
   }) {
     final isInList = recipesService.isRecipeInSelectedGroupList(recipe.id);
-    final ingredients =
-        recipe.ingredients
-            .map((ri) {
-              final ingredient = ingredientsService.getIngredientById(
-                ri.ingredientId,
-              );
-              return ingredient;
-            })
-            .whereType<FRIngredient>()
-            .toList();
+    final ingredients = recipe.ingredients
+        .map((ri) {
+          final ingredient = ingredientsService.getIngredientById(
+            ri.ingredientId,
+          );
+          return ingredient;
+        })
+        .whereType<FRIngredient>()
+        .toList();
 
     ingredients.sort((a, b) => a.name.compareTo(b.name));
 
     return Obx(
       () => ListTile(
-        leading:
-            homeViewController.itsSelectionMode.value
-                ? Checkbox(
-                  value: homeViewController.selectedIds.contains(recipe.id),
-                  onChanged: (checked) {
-                    if (checked == true) {
-                      homeViewController.selectedIds.add(recipe.id);
-                    } else {
-                      homeViewController.selectedIds.remove(recipe.id);
-                    }
-                  },
-                  activeColor: Theme.of(context).colorScheme.secondary,
-                )
-                : null,
+        leading: homeViewController.itsSelectionMode.value
+            ? Checkbox(
+                value: homeViewController.selectedIds.contains(recipe.id),
+                onChanged: (checked) {
+                  if (checked == true) {
+                    homeViewController.selectedIds.add(recipe.id);
+                  } else {
+                    homeViewController.selectedIds.remove(recipe.id);
+                  }
+                },
+                activeColor: Theme.of(context).colorScheme.secondary,
+              )
+            : null,
         title: Wrap(
           spacing: 8,
           crossAxisAlignment: WrapCrossAlignment.center,
@@ -154,22 +152,20 @@ class RecipesWidget extends StatelessWidget {
               ),
           ],
         ),
-        onTap:
-            homeViewController.itsSelectionMode.value
-                ? () {
-                  if (homeViewController.selectedIds.contains(recipe.id)) {
-                    homeViewController.selectedIds.remove(recipe.id);
-                  } else {
-                    homeViewController.selectedIds.add(recipe.id);
-                  }
+        onTap: homeViewController.itsSelectionMode.value
+            ? () {
+                if (homeViewController.selectedIds.contains(recipe.id)) {
+                  homeViewController.selectedIds.remove(recipe.id);
+                } else {
+                  homeViewController.selectedIds.add(recipe.id);
                 }
-                : null,
-        onLongPress:
-            homeViewController.itsSelectionMode.value
-                ? null
-                : () {
-                  homeViewController.enableRecipesSelectionMode();
-                },
+              }
+            : null,
+        onLongPress: homeViewController.itsSelectionMode.value
+            ? null
+            : () {
+                homeViewController.enableRecipesSelectionMode();
+              },
         subtitle: Text(ingredients.map((i) => i.name).join(', ')),
         //        contentPadding: EdgeInsets.symmetric(horizontal: 16),
         visualDensity: VisualDensity.compact,
@@ -177,27 +173,26 @@ class RecipesWidget extends StatelessWidget {
           left: !homeViewController.itsSelectionMode.value ? 20 : 4,
           right: 4,
         ),
-        trailing:
-            !homeViewController.itsSelectionMode.value
-                ? Row(
-                  spacing: 4,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Get.dialog(
-                          EditCreateRecipeModal(
-                            groupId: groupsService.selectedGroup.value!.id,
-                            recipe: recipe,
-                          ),
-                          useSafeArea: false,
-                        );
-                      },
-                      icon: const Icon(Icons.edit),
-                    ),
-                  ],
-                )
-                : null,
+        trailing: !homeViewController.itsSelectionMode.value
+            ? Row(
+                spacing: 4,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Get.dialog(
+                        EditCreateRecipeModal(
+                          groupId: groupsService.selectedGroup.value!.id,
+                          recipe: recipe,
+                        ),
+                        useSafeArea: false,
+                      );
+                    },
+                    icon: const Icon(Icons.edit),
+                  ),
+                ],
+              )
+            : null,
       ),
     );
   }
