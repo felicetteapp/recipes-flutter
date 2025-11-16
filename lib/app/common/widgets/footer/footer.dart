@@ -1,20 +1,35 @@
-import 'package:felicette_recipes/app/common/translation_keys.dart';
-import 'package:felicette_recipes/app/services/app_service.dart';
-import 'package:felicette_recipes/app/services/localization_service.dart';
 import 'package:felicette_recipes/app/utils/utils.dart';
+import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
+// TODO: fix services
+
+class localizationService {
+  static String getLocaleName(Locale locale) {
+    return locale.countryCode.toString();
+  }
+
+  static List<Locale> get supportedLocales {
+    return [
+      const Locale('en', 'US'),
+      const Locale('es', 'ES'),
+      const Locale('fr', 'FR'),
+    ];
+  }
+
+  static void changeLocale(Locale locale) {}
+}
+
+class appService {
+  static Future<void> toggleTheme() async {}
+}
 
 class FRFooter extends StatelessWidget {
   const FRFooter({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final LocalizationService localizationService =
-        Get.find<LocalizationService>();
-    final AppService appService = Get.find<AppService>();
-
-    final ButtonStyle buttonStyle = TextButton.styleFrom(
+    final buttonStyle = TextButton.styleFrom(
       foregroundColor: Theme.of(context).colorScheme.tertiary,
     );
     return Container(
@@ -27,12 +42,12 @@ class FRFooter extends StatelessWidget {
             spacing: 8,
             mainAxisAlignment: .spaceBetween,
             children: [
-              Expanded(child: Divider()),
+              const Expanded(child: Divider()),
               Text(
-                TranslationKeys.applicationName.tr,
+                S.of(context).application_name,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              Expanded(child: Divider()),
+              const Expanded(child: Divider()),
             ],
           ),
           Wrap(
@@ -45,42 +60,40 @@ class FRFooter extends StatelessWidget {
                 style: buttonStyle,
                 icon: const Icon(Icons.info_outline),
                 onPressed: () async {
-                  FRUtils.showAboutDialog(context);
+                  await FRUtils.showAboutDialog(context);
                 },
-                label: Text(TranslationKeys.about.tr),
+                label: Text(S.of(context).about),
               ),
               TextButton.icon(
                 style: buttonStyle,
                 icon: const Icon(Icons.language),
                 onPressed: () async {
-                  final response = await Get.dialog<Locale>(
+                  /*   final response = await Get.dialog<Locale>(
                     SimpleDialog(
-                      title: Text(TranslationKeys.selectLanguage.tr),
+                      title: const Text(TranslationKeys.selectLanguage),
                       children: LocalizationService.supportedLocales.map((
                         locale,
                       ) {
                         return SimpleDialogOption(
-                          onPressed: () {
-                            Get.back(result: locale);
-                          },
+                          onPressed: () {},
                           child: Text(
                             localizationService.getLocaleName(locale),
                           ),
                         );
                       }).toList(),
                     ),
-                  );
+                  ); 
 
                   if (response != null) {
                     localizationService.changeLocale(response);
-                  }
+                  } */
                 },
-                label: Text(TranslationKeys.language.tr),
+                label: Text(S.of(context).language),
               ),
               TextButton.icon(
                 style: buttonStyle,
                 icon: const Icon(Icons.brightness_6),
-                label: Text(TranslationKeys.theme.tr),
+                label: Text(S.of(context).theme),
                 onPressed: () async {
                   await appService.toggleTheme();
                 },

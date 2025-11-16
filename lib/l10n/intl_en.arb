@@ -1,0 +1,199 @@
+{
+  "@@locale": "en",
+  "name_min_length": "Name must be at least {min} characters",
+  "@name_min_length": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "name_max_length": "Name cannot exceed {max} characters",
+  "@name_max_length": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "email": "Email",
+  "password": "Password",
+  "login": "Login",
+  "logout": "Logout",
+  "cancel": "Cancel",
+  "save": "Save",
+  "delete": "Delete",
+  "edit": "Edit",
+  "confirm": "Confirm",
+  "success": "Success",
+  "try_again": "Try Again",
+  "list": "{count, plural, =1{list} other{lists}}",
+  "@list": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "on_list": "on list",
+  "recipe": "{count, plural, =1{recipe} other{recipes}}",
+  "@recipe": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ingredient": "{count, plural, =1{ingredient} other{ingredients}}",
+  "@ingredient": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "show_list_by_ingredients": "Show list by ingredients",
+  "show_list_by_recipes": "Show list by recipes",
+  "show_checked_first": "Show checked first",
+  "show_budget": "Show budget",
+  "other_ingredients": "Other Ingredients",
+  "tfor": "for ",
+  "budget": "Budget",
+  "no": "No",
+  "yes": "Yes",
+  "more": "More",
+  "ok": "OK",
+  "loading": "Loading",
+  "theme": "Theme",
+  "dark_mode": "Dark Mode",
+  "light_mode": "Light Mode",
+  "my_first_group": "My First Group",
+  "wear_os_sync": "Wear OS Sync",
+  "connected": "Connected",
+  "not_connected": "Not Connected",
+  "input_required_error": "This field is required",
+  "invalid_email_error": "Please enter a valid email address",
+  "email_is_required_error": "Email is required",
+  "unknown_view": "Unknown View",
+  "add_recipe": "Add Recipe",
+  "add_ingredient": "Add Ingredient",
+  "select_recipes": "Select recipes",
+  "items_selected": "{count} selected",
+  "@items_selected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "no_groups_created": "No groups created",
+  "login_error": "Login failed",
+  "forgot_password": "Forgot Password?",
+  "already_have_account": "Already have an account?",
+  "reset_password": "Reset Password",
+  "reset_password_success": "Password reset email sent! Please check your inbox.",
+  "reset_password_error": "Failed to send password reset email",
+  "create_account": "Create Account",
+  "confirm_password": "Confirm Password",
+  "passwords_do_not_match_error": "Passwords do not match",
+  "create_account_error": "Failed to create account",
+  "create_account_success": "Account created successfully!",
+  "login_without_password": "Login without password",
+  "login_without_password_success_message": "Login link sent! Please check your email.",
+  "your_groups": "Your Groups",
+  "language": "Language",
+  "select_language": "Select Language",
+  "about": "About",
+  "application_name": "Felicette Recipes",
+  "application_description": "Felicette Recipes is an open-source application to help you manage your recipes and shopping lists.",
+  "developed_with_love": "Developed with",
+  "love_and_cats": "Love and Cats",
+  "developed_in": "in Curitiba, Brazil.",
+  "developed_by": "By felicette.dev",
+  "checkout_github": "Check out the project on GitHub: ",
+  "spent_of": " spent of ",
+  "available": " available",
+  "actual_ingredients": "Actual Ingredients",
+  "actual_ingredients_subtitle": "These items can be used in recipes and added to the shopping list",
+  "non_actual_ingredients": "Non-Ingredients",
+  "non_actual_ingredients_subtitle": "This items can be added to the shopping list but can't be used in recipes",
+  "new_ingredient": "New Ingredient",
+  "ingredient_name": "Ingredient Name",
+  "is_actual_ingredient": "Is Actual Ingredient",
+  "edit_ingredient": "Edit Ingredient",
+  "confirm_deletion": "Confirm Deletion",
+  "confirm_deletion_message": "Are you sure you want to delete this ingredient?",
+  "ingredient_updated_successfully": "Ingredient updated successfully",
+  "ingredient_deleted_successfully": "Ingredient deleted successfully",
+  "ingredient_created_successfully": "Ingredient created successfully",
+  "confirm_actual_ingredient_description": "Is \"{ingredientName}\" an actual ingredient that can be used in recipes?",
+  "@confirm_actual_ingredient_description": {
+    "placeholders": {
+      "ingredientName": {
+        "type": "String"
+      }
+    }
+  },
+  "confirm_actual_ingredient": "Confirm Actual Ingredient",
+  "no_ingredients_created": "No ingredients created",
+  "no_ingredients_created_description": "Create your first ingredient to get started with recipes and shopping lists.",
+  "edit_recipe": "Edit Recipe",
+  "create_recipe": "Create Recipe",
+  "recipe_name": "Recipe Name",
+  "select_ingredients": "Select Ingredients",
+  "choose_ingredients_text": "Choose the ingredients needed for the recipe. Quantities can be entered below.",
+  "optional_quantities_text": "Optionally, enter the quantities of the ingredients below.",
+  "quantities_shopping_list_text": "The quantities will appear in the shopping list when the recipe is selected.",
+  "quantity_for": "Quantity for {ingredient}",
+  "@quantity_for": {
+    "placeholders": {
+      "ingredient": {
+        "type": "String"
+      }
+    }
+  },
+  "no_recipes_created": "No recipes created",
+  "no_recipes_created_description": "Create your first recipe to organize your cooking and generate shopping lists.",
+  "search": "Search",
+  "create": "Create",
+  "done": "Done",
+  "edit_list": "Edit List",
+  "select_currency": "Select Currency",
+  "clear_all_checks": "Clear All Checks",
+  "all_checks_cleared": "All checks have been cleared",
+  "currency_usd": "US Dollar",
+  "currency_eur": "Euro",
+  "currency_gbp": "British Pound",
+  "currency_jpy": "Japanese Yen",
+  "currency_cny": "Chinese Yuan",
+  "currency_brl": "Brazilian Real",
+  "currency_ars": "Argentine Peso",
+  "please_enter_valid_number": "Please enter a valid number",
+  "budget_must_be_positive": "Budget must be a positive number",
+  "error": "Error",
+  "no_group_selected": "No group selected",
+  "list_details_updated_successfully": "List details updated successfully",
+  "failed_to_update_list_details": "Failed to update list details: {error}",
+  "@failed_to_update_list_details": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "quantity": "Quantity",
+  "unit_price": "Unit Price",
+  "add_price": "Add Price",
+  "enter_quantity": "Enter Quantity",
+  "save_without_price": "Save Without Price",
+  "actual_ingredient_title": "Actual Ingredient",
+  "actual_ingredient_content": "Is this an actual ingredient that can be used in recipes?",
+  "create_group": "Create Group",
+  "edit_group": "Edit Group",
+  "group_name": "Group Name",
+  "group_name_updated": "Group updated successfully",
+  "delete_group": "Delete Group",
+  "delete_group_message": "Are you sure you want to delete this group? This action cannot be undone.",
+  "group_deleted": "Group deleted successfully",
+  "group_creation_limit_reached": "You have reached the maximum number of groups allowed."
+}

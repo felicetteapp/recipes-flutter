@@ -1,18 +1,22 @@
 import 'dart:ui';
+
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:felicette_recipes/app/common/environment.dart';
+import 'package:felicette_recipes/app/routes/app_router.dart';
 import 'package:felicette_recipes/app/services/app_service.dart';
 import 'package:felicette_recipes/app/utils/secure_storage.dart';
+import 'package:felicette_recipes/authentication/bloc/authentication_bloc.dart';
+import 'package:felicette_recipes/firebase_options.dart';
+import 'package:felicette_recipes/generated/l10n.dart';
+import 'package:felicette_recipes/theme.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:felicette_recipes/app/bindings/initial_binding.dart';
-import 'package:felicette_recipes/app/common/translations/app_translations.dart';
-import 'package:felicette_recipes/app/routes/app_pages.dart';
-import 'package:felicette_recipes/app/routes/app_routes.dart';
-import 'package:felicette_recipes/firebase_options.dart';
-import 'package:felicette_recipes/theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:user_repository/user_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,44 +34,101 @@ Future<void> main() async {
 
   await FirebaseAppCheck.instance.activate(
     providerApple: Environment.firebaseAppCheckIosDebugToken.isNotEmpty
-        ? AppleDebugProvider(
+        ? const AppleDebugProvider(
             debugToken: Environment.firebaseAppCheckIosDebugToken,
           )
-        : AppleDeviceCheckProvider(),
+        : const AppleDeviceCheckProvider(),
     providerAndroid: Environment.firebaseAppCheckAndroidDebugToken.isNotEmpty
-        ? AndroidDebugProvider(
+        ? const AndroidDebugProvider(
             debugToken: Environment.firebaseAppCheckAndroidDebugToken,
           )
-        : AndroidPlayIntegrityProvider(),
+        : const AndroidPlayIntegrityProvider(),
   );
-  runApp(MyApp(initialThemeIsDark: initialThemeIsDark));
+  runApp(FRApp(initialThemeIsDark: initialThemeIsDark));
 }
 
-class MyApp extends StatelessWidget {
+class FRApp extends StatelessWidget {
+  const FRApp({required this.initialThemeIsDark, super.key});
   final bool initialThemeIsDark;
-  const MyApp({super.key, required this.initialThemeIsDark});
 
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        final ThemeData actualThemeLight = getLightThemeData(lightDynamic);
+        final actualThemeLight = getLightThemeData(lightDynamic);
+        final actualThemeDark = getDarkThemeData(darkDynamic);
 
-        final ThemeData actualThemeDark = getDarkThemeData(darkDynamic);
-
-        return GetMaterialApp(
-          title: 'Felicette Recipes',
-          theme: actualThemeLight,
-          darkTheme: actualThemeDark,
-          themeMode: initialThemeIsDark ? ThemeMode.dark : ThemeMode.light,
-          translations: AppTranslations(),
-          locale: const Locale('en', 'US'),
-          fallbackLocale: const Locale('en', 'US'),
-          initialBinding: InitialBinding(),
-          initialRoute: AppRoutes.splash,
-          getPages: AppPages.routes,
-          debugShowCheckedModeBanner: false,
+        return MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(
+              create: (_) => AuthenticationRepository(),
+              dispose: (repository) => repository.dispose(),
+            ),
+            RepositoryProvider(create: (_) => UserRepository()),
+          ],
+          child: BlocProvider(
+            lazy: false,
+            create: (context) => AuthenticationBloc(
+              authenticationRepository: context
+                  .read<AuthenticationRepository>(),
+              userRepository: context.read<UserRepository>(),
+            )..add(AuthenticationSubscriptionRequested()),
+            child: AppView(
+              initialThemeIsDark: initialThemeIsDark,
+              themeLight: actualThemeLight,
+              themeDark: actualThemeDark,
+            ),
+          ),
         );
+      },
+    );
+  }
+}
+
+class AppView extends StatefulWidget {
+  const AppView({
+    required this.initialThemeIsDark,
+    required this.themeLight,
+    required this.themeDark,
+    super.key,
+  });
+  final bool initialThemeIsDark;
+  final ThemeData themeLight;
+  final ThemeData themeDark;
+
+  @override
+  State<AppView> createState() => _AppViewState();
+}
+
+class _AppViewState extends State<AppView> {
+  late final GoRouter _router;
+
+  @override
+  void initState() {
+    super.initState();
+    final authenticationBloc = context.read<AuthenticationBloc>();
+    _router = createAppRouter(authenticationBloc);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      routerConfig: _router,
+      title: 'Felicette Recipes',
+      theme: widget.themeLight,
+      darkTheme: widget.themeDark,
+      themeMode: widget.initialThemeIsDark ? ThemeMode.dark : ThemeMode.light,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      locale: const Locale('en'),
+      debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return child!;
       },
     );
   }

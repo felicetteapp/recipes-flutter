@@ -1,9 +1,16 @@
+import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'splash_controller.dart';
+import 'package:go_router/go_router.dart';
 
-class SplashView extends GetView<SplashController> {
-  const SplashView({super.key});
+class SplashPage extends StatelessWidget {
+  const SplashPage({super.key});
+
+  static GoRoute route() {
+    return GoRoute(
+      path: AppRoutes.splash,
+      builder: (_, __) => const SplashPage(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
