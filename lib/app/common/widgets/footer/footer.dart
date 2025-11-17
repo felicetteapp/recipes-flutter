@@ -1,6 +1,10 @@
+import 'dart:developer';
+
+import 'package:felicette_recipes/app/bloc/app_bloc.dart';
 import 'package:felicette_recipes/app/utils/utils.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 // TODO: fix services
 
@@ -60,6 +64,7 @@ class FRFooter extends StatelessWidget {
                 style: buttonStyle,
                 icon: const Icon(Icons.info_outline),
                 onPressed: () async {
+                  log('Language selection dialog opened', name: 'FRFooter');
                   await FRUtils.showAboutDialog(context);
                 },
                 label: Text(S.of(context).about),
@@ -95,7 +100,7 @@ class FRFooter extends StatelessWidget {
                 icon: const Icon(Icons.brightness_6),
                 label: Text(S.of(context).theme),
                 onPressed: () async {
-                  await appService.toggleTheme();
+                  context.read<AppBloc>().add(const AppToggleDarkMode());
                 },
               ),
             ],

@@ -3,35 +3,35 @@ import 'package:felicette_recipes/app/common/widgets/footer/footer.dart';
 import 'package:felicette_recipes/app/common/widgets/header/header.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
-import 'package:felicette_recipes/login/login.dart';
+import 'package:felicette_recipes/password_recovery/password_recovery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class PasswordRecoveryPage extends StatelessWidget {
+  const PasswordRecoveryPage({super.key});
 
   static GoRoute route() {
     return GoRoute(
-      path: AppRoutes.login,
-      builder: (context, state) => const LoginPage(),
+      path: AppRoutes.passwordRecovery,
+      builder: (context, state) => const PasswordRecoveryPage(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(
+      create: (context) => PasswordRecoveryBloc(
         authenticationRepository: context.read<AuthenticationRepository>(),
       ),
-      child: const _LoginPageContent(),
+      child: const _RecoveryPageContent(),
     );
   }
 }
 
-class _LoginPageContent extends StatelessWidget {
-  const _LoginPageContent();
+class _RecoveryPageContent extends StatelessWidget {
+  const _RecoveryPageContent();
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +52,8 @@ class _LoginPageContent extends StatelessWidget {
                       mainAxisAlignment: .center,
                       children: [
                         FRHeader(),
-                        _UsernameInput(),
-                        _PasswordInput(),
-                        _LoginButtons(),
+                        _EmailInput(),
+                        _SubmitButtons(),
                         _SecondaryActionsButtons(),
                         FRFooter(),
                       ],
@@ -70,15 +69,15 @@ class _LoginPageContent extends StatelessWidget {
   }
 }
 
-class _UsernameInput extends StatelessWidget {
-  const _UsernameInput();
+class _EmailInput extends StatelessWidget {
+  const _EmailInput();
   @override
   Widget build(BuildContext context) {
     final displayError = context.select(
-      (LoginBloc bloc) => bloc.state.username.displayError,
+      (PasswordRecoveryBloc bloc) => bloc.state.email.displayError,
     );
     return TextFormField(
-      key: const Key('loginForm_usernameInput_textField'),
+      key: const Key('passwordRecoveryForm_emailInput_textField'),
       autocorrect: false,
       decoration: InputDecoration(
         labelText: S.of(context).email,
@@ -92,71 +91,29 @@ class _UsernameInput extends StatelessWidget {
         AutofillHints.username,
       ],
       autovalidateMode: .onUserInteraction,
-      onChanged: (username) {
-        context.read<LoginBloc>().add(LoginUsernameChanged(username));
+      onChanged: (email) {
+        context.read<PasswordRecoveryBloc>().add(
+          PasswordRecoveryEmailChanged(email),
+        );
       },
     );
   }
 }
 
-class _PasswordInput extends StatelessWidget {
-  const _PasswordInput();
+class _RecoveryPasswordButton extends StatelessWidget {
+  const _RecoveryPasswordButton();
   @override
   Widget build(BuildContext context) {
-    final isPasswordHidden = context.select(
-      (LoginBloc bloc) => bloc.state.isPasswordHidden,
+    final isValid = context.select(
+      (PasswordRecoveryBloc bloc) => bloc.state.isValid,
     );
-
-    final displayError = context.select(
-      (LoginBloc bloc) => bloc.state.password.displayError,
-    );
-
-    return TextFormField(
-      key: const Key('loginForm_passwordInput_textField'),
-      autocorrect: false,
-      decoration: InputDecoration(
-        labelText: S.of(context).password,
-        errorText: displayError != null
-            ? S.of(context).input_required_error
-            : null,
-        suffix: IconButton(
-          iconSize: 18,
-          style: const ButtonStyle(
-            tapTargetSize: .shrinkWrap,
-          ),
-          padding: .zero,
-          visualDensity: .compact,
-
-          onPressed: () {
-            context.read<LoginBloc>().add(
-              const LoginPasswordVisibilityToggled(),
-            );
-          },
-          icon: Icon(
-            isPasswordHidden ? Icons.visibility : Icons.visibility_off,
-          ),
-        ),
-      ),
-      obscureText: isPasswordHidden,
-      autofillHints: const [AutofillHints.password],
-      autovalidateMode: .onUserInteraction,
-      onChanged: (password) {
-        context.read<LoginBloc>().add(LoginPasswordChanged(password));
-      },
-    );
-  }
-}
-
-class _LoginButton extends StatelessWidget {
-  const _LoginButton();
-  @override
-  Widget build(BuildContext context) {
-    final isValid = context.select((LoginBloc bloc) => bloc.state.isValid);
     return FilledButton(
-      key: const Key('loginForm_continue_raisedButton'),
+      key: const Key('recoveryPasswordForm_continue_raisedButton'),
       onPressed: isValid
           ? () {
-              context.read<LoginBloc>().add(const LoginSubmitted());
+              context.read<PasswordRecoveryBloc>().add(
+                const PasswordRecoverySubmitted(),
+              );
             }
           : null,
       child: Text(S.of(context).login),
@@ -164,59 +121,39 @@ class _LoginButton extends StatelessWidget {
   }
 }
 
-class _PasswordlessLoginButton extends StatelessWidget {
-  const _PasswordlessLoginButton();
-  @override
-  Widget build(BuildContext context) {
-    final isUsernameValid = context.select(
-      (LoginBloc bloc) => bloc.state.isUsernameValid,
-    );
-    return OutlinedButton(
-      key: const Key('loginForm_passwordlessLogin_outlinedButton'),
-      onPressed: isUsernameValid
-          ? () {
-              // Implement passwordless login logic here
-            }
-          : null,
-      child: Text(S.of(context).login_without_password),
-    );
-  }
-}
-
-class _LoginButtons extends StatelessWidget {
-  const _LoginButtons();
+class _SubmitButtons extends StatelessWidget {
+  const _SubmitButtons();
   @override
   Widget build(BuildContext context) {
     final isInProgressOrSuccess = context.select(
-      (LoginBloc bloc) => bloc.state.status.isInProgressOrSuccess,
+      (PasswordRecoveryBloc bloc) => bloc.state.status.isInProgressOrSuccess,
     );
 
     if (isInProgressOrSuccess) return const CircularProgressIndicator();
 
     return const Wrap(
-      key: Key('loginForm_buttons_wrap'),
+      key: Key('recoveryPasswordForm_buttons_wrap'),
       spacing: 8,
       runAlignment: .center,
       crossAxisAlignment: .center,
       alignment: .center,
       children: [
-        _LoginButton(),
-        _PasswordlessLoginButton(),
+        _RecoveryPasswordButton(),
       ],
     );
   }
 }
 
-class _ForgotPasswordButton extends StatelessWidget {
-  const _ForgotPasswordButton();
+class _AlreadyHaveAccountButton extends StatelessWidget {
+  const _AlreadyHaveAccountButton();
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      key: const Key('loginForm_forgotPassword_textButton'),
+      key: const Key('recoveryPasswordForm_alreadyHaveAccount_textButton'),
       onPressed: () {
-        context.go(AppRoutes.passwordRecovery);
+        context.go(AppRoutes.login);
       },
-      child: Text(S.of(context).forgot_password),
+      child: Text(S.of(context).already_have_account),
     );
   }
 }
@@ -227,7 +164,7 @@ class _CreateAccountButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return TextButton(
-      key: const Key('loginForm_createAccount_textButton'),
+      key: const Key('recoveryPasswordForm_createAccount_textButton'),
       onPressed: null,
       style: TextButton.styleFrom(
         foregroundColor: theme.colorScheme.secondary,
@@ -245,7 +182,7 @@ class _SecondaryActionsButtons extends StatelessWidget {
       alignment: .center,
       spacing: 8,
       children: [
-        _ForgotPasswordButton(),
+        _AlreadyHaveAccountButton(),
         _CreateAccountButton(),
       ],
     );

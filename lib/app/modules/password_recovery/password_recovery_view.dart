@@ -54,19 +54,21 @@ class PasswordRecoveryView extends GetView<PasswordRecoveryController> {
                               children: [
                                 Text(
                                   'Felicette',
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.headlineMedium?.copyWith(
-                                    color: Get.theme.colorScheme.primary,
-                                  ),
+                                  style:
+                                      Theme.of(
+                                        context,
+                                      ).textTheme.headlineMedium?.copyWith(
+                                        color: Get.theme.colorScheme.primary,
+                                      ),
                                 ),
                                 Text(
                                   'Recipes',
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.headlineMedium?.copyWith(
-                                    color: Get.theme.colorScheme.secondary,
-                                  ),
+                                  style:
+                                      Theme.of(
+                                        context,
+                                      ).textTheme.headlineMedium?.copyWith(
+                                        color: Get.theme.colorScheme.secondary,
+                                      ),
                                 ),
                               ],
                             ),
@@ -84,24 +86,22 @@ class PasswordRecoveryView extends GetView<PasswordRecoveryController> {
                             AutofillHints.username,
                           ],
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator:
-                              (v) => FRValidations.validateEmail(
-                                v,
-                                isRequired: true,
-                              ),
+                          validator: (v) => FRValidations.validateEmail(
+                            v,
+                            isRequired: true,
+                          ),
                         ),
                         Obx(
-                          () =>
-                              controller.isLoading.value
-                                  ? const CircularProgressIndicator()
-                                  : FilledButton(
-                                    onPressed: () {
-                                      controller.handlePasswordRecovery();
-                                    },
-                                    child: Text(
-                                      TranslationKeys.resetPassword.tr,
-                                    ),
+                          () => controller.isLoading.value
+                              ? const CircularProgressIndicator()
+                              : FilledButton(
+                                  onPressed: () {
+                                    controller.handlePasswordRecovery();
+                                  },
+                                  child: Text(
+                                    TranslationKeys.resetPassword.tr,
                                   ),
+                                ),
                         ),
                         Wrap(
                           alignment: WrapAlignment.center,

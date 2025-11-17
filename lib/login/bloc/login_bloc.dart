@@ -1,7 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:felicette_recipes/login/models/password.dart';
-import 'package:felicette_recipes/login/models/username.dart';
+import 'package:felicette_recipes/authentication/models/password.dart';
+import 'package:felicette_recipes/authentication/models/username.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 

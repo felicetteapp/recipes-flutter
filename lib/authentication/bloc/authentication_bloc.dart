@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,14 +27,24 @@ class AuthenticationBloc
     AuthenticationSubscriptionRequested event,
     Emitter<AuthenticationState> emit,
   ) {
+    log('Authentication subscription requested', name: 'AuthenticationBloc');
     return emit.onEach(
       _authenticationRepository.status,
       onData: (status) async {
+        log(
+          'Authentication status changed: $status',
+          name: 'AuthenticationBloc',
+        );
         switch (status) {
           case AuthenticationStatus.unauthenticated:
+            _clearCurrentUserData();
             return emit(const AuthenticationState.unauthenticated());
           case AuthenticationStatus.authenticated:
             final user = await _tryGetUser();
+            log(
+              'User authenticated: $user',
+              name: 'AuthenticationBloc',
+            );
             return emit(
               user != null
                   ? AuthenticationState.authenticated(user)
@@ -53,12 +65,18 @@ class AuthenticationBloc
     _authenticationRepository.logOut();
   }
 
-  Future<User?> _tryGetUser() async {
+  Future<FRUser?> _tryGetUser() async {
     try {
-      final user = await _userRepository.getUser();
+      final user = await _userRepository.getUser(
+        _authenticationRepository.currentUser!.uid,
+      );
       return user;
     } catch (_) {
       return null;
     }
+  }
+
+  void _clearCurrentUserData() {
+    _userRepository.clearCurrentUser();
   }
 }
