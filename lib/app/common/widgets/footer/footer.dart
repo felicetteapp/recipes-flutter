@@ -6,38 +6,20 @@ import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// TODO: fix services
-
-class localizationService {
-  static String getLocaleName(Locale locale) {
-    return locale.countryCode.toString();
-  }
-
-  static List<Locale> get supportedLocales {
-    return [
-      const Locale('en', 'US'),
-      const Locale('es', 'ES'),
-      const Locale('fr', 'FR'),
-    ];
-  }
-
-  static void changeLocale(Locale locale) {}
-}
-
-class appService {
-  static Future<void> toggleTheme() async {}
-}
-
 class FRFooter extends StatelessWidget {
   const FRFooter({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
+    final theme = Theme.of(context);
+
     final buttonStyle = TextButton.styleFrom(
-      foregroundColor: Theme.of(context).colorScheme.tertiary,
+      foregroundColor: theme.colorScheme.tertiary,
     );
+
     return Container(
-      padding: const .symmetric(vertical: 16.0),
+      padding: const .symmetric(vertical: 16),
       alignment: .center,
       child: Column(
         spacing: 8,
@@ -48,8 +30,8 @@ class FRFooter extends StatelessWidget {
             children: [
               const Expanded(child: Divider()),
               Text(
-                S.of(context).application_name,
-                style: Theme.of(context).textTheme.bodySmall,
+                s.application_name,
+                style: theme.textTheme.bodySmall,
               ),
               const Expanded(child: Divider()),
             ],
@@ -67,38 +49,20 @@ class FRFooter extends StatelessWidget {
                   log('Language selection dialog opened', name: 'FRFooter');
                   await FRUtils.showAboutDialog(context);
                 },
-                label: Text(S.of(context).about),
+                label: Text(s.about),
               ),
               TextButton.icon(
                 style: buttonStyle,
                 icon: const Icon(Icons.language),
                 onPressed: () async {
-                  /*   final response = await Get.dialog<Locale>(
-                    SimpleDialog(
-                      title: const Text(TranslationKeys.selectLanguage),
-                      children: LocalizationService.supportedLocales.map((
-                        locale,
-                      ) {
-                        return SimpleDialogOption(
-                          onPressed: () {},
-                          child: Text(
-                            localizationService.getLocaleName(locale),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ); 
-
-                  if (response != null) {
-                    localizationService.changeLocale(response);
-                  } */
+                  await FRUtils.showLanguageSelectionDialog(context);
                 },
-                label: Text(S.of(context).language),
+                label: Text(s.language),
               ),
               TextButton.icon(
                 style: buttonStyle,
                 icon: const Icon(Icons.brightness_6),
-                label: Text(S.of(context).theme),
+                label: Text(s.theme),
                 onPressed: () async {
                   context.read<AppBloc>().add(const AppToggleDarkMode());
                 },

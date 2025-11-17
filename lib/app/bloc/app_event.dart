@@ -21,3 +21,9 @@ final class AppSetDarkMode extends AppEvent {
 
   final bool isDarkMode;
 }
+
+final class AppSetLanguage extends AppEvent {
+  const AppSetLanguage({required this.locale});
+
+  final Locale locale;
+}

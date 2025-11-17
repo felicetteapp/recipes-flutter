@@ -5,6 +5,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:felicette_recipes/app/bloc/app_bloc.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/authentication/authentication.dart';
+import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/login/login.dart';
 import 'package:felicette_recipes/password_recovery/password_recovery.dart';
 import 'package:felicette_recipes/splash/splash.dart';
@@ -59,7 +60,7 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
                     AuthenticationLogoutPressed(),
                   );
                 },
-                child: const Text('Logout'),
+                child: Text(S.of(context).logout),
               ),
               FilledButton(
                 onPressed: () {

@@ -60,6 +60,13 @@ Future<void> main() async {
   );
   appBloc.add(AppSetDarkMode(isDarkMode: initialThemeIsDark));
 
+  final initialLocale = await appBloc.getInitialLocale();
+  log(
+    'Setting initial locale to $initialLocale',
+    name: 'main',
+  );
+  appBloc.add(AppSetLanguage(locale: initialLocale));
+
   runApp(
     FRApp(
       initialThemeIsDark: initialThemeIsDark,

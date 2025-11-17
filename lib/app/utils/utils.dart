@@ -1,5 +1,7 @@
+import 'package:felicette_recipes/app/bloc/app_bloc.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class FRUtils {
@@ -67,5 +69,45 @@ class FRUtils {
         );
       },
     );
+  }
+
+  static Future<void> showLanguageSelectionDialog(BuildContext context) async {
+    // Implementation for language selection dialog
+    final languageNames = {
+      'en': 'English',
+      'es': 'Español',
+    };
+
+    final response = await showDialog<Locale>(
+      context: context,
+      builder: (context) {
+        final s = S.of(context);
+
+        return SimpleDialog(
+          title: Text(s.select_language),
+          children: S.delegate.supportedLocales.map((
+            locale,
+          ) {
+            return SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, locale);
+              },
+              child: Text(
+                languageNames[locale.languageCode] ?? locale.languageCode,
+              ),
+            );
+          }).toList(),
+        );
+      },
+    );
+
+    if (response != null) {
+      if (!context.mounted) {
+        return;
+      }
+      context.read<AppBloc>().add(
+        AppSetLanguage(locale: response),
+      );
+    }
   }
 }

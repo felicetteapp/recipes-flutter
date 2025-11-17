@@ -37,10 +37,12 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkModeEnabled = context.watch<AppBloc>().state.darkMode;
+    final appState = context.watch<AppBloc>().state;
+    final isDarkModeEnabled = appState.darkMode;
+    final currentLocale = appState.locale;
 
     log(
-      'Building AppView with isDarkModeEnabled: $isDarkModeEnabled',
+      'Building AppView with isDarkModeEnabled: $isDarkModeEnabled, locale: $currentLocale',
       name: 'AppView',
     );
 
@@ -57,7 +59,7 @@ class _AppViewState extends State<AppView> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-      locale: const Locale('en'),
+      locale: currentLocale,
       debugShowCheckedModeBanner: false,
       builder: (context, child) {
         return child!;

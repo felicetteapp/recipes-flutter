@@ -73,6 +73,7 @@ class _EmailInput extends StatelessWidget {
   const _EmailInput();
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     final displayError = context.select(
       (PasswordRecoveryBloc bloc) => bloc.state.email.displayError,
     );
@@ -80,10 +81,8 @@ class _EmailInput extends StatelessWidget {
       key: const Key('passwordRecoveryForm_emailInput_textField'),
       autocorrect: false,
       decoration: InputDecoration(
-        labelText: S.of(context).email,
-        errorText: displayError != null
-            ? S.of(context).invalid_email_error
-            : null,
+        labelText: s.email,
+        errorText: displayError != null ? s.invalid_email_error : null,
       ),
       keyboardType: .emailAddress,
       autofillHints: const [

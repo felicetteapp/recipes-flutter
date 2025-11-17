@@ -111,14 +111,14 @@ class _PasswordInput extends StatelessWidget {
       (LoginBloc bloc) => bloc.state.password.displayError,
     );
 
+    final s = S.of(context);
+
     return TextFormField(
       key: const Key('loginForm_passwordInput_textField'),
       autocorrect: false,
       decoration: InputDecoration(
-        labelText: S.of(context).password,
-        errorText: displayError != null
-            ? S.of(context).input_required_error
-            : null,
+        labelText: s.password,
+        errorText: displayError != null ? s.input_required_error : null,
         suffix: IconButton(
           iconSize: 18,
           style: const ButtonStyle(

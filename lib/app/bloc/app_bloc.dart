@@ -11,6 +11,7 @@ part 'app_event.dart';
 part 'app_state.dart';
 
 const isDarkModeKey = 'isDarkMode';
+const localeKey = 'locale';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc({
@@ -25,6 +26,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppLogoutPressed>(_onLogoutPressed);
     on<AppToggleDarkMode>(_onToggleDarkMode);
     on<AppSetDarkMode>(_onSetDarkMode);
+    on<AppSetLanguage>(_onSetLanguage);
   }
 
   final AuthenticationRepository _authenticationRepository;
@@ -112,5 +114,42 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
 
     return initialThemeIsDark;
+  }
+
+  void _onSetLanguage(
+    AppSetLanguage event,
+    Emitter<AppState> emit,
+  ) {
+    log(
+      'Setting language to ${event.locale}',
+      name: 'AppBloc',
+    );
+    _secureStorageClient.write(
+      key: localeKey,
+      value: event.locale.toString(),
+    );
+    emit(state.copyWith(locale: event.locale));
+  }
+
+  Future<Locale> getInitialLocale() async {
+    final storedLocale = await _secureStorageClient.read(key: localeKey);
+
+    if (storedLocale != null) {
+      final parts = storedLocale.split('_');
+      if (parts.isNotEmpty) {
+        final languageCode = parts[0];
+        log(
+          'Loaded stored locale: $storedLocale',
+          name: 'AppBloc',
+        );
+        return Locale.fromSubtags(languageCode: languageCode);
+      }
+    }
+
+    log(
+      'No stored locale found, using default: en',
+      name: 'AppBloc',
+    );
+    return const Locale.fromSubtags(languageCode: 'en');
   }
 }
