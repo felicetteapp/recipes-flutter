@@ -35,34 +35,55 @@ class _RecoveryPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: Form(
-                child: AutofillGroup(
-                  child: Container(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    padding: const .all(16),
-                    child: const Column(
-                      spacing: 16,
-                      mainAxisAlignment: .center,
-                      children: [
-                        FRHeader(),
-                        _EmailInput(),
-                        _SubmitButtons(),
-                        _SecondaryActionsButtons(),
-                        FRFooter(),
-                      ],
+    return BlocListener<PasswordRecoveryBloc, PasswordRecoveryState>(
+      listener: (context, state) {
+        if (state.status.isFailure) {
+          final s = S.of(context);
+          final snackBar = SnackBar(
+            content: Text(s.password_recovery_error),
+          );
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(snackBar);
+        } else if (state.status.isSuccess) {
+          final s = S.of(context);
+          final snackBar = SnackBar(
+            content: Text(s.password_recovery_email_sent),
+          );
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(snackBar);
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: Form(
+                  child: AutofillGroup(
+                    child: Container(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      padding: const .all(16),
+                      child: const Column(
+                        spacing: 16,
+                        mainAxisAlignment: .center,
+                        children: [
+                          FRHeader(),
+                          _EmailInput(),
+                          _SubmitButtons(),
+                          _SecondaryActionsButtons(),
+                          FRFooter(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -115,7 +136,7 @@ class _RecoveryPasswordButton extends StatelessWidget {
               );
             }
           : null,
-      child: Text(S.of(context).login),
+      child: Text(S.of(context).reset_password),
     );
   }
 }
@@ -124,11 +145,17 @@ class _SubmitButtons extends StatelessWidget {
   const _SubmitButtons();
   @override
   Widget build(BuildContext context) {
-    final isInProgressOrSuccess = context.select(
-      (PasswordRecoveryBloc bloc) => bloc.state.status.isInProgressOrSuccess,
+    final isInProgress = context.select(
+      (PasswordRecoveryBloc bloc) => bloc.state.status.isInProgress,
     );
 
-    if (isInProgressOrSuccess) return const CircularProgressIndicator();
+    if (isInProgress) {
+      return const SizedBox(
+        height: 48,
+        width: 48,
+        child: CircularProgressIndicator(),
+      );
+    }
 
     return const Wrap(
       key: Key('recoveryPasswordForm_buttons_wrap'),

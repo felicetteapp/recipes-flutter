@@ -244,6 +244,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Otros Ingredientes",
     ),
     "password": MessageLookupByLibrary.simpleMessage("Contraseña"),
+    "password_recovery_email_sent": MessageLookupByLibrary.simpleMessage(
+      "Correo de recuperación de contraseña enviado",
+    ),
+    "password_recovery_error": MessageLookupByLibrary.simpleMessage(
+      "Error al enviar el correo de recuperación de contraseña",
+    ),
     "passwords_do_not_match_error": MessageLookupByLibrary.simpleMessage(
       "Las contraseñas no coinciden",
     ),

@@ -28,14 +28,24 @@ class PasswordRecoveryBloc
       state.copyWith(
         email: email,
         isValid: Formz.validate([email]),
+        status: FormzSubmissionStatus.initial,
       ),
     );
   }
 
-  void _onSubmitted(
+  Future<void> _onSubmitted(
     PasswordRecoverySubmitted event,
     Emitter<PasswordRecoveryState> emit,
-  ) {
-    // Implement password recovery submission logic here
+  ) async {
+    if (!state.isValid) return;
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    try {
+      await _authenticationRepository.sendPasswordRecoveryEmail(
+        email: state.email.value,
+      );
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
+    } catch (_) {
+      emit(state.copyWith(status: FormzSubmissionStatus.failure));
+    }
   }
 }

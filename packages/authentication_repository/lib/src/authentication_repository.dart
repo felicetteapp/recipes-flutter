@@ -35,5 +35,9 @@ class AuthenticationRepository {
     FirebaseAuth.instance.signOut();
   }
 
+  Future<void> sendPasswordRecoveryEmail({required String email}) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+
   void dispose() => _controller.close();
 }

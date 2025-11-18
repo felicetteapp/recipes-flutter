@@ -235,6 +235,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Other Ingredients",
     ),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "password_recovery_email_sent": MessageLookupByLibrary.simpleMessage(
+      "Password recovery email sent",
+    ),
+    "password_recovery_error": MessageLookupByLibrary.simpleMessage(
+      "Error sending password recovery email",
+    ),
     "passwords_do_not_match_error": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",
     ),

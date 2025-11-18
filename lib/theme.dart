@@ -41,14 +41,14 @@ class CustomColors extends ThemeExtension<CustomColors> {
       return this;
     }
     return CustomColors(
-      success: Color.lerp(success, other.success, t)!,
-      onSuccess: Color.lerp(onSuccess, other.onSuccess, t)!,
-      successContainer: Color.lerp(
+      success: .lerp(success, other.success, t)!,
+      onSuccess: .lerp(onSuccess, other.onSuccess, t)!,
+      successContainer: .lerp(
         successContainer,
         other.successContainer,
         t,
       )!,
-      onSuccessContainer: Color.lerp(
+      onSuccessContainer: .lerp(
         onSuccessContainer,
         other.onSuccessContainer,
         t,
@@ -66,18 +66,17 @@ class CustomColors extends ThemeExtension<CustomColors> {
   }
 }
 
-final colorSchemeDark = ColorScheme.fromSeed(
+final ColorScheme colorSchemeDark = .fromSeed(
   seedColor: mainColor,
   secondary: secondaryColor,
   tertiary: tertiaryColor,
-  brightness: Brightness.dark,
+  brightness: .dark,
 );
 
-final colorSchemeLight = ColorScheme.fromSeed(
+final ColorScheme colorSchemeLight = .fromSeed(
   seedColor: mainColor,
   secondary: secondaryColor,
   tertiary: tertiaryColor,
-  brightness: Brightness.light,
 );
 
 extension ThemeDataExtensions on ThemeData {
@@ -88,19 +87,19 @@ ThemeData getDarkThemeData(ColorScheme? darkDynamic) {
   var colorSchema = colorSchemeDark;
 
   if (darkDynamic != null) {
-    colorSchema = ColorScheme.fromSeed(
+    colorSchema = .fromSeed(
       seedColor: Color(darkDynamic.primary.toARGB32()),
-      brightness: Brightness.dark,
+      brightness: .dark,
       secondary: darkDynamic.secondary,
       tertiary: darkDynamic.tertiary,
     );
     colorSchema = colorSchema.harmonized();
   }
-  //  final colorSchema = colorSchemeDark;
+
   final customColors = CustomColors(
-    success: Color.fromARGB(255, 109, 226, 109),
+    success: const .fromARGB(255, 109, 226, 109),
     onSuccess: colorSchema.surface,
-    successContainer: Color.fromARGB(255, 165, 192, 165),
+    successContainer: const .fromARGB(255, 165, 192, 165),
     onSuccessContainer: colorSchema.surface,
   ).harmonized(colorSchema);
 
@@ -109,40 +108,43 @@ ThemeData getDarkThemeData(ColorScheme? darkDynamic) {
     fontFamily: 'NunitoSans',
     useMaterial3: true,
     extensions: <ThemeExtension<dynamic>>[customColors],
+    snackBarTheme: const SnackBarThemeData(
+      behavior: .floating,
+    ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
         borderSide: BorderSide(color: colorSchema.outlineVariant, width: 1.5),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
         borderSide: BorderSide(color: colorSchema.outlineVariant, width: 1.5),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
         borderSide: BorderSide(
           color: mainColor.harmonizeWith(
             colorSchema.primary,
           ), // Use your main color
-          width: 2.0,
+          width: 2,
         ),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
         borderSide: BorderSide(
           color: Colors.red.harmonizeWith(colorSchema.primary),
-          width: 2.0,
+          width: 2,
         ),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
         borderSide: BorderSide(
           color: Colors.red.harmonizeWith(colorSchema.primary),
-          width: 2.0,
+          width: 2,
         ),
       ),
       filled: false,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      contentPadding: const .symmetric(horizontal: 16, vertical: 12),
     ),
   );
   return themeDark;
@@ -151,12 +153,9 @@ ThemeData getDarkThemeData(ColorScheme? darkDynamic) {
 ThemeData getLightThemeData(ColorScheme? lightDynamic) {
   var colorSchema = colorSchemeLight;
 
-  //  final colorSchema = lightDynamic ?? colorSchemeLight;
-
   if (lightDynamic != null) {
-    colorSchema = ColorScheme.fromSeed(
+    colorSchema = .fromSeed(
       seedColor: Color(lightDynamic.primary.toARGB32()),
-      brightness: Brightness.light,
       secondary: lightDynamic.secondary,
       tertiary: lightDynamic.tertiary,
     );
@@ -164,9 +163,9 @@ ThemeData getLightThemeData(ColorScheme? lightDynamic) {
   }
 
   final customColors = CustomColors(
-    success: Color.fromARGB(255, 27, 160, 27),
+    success: const .fromARGB(255, 27, 160, 27),
     onSuccess: colorSchema.surface,
-    successContainer: Color.fromARGB(255, 144, 219, 144),
+    successContainer: const .fromARGB(255, 144, 219, 144),
     onSuccessContainer: colorSchema.onSurface,
   ).harmonized(colorSchema);
 
@@ -175,38 +174,41 @@ ThemeData getLightThemeData(ColorScheme? lightDynamic) {
     fontFamily: 'NunitoSans',
     useMaterial3: true,
     extensions: <ThemeExtension<dynamic>>[customColors],
+    snackBarTheme: const SnackBarThemeData(
+      behavior: .floating,
+    ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
         borderSide: BorderSide(color: colorSchema.outlineVariant, width: 1.5),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
         borderSide: BorderSide(color: colorSchema.outlineVariant, width: 1.5),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
         borderSide: BorderSide(
           color: mainColor.harmonizeWith(colorSchema.primary),
-          width: 2.0,
+          width: 2,
         ),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
         borderSide: BorderSide(
           color: Colors.red.harmonizeWith(colorSchema.primary),
-          width: 2.0,
+          width: 2,
         ),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
         borderSide: BorderSide(
           color: Colors.red.harmonizeWith(colorSchema.primary),
-          width: 2.0,
+          width: 2,
         ),
       ),
       filled: false,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      contentPadding: const .symmetric(horizontal: 16, vertical: 12),
     ),
   );
   return themeLight;

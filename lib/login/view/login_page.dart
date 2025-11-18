@@ -35,35 +35,48 @@ class _LoginPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: Form(
-                child: AutofillGroup(
-                  child: Container(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    padding: const .all(16),
-                    child: const Column(
-                      spacing: 16,
-                      mainAxisAlignment: .center,
-                      children: [
-                        FRHeader(),
-                        _UsernameInput(),
-                        _PasswordInput(),
-                        _LoginButtons(),
-                        _SecondaryActionsButtons(),
-                        FRFooter(),
-                      ],
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state.status.isFailure) {
+          final s = S.of(context);
+          final snackBar = SnackBar(
+            content: Text(s.login_error),
+          );
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(snackBar);
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: Form(
+                  child: AutofillGroup(
+                    child: Container(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      padding: const .all(16),
+                      child: const Column(
+                        spacing: 16,
+                        mainAxisAlignment: .center,
+                        children: [
+                          FRHeader(),
+                          _UsernameInput(),
+                          _PasswordInput(),
+                          _LoginButtons(),
+                          _SecondaryActionsButtons(),
+                          FRFooter(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -125,7 +138,6 @@ class _PasswordInput extends StatelessWidget {
           ),
           padding: .zero,
           visualDensity: .compact,
-
           onPressed: () {
             context.read<LoginBloc>().add(
               const LoginPasswordVisibilityToggled(),
@@ -190,7 +202,13 @@ class _LoginButtons extends StatelessWidget {
       (LoginBloc bloc) => bloc.state.status.isInProgressOrSuccess,
     );
 
-    if (isInProgressOrSuccess) return const CircularProgressIndicator();
+    if (isInProgressOrSuccess) {
+      return const SizedBox(
+        height: 48,
+        width: 48,
+        child: CircularProgressIndicator(),
+      );
+    }
 
     return const Wrap(
       key: Key('loginForm_buttons_wrap'),

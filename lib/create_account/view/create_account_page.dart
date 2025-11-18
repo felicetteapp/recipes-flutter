@@ -238,7 +238,13 @@ class _CreateAccountButtons extends StatelessWidget {
           bloc.state.submissionStatus.isInProgressOrSuccess,
     );
 
-    if (isInProgressOrSuccess) return const CircularProgressIndicator();
+    if (isInProgressOrSuccess) {
+      return const SizedBox(
+        height: 48,
+        width: 48,
+        child: CircularProgressIndicator(),
+      );
+    }
 
     return const Wrap(
       key: Key('createAccountForm_buttons_wrap'),

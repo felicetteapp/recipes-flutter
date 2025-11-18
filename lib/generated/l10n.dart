@@ -59,7 +59,7 @@ class S {
     return Intl.message(
       'Name must be at least $min characters',
       name: 'name_min_length',
-      desc: '',
+      desc: 'Error message when name is too short',
       args: [min],
     );
   }
@@ -69,64 +69,119 @@ class S {
     return Intl.message(
       'Name cannot exceed $max characters',
       name: 'name_max_length',
-      desc: '',
+      desc: 'Error message when name is too long',
       args: [max],
     );
   }
 
   /// `Email`
   String get email {
-    return Intl.message('Email', name: 'email', desc: '', args: []);
+    return Intl.message(
+      'Email',
+      name: 'email',
+      desc: 'Label for email input field',
+      args: [],
+    );
   }
 
   /// `Password`
   String get password {
-    return Intl.message('Password', name: 'password', desc: '', args: []);
+    return Intl.message(
+      'Password',
+      name: 'password',
+      desc: 'Label for password input field',
+      args: [],
+    );
   }
 
   /// `Login`
   String get login {
-    return Intl.message('Login', name: 'login', desc: '', args: []);
+    return Intl.message(
+      'Login',
+      name: 'login',
+      desc: 'Button text for login action',
+      args: [],
+    );
   }
 
   /// `Logout`
   String get logout {
-    return Intl.message('Logout', name: 'logout', desc: '', args: []);
+    return Intl.message(
+      'Logout',
+      name: 'logout',
+      desc: 'Button text for logout action',
+      args: [],
+    );
   }
 
   /// `Cancel`
   String get cancel {
-    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: 'Button text for cancel action',
+      args: [],
+    );
   }
 
   /// `Save`
   String get save {
-    return Intl.message('Save', name: 'save', desc: '', args: []);
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: 'Button text for save action',
+      args: [],
+    );
   }
 
   /// `Delete`
   String get delete {
-    return Intl.message('Delete', name: 'delete', desc: '', args: []);
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: 'Button text for delete action',
+      args: [],
+    );
   }
 
   /// `Edit`
   String get edit {
-    return Intl.message('Edit', name: 'edit', desc: '', args: []);
+    return Intl.message(
+      'Edit',
+      name: 'edit',
+      desc: 'Button text for edit action',
+      args: [],
+    );
   }
 
   /// `Confirm`
   String get confirm {
-    return Intl.message('Confirm', name: 'confirm', desc: '', args: []);
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: 'Button text for confirm action',
+      args: [],
+    );
   }
 
   /// `Success`
   String get success {
-    return Intl.message('Success', name: 'success', desc: '', args: []);
+    return Intl.message(
+      'Success',
+      name: 'success',
+      desc: 'Indicates a successful operation',
+      args: [],
+    );
   }
 
   /// `Try Again`
   String get try_again {
-    return Intl.message('Try Again', name: 'try_again', desc: '', args: []);
+    return Intl.message(
+      'Try Again',
+      name: 'try_again',
+      desc: 'Prompt to try an action again',
+      args: [],
+    );
   }
 
   /// `{count, plural, =1{list} other{lists}}`
@@ -136,14 +191,19 @@ class S {
       one: 'list',
       other: 'lists',
       name: 'list',
-      desc: '',
+      desc: 'Plural form for list/lists',
       args: [count],
     );
   }
 
   /// `on list`
   String get on_list {
-    return Intl.message('on list', name: 'on_list', desc: '', args: []);
+    return Intl.message(
+      'on list',
+      name: 'on_list',
+      desc: 'Indicates something is on the list',
+      args: [],
+    );
   }
 
   /// `{count, plural, =1{recipe} other{recipes}}`
@@ -153,7 +213,7 @@ class S {
       one: 'recipe',
       other: 'recipes',
       name: 'recipe',
-      desc: '',
+      desc: 'Plural form for recipe/recipes',
       args: [count],
     );
   }
@@ -165,7 +225,7 @@ class S {
       one: 'ingredient',
       other: 'ingredients',
       name: 'ingredient',
-      desc: '',
+      desc: 'Plural form for ingredient/ingredients',
       args: [count],
     );
   }
@@ -175,7 +235,7 @@ class S {
     return Intl.message(
       'Show list by ingredients',
       name: 'show_list_by_ingredients',
-      desc: '',
+      desc: 'Option to show the list organized by ingredients',
       args: [],
     );
   }
@@ -185,7 +245,7 @@ class S {
     return Intl.message(
       'Show list by recipes',
       name: 'show_list_by_recipes',
-      desc: '',
+      desc: 'Option to show the list organized by recipes',
       args: [],
     );
   }
@@ -195,14 +255,19 @@ class S {
     return Intl.message(
       'Show checked first',
       name: 'show_checked_first',
-      desc: '',
+      desc: 'Option to show checked items first in the list',
       args: [],
     );
   }
 
   /// `Show budget`
   String get show_budget {
-    return Intl.message('Show budget', name: 'show_budget', desc: '', args: []);
+    return Intl.message(
+      'Show budget',
+      name: 'show_budget',
+      desc: 'Option to show budget information',
+      args: [],
+    );
   }
 
   /// `Other Ingredients`
@@ -210,59 +275,104 @@ class S {
     return Intl.message(
       'Other Ingredients',
       name: 'other_ingredients',
-      desc: '',
+      desc: 'Label for other ingredients section',
       args: [],
     );
   }
 
   /// `for `
   String get tfor {
-    return Intl.message('for ', name: 'tfor', desc: '', args: []);
+    return Intl.message(
+      'for ',
+      name: 'tfor',
+      desc: 'Preposition \'for \' used in various contexts',
+      args: [],
+    );
   }
 
   /// `Budget`
   String get budget {
-    return Intl.message('Budget', name: 'budget', desc: '', args: []);
+    return Intl.message(
+      'Budget',
+      name: 'budget',
+      desc: 'Label for budget information',
+      args: [],
+    );
   }
 
   /// `No`
   String get no {
-    return Intl.message('No', name: 'no', desc: '', args: []);
+    return Intl.message('No', name: 'no', desc: 'Negative response', args: []);
   }
 
   /// `Yes`
   String get yes {
-    return Intl.message('Yes', name: 'yes', desc: '', args: []);
+    return Intl.message(
+      'Yes',
+      name: 'yes',
+      desc: 'Affirmative response',
+      args: [],
+    );
   }
 
   /// `More`
   String get more {
-    return Intl.message('More', name: 'more', desc: '', args: []);
+    return Intl.message(
+      'More',
+      name: 'more',
+      desc: 'Indicates there is more content available',
+      args: [],
+    );
   }
 
   /// `OK`
   String get ok {
-    return Intl.message('OK', name: 'ok', desc: '', args: []);
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: 'Button text for OK action',
+      args: [],
+    );
   }
 
   /// `Loading`
   String get loading {
-    return Intl.message('Loading', name: 'loading', desc: '', args: []);
+    return Intl.message(
+      'Loading',
+      name: 'loading',
+      desc: 'Indicates that content is loading',
+      args: [],
+    );
   }
 
   /// `Theme`
   String get theme {
-    return Intl.message('Theme', name: 'theme', desc: '', args: []);
+    return Intl.message(
+      'Theme',
+      name: 'theme',
+      desc: 'Label for theme selection',
+      args: [],
+    );
   }
 
   /// `Dark Mode`
   String get dark_mode {
-    return Intl.message('Dark Mode', name: 'dark_mode', desc: '', args: []);
+    return Intl.message(
+      'Dark Mode',
+      name: 'dark_mode',
+      desc: 'Label for dark mode theme option',
+      args: [],
+    );
   }
 
   /// `Light Mode`
   String get light_mode {
-    return Intl.message('Light Mode', name: 'light_mode', desc: '', args: []);
+    return Intl.message(
+      'Light Mode',
+      name: 'light_mode',
+      desc: 'Label for light mode theme option',
+      args: [],
+    );
   }
 
   /// `My First Group`
@@ -270,7 +380,7 @@ class S {
     return Intl.message(
       'My First Group',
       name: 'my_first_group',
-      desc: '',
+      desc: 'Default name for the first group created',
       args: [],
     );
   }
@@ -280,14 +390,19 @@ class S {
     return Intl.message(
       'Wear OS Sync',
       name: 'wear_os_sync',
-      desc: '',
+      desc: 'Label for Wear OS synchronization feature',
       args: [],
     );
   }
 
   /// `Connected`
   String get connected {
-    return Intl.message('Connected', name: 'connected', desc: '', args: []);
+    return Intl.message(
+      'Connected',
+      name: 'connected',
+      desc: 'Status indicating a connection is established',
+      args: [],
+    );
   }
 
   /// `Not Connected`
@@ -295,7 +410,7 @@ class S {
     return Intl.message(
       'Not Connected',
       name: 'not_connected',
-      desc: '',
+      desc: 'Status indicating no connection is established',
       args: [],
     );
   }
@@ -305,7 +420,7 @@ class S {
     return Intl.message(
       'This field is required',
       name: 'input_required_error',
-      desc: '',
+      desc: 'Error message when a required field is empty',
       args: [],
     );
   }
@@ -315,7 +430,7 @@ class S {
     return Intl.message(
       'Please enter a valid email address',
       name: 'invalid_email_error',
-      desc: '',
+      desc: 'Error message when email format is invalid',
       args: [],
     );
   }
@@ -325,7 +440,7 @@ class S {
     return Intl.message(
       'Email is required',
       name: 'email_is_required_error',
-      desc: '',
+      desc: 'Error message when email field is empty',
       args: [],
     );
   }
@@ -335,14 +450,19 @@ class S {
     return Intl.message(
       'Unknown View',
       name: 'unknown_view',
-      desc: '',
+      desc: 'Label shown when an unrecognized view is encountered',
       args: [],
     );
   }
 
   /// `Add Recipe`
   String get add_recipe {
-    return Intl.message('Add Recipe', name: 'add_recipe', desc: '', args: []);
+    return Intl.message(
+      'Add Recipe',
+      name: 'add_recipe',
+      desc: 'Button text to add a new recipe',
+      args: [],
+    );
   }
 
   /// `Add Ingredient`
@@ -350,7 +470,7 @@ class S {
     return Intl.message(
       'Add Ingredient',
       name: 'add_ingredient',
-      desc: '',
+      desc: 'Button text to add a new ingredient',
       args: [],
     );
   }
@@ -360,7 +480,7 @@ class S {
     return Intl.message(
       'Select recipes',
       name: 'select_recipes',
-      desc: '',
+      desc: 'Label prompting user to select recipes',
       args: [],
     );
   }
@@ -370,7 +490,7 @@ class S {
     return Intl.message(
       '$count selected',
       name: 'items_selected',
-      desc: '',
+      desc: 'Shows the number of items currently selected',
       args: [count],
     );
   }
@@ -380,7 +500,7 @@ class S {
     return Intl.message(
       'No groups created',
       name: 'no_groups_created',
-      desc: '',
+      desc: 'Message shown when user has no groups',
       args: [],
     );
   }
@@ -390,7 +510,7 @@ class S {
     return Intl.message(
       'Login failed',
       name: 'login_error',
-      desc: '',
+      desc: 'Error message when login fails',
       args: [],
     );
   }
@@ -400,7 +520,7 @@ class S {
     return Intl.message(
       'Forgot Password?',
       name: 'forgot_password',
-      desc: '',
+      desc: 'Link text for password recovery',
       args: [],
     );
   }
@@ -410,7 +530,7 @@ class S {
     return Intl.message(
       'Already have an account?',
       name: 'already_have_account',
-      desc: '',
+      desc: 'Prompt for users who already have an account',
       args: [],
     );
   }
@@ -420,7 +540,7 @@ class S {
     return Intl.message(
       'Reset Password',
       name: 'reset_password',
-      desc: '',
+      desc: 'Button text to reset password',
       args: [],
     );
   }
@@ -430,7 +550,7 @@ class S {
     return Intl.message(
       'Password reset email sent! Please check your inbox.',
       name: 'reset_password_success',
-      desc: '',
+      desc: 'Success message after password reset email is sent',
       args: [],
     );
   }
@@ -440,7 +560,7 @@ class S {
     return Intl.message(
       'Failed to send password reset email',
       name: 'reset_password_error',
-      desc: '',
+      desc: 'Error message when password reset fails',
       args: [],
     );
   }
@@ -450,7 +570,7 @@ class S {
     return Intl.message(
       'Create Account',
       name: 'create_account',
-      desc: '',
+      desc: 'Button text to create a new account',
       args: [],
     );
   }
@@ -460,7 +580,7 @@ class S {
     return Intl.message(
       'Confirm Password',
       name: 'confirm_password',
-      desc: '',
+      desc: 'Label for password confirmation field',
       args: [],
     );
   }
@@ -470,7 +590,7 @@ class S {
     return Intl.message(
       'Passwords do not match',
       name: 'passwords_do_not_match_error',
-      desc: '',
+      desc: 'Error message when passwords don\'t match',
       args: [],
     );
   }
@@ -480,7 +600,7 @@ class S {
     return Intl.message(
       'Failed to create account',
       name: 'create_account_error',
-      desc: '',
+      desc: 'Error message when account creation fails',
       args: [],
     );
   }
@@ -490,7 +610,7 @@ class S {
     return Intl.message(
       'Account created successfully!',
       name: 'create_account_success',
-      desc: '',
+      desc: 'Success message when account is created',
       args: [],
     );
   }
@@ -500,7 +620,7 @@ class S {
     return Intl.message(
       'Login without password',
       name: 'login_without_password',
-      desc: '',
+      desc: 'Button text for passwordless login option',
       args: [],
     );
   }
@@ -510,19 +630,29 @@ class S {
     return Intl.message(
       'Login link sent! Please check your email.',
       name: 'login_without_password_success_message',
-      desc: '',
+      desc: 'Success message when passwordless login link is sent',
       args: [],
     );
   }
 
   /// `Your Groups`
   String get your_groups {
-    return Intl.message('Your Groups', name: 'your_groups', desc: '', args: []);
+    return Intl.message(
+      'Your Groups',
+      name: 'your_groups',
+      desc: 'Header label for user\'s groups section',
+      args: [],
+    );
   }
 
   /// `Language`
   String get language {
-    return Intl.message('Language', name: 'language', desc: '', args: []);
+    return Intl.message(
+      'Language',
+      name: 'language',
+      desc: 'Label for language selection',
+      args: [],
+    );
   }
 
   /// `Select Language`
@@ -530,14 +660,19 @@ class S {
     return Intl.message(
       'Select Language',
       name: 'select_language',
-      desc: '',
+      desc: 'Title for language selection dialog',
       args: [],
     );
   }
 
   /// `About`
   String get about {
-    return Intl.message('About', name: 'about', desc: '', args: []);
+    return Intl.message(
+      'About',
+      name: 'about',
+      desc: 'Label for about section',
+      args: [],
+    );
   }
 
   /// `Felicette Recipes`
@@ -545,7 +680,7 @@ class S {
     return Intl.message(
       'Felicette Recipes',
       name: 'application_name',
-      desc: '',
+      desc: 'Name of the application',
       args: [],
     );
   }
@@ -555,7 +690,7 @@ class S {
     return Intl.message(
       'Felicette Recipes is an open-source application to help you manage your recipes and shopping lists.',
       name: 'application_description',
-      desc: '',
+      desc: 'Description of the application',
       args: [],
     );
   }
@@ -565,7 +700,7 @@ class S {
     return Intl.message(
       'Developed with',
       name: 'developed_with_love',
-      desc: '',
+      desc: 'Text preceding \'Love and Cats\' in about section',
       args: [],
     );
   }
@@ -575,7 +710,7 @@ class S {
     return Intl.message(
       'Love and Cats',
       name: 'love_and_cats',
-      desc: '',
+      desc: 'Playful text in about section',
       args: [],
     );
   }
@@ -585,7 +720,7 @@ class S {
     return Intl.message(
       'in Curitiba, Brazil.',
       name: 'developed_in',
-      desc: '',
+      desc: 'Location where the app was developed',
       args: [],
     );
   }
@@ -595,7 +730,7 @@ class S {
     return Intl.message(
       'By felicette.dev',
       name: 'developed_by',
-      desc: '',
+      desc: 'Developer attribution',
       args: [],
     );
   }
@@ -605,19 +740,29 @@ class S {
     return Intl.message(
       'Check out the project on GitHub: ',
       name: 'checkout_github',
-      desc: '',
+      desc: 'Text prompting to visit GitHub repository',
       args: [],
     );
   }
 
   /// ` spent of `
   String get spent_of {
-    return Intl.message(' spent of ', name: 'spent_of', desc: '', args: []);
+    return Intl.message(
+      ' spent of ',
+      name: 'spent_of',
+      desc: 'Text showing budget spent amount in format \'X spent of Y\'',
+      args: [],
+    );
   }
 
   /// ` available`
   String get available {
-    return Intl.message(' available', name: 'available', desc: '', args: []);
+    return Intl.message(
+      ' available',
+      name: 'available',
+      desc: 'Text showing available budget amount',
+      args: [],
+    );
   }
 
   /// `Actual Ingredients`
@@ -625,7 +770,7 @@ class S {
     return Intl.message(
       'Actual Ingredients',
       name: 'actual_ingredients',
-      desc: '',
+      desc: 'Header for actual ingredients section',
       args: [],
     );
   }
@@ -635,7 +780,7 @@ class S {
     return Intl.message(
       'These items can be used in recipes and added to the shopping list',
       name: 'actual_ingredients_subtitle',
-      desc: '',
+      desc: 'Description of actual ingredients section',
       args: [],
     );
   }
@@ -645,7 +790,7 @@ class S {
     return Intl.message(
       'Non-Ingredients',
       name: 'non_actual_ingredients',
-      desc: '',
+      desc: 'Header for non-actual ingredients section',
       args: [],
     );
   }
@@ -655,7 +800,7 @@ class S {
     return Intl.message(
       'This items can be added to the shopping list but can\'t be used in recipes',
       name: 'non_actual_ingredients_subtitle',
-      desc: '',
+      desc: 'Description of non-actual ingredients section',
       args: [],
     );
   }
@@ -665,7 +810,7 @@ class S {
     return Intl.message(
       'New Ingredient',
       name: 'new_ingredient',
-      desc: '',
+      desc: 'Title for creating a new ingredient',
       args: [],
     );
   }
@@ -675,7 +820,7 @@ class S {
     return Intl.message(
       'Ingredient Name',
       name: 'ingredient_name',
-      desc: '',
+      desc: 'Label for ingredient name field',
       args: [],
     );
   }
@@ -685,7 +830,7 @@ class S {
     return Intl.message(
       'Is Actual Ingredient',
       name: 'is_actual_ingredient',
-      desc: '',
+      desc: 'Label for actual ingredient checkbox',
       args: [],
     );
   }
@@ -695,7 +840,7 @@ class S {
     return Intl.message(
       'Edit Ingredient',
       name: 'edit_ingredient',
-      desc: '',
+      desc: 'Title for editing an ingredient',
       args: [],
     );
   }
@@ -705,7 +850,7 @@ class S {
     return Intl.message(
       'Confirm Deletion',
       name: 'confirm_deletion',
-      desc: '',
+      desc: 'Title for deletion confirmation dialog',
       args: [],
     );
   }
@@ -715,7 +860,7 @@ class S {
     return Intl.message(
       'Are you sure you want to delete this ingredient?',
       name: 'confirm_deletion_message',
-      desc: '',
+      desc: 'Message asking for deletion confirmation',
       args: [],
     );
   }
@@ -725,7 +870,7 @@ class S {
     return Intl.message(
       'Ingredient updated successfully',
       name: 'ingredient_updated_successfully',
-      desc: '',
+      desc: 'Success message when ingredient is updated',
       args: [],
     );
   }
@@ -735,7 +880,7 @@ class S {
     return Intl.message(
       'Ingredient deleted successfully',
       name: 'ingredient_deleted_successfully',
-      desc: '',
+      desc: 'Success message when ingredient is deleted',
       args: [],
     );
   }
@@ -745,7 +890,7 @@ class S {
     return Intl.message(
       'Ingredient created successfully',
       name: 'ingredient_created_successfully',
-      desc: '',
+      desc: 'Success message when ingredient is created',
       args: [],
     );
   }
@@ -765,7 +910,7 @@ class S {
     return Intl.message(
       'Confirm Actual Ingredient',
       name: 'confirm_actual_ingredient',
-      desc: '',
+      desc: 'Title for actual ingredient confirmation dialog',
       args: [],
     );
   }
@@ -775,7 +920,7 @@ class S {
     return Intl.message(
       'No ingredients created',
       name: 'no_ingredients_created',
-      desc: '',
+      desc: 'Message when user has no ingredients',
       args: [],
     );
   }
@@ -785,14 +930,19 @@ class S {
     return Intl.message(
       'Create your first ingredient to get started with recipes and shopping lists.',
       name: 'no_ingredients_created_description',
-      desc: '',
+      desc: 'Description encouraging user to create first ingredient',
       args: [],
     );
   }
 
   /// `Edit Recipe`
   String get edit_recipe {
-    return Intl.message('Edit Recipe', name: 'edit_recipe', desc: '', args: []);
+    return Intl.message(
+      'Edit Recipe',
+      name: 'edit_recipe',
+      desc: 'Title for editing a recipe',
+      args: [],
+    );
   }
 
   /// `Create Recipe`
@@ -800,14 +950,19 @@ class S {
     return Intl.message(
       'Create Recipe',
       name: 'create_recipe',
-      desc: '',
+      desc: 'Title for creating a new recipe',
       args: [],
     );
   }
 
   /// `Recipe Name`
   String get recipe_name {
-    return Intl.message('Recipe Name', name: 'recipe_name', desc: '', args: []);
+    return Intl.message(
+      'Recipe Name',
+      name: 'recipe_name',
+      desc: 'Label for recipe name field',
+      args: [],
+    );
   }
 
   /// `Select Ingredients`
@@ -815,7 +970,7 @@ class S {
     return Intl.message(
       'Select Ingredients',
       name: 'select_ingredients',
-      desc: '',
+      desc: 'Label for ingredient selection section',
       args: [],
     );
   }
@@ -825,7 +980,7 @@ class S {
     return Intl.message(
       'Choose the ingredients needed for the recipe. Quantities can be entered below.',
       name: 'choose_ingredients_text',
-      desc: '',
+      desc: 'Instructions for selecting ingredients',
       args: [],
     );
   }
@@ -835,7 +990,7 @@ class S {
     return Intl.message(
       'Optionally, enter the quantities of the ingredients below.',
       name: 'optional_quantities_text',
-      desc: '',
+      desc: 'Instructions about optional quantities',
       args: [],
     );
   }
@@ -845,7 +1000,7 @@ class S {
     return Intl.message(
       'The quantities will appear in the shopping list when the recipe is selected.',
       name: 'quantities_shopping_list_text',
-      desc: '',
+      desc: 'Explanation of how quantities appear in shopping list',
       args: [],
     );
   }
@@ -855,7 +1010,7 @@ class S {
     return Intl.message(
       'Quantity for $ingredient',
       name: 'quantity_for',
-      desc: '',
+      desc: 'Label for quantity input field for a specific ingredient',
       args: [ingredient],
     );
   }
@@ -865,7 +1020,7 @@ class S {
     return Intl.message(
       'No recipes created',
       name: 'no_recipes_created',
-      desc: '',
+      desc: 'Message when user has no recipes',
       args: [],
     );
   }
@@ -875,29 +1030,49 @@ class S {
     return Intl.message(
       'Create your first recipe to organize your cooking and generate shopping lists.',
       name: 'no_recipes_created_description',
-      desc: '',
+      desc: 'Description encouraging user to create first recipe',
       args: [],
     );
   }
 
   /// `Search`
   String get search {
-    return Intl.message('Search', name: 'search', desc: '', args: []);
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: 'Label for search functionality',
+      args: [],
+    );
   }
 
   /// `Create`
   String get create {
-    return Intl.message('Create', name: 'create', desc: '', args: []);
+    return Intl.message(
+      'Create',
+      name: 'create',
+      desc: 'Button text for create action',
+      args: [],
+    );
   }
 
   /// `Done`
   String get done {
-    return Intl.message('Done', name: 'done', desc: '', args: []);
+    return Intl.message(
+      'Done',
+      name: 'done',
+      desc: 'Button text for done action',
+      args: [],
+    );
   }
 
   /// `Edit List`
   String get edit_list {
-    return Intl.message('Edit List', name: 'edit_list', desc: '', args: []);
+    return Intl.message(
+      'Edit List',
+      name: 'edit_list',
+      desc: 'Button text to edit a list',
+      args: [],
+    );
   }
 
   /// `Select Currency`
@@ -905,7 +1080,7 @@ class S {
     return Intl.message(
       'Select Currency',
       name: 'select_currency',
-      desc: '',
+      desc: 'Label for currency selection',
       args: [],
     );
   }
@@ -915,7 +1090,7 @@ class S {
     return Intl.message(
       'Clear All Checks',
       name: 'clear_all_checks',
-      desc: '',
+      desc: 'Button text to clear all checked items',
       args: [],
     );
   }
@@ -925,19 +1100,29 @@ class S {
     return Intl.message(
       'All checks have been cleared',
       name: 'all_checks_cleared',
-      desc: '',
+      desc: 'Message confirming all checks have been cleared',
       args: [],
     );
   }
 
   /// `US Dollar`
   String get currency_usd {
-    return Intl.message('US Dollar', name: 'currency_usd', desc: '', args: []);
+    return Intl.message(
+      'US Dollar',
+      name: 'currency_usd',
+      desc: 'US Dollar currency option',
+      args: [],
+    );
   }
 
   /// `Euro`
   String get currency_eur {
-    return Intl.message('Euro', name: 'currency_eur', desc: '', args: []);
+    return Intl.message(
+      'Euro',
+      name: 'currency_eur',
+      desc: 'Euro currency option',
+      args: [],
+    );
   }
 
   /// `British Pound`
@@ -945,7 +1130,7 @@ class S {
     return Intl.message(
       'British Pound',
       name: 'currency_gbp',
-      desc: '',
+      desc: 'British Pound currency option',
       args: [],
     );
   }
@@ -955,7 +1140,7 @@ class S {
     return Intl.message(
       'Japanese Yen',
       name: 'currency_jpy',
-      desc: '',
+      desc: 'Japanese Yen currency option',
       args: [],
     );
   }
@@ -965,7 +1150,7 @@ class S {
     return Intl.message(
       'Chinese Yuan',
       name: 'currency_cny',
-      desc: '',
+      desc: 'Chinese Yuan currency option',
       args: [],
     );
   }
@@ -975,7 +1160,7 @@ class S {
     return Intl.message(
       'Brazilian Real',
       name: 'currency_brl',
-      desc: '',
+      desc: 'Brazilian Real currency option',
       args: [],
     );
   }
@@ -985,7 +1170,7 @@ class S {
     return Intl.message(
       'Argentine Peso',
       name: 'currency_ars',
-      desc: '',
+      desc: 'Argentine Peso currency option',
       args: [],
     );
   }
@@ -995,7 +1180,7 @@ class S {
     return Intl.message(
       'Please enter a valid number',
       name: 'please_enter_valid_number',
-      desc: '',
+      desc: 'Error message for invalid number input',
       args: [],
     );
   }
@@ -1005,14 +1190,19 @@ class S {
     return Intl.message(
       'Budget must be a positive number',
       name: 'budget_must_be_positive',
-      desc: '',
+      desc: 'Error message when budget is not positive',
       args: [],
     );
   }
 
   /// `Error`
   String get error {
-    return Intl.message('Error', name: 'error', desc: '', args: []);
+    return Intl.message(
+      'Error',
+      name: 'error',
+      desc: 'Generic error label',
+      args: [],
+    );
   }
 
   /// `No group selected`
@@ -1020,7 +1210,7 @@ class S {
     return Intl.message(
       'No group selected',
       name: 'no_group_selected',
-      desc: '',
+      desc: 'Message when no group is selected',
       args: [],
     );
   }
@@ -1030,7 +1220,7 @@ class S {
     return Intl.message(
       'List details updated successfully',
       name: 'list_details_updated_successfully',
-      desc: '',
+      desc: 'Success message when list details are updated',
       args: [],
     );
   }
@@ -1040,24 +1230,39 @@ class S {
     return Intl.message(
       'Failed to update list details: $error',
       name: 'failed_to_update_list_details',
-      desc: '',
+      desc: 'Error message when list update fails',
       args: [error],
     );
   }
 
   /// `Quantity`
   String get quantity {
-    return Intl.message('Quantity', name: 'quantity', desc: '', args: []);
+    return Intl.message(
+      'Quantity',
+      name: 'quantity',
+      desc: 'Label for quantity field',
+      args: [],
+    );
   }
 
   /// `Unit Price`
   String get unit_price {
-    return Intl.message('Unit Price', name: 'unit_price', desc: '', args: []);
+    return Intl.message(
+      'Unit Price',
+      name: 'unit_price',
+      desc: 'Label for unit price field',
+      args: [],
+    );
   }
 
   /// `Add Price`
   String get add_price {
-    return Intl.message('Add Price', name: 'add_price', desc: '', args: []);
+    return Intl.message(
+      'Add Price',
+      name: 'add_price',
+      desc: 'Button text to add price information',
+      args: [],
+    );
   }
 
   /// `Enter Quantity`
@@ -1065,7 +1270,7 @@ class S {
     return Intl.message(
       'Enter Quantity',
       name: 'enter_quantity',
-      desc: '',
+      desc: 'Placeholder text for quantity input',
       args: [],
     );
   }
@@ -1075,7 +1280,7 @@ class S {
     return Intl.message(
       'Save Without Price',
       name: 'save_without_price',
-      desc: '',
+      desc: 'Button text to save without entering price',
       args: [],
     );
   }
@@ -1085,7 +1290,7 @@ class S {
     return Intl.message(
       'Actual Ingredient',
       name: 'actual_ingredient_title',
-      desc: '',
+      desc: 'Title for actual ingredient dialog',
       args: [],
     );
   }
@@ -1095,7 +1300,7 @@ class S {
     return Intl.message(
       'Is this an actual ingredient that can be used in recipes?',
       name: 'actual_ingredient_content',
-      desc: '',
+      desc: 'Question asking if item is an actual ingredient',
       args: [],
     );
   }
@@ -1105,19 +1310,29 @@ class S {
     return Intl.message(
       'Create Group',
       name: 'create_group',
-      desc: '',
+      desc: 'Button text to create a new group',
       args: [],
     );
   }
 
   /// `Edit Group`
   String get edit_group {
-    return Intl.message('Edit Group', name: 'edit_group', desc: '', args: []);
+    return Intl.message(
+      'Edit Group',
+      name: 'edit_group',
+      desc: 'Button text to edit a group',
+      args: [],
+    );
   }
 
   /// `Group Name`
   String get group_name {
-    return Intl.message('Group Name', name: 'group_name', desc: '', args: []);
+    return Intl.message(
+      'Group Name',
+      name: 'group_name',
+      desc: 'Label for group name field',
+      args: [],
+    );
   }
 
   /// `Group updated successfully`
@@ -1125,7 +1340,7 @@ class S {
     return Intl.message(
       'Group updated successfully',
       name: 'group_name_updated',
-      desc: '',
+      desc: 'Success message when group is updated',
       args: [],
     );
   }
@@ -1135,7 +1350,7 @@ class S {
     return Intl.message(
       'Delete Group',
       name: 'delete_group',
-      desc: '',
+      desc: 'Button text to delete a group',
       args: [],
     );
   }
@@ -1145,7 +1360,7 @@ class S {
     return Intl.message(
       'Are you sure you want to delete this group? This action cannot be undone.',
       name: 'delete_group_message',
-      desc: '',
+      desc: 'Confirmation message for group deletion',
       args: [],
     );
   }
@@ -1155,7 +1370,7 @@ class S {
     return Intl.message(
       'Group deleted successfully',
       name: 'group_deleted',
-      desc: '',
+      desc: 'Success message when group is deleted',
       args: [],
     );
   }
@@ -1165,7 +1380,28 @@ class S {
     return Intl.message(
       'You have reached the maximum number of groups allowed.',
       name: 'group_creation_limit_reached',
-      desc: '',
+      desc: 'Error message when group creation limit is reached',
+      args: [],
+    );
+  }
+
+  /// `Password recovery email sent`
+  String get password_recovery_email_sent {
+    return Intl.message(
+      'Password recovery email sent',
+      name: 'password_recovery_email_sent',
+      desc: 'Indicates that the password recovery email has been sent',
+      args: [],
+    );
+  }
+
+  /// `Error sending password recovery email`
+  String get password_recovery_error {
+    return Intl.message(
+      'Error sending password recovery email',
+      name: 'password_recovery_error',
+      desc:
+          'Indicates that there was an error sending the password recovery email',
       args: [],
     );
   }
