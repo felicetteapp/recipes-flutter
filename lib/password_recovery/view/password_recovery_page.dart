@@ -164,7 +164,9 @@ class _CreateAccountButton extends StatelessWidget {
     final theme = Theme.of(context);
     return TextButton(
       key: const Key('recoveryPasswordForm_createAccount_textButton'),
-      onPressed: null,
+      onPressed: () {
+        context.go(AppRoutes.createAccount);
+      },
       style: TextButton.styleFrom(
         foregroundColor: theme.colorScheme.secondary,
       ),

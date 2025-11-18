@@ -2,36 +2,37 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:felicette_recipes/app/common/widgets/footer/footer.dart';
 import 'package:felicette_recipes/app/common/widgets/header/header.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/authentication/models/confirmed_password.dart';
+import 'package:felicette_recipes/create_account/create_account.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
-import 'package:felicette_recipes/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class CreateAccountPage extends StatelessWidget {
+  const CreateAccountPage({super.key});
 
   static GoRoute route() {
     return GoRoute(
-      path: AppRoutes.login,
-      builder: (context, state) => const LoginPage(),
+      path: AppRoutes.createAccount,
+      builder: (context, state) => const CreateAccountPage(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(
+      create: (context) => CreateAccountBloc(
         authenticationRepository: context.read<AuthenticationRepository>(),
       ),
-      child: const _LoginPageContent(),
+      child: const _CreateAccountPageContent(),
     );
   }
 }
 
-class _LoginPageContent extends StatelessWidget {
-  const _LoginPageContent();
+class _CreateAccountPageContent extends StatelessWidget {
+  const _CreateAccountPageContent();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,8 @@ class _LoginPageContent extends StatelessWidget {
                         FRHeader(),
                         _UsernameInput(),
                         _PasswordInput(),
-                        _LoginButtons(),
+                        _PasswordConfirmationInput(),
+                        _CreateAccountButtons(),
                         _SecondaryActionsButtons(),
                         FRFooter(),
                       ],
@@ -75,11 +77,11 @@ class _UsernameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final displayError = context.select(
-      (LoginBloc bloc) => bloc.state.username.displayError,
+      (CreateAccountBloc bloc) => bloc.state.username.displayError,
     );
     final s = S.of(context);
     return TextFormField(
-      key: const Key('loginForm_usernameInput_textField'),
+      key: const Key('createAccountForm_usernameInput_textField'),
       autocorrect: false,
       decoration: InputDecoration(
         labelText: s.email,
@@ -92,7 +94,9 @@ class _UsernameInput extends StatelessWidget {
       ],
       autovalidateMode: .onUserInteraction,
       onChanged: (username) {
-        context.read<LoginBloc>().add(LoginUsernameChanged(username));
+        context.read<CreateAccountBloc>().add(
+          CreateAccountUsernameChanged(username),
+        );
       },
     );
   }
@@ -103,17 +107,17 @@ class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPasswordHidden = context.select(
-      (LoginBloc bloc) => bloc.state.isPasswordHidden,
+      (CreateAccountBloc bloc) => bloc.state.isPasswordHidden,
     );
 
     final displayError = context.select(
-      (LoginBloc bloc) => bloc.state.password.displayError,
+      (CreateAccountBloc bloc) => bloc.state.password.displayError,
     );
 
     final s = S.of(context);
 
     return TextFormField(
-      key: const Key('loginForm_passwordInput_textField'),
+      key: const Key('createAccountForm_passwordInput_textField'),
       autocorrect: false,
       decoration: InputDecoration(
         labelText: s.password,
@@ -127,8 +131,8 @@ class _PasswordInput extends StatelessWidget {
           visualDensity: .compact,
 
           onPressed: () {
-            context.read<LoginBloc>().add(
-              const LoginPasswordVisibilityToggled(),
+            context.read<CreateAccountBloc>().add(
+              const CreateAccountPasswordVisibilityToggled(),
             );
           },
           icon: Icon(
@@ -140,82 +144,66 @@ class _PasswordInput extends StatelessWidget {
       autofillHints: const [AutofillHints.password],
       autovalidateMode: .onUserInteraction,
       onChanged: (password) {
-        context.read<LoginBloc>().add(LoginPasswordChanged(password));
+        context.read<CreateAccountBloc>().add(
+          CreateAccountPasswordChanged(password),
+        );
       },
     );
   }
 }
 
-class _LoginButton extends StatelessWidget {
-  const _LoginButton();
+class _PasswordConfirmationInput extends StatelessWidget {
+  const _PasswordConfirmationInput();
   @override
   Widget build(BuildContext context) {
-    final isValid = context.select((LoginBloc bloc) => bloc.state.isValid);
-    return FilledButton(
-      key: const Key('loginForm_continue_raisedButton'),
-      onPressed: isValid
-          ? () {
-              context.read<LoginBloc>().add(const LoginSubmitted());
-            }
-          : null,
-      child: Text(S.of(context).login),
+    final s = S.of(context);
+    final isPasswordConfirmationHidden = context.select(
+      (CreateAccountBloc bloc) => bloc.state.isPasswordConfirmationHidden,
     );
-  }
-}
-
-class _PasswordlessLoginButton extends StatelessWidget {
-  const _PasswordlessLoginButton();
-  @override
-  Widget build(BuildContext context) {
-    final isUsernameValid = context.select(
-      (LoginBloc bloc) => bloc.state.isUsernameValid,
-    );
-    return OutlinedButton(
-      key: const Key('loginForm_passwordlessLogin_outlinedButton'),
-      onPressed: isUsernameValid
-          ? () {
-              // Implement passwordless login logic here
-            }
-          : null,
-      child: Text(S.of(context).login_without_password),
-    );
-  }
-}
-
-class _LoginButtons extends StatelessWidget {
-  const _LoginButtons();
-  @override
-  Widget build(BuildContext context) {
-    final isInProgressOrSuccess = context.select(
-      (LoginBloc bloc) => bloc.state.status.isInProgressOrSuccess,
+    final displayError = context.select(
+      (CreateAccountBloc bloc) => bloc.state.passwordConfirmation.displayError,
     );
 
-    if (isInProgressOrSuccess) return const CircularProgressIndicator();
+    final errorMessages = {
+      ConfirmedPasswordValidationError.empty: s.input_required_error,
+      ConfirmedPasswordValidationError.invalid: s.passwords_do_not_match_error,
+    };
 
-    return const Wrap(
-      key: Key('loginForm_buttons_wrap'),
-      spacing: 8,
-      runAlignment: .center,
-      crossAxisAlignment: .center,
-      alignment: .center,
-      children: [
-        _LoginButton(),
-        _PasswordlessLoginButton(),
-      ],
-    );
-  }
-}
-
-class _ForgotPasswordButton extends StatelessWidget {
-  const _ForgotPasswordButton();
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      key: const Key('loginForm_forgotPassword_textButton'),
-      onPressed: () {
-        context.go(AppRoutes.passwordRecovery);
+    return TextFormField(
+      key: const Key('createAccountForm_passwordConfirmationInput_textField'),
+      autocorrect: false,
+      decoration: InputDecoration(
+        labelText: s.confirm_password,
+        errorText: displayError != null ? errorMessages[displayError] : null,
+        suffix: IconButton(
+          iconSize: 18,
+          style: const ButtonStyle(
+            tapTargetSize: .shrinkWrap,
+          ),
+          padding: .zero,
+          visualDensity: .compact,
+          onPressed: () {
+            context.read<CreateAccountBloc>().add(
+              const CreateAccountPasswordConfirmationVisibilityToggled(),
+            );
+          },
+          icon: Icon(
+            isPasswordConfirmationHidden
+                ? Icons.visibility
+                : Icons.visibility_off,
+          ),
+        ),
+      ),
+      obscureText: isPasswordConfirmationHidden,
+      autofillHints: const [AutofillHints.password],
+      autovalidateMode: .onUserInteraction,
+      onChanged: (passwordConfirmation) {
+        context.read<CreateAccountBloc>().add(
+          CreateAccountPasswordConfirmationChanged(
+            passwordConfirmation,
+          ),
+        );
       },
-      child: Text(S.of(context).forgot_password),
     );
   }
 }
@@ -224,16 +212,57 @@ class _CreateAccountButton extends StatelessWidget {
   const _CreateAccountButton();
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return TextButton(
-      key: const Key('loginForm_createAccount_textButton'),
-      onPressed: () {
-        context.go(AppRoutes.createAccount);
-      },
-      style: TextButton.styleFrom(
-        foregroundColor: theme.colorScheme.secondary,
-      ),
+    final isValid = context.select(
+      (CreateAccountBloc bloc) => bloc.state.isValid,
+    );
+    return FilledButton(
+      key: const Key('createAccountForm_continue_raisedButton'),
+      onPressed: isValid
+          ? () {
+              context.read<CreateAccountBloc>().add(
+                const CreateAccountSubmitted(),
+              );
+            }
+          : null,
       child: Text(S.of(context).create_account),
+    );
+  }
+}
+
+class _CreateAccountButtons extends StatelessWidget {
+  const _CreateAccountButtons();
+  @override
+  Widget build(BuildContext context) {
+    final isInProgressOrSuccess = context.select(
+      (CreateAccountBloc bloc) =>
+          bloc.state.submissionStatus.isInProgressOrSuccess,
+    );
+
+    if (isInProgressOrSuccess) return const CircularProgressIndicator();
+
+    return const Wrap(
+      key: Key('createAccountForm_buttons_wrap'),
+      spacing: 8,
+      runAlignment: .center,
+      crossAxisAlignment: .center,
+      alignment: .center,
+      children: [
+        _CreateAccountButton(),
+      ],
+    );
+  }
+}
+
+class _AlreadyHaveAccountButton extends StatelessWidget {
+  const _AlreadyHaveAccountButton();
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      key: const Key('createAccountForm_alreadyHaveAccount_textButton'),
+      onPressed: () {
+        context.go(AppRoutes.login);
+      },
+      child: Text(S.of(context).already_have_account),
     );
   }
 }
@@ -245,10 +274,7 @@ class _SecondaryActionsButtons extends StatelessWidget {
     return const Wrap(
       alignment: .center,
       spacing: 8,
-      children: [
-        _ForgotPasswordButton(),
-        _CreateAccountButton(),
-      ],
+      children: [_AlreadyHaveAccountButton()],
     );
   }
 }

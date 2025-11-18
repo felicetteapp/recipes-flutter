@@ -5,6 +5,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:felicette_recipes/app/bloc/app_bloc.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/authentication/authentication.dart';
+import 'package:felicette_recipes/create_account/create_account.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/login/login.dart';
 import 'package:felicette_recipes/password_recovery/password_recovery.dart';
@@ -47,6 +48,7 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       SplashPage.route(),
       LoginPage.route(),
       PasswordRecoveryPage.route(),
+      CreateAccountPage.route(),
       GoRoute(
         path: AppRoutes.home,
         builder: (context, state) => Scaffold(
