@@ -42,8 +42,8 @@ Future<void> main() async {
 
   log('Current authenticated user: $authCurrentUser', name: 'main');
   if (authCurrentUser != null) {
-    final testeU = await userRepository.getUser(
-      authCurrentUser.uid,
+    final testeU = await userRepository.getUserFromAuthenticatedUser(
+      authCurrentUser,
     );
     log('Fetched user data: $testeU', name: 'main');
   }

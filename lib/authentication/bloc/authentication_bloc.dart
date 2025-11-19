@@ -67,8 +67,8 @@ class AuthenticationBloc
 
   Future<FRUser?> _tryGetUser() async {
     try {
-      final user = await _userRepository.getUser(
-        _authenticationRepository.currentUser!.uid,
+      final user = await _userRepository.getUserFromAuthenticatedUser(
+        _authenticationRepository.currentUser!,
       );
       return user;
     } catch (_) {

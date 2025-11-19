@@ -71,13 +71,15 @@ class FRUtils {
     );
   }
 
-  static Future<void> showLanguageSelectionDialog(BuildContext context) async {
-    // Implementation for language selection dialog
+  static String getLocaleName(Locale locale) {
     final languageNames = {
       'en': 'English',
       'es': 'Español',
     };
+    return languageNames[locale.languageCode] ?? locale.languageCode;
+  }
 
+  static Future<void> showLanguageSelectionDialog(BuildContext context) async {
     final response = await showDialog<Locale>(
       context: context,
       builder: (context) {
@@ -93,7 +95,7 @@ class FRUtils {
                 Navigator.pop(context, locale);
               },
               child: Text(
-                languageNames[locale.languageCode] ?? locale.languageCode,
+                getLocaleName(locale),
               ),
             );
           }).toList(),

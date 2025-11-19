@@ -3,12 +3,17 @@ import 'dart:developer';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:felicette_recipes/app/bloc/app_bloc.dart';
+import 'package:felicette_recipes/app/common/widgets/drawer/drawer.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/authentication/authentication.dart';
 import 'package:felicette_recipes/create_account/create_account.dart';
+import 'package:felicette_recipes/extensions/extensions.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
+import 'package:felicette_recipes/list/list.dart';
 import 'package:felicette_recipes/login/login.dart';
 import 'package:felicette_recipes/password_recovery/password_recovery.dart';
+import 'package:felicette_recipes/recipes/bloc/recipes_bloc.dart';
+import 'package:felicette_recipes/recipes/recipes.dart';
 import 'package:felicette_recipes/splash/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +37,9 @@ class GoRouterRefreshStream extends ChangeNotifier {
 }
 
 const protectedRoutes = {
-  AppRoutes.home,
+  AppRoutes.recipes,
+  AppRoutes.list,
+  AppRoutes.ingredients,
 };
 
 const guestRoutes = {
@@ -49,30 +56,68 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       LoginPage.route(),
       PasswordRecoveryPage.route(),
       CreateAccountPage.route(),
-      GoRoute(
-        path: AppRoutes.home,
-        builder: (context, state) => Scaffold(
-          body: Column(
-            mainAxisAlignment: .center,
-            children: [
-              const Text('Home'),
-              FilledButton(
-                onPressed: () {
-                  context.read<AuthenticationBloc>().add(
-                    AuthenticationLogoutPressed(),
-                  );
-                },
-                child: Text(S.of(context).logout),
-              ),
-              FilledButton(
-                onPressed: () {
-                  context.read<AppBloc>().add(const AppToggleDarkMode());
-                },
-                child: const Text('toggle dark mode'),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navShell) {
+          return MultiBlocProvider(
+            providers: [BlocProvider(create: (context) => RecipesBloc())],
+            child: _MainShellContent(navShell: navShell),
+          );
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              RecipesPage.route(),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              ListPage.route(),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.ingredients,
+                builder: (context, state) => Scaffold(
+                  body: Column(
+                    mainAxisAlignment: .center,
+                    children: [
+                      const Text('Home'),
+                      FilledButton(
+                        onPressed: () {
+                          context.read<AuthenticationBloc>().add(
+                            AuthenticationLogoutPressed(),
+                          );
+                        },
+                        child: Text(S.of(context).logout),
+                      ),
+                      FilledButton(
+                        onPressed: () {
+                          context.read<AppBloc>().add(
+                            const AppToggleDarkMode(),
+                          );
+                        },
+                        child: const Text('toggle dark mode'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.go(AppRoutes.list);
+                        },
+                        child: const Text('Go to List'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.go(AppRoutes.recipes);
+                        },
+                        child: const Text('Go to Recipes'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
-        ),
+        ],
       ),
     ],
     refreshListenable: GoRouterRefreshStream(authenticationBloc.stream),
@@ -139,4 +184,46 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       return null;
     },
   );
+}
+
+class _MainShellContent extends StatelessWidget {
+  const _MainShellContent({required this.navShell, super.key});
+  final StatefulNavigationShell navShell;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = S.of(context);
+    return Scaffold(
+      body: navShell,
+      drawer: const FRDrawer(),
+      floatingActionButton: navShell.currentIndex == 0
+          ? RecipesPage.floatingActionButton(context)
+          : navShell.currentIndex == 1
+          ? null
+          : null,
+      appBar: navShell.currentIndex == 0
+          ? RecipesPage.appbar(context)
+          : navShell.currentIndex == 1
+          ? ListPage.appbar(context)
+          : ListPage.appbar(context),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: navShell.currentIndex,
+        onDestinationSelected: navShell.goBranch,
+        destinations: [
+          NavigationDestination(
+            icon: const Icon(Icons.book),
+            label: s.recipe(0).capitalize(),
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.list),
+            label: s.list(1).capitalize(),
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.kitchen),
+            label: s.ingredient(0).capitalize(),
+          ),
+        ],
+      ),
+    );
+  }
 }
