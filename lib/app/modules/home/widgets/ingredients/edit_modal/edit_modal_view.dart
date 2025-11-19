@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:felicette_recipes/ingredients/models/ingredient.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
@@ -85,12 +86,11 @@ class EditIngredientModal extends StatelessWidget {
                         backgroundColor: Get.theme.customColors.success,
                         foregroundColor: Get.theme.customColors.onSuccess,
                       ),
-                      onPressed:
-                          controller.isLoading.value
-                              ? null
-                              : () {
-                                controller.updateIngredient();
-                              },
+                      onPressed: controller.isLoading.value
+                          ? null
+                          : () {
+                              controller.updateIngredient();
+                            },
                       icon: const Icon(Icons.save),
                       label: Text(
                         TranslationKeys.save.tr,

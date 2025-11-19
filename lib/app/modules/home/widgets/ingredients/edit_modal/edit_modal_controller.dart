@@ -1,3 +1,4 @@
+import 'package:felicette_recipes/ingredients/models/ingredient.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';

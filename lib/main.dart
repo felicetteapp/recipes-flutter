@@ -12,6 +12,8 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:group_repository/group_repository.dart';
+import 'package:ingredient_repository/ingredient_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
 Future<void> main() async {
@@ -103,6 +105,8 @@ class FRApp extends StatelessWidget {
           providers: [
             RepositoryProvider.value(value: _authenticationRepository),
             RepositoryProvider.value(value: _userRepository),
+            RepositoryProvider(create: (context) => IngredientRepository()),
+            RepositoryProvider(create: (context) => GroupRepository()),
           ],
           child: _getMultiProvider(
             _appBloc,

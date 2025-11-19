@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:felicette_recipes/ingredients/models/ingredient.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/common.dart';
@@ -59,13 +60,12 @@ class IngredientSelectModalView extends StatelessWidget {
                             final index = controller.selectedItems.indexOf(
                               item,
                             );
-                            final ingredientValue =
-                                controller.items
-                                    .where((ing) => ing.id == item.ingredientId)
-                                    .toList();
+                            final ingredientValue = controller.items
+                                .where((ing) => ing.id == item.ingredientId)
+                                .toList();
 
-                            final availableIngredients =
-                                controller.items.toList();
+                            final availableIngredients = controller.items
+                                .toList();
 
                             //create key if necessary
                             if (controller.itemKeys.length <= index) {
@@ -180,11 +180,10 @@ class IngredientSelectModalView extends StatelessWidget {
                                         final createdIngredient =
                                             await ingredientsService
                                                 .createIngredient(
-                                                  groupId:
-                                                      groupsService
-                                                          .selectedGroup
-                                                          .value!
-                                                          .id,
+                                                  groupId: groupsService
+                                                      .selectedGroup
+                                                      .value!
+                                                      .id,
                                                   ingredient: newIngredient,
                                                 );
 

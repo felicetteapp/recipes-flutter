@@ -1,13 +1,10 @@
 import 'dart:developer';
 
 import 'package:felicette_recipes/app/bloc/app_bloc.dart';
-import 'package:felicette_recipes/app/routes/app_routes.dart';
-import 'package:felicette_recipes/app/services/app_service.dart';
-import 'package:felicette_recipes/app/services/auth_service.dart';
-import 'package:felicette_recipes/app/services/wearos_service.dart';
 import 'package:felicette_recipes/app/utils/utils.dart';
 import 'package:felicette_recipes/authentication/bloc/authentication_bloc.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
+import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
 import 'package:flutter/material.dart' hide DrawerController;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,6 +16,8 @@ class FRDrawer extends StatelessWidget {
   );
 
   List<Widget> _buildGroupListTiles(BuildContext context) {
+    final groupsBloc = context.watch<GroupsBloc>();
+
     /*    final selectedGroup = groupServices.selectedGroup.value;
 
     final actualGroupsTiles = groupServices.availableGroups.map((group) {
@@ -120,7 +119,116 @@ class FRDrawer extends StatelessWidget {
       ...actualGroupsTiles,
     ];
     */
-    return [];
+
+    final s = S.of(context);
+
+    final selectedGroup = groupsBloc.state.selectedGroup;
+
+    final items = <Widget>[
+      ListTile(
+        contentPadding: listTileContentPadding,
+        title: Text(
+          s.your_groups,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        trailing: TextButton(
+          child: Text(s.create_group),
+          onPressed: () async {
+            if (groupsBloc.state.groups.length >= 3) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(s.group_creation_limit_reached),
+                ),
+              );
+              return;
+            }
+
+            /*
+
+            final name = await Get.dialog<String>(
+              ObxValue(
+                (nameState) => SimpleDialog(
+                  title: Text(TranslationKeys.createGroup.tr),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextField(
+                        autofocus: true,
+                        onChanged: (value) => nameState.value = value,
+                        decoration: InputDecoration(
+                          labelText: TranslationKeys.groupName.tr,
+                        ),
+                        onSubmitted: (value) {
+                          Get.back(result: value);
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: Text(TranslationKeys.cancel.tr),
+                            ),
+                          ),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: nameState.value.trim().isEmpty
+                                  ? null
+                                  : () {
+                                      Get.back(
+                                        result: nameState.value.trim(),
+                                      );
+                                    },
+                              child: Text(TranslationKeys.create.tr),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                ''.obs,
+              ),
+            );
+
+            if (name != null && name.trim().isNotEmpty) {
+              final createdGroup = await groupServices.createGroup(
+                name.trim(),
+              );
+              await Future.delayed(const Duration(seconds: 1));
+              Get.toNamed(AppRoutes.groupDetails(createdGroup.id));
+            } */
+          },
+        ),
+      ),
+      ...groupsBloc.state.groups.map((group) {
+        return ListTile(
+          contentPadding: listTileContentPadding,
+          selected: group.id == selectedGroup?.id,
+          leading: Icon(
+            group.id == selectedGroup?.id ? Icons.group : Icons.group_outlined,
+          ),
+          title: Text(group.name),
+          trailing: IconButton(
+            onPressed: () {
+              //              Get.toNamed(AppRoutes.groupDetails(group.id));
+            },
+            icon: const Icon(Icons.edit),
+          ),
+          onTap: () {
+            groupsBloc.add(GroupSelected(group));
+            Navigator.pop(context);
+          },
+        );
+      }),
+    ];
+
+    return items;
   }
 
   Widget _buildLanguageListTile(BuildContext context) {
@@ -159,7 +267,7 @@ class FRDrawer extends StatelessWidget {
     );
     */
 
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 
   @override

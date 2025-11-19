@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
 import 'package:felicette_recipes/app/services/api/api_service.dart';
 import 'package:felicette_recipes/app/services/api/group_api_service.dart';
+import 'package:felicette_recipes/ingredients/models/ingredient.dart';
 
 class IngredientApiService extends ApiService {
   CollectionReference<FRIngredient> collection(String groupId) {

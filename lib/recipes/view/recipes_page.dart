@@ -10,6 +10,14 @@ import 'package:go_router/go_router.dart';
 class RecipesPage extends StatelessWidget {
   const RecipesPage({super.key});
 
+  static NavigationDestination navigationDestination(BuildContext context) {
+    final s = S.of(context);
+    return NavigationDestination(
+      icon: const Icon(Icons.book),
+      label: s.recipe(1).capitalize(),
+    );
+  }
+
   static GoRoute route() {
     return GoRoute(
       path: AppRoutes.recipes,

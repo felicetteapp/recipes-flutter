@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:felicette_recipes/ingredients/models/ingredient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/data/models/ingredient_models.dart';

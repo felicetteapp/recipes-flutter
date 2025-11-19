@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:felicette_recipes/app/common/widgets/ingredient_select/ingredient_select_view.dart';
+import 'package:felicette_recipes/ingredients/models/ingredient.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/common.dart';

@@ -1,3 +1,4 @@
+import 'package:felicette_recipes/ingredients/models/ingredient.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/common/translation_keys.dart';
@@ -118,10 +119,9 @@ class EditListModalController extends GetxController {
 
     final updatedGroup = selectedGroup.copyWith(
       budget: getBudgetValue(),
-      currency:
-          selectedCurrency.isNotEmpty
-              ? selectedCurrency[0]
-              : selectedGroup.currency,
+      currency: selectedCurrency.isNotEmpty
+          ? selectedCurrency[0]
+          : selectedGroup.currency,
       currentRecipes: selectedRecipes.map((r) => r.id).toList(),
       currentIngredients: selectedIngredientsWithQuantities.toList(),
     );

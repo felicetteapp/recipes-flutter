@@ -29,6 +29,10 @@ dependencies:
       url: https://github.com/luis901101/getx_fork.git
       ref: old-4.7.0
   go_router: ^17.0.0
+  group_repository:
+    path: packages/group_repository
+  ingredient_repository:
+    path: packages/ingredient_repository
   intl: ^0.20.2
   package_info_plus: ^9.0.0
   secure_storage:

@@ -2,22 +2,24 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:felicette_recipes/app/bloc/app_bloc.dart';
+import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
 import 'package:felicette_recipes/app/common/widgets/drawer/drawer.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/authentication/authentication.dart';
 import 'package:felicette_recipes/create_account/create_account.dart';
-import 'package:felicette_recipes/extensions/extensions.dart';
-import 'package:felicette_recipes/generated/l10n.dart';
+import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
+import 'package:felicette_recipes/ingredients/ingredients.dart';
 import 'package:felicette_recipes/list/list.dart';
 import 'package:felicette_recipes/login/login.dart';
 import 'package:felicette_recipes/password_recovery/password_recovery.dart';
-import 'package:felicette_recipes/recipes/bloc/recipes_bloc.dart';
 import 'package:felicette_recipes/recipes/recipes.dart';
 import 'package:felicette_recipes/splash/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:group_repository/group_repository.dart';
+import 'package:ingredient_repository/ingredient_repository.dart';
+import 'package:user_repository/user_repository.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   GoRouterRefreshStream(Stream<dynamic> stream) {
@@ -59,7 +61,21 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       StatefulShellRoute.indexedStack(
         builder: (context, state, navShell) {
           return MultiBlocProvider(
-            providers: [BlocProvider(create: (context) => RecipesBloc())],
+            providers: [
+              BlocProvider(create: (context) => RecipesBloc()),
+              BlocProvider(
+                create: (context) => IngredientsBloc(
+                  ingredientRepository: context.read<IngredientRepository>(),
+                ),
+              ),
+              BlocProvider(create: (context) => ListBloc()),
+              BlocProvider(
+                create: (context) => GroupsBloc(
+                  groupRepository: context.read<GroupRepository>(),
+                  userRepository: context.read<UserRepository>(),
+                )..add(GroupsSubscriptionRequested()),
+              ),
+            ],
             child: _MainShellContent(navShell: navShell),
           );
         },
@@ -76,45 +92,7 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
           ),
           StatefulShellBranch(
             routes: [
-              GoRoute(
-                path: AppRoutes.ingredients,
-                builder: (context, state) => Scaffold(
-                  body: Column(
-                    mainAxisAlignment: .center,
-                    children: [
-                      const Text('Home'),
-                      FilledButton(
-                        onPressed: () {
-                          context.read<AuthenticationBloc>().add(
-                            AuthenticationLogoutPressed(),
-                          );
-                        },
-                        child: Text(S.of(context).logout),
-                      ),
-                      FilledButton(
-                        onPressed: () {
-                          context.read<AppBloc>().add(
-                            const AppToggleDarkMode(),
-                          );
-                        },
-                        child: const Text('toggle dark mode'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          context.go(AppRoutes.list);
-                        },
-                        child: const Text('Go to List'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          context.go(AppRoutes.recipes);
-                        },
-                        child: const Text('Go to Recipes'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              IngredientsPage.route(),
             ],
           ),
         ],
@@ -190,39 +168,70 @@ class _MainShellContent extends StatelessWidget {
   const _MainShellContent({required this.navShell, super.key});
   final StatefulNavigationShell navShell;
 
+  Widget? _floatingActionButton(BuildContext context) {
+    if (navShell.currentIndex == 0) {
+      return RecipesPage.floatingActionButton(context);
+    }
+    return null;
+  }
+
+  FRAppbar _appBar(BuildContext context) {
+    if (navShell.currentIndex == 0) {
+      return RecipesPage.appbar(context);
+    } else if (navShell.currentIndex == 1) {
+      return ListPage.appbar(context);
+    } else {
+      return IngredientsPage.appbar(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final s = S.of(context);
-    return Scaffold(
-      body: navShell,
-      drawer: const FRDrawer(),
-      floatingActionButton: navShell.currentIndex == 0
-          ? RecipesPage.floatingActionButton(context)
-          : navShell.currentIndex == 1
-          ? null
-          : null,
-      appBar: navShell.currentIndex == 0
-          ? RecipesPage.appbar(context)
-          : navShell.currentIndex == 1
-          ? ListPage.appbar(context)
-          : ListPage.appbar(context),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navShell.currentIndex,
-        onDestinationSelected: navShell.goBranch,
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.book),
-            label: s.recipe(0).capitalize(),
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.list),
-            label: s.list(1).capitalize(),
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.kitchen),
-            label: s.ingredient(0).capitalize(),
-          ),
-        ],
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthenticationBloc, AuthenticationState>(
+          listener: (context, state) {
+            log(
+              'AuthenticationBloc state changed: $state',
+              name: 'AppRouter',
+            );
+            if (state.status == AuthenticationStatus.authenticated) {
+              log(
+                'User authenticated: ${state.user} - Groups subscription requested',
+                name: 'AppRouter',
+              );
+              context.read<GroupsBloc>().add(GroupsSubscriptionRequested());
+            }
+          },
+        ),
+        BlocListener<GroupsBloc, GroupsState>(
+          listener: (context, state) {
+            log(
+              'GroupsBloc state changed: $state',
+              name: 'AppRouter',
+            );
+
+            final selectedGroup = state.selectedGroup;
+            context.read<IngredientsBloc>().add(
+              IngredientSelectedGroupChanged(selectedGroup),
+            );
+          },
+        ),
+      ],
+      child: Scaffold(
+        body: navShell,
+        drawer: const FRDrawer(),
+        floatingActionButton: _floatingActionButton(context),
+        appBar: _appBar(context),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: navShell.currentIndex,
+          onDestinationSelected: navShell.goBranch,
+          destinations: [
+            RecipesPage.navigationDestination(context),
+            ListPage.navigationDestination(context),
+            IngredientsPage.navigationDestination(context),
+          ],
+        ),
       ),
     );
   }

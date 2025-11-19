@@ -3,6 +3,8 @@ import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
 import 'package:felicette_recipes/app/modules/home/widgets/list/list_controller.dart';
 import 'package:felicette_recipes/app/services/groups_service.dart';
 import 'package:felicette_recipes/app/services/ingredients_service.dart';
+import 'package:felicette_recipes/ingredients/models/ingredient.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
@@ -35,7 +37,7 @@ class WearOSService extends GetxService {
             name: 'WearOSService',
           );
 
-          final GroupsService groupsService = Get.find<GroupsService>();
+          final groupsService = Get.find<GroupsService>();
           await groupsService.checkIngredient(
             ingredientId: ingredientId,
             isChecked: isChecked,
@@ -51,27 +53,29 @@ class WearOSService extends GetxService {
             'Received request for current ingredients from watch',
             name: 'WearOSService',
           );
-          return getCurrentIngredients().map((ing) => ing.toMap()).toList();
+          return getCurrentIngredients(
+            null,
+          ).map((ing) => ing.toMap()).toList();
       }
     });
   }
 
-  List<FRWearIngredient> getCurrentIngredients() {
-    final IngredientsService ingredientsService =
-        Get.find<IngredientsService>();
+  List<FRWearIngredient> getCurrentIngredients(BuildContext? context) {
+    final ingredientsService = Get.find<IngredientsService>();
 
-    final List<ListIngredientItem> currentIngredientsItems = ingredientsService
-        .getListIngredientsItems(showCheckedFirst: false);
+    final currentIngredientsItems = ingredientsService.getListIngredientsItems(
+      showCheckedFirst: false,
+    );
 
-    final List<FRWearIngredient> wearIngredients = currentIngredientsItems
-        .map((ing) => FRWearIngredient.fromListIngredientItem(ing))
+    final wearIngredients = currentIngredientsItems
+        .map((ing) => FRWearIngredient.fromListIngredientItem(ing, context!))
         .toList();
 
     return wearIngredients;
   }
 
   Future<void> sendCurrentIngredients() async {
-    final List<FRWearIngredient> wearIngredients = getCurrentIngredients();
+    final wearIngredients = getCurrentIngredients(null);
 
     try {
       if (hasConnectedWatch.value == false) {
@@ -108,7 +112,7 @@ class WearOSService extends GetxService {
   /// Check if any WearOS devices are connected.
   Future<void> checkConnectedWatch() async {
     try {
-      final bool? connected = await _channel.invokeMethod<bool>(
+      final connected = await _channel.invokeMethod<bool>(
         'hasConnectedWatch',
       );
       hasConnectedWatch.value = connected ?? false;

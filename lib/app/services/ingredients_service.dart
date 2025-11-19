@@ -4,9 +4,9 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:felicette_recipes/app/modules/home/widgets/list/list_controller.dart';
 import 'package:felicette_recipes/app/services/recipes_service.dart';
+import 'package:felicette_recipes/ingredients/models/ingredient.dart';
 import 'package:get/get.dart';
 import 'package:felicette_recipes/app/data/models/group_models.dart';
-import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
 import 'package:felicette_recipes/app/services/api/ingredient_api_service.dart';
 import 'package:felicette_recipes/app/services/auth_service.dart';
 import 'package:felicette_recipes/app/services/groups_service.dart';
@@ -167,10 +167,9 @@ class IngredientsService extends GetxService {
       if (group.currentIngredients.any(
         (ingMap) => ingMap.ingredientId == ingredientId,
       )) {
-        quantity =
-            group.currentIngredients
-                .firstWhere((ingMap) => ingMap.ingredientId == ingredientId)
-                .quantity;
+        quantity = group.currentIngredients
+            .firstWhere((ingMap) => ingMap.ingredientId == ingredientId)
+            .quantity;
       }
 
       list.add(
