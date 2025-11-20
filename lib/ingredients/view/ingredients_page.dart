@@ -58,48 +58,48 @@ class _IngredientsPageContent extends StatelessWidget {
 
     final itemCount = ingredients.length + 2;
 
-    if (ingredients.isEmpty) {
-      return const _ListEmptyState();
-    }
-
     return Scaffold(
-      body: ListView.builder(
-        padding: const .only(bottom: 100),
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return ListTile(
-              title: Text(
-                s.actual_ingredients,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              leading: const Icon(Icons.kitchen_outlined),
-              subtitle: Text(s.actual_ingredients_subtitle),
-            );
-          }
+      body: ingredients.isEmpty
+          ? const _ListEmptyState()
+          : ListView.builder(
+              padding: const .only(bottom: 100),
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return ListTile(
+                    title: Text(
+                      s.actual_ingredients,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    leading: const Icon(Icons.kitchen_outlined),
+                    subtitle: Text(s.actual_ingredients_subtitle),
+                  );
+                }
 
-          if (index == actualIngredients.length + 1) {
-            return ListTile(
-              title: Text(
-                s.non_actual_ingredients,
+                if (index == actualIngredients.length + 1) {
+                  return ListTile(
+                    title: Text(
+                      s.non_actual_ingredients,
 
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              leading: const Icon(Icons.shopping_cart_outlined),
-              subtitle: Text(s.non_actual_ingredients_subtitle),
-            );
-          }
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    leading: const Icon(Icons.shopping_cart_outlined),
+                    subtitle: Text(s.non_actual_ingredients_subtitle),
+                  );
+                }
 
-          if (index <= actualIngredients.length) {
-            final ingredient = actualIngredients[index - 1];
-            return _ListItem(ingredient: ingredient);
-          } else {
-            final ingredient =
-                nonActualIngredients[index - actualIngredients.length - 2];
-            return _ListItem(ingredient: ingredient);
-          }
-        },
-        itemCount: itemCount,
-      ),
+                if (index <= actualIngredients.length) {
+                  final ingredient = actualIngredients[index - 1];
+                  return _ListItem(ingredient: ingredient);
+                } else {
+                  final ingredient =
+                      nonActualIngredients[index -
+                          actualIngredients.length -
+                          2];
+                  return _ListItem(ingredient: ingredient);
+                }
+              },
+              itemCount: itemCount,
+            ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           // Action to add a new ingredient

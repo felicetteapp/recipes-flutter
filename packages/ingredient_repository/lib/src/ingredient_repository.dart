@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ingredient_repository/ingredient_repository.dart';
 
@@ -29,5 +31,19 @@ class IngredientRepository {
   Future<void> deleteIngredient(String groupId, FRIngredient ingredient) async {
     final docRef = collection(groupId).doc(ingredient.id);
     await docRef.delete();
+  }
+
+  Future<void> createIngredient(String groupId, FRIngredient ingredient) async {
+    log(
+      'Creating new ingredient: $ingredient, groupId: $groupId',
+      name: 'IngredientRepository.createIngredient',
+    );
+    final docRef = collection(groupId).doc();
+    final newIngredient = ingredient.copyWith(id: docRef.id);
+    log(
+      'Creating new ingredient: $newIngredient',
+      name: 'IngredientRepository.createIngredient',
+    );
+    await docRef.set(newIngredient);
   }
 }
