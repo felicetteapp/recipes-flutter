@@ -52,7 +52,7 @@ class ListPageContent extends StatelessWidget {
     final currentSelectedGroup = groupsBloc.state.selectedGroup;
 
     final currentIngredients =
-        ingredientsBloc.state.selectedGroupCurrentListIngredient;
+        ingredientsBloc.state.selectedGroupCurrentListIngredients;
     final actualItemsCount = currentIngredients.length;
 
     final listItemsCount = actualItemsCount + 2;

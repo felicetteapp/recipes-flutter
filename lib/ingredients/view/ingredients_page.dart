@@ -62,7 +62,7 @@ class _IngredientsPageContent extends StatelessWidget {
       body: ingredients.isEmpty
           ? const _ListEmptyState()
           : ListView.builder(
-              padding: const .only(bottom: 100),
+              padding: const .only(bottom: 92),
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return ListTile(

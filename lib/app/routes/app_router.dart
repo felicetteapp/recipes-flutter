@@ -199,6 +199,9 @@ class _MainShellContent extends StatelessWidget {
             context.read<IngredientsBloc>().add(
               IngredientSelectedGroupChanged(selectedGroup),
             );
+            context.read<RecipesBloc>().add(
+              RecipesSelectedGroupChanged(selectedGroup),
+            );
           },
         ),
       ],

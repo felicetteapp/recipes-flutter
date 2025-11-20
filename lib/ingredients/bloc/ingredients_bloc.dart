@@ -23,7 +23,7 @@ class IngredientsBloc extends Bloc<IngredientsEvent, IngredientsState> {
     emit(
       state.copyWith(
         selectedGroupId: event.group?.id,
-        selectedGroupCurrentListIngredient:
+        selectedGroupCurrentListIngredients:
             event.group?.currentIngredients ?? [],
       ),
     );

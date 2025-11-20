@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_repository/group_repository.dart';
 import 'package:ingredient_repository/ingredient_repository.dart';
+import 'package:recipe_repository/recipe_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
 Future<void> main() async {
@@ -111,6 +112,7 @@ class FRApp extends StatelessWidget {
             RepositoryProvider.value(value: _userRepository),
             RepositoryProvider(create: (context) => IngredientRepository()),
             RepositoryProvider(create: (context) => GroupRepository()),
+            RepositoryProvider(create: (context) => RecipeRepository()),
           ],
           child: _getMultiProvider(
             _appBloc,
@@ -139,7 +141,11 @@ Widget _getMultiProvider(
       )..add(AuthenticationSubscriptionRequested()),
     ),
     BlocProvider.value(value: appBloc),
-    BlocProvider(create: (context) => RecipesBloc()),
+    BlocProvider(
+      create: (context) => RecipesBloc(
+        recipeRepository: context.read<RecipeRepository>(),
+      ),
+    ),
     BlocProvider(
       create: (context) => IngredientsBloc(
         ingredientRepository: context.read<IngredientRepository>(),

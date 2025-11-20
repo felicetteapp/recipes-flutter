@@ -1,18 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class BasicIngredientQuantity {
-  BasicIngredientQuantity({required this.ingredientId, required this.quantity});
-  String ingredientId;
-  String quantity;
-
-  BasicIngredientQuantity copyWith({String? ingredientId, String? quantity}) {
-    return BasicIngredientQuantity(
-      ingredientId: ingredientId ?? this.ingredientId,
-      quantity: quantity ?? this.quantity,
-    );
-  }
-}
-
 class FRIngredient {
   FRIngredient({
     required this.id,

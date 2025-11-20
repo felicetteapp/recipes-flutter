@@ -6,29 +6,29 @@ class IngredientsState extends Equatable {
     this.isLoading = false,
     this.errorMessage,
     this.selectedGroupId,
-    this.selectedGroupCurrentListIngredient = const [],
+    this.selectedGroupCurrentListIngredients = const [],
   });
   final List<FRIngredient> ingredients;
   final bool isLoading;
   final String? errorMessage;
   final String? selectedGroupId;
-  final List<FRCurrentIngredients> selectedGroupCurrentListIngredient;
+  final List<FRCurrentIngredients> selectedGroupCurrentListIngredients;
 
   IngredientsState copyWith({
     List<FRIngredient>? ingredients,
     bool? isLoading,
     String? errorMessage,
     String? selectedGroupId,
-    List<FRCurrentIngredients>? selectedGroupCurrentListIngredient,
+    List<FRCurrentIngredients>? selectedGroupCurrentListIngredients,
   }) {
     return IngredientsState(
       ingredients: ingredients ?? this.ingredients,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
       selectedGroupId: selectedGroupId ?? this.selectedGroupId,
-      selectedGroupCurrentListIngredient:
-          selectedGroupCurrentListIngredient ??
-          this.selectedGroupCurrentListIngredient,
+      selectedGroupCurrentListIngredients:
+          selectedGroupCurrentListIngredients ??
+          this.selectedGroupCurrentListIngredients,
     );
   }
 

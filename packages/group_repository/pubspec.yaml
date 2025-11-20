@@ -10,3 +10,5 @@ dependencies:
   equatable: ^2.0.7
   ingredient_repository:
     path: ../ingredient_repository
+  recipe_repository:
+    path: ../recipe_repository

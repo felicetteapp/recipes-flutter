@@ -35,6 +35,8 @@ dependencies:
     path: packages/ingredient_repository
   intl: ^0.20.2
   package_info_plus: ^9.0.0
+  recipe_repository:
+    path: packages/recipe_repository
   secure_storage:
     path: packages/secure_storage
   user_repository:

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ingredient_repository/ingredient_repository.dart';
+import 'package:recipe_repository/recipe_repository.dart';
 
 class FRGroupFilter {
   FRGroupFilter({this.showCheckedsFirst = false, this.showBudget = false});
