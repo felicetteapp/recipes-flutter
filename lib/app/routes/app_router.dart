@@ -14,6 +14,7 @@ import 'package:felicette_recipes/ingredients/new/new.dart';
 import 'package:felicette_recipes/list/list.dart';
 import 'package:felicette_recipes/login/login.dart';
 import 'package:felicette_recipes/password_recovery/password_recovery.dart';
+import 'package:felicette_recipes/recipes/new/new.dart';
 import 'package:felicette_recipes/recipes/recipes.dart';
 import 'package:felicette_recipes/splash/splash.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +82,7 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       ),
       NewIngredientPage.route(),
       EditIngredientPage.route(),
+      NewRecipePage.route(),
     ],
     refreshListenable: GoRouterRefreshStream(authenticationBloc.stream),
     redirect: (context, state) {
@@ -152,13 +154,6 @@ class _MainShellContent extends StatelessWidget {
   const _MainShellContent({required this.navShell, super.key});
   final StatefulNavigationShell navShell;
 
-  Widget? _floatingActionButton(BuildContext context) {
-    if (navShell.currentIndex == 0) {
-      return RecipesPage.floatingActionButton(context);
-    }
-    return null;
-  }
-
   FRAppbar _appBar(BuildContext context) {
     if (navShell.currentIndex == 0) {
       return RecipesPage.appbar(context);
@@ -208,7 +203,6 @@ class _MainShellContent extends StatelessWidget {
       child: Scaffold(
         body: navShell,
         drawer: const FRDrawer(),
-        floatingActionButton: _floatingActionButton(context),
         appBar: _appBar(context),
         bottomNavigationBar: NavigationBar(
           selectedIndex: navShell.currentIndex,

@@ -101,6 +101,7 @@ class _IngredientsPageContent extends StatelessWidget {
               itemCount: itemCount,
             ),
       floatingActionButton: FloatingActionButton.extended(
+        key: const Key('ingredientsPage_floatingActionButton_addIngredient'),
         onPressed: () {
           // Action to add a new ingredient
           context.push(AppRoutes.newIngredient);

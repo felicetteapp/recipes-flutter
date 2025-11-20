@@ -27,33 +27,6 @@ class RecipesPage extends StatelessWidget {
     );
   }
 
-  static Widget floatingActionButton(BuildContext context) {
-    final s = S.of(context);
-    final theme = Theme.of(context);
-    final recipesBloc = context.watch<RecipesBloc>();
-
-    if (recipesBloc.state.isSelecting) {
-      return FloatingActionButton.large(
-        key: const Key('recipes_page_fab_bulk_actions'),
-        backgroundColor: theme.colorScheme.secondary,
-        foregroundColor: theme.colorScheme.onSecondary,
-        child: const Icon(Icons.save),
-        onPressed: () {
-          // TODO: Implement bulk actions
-        },
-      );
-    }
-
-    return FloatingActionButton.extended(
-      key: const Key('recipes_page_fab_bulk_actions'),
-      onPressed: () {
-        // TODO: Implement add recipe
-      },
-      icon: const Icon(Icons.add),
-      label: Text(s.add_recipe),
-    );
-  }
-
   static FRAppbar appbar(BuildContext context) {
     final s = S.of(context);
     final recipesBloc = context.watch<RecipesBloc>();
@@ -95,6 +68,40 @@ class RecipesPage extends StatelessWidget {
   }
 }
 
+class _FloatingActionButton extends StatelessWidget {
+  const _FloatingActionButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final s = S.of(context);
+    final theme = Theme.of(context);
+    final recipesBloc = context.watch<RecipesBloc>();
+
+    if (recipesBloc.state.isSelecting) {
+      return FloatingActionButton.large(
+        key: const Key('recipesPage_floatingActionButton_bulkActions'),
+        heroTag: 'recipesPage_fab_bulkActions',
+        backgroundColor: theme.colorScheme.secondary,
+        foregroundColor: theme.colorScheme.onSecondary,
+        child: const Icon(Icons.save),
+        onPressed: () {
+          // TODO: Implement bulk actions
+        },
+      );
+    }
+
+    return FloatingActionButton.extended(
+      key: const Key('recipesPage_floatingActionButton_addRecipe'),
+      heroTag: 'recipesPage_fab_addRecipe',
+      onPressed: () {
+        context.push(AppRoutes.newRecipe);
+      },
+      icon: const Icon(Icons.add),
+      label: Text(s.add_recipe),
+    );
+  }
+}
+
 class _RecipesPageContent extends StatelessWidget {
   const _RecipesPageContent();
 
@@ -102,6 +109,7 @@ class _RecipesPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final recipesBloc = context.watch<RecipesBloc>();
     return Scaffold(
+      floatingActionButton: const _FloatingActionButton(),
       body: ListView.builder(
         padding: const .only(bottom: 92),
         itemBuilder: (context, index) {

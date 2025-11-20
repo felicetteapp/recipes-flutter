@@ -22,13 +22,10 @@ class RecipesBloc extends Bloc<RecipesEvent, RecipesState> {
     RecipesSelectionToggled event,
     Emitter<RecipesState> emit,
   ) {
-    final newIsSelecting = !state.isSelecting;
     emit(
       state.copyWith(
-        isSelecting: newIsSelecting,
-        selectedRecipeIds: newIsSelecting
-            ? state.selectedRecipeIds
-            : state.selectedGroupCurrentListRecipeIds,
+        isSelecting: !state.isSelecting,
+        selectedRecipeIds: state.selectedGroupCurrentListRecipeIds,
       ),
     );
   }
