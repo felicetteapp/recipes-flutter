@@ -106,7 +106,7 @@ class _NewIngredientPageContent extends StatelessWidget {
             mainAxisAlignment: .spaceBetween,
             spacing: 8,
             children: [
-              Flexible(
+              Expanded(
                 child: TextButton.icon(
                   onPressed: () {
                     GoRouter.of(context).pop();
@@ -119,8 +119,8 @@ class _NewIngredientPageContent extends StatelessWidget {
                   ),
                 ),
               ),
-              const Flexible(
-                child: _SaveButton(),
+              const Expanded(
+                child: _CreateButton(),
               ),
             ],
           ),
@@ -130,8 +130,8 @@ class _NewIngredientPageContent extends StatelessWidget {
   }
 }
 
-class _SaveButton extends StatelessWidget {
-  const _SaveButton();
+class _CreateButton extends StatelessWidget {
+  const _CreateButton();
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
@@ -159,9 +159,9 @@ class _SaveButton extends StatelessWidget {
                 strokeWidth: 2,
               ),
             )
-          : const Icon(Icons.save),
+          : const Icon(Icons.add),
       label: Text(
-        s.save,
+        s.create,
         maxLines: 1,
         overflow: .ellipsis,
       ),
