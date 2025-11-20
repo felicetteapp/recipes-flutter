@@ -7,6 +7,10 @@ import 'package:felicette_recipes/app/common/environment.dart';
 import 'package:felicette_recipes/app/view/app_view.dart';
 import 'package:felicette_recipes/authentication/bloc/authentication_bloc.dart';
 import 'package:felicette_recipes/firebase_options.dart';
+import 'package:felicette_recipes/groups/groups.dart';
+import 'package:felicette_recipes/ingredients/ingredients.dart';
+import 'package:felicette_recipes/list/list.dart';
+import 'package:felicette_recipes/recipes/recipes.dart';
 import 'package:felicette_recipes/theme.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -135,6 +139,19 @@ Widget _getMultiProvider(
       )..add(AuthenticationSubscriptionRequested()),
     ),
     BlocProvider.value(value: appBloc),
+    BlocProvider(create: (context) => RecipesBloc()),
+    BlocProvider(
+      create: (context) => IngredientsBloc(
+        ingredientRepository: context.read<IngredientRepository>(),
+      ),
+    ),
+    BlocProvider(create: (context) => ListBloc()),
+    BlocProvider(
+      create: (context) => GroupsBloc(
+        groupRepository: context.read<GroupRepository>(),
+        userRepository: context.read<UserRepository>(),
+      )..add(GroupsSubscriptionRequested()),
+    ),
   ],
   child: AppView(
     initialThemeIsDark: initialThemeIsDark,

@@ -103,6 +103,7 @@ class _IngredientsPageContent extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           // Action to add a new ingredient
+          context.push(AppRoutes.newIngredient);
         },
         tooltip: s.add_ingredient,
         icon: const Icon(Icons.add),
@@ -137,6 +138,10 @@ class _ListItem extends StatelessWidget {
       ),
       trailing: IconButton(
         onPressed: () {
+          context.push(
+            AppRoutes.toEditIngredient(_ingredient.id),
+          );
+
           /*          Get.dialog(
             EditIngredientModal(
               groupId: groupsService.selectedGroup.value!.id,

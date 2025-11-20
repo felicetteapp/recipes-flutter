@@ -20,4 +20,14 @@ class IngredientRepository {
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
+
+  Future<void> updateIngredient(String groupId, FRIngredient ingredient) async {
+    final docRef = collection(groupId).doc(ingredient.id);
+    await docRef.set(ingredient);
+  }
+
+  Future<void> deleteIngredient(String groupId, FRIngredient ingredient) async {
+    final docRef = collection(groupId).doc(ingredient.id);
+    await docRef.delete();
+  }
 }

@@ -8,6 +8,7 @@ import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/authentication/authentication.dart';
 import 'package:felicette_recipes/create_account/create_account.dart';
 import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
+import 'package:felicette_recipes/ingredients/edit/edit.dart';
 import 'package:felicette_recipes/ingredients/ingredients.dart';
 import 'package:felicette_recipes/list/list.dart';
 import 'package:felicette_recipes/login/login.dart';
@@ -17,9 +18,6 @@ import 'package:felicette_recipes/splash/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:group_repository/group_repository.dart';
-import 'package:ingredient_repository/ingredient_repository.dart';
-import 'package:user_repository/user_repository.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   GoRouterRefreshStream(Stream<dynamic> stream) {
@@ -60,24 +58,7 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       CreateAccountPage.route(),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navShell) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (context) => RecipesBloc()),
-              BlocProvider(
-                create: (context) => IngredientsBloc(
-                  ingredientRepository: context.read<IngredientRepository>(),
-                ),
-              ),
-              BlocProvider(create: (context) => ListBloc()),
-              BlocProvider(
-                create: (context) => GroupsBloc(
-                  groupRepository: context.read<GroupRepository>(),
-                  userRepository: context.read<UserRepository>(),
-                )..add(GroupsSubscriptionRequested()),
-              ),
-            ],
-            child: _MainShellContent(navShell: navShell),
-          );
+          return _MainShellContent(navShell: navShell);
         },
         branches: [
           StatefulShellBranch(
@@ -97,6 +78,8 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
           ),
         ],
       ),
+      NewIngredientPage.route(),
+      EditIngredientPage.route(),
     ],
     refreshListenable: GoRouterRefreshStream(authenticationBloc.stream),
     redirect: (context, state) {

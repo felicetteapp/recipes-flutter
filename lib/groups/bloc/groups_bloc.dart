@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:group_repository/group_repository.dart';
 import 'package:user_repository/user_repository.dart';
 

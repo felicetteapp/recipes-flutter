@@ -26,9 +26,17 @@ class GroupsState extends Equatable {
     if (groups.isEmpty) {
       return null;
     }
-    return groups.firstWhereOrNull(
-      (group) => group.id == _selectedGroupId,
-    );
+    try {
+      return groups.firstWhere(
+        (group) => group.id == _selectedGroupId,
+      );
+    } catch (_) {
+      log(
+        'No group found with ID: $_selectedGroupId',
+        name: 'GroupsState',
+      );
+      return null;
+    }
   }
 
   final String? _selectedGroupId;
