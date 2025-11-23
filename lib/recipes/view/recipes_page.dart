@@ -157,14 +157,19 @@ class _ListItem extends StatelessWidget {
         left: selectionModeIsEnabled ? 4 : 20,
         right: selectionModeIsEnabled ? 24 : 4,
       ),
+      isThreeLine: true,
       leading: selectionModeIsEnabled
-          ? Checkbox(
-              materialTapTargetSize: .shrinkWrap,
-              value: isSelected,
-              onChanged: (checked) {
-                recipesBloc.add(RecipesToggleRecipeSelection(id));
-              },
-              activeColor: colorScheme.secondary,
+          ? Padding(
+              padding: const .only(left: 8),
+              child: Checkbox(
+                visualDensity: VisualDensity.compact,
+                materialTapTargetSize: .shrinkWrap,
+                value: isSelected,
+                onChanged: (checked) {
+                  recipesBloc.add(RecipesToggleRecipeSelection(id));
+                },
+                activeColor: colorScheme.secondary,
+              ),
             )
           : null,
       trailing: !selectionModeIsEnabled

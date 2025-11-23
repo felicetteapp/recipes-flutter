@@ -33,7 +33,10 @@ class IngredientRepository {
     await docRef.delete();
   }
 
-  Future<void> createIngredient(String groupId, FRIngredient ingredient) async {
+  Future<FRIngredient> createIngredient(
+    String groupId,
+    FRIngredient ingredient,
+  ) async {
     log(
       'Creating new ingredient: $ingredient, groupId: $groupId',
       name: 'IngredientRepository.createIngredient',
@@ -45,5 +48,6 @@ class IngredientRepository {
       name: 'IngredientRepository.createIngredient',
     );
     await docRef.set(newIngredient);
+    return newIngredient;
   }
 }

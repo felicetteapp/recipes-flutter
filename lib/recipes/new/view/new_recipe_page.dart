@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/view/view.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/ingredients/ingredients.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ingredient_repository/ingredient_repository.dart';
 import 'package:recipe_repository/recipe_repository.dart';
 
 class NewRecipePage extends StatelessWidget {
@@ -88,42 +90,32 @@ class _NewRecipePageContent extends StatelessWidget {
         body: const SingleChildScrollView(
           padding: .symmetric(vertical: 16),
           child: Column(
-            spacing: 8,
+            spacing: 16,
             children: [
               _NameInput(),
               _IngredientsQuantityInput(),
             ],
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const .only(
-            bottom: 8,
-            left: 16,
-            right: 16,
-            top: 8,
-          ),
-          child: Row(
-            mainAxisAlignment: .spaceBetween,
-            spacing: 8,
-            children: [
-              Expanded(
-                child: TextButton.icon(
-                  onPressed: () {
-                    GoRouter.of(context).pop();
-                  },
-                  icon: const Icon(Icons.chevron_left),
-                  label: Text(
-                    s.cancel,
-                    maxLines: 1,
-                    overflow: .ellipsis,
-                  ),
+        bottomNavigationBar: CrudBottomNavigation(
+          actions: [
+            Expanded(
+              child: TextButton.icon(
+                onPressed: () {
+                  GoRouter.of(context).pop();
+                },
+                icon: const Icon(Icons.chevron_left),
+                label: Text(
+                  s.cancel,
+                  maxLines: 1,
+                  overflow: .ellipsis,
                 ),
               ),
-              const Expanded(
-                child: _CreateButton(),
-              ),
-            ],
-          ),
+            ),
+            const Expanded(
+              child: _CreateButton(),
+            ),
+          ],
         ),
       ),
     );
@@ -137,6 +129,7 @@ class _IngredientsQuantityInput extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = S.of(context);
     final newCubit = context.watch<NewRecipeCubit>();
+    final ingredientRepository = context.read<IngredientRepository>();
 
     return Padding(
       padding: const .symmetric(horizontal: 16),
@@ -144,8 +137,15 @@ class _IngredientsQuantityInput extends StatelessWidget {
         key: const Key('newRecipePage_ingredientsQuantityInput'),
         generateEmpty: () => FRRecipeIngredient(
           ingredientId: '',
-          quantity: 'lorem ipsum dolor sit amet',
+          quantity: '',
         ),
+        createIngredient: ({required String name}) async {
+          final newIngredient = await ingredientRepository.createIngredient(
+            newCubit.state.groupId,
+            FRIngredient(id: '', name: name),
+          );
+          return newIngredient;
+        },
         onChanged: (newValue) {
           newCubit.recipeIngredientsChanged(newValue.cast());
         },

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/view/view.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/ingredients/edit/bloc/edit_cubit.dart';
@@ -120,38 +121,28 @@ class _EditIngredientPageContent extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const .only(
-            bottom: 8,
-            left: 16,
-            right: 16,
-            top: 8,
-          ),
-          child: Row(
-            mainAxisAlignment: .spaceBetween,
-            spacing: 8,
-            children: [
-              Flexible(
-                child: TextButton.icon(
-                  onPressed: () {
-                    GoRouter.of(context).pop();
-                  },
-                  icon: const Icon(Icons.chevron_left),
-                  label: Text(
-                    s.cancel,
-                    maxLines: 1,
-                    overflow: .ellipsis,
-                  ),
+        bottomNavigationBar: CrudBottomNavigation(
+          actions: [
+            Expanded(
+              child: TextButton.icon(
+                onPressed: () {
+                  GoRouter.of(context).pop();
+                },
+                icon: const Icon(Icons.chevron_left),
+                label: Text(
+                  s.cancel,
+                  maxLines: 1,
+                  overflow: .ellipsis,
                 ),
               ),
-              const Flexible(
-                child: _SaveButton(),
-              ),
-              const Flexible(
-                child: _ExcludeButton(),
-              ),
-            ],
-          ),
+            ),
+            const Expanded(
+              child: _SaveButton(),
+            ),
+            const Expanded(
+              child: _ExcludeButton(),
+            ),
+          ],
         ),
       ),
     );

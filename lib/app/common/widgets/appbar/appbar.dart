@@ -32,12 +32,7 @@ class FRAppbar extends StatelessWidget implements PreferredSizeWidget {
     if (leading != null) {
       return leading!;
     } else if (showBackButton) {
-      return IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      );
+      return const BackButton();
     } else {
       return IconButton(
         onPressed: () {

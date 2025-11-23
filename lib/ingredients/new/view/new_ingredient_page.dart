@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/view/widgets/crud_bottom_navigation.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/ingredients/ingredients.dart';
-import 'package:felicette_recipes/ingredients/new/new.dart';
 import 'package:felicette_recipes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -95,35 +95,25 @@ class _NewIngredientPageContent extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const .only(
-            bottom: 8,
-            left: 16,
-            right: 16,
-            top: 8,
-          ),
-          child: Row(
-            mainAxisAlignment: .spaceBetween,
-            spacing: 8,
-            children: [
-              Expanded(
-                child: TextButton.icon(
-                  onPressed: () {
-                    GoRouter.of(context).pop();
-                  },
-                  icon: const Icon(Icons.chevron_left),
-                  label: Text(
-                    s.cancel,
-                    maxLines: 1,
-                    overflow: .ellipsis,
-                  ),
+        bottomNavigationBar: CrudBottomNavigation(
+          actions: [
+            Expanded(
+              child: TextButton.icon(
+                onPressed: () {
+                  GoRouter.of(context).pop();
+                },
+                icon: const Icon(Icons.chevron_left),
+                label: Text(
+                  s.cancel,
+                  maxLines: 1,
+                  overflow: .ellipsis,
                 ),
               ),
-              const Expanded(
-                child: _CreateButton(),
-              ),
-            ],
-          ),
+            ),
+            const Expanded(
+              child: _CreateButton(),
+            ),
+          ],
         ),
       ),
     );

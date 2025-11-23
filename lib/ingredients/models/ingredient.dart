@@ -11,3 +11,16 @@ class IngredientName extends FormzInput<String, IngredientNameValidationError> {
     return value.isNotEmpty ? null : IngredientNameValidationError.empty;
   }
 }
+
+enum IngredientQuantityValidationError { invalid }
+
+class IngredientQuantity
+    extends FormzInput<String, IngredientQuantityValidationError> {
+  const IngredientQuantity.pure() : super.pure('');
+  const IngredientQuantity.dirty([super.value = '']) : super.dirty();
+
+  @override
+  IngredientQuantityValidationError? validator(String value) {
+    return null;
+  }
+}
