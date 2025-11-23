@@ -65,37 +65,57 @@ class _IngredientsPageContent extends StatelessWidget {
               padding: const .only(bottom: 92),
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return ListTile(
-                    title: Text(
-                      s.actual_ingredients,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                  return Padding(
+                    padding: const .symmetric(
+                      vertical: 1,
+                      horizontal: 8,
                     ),
-                    leading: const Icon(Icons.kitchen_outlined),
-                    subtitle: Text(s.actual_ingredients_subtitle),
+                    child: ListTile(
+                      title: Text(
+                        s.actual_ingredients,
+                        style: const TextStyle(fontWeight: .bold),
+                      ),
+                      leading: const Icon(Icons.kitchen_outlined),
+                      subtitle: Text(s.actual_ingredients_subtitle),
+                    ),
                   );
                 }
 
                 if (index == actualIngredients.length + 1) {
-                  return ListTile(
-                    title: Text(
-                      s.non_actual_ingredients,
-
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                  return Padding(
+                    padding: const .symmetric(
+                      vertical: 1,
+                      horizontal: 8,
                     ),
-                    leading: const Icon(Icons.shopping_cart_outlined),
-                    subtitle: Text(s.non_actual_ingredients_subtitle),
+                    child: ListTile(
+                      title: Text(
+                        s.non_actual_ingredients,
+
+                        style: const TextStyle(fontWeight: .bold),
+                      ),
+                      leading: const Icon(Icons.shopping_cart_outlined),
+                      subtitle: Text(s.non_actual_ingredients_subtitle),
+                    ),
                   );
                 }
 
                 if (index <= actualIngredients.length) {
                   final ingredient = actualIngredients[index - 1];
-                  return _ListItem(ingredient: ingredient);
+                  return _ListItem(
+                    ingredient: ingredient,
+                    first: index == 1,
+                    last: index == actualIngredients.length,
+                  );
                 } else {
                   final ingredient =
                       nonActualIngredients[index -
                           actualIngredients.length -
                           2];
-                  return _ListItem(ingredient: ingredient);
+                  return _ListItem(
+                    ingredient: ingredient,
+                    first: index == actualIngredients.length + 2,
+                    last: index == itemCount - 1,
+                  );
                 }
               },
               itemCount: itemCount,
@@ -115,43 +135,52 @@ class _IngredientsPageContent extends StatelessWidget {
 }
 
 class _ListItem extends StatelessWidget {
-  const _ListItem({required FRIngredient ingredient})
-    : _ingredient = ingredient;
+  const _ListItem({
+    required FRIngredient ingredient,
+    this.first = false,
+    this.last = false,
+  }) : _ingredient = ingredient;
 
   final FRIngredient _ingredient;
+  final bool first;
+  final bool last;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    return ListTile(
-      visualDensity: .compact,
-      contentPadding: const .only(left: 4, right: 4),
-      title: Text(_ingredient.name),
-      leading: Padding(
-        padding: const .only(left: 12, right: 6),
-        child: Icon(
-          _ingredient.actualIngredient ? Icons.kitchen : Icons.shopping_cart,
-          color: _ingredient.actualIngredient
-              ? colorScheme.primary
-              : colorScheme.secondary,
+    return Padding(
+      padding: const .symmetric(vertical: 1, horizontal: 8),
+      child: ListTile(
+        visualDensity: .compact,
+        contentPadding: const .only(left: 4, right: 4),
+        shape: RoundedRectangleBorder(
+          borderRadius: .only(
+            topLeft: .circular(first ? 16 : 4),
+            topRight: .circular(first ? 16 : 4),
+            bottomLeft: .circular(last ? 16 : 4),
+            bottomRight: .circular(last ? 16 : 4),
+          ),
         ),
-      ),
-      trailing: IconButton(
-        onPressed: () {
-          context.push(
-            AppRoutes.toEditIngredient(_ingredient.id),
-          );
-
-          /*          Get.dialog(
-            EditIngredientModal(
-              groupId: groupsService.selectedGroup.value!.id,
-              ingredient: ingredient,
-            ),
-            useSafeArea: false,
-          ); */
-        },
-        icon: const Icon(Icons.edit),
+        tileColor: colorScheme.surfaceContainer,
+        title: Text(_ingredient.name),
+        leading: Padding(
+          padding: const .only(left: 12, right: 6),
+          child: Icon(
+            _ingredient.actualIngredient ? Icons.kitchen : Icons.shopping_cart,
+            color: _ingredient.actualIngredient
+                ? colorScheme.primary
+                : colorScheme.secondary,
+          ),
+        ),
+        trailing: IconButton(
+          onPressed: () {
+            context.push(
+              AppRoutes.toEditIngredient(_ingredient.id),
+            );
+          },
+          icon: const Icon(Icons.edit),
+        ),
       ),
     );
   }

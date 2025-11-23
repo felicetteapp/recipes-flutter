@@ -111,10 +111,14 @@ class _RecipesPageContent extends StatelessWidget {
     return Scaffold(
       floatingActionButton: const _FloatingActionButton(),
       body: ListView.builder(
-        padding: const .only(bottom: 92),
+        padding: const .only(bottom: 92, top: 4),
         itemBuilder: (context, index) {
           final recipe = recipesBloc.state.recipes[index];
-          return _ListItem(recipe: recipe);
+          return _ListItem(
+            recipe: recipe,
+            first: index == 0,
+            last: index == recipesBloc.state.recipes.length - 1,
+          );
         },
         itemCount: recipesBloc.state.recipes.length,
       ),
@@ -125,9 +129,13 @@ class _RecipesPageContent extends StatelessWidget {
 class _ListItem extends StatelessWidget {
   const _ListItem({
     required this.recipe,
+    this.first = false,
+    this.last = false,
   });
 
   final FRRecipe recipe;
+  final bool first;
+  final bool last;
 
   String get id => recipe.id;
 
@@ -151,88 +159,100 @@ class _ListItem extends StatelessWidget {
         .where((ing) => recipesIngredientIds.contains(ing.id))
         .toList();
 
-    return ListTile(
-      visualDensity: .compact,
-      contentPadding: .only(
-        left: selectionModeIsEnabled ? 4 : 20,
-        right: selectionModeIsEnabled ? 24 : 4,
-      ),
-      isThreeLine: true,
-      leading: selectionModeIsEnabled
-          ? Padding(
-              padding: const .only(left: 8),
-              child: Checkbox(
-                visualDensity: VisualDensity.compact,
-                materialTapTargetSize: .shrinkWrap,
-                value: isSelected,
-                onChanged: (checked) {
-                  recipesBloc.add(RecipesToggleRecipeSelection(id));
-                },
-                activeColor: colorScheme.secondary,
-              ),
-            )
-          : null,
-      trailing: !selectionModeIsEnabled
-          ? Row(
-              spacing: 4,
-              mainAxisSize: .min,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    // TODO: Implement edit recipe
+    return Padding(
+      padding: const .symmetric(vertical: 1, horizontal: 8),
+      child: ListTile(
+        shape: RoundedRectangleBorder(
+          borderRadius: .only(
+            topLeft: .circular(first ? 16 : 4),
+            topRight: .circular(first ? 16 : 4),
+            bottomLeft: .circular(last ? 16 : 4),
+            bottomRight: .circular(last ? 16 : 4),
+          ),
+        ),
+        tileColor: colorScheme.surfaceContainer,
+        visualDensity: .compact,
+        contentPadding: .only(
+          left: selectionModeIsEnabled ? 4 : 20,
+          right: selectionModeIsEnabled ? 24 : 4,
+        ),
+        isThreeLine: true,
+        leading: selectionModeIsEnabled
+            ? Padding(
+                padding: const .only(left: 8),
+                child: Checkbox(
+                  visualDensity: .compact,
+                  materialTapTargetSize: .shrinkWrap,
+                  value: isSelected,
+                  onChanged: (checked) {
+                    recipesBloc.add(RecipesToggleRecipeSelection(id));
                   },
-                  icon: const Icon(Icons.edit),
+                  activeColor: colorScheme.secondary,
                 ),
-              ],
-            )
-          : null,
-      title: Wrap(
-        spacing: 8,
-        crossAxisAlignment: .center,
-        children: [
-          Text(recipe.name),
-          if (isInList && !selectionModeIsEnabled)
-            Container(
-              decoration: BoxDecoration(
-                color: colorScheme.primaryContainer,
-                borderRadius: .circular(8),
-              ),
-              padding: const .symmetric(horizontal: 6, vertical: 2),
-              child: Row(
-                mainAxisAlignment: .center,
+              )
+            : null,
+        trailing: !selectionModeIsEnabled
+            ? Row(
+                spacing: 4,
                 mainAxisSize: .min,
-                spacing: 2,
                 children: [
-                  Icon(
-                    Icons.list,
-                    size: 14,
-                    color: colorScheme.onPrimaryContainer,
-                  ),
-                  Text(
-                    s.on_list.toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 10,
-                      height: 0.8,
-                      color: colorScheme.onPrimaryContainer,
-                      fontWeight: .bold,
-                    ),
+                  IconButton(
+                    onPressed: () {
+                      // TODO: Implement edit recipe
+                    },
+                    icon: const Icon(Icons.edit),
                   ),
                 ],
+              )
+            : null,
+        title: Wrap(
+          spacing: 8,
+          crossAxisAlignment: .center,
+          children: [
+            Text(recipe.name),
+            if (isInList && !selectionModeIsEnabled)
+              Container(
+                decoration: BoxDecoration(
+                  color: colorScheme.primaryContainer,
+                  borderRadius: .circular(8),
+                ),
+                padding: const .symmetric(horizontal: 6, vertical: 2),
+                child: Row(
+                  mainAxisAlignment: .center,
+                  mainAxisSize: .min,
+                  spacing: 2,
+                  children: [
+                    Icon(
+                      Icons.list,
+                      size: 14,
+                      color: colorScheme.onPrimaryContainer,
+                    ),
+                    Text(
+                      s.on_list.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 10,
+                        height: 0.8,
+                        color: colorScheme.onPrimaryContainer,
+                        fontWeight: .bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-        ],
+          ],
+        ),
+        subtitle: Text(recipesIngredients.map((e) => e.name).join(', ')),
+        onTap: selectionModeIsEnabled
+            ? () {
+                recipesBloc.add(RecipesToggleRecipeSelection(id));
+              }
+            : null,
+        onLongPress: selectionModeIsEnabled
+            ? null
+            : () {
+                recipesBloc.add(const RecipesSelectionToggled());
+              },
       ),
-      subtitle: Text(recipesIngredients.map((e) => e.name).join(', ')),
-      onTap: selectionModeIsEnabled
-          ? () {
-              recipesBloc.add(RecipesToggleRecipeSelection(id));
-            }
-          : null,
-      onLongPress: selectionModeIsEnabled
-          ? null
-          : () {
-              recipesBloc.add(const RecipesSelectionToggled());
-            },
     );
   }
 }
