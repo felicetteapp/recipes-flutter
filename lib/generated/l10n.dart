@@ -485,10 +485,13 @@ class S {
     );
   }
 
-  /// `{count} selected`
+  /// `{count, plural, =0{No items selected} =1{1 item selected} other{{count} items selected}}`
   String items_selected(int count) {
-    return Intl.message(
-      '$count selected',
+    return Intl.plural(
+      count,
+      zero: 'No items selected',
+      one: '1 item selected',
+      other: '$count items selected',
       name: 'items_selected',
       desc: 'Shows the number of items currently selected',
       args: [count],

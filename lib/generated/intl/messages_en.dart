@@ -28,7 +28,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m2(count) =>
       "${Intl.plural(count, one: 'ingredient', other: 'ingredients')}";
 
-  static String m3(count) => "${count} selected";
+  static String m3(count) =>
+      "${Intl.plural(count, zero: 'No items selected', one: '1 item selected', other: '${count} items selected')}";
 
   static String m4(count) =>
       "${Intl.plural(count, one: 'list', other: 'lists')}";

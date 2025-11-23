@@ -197,7 +197,7 @@
     "description": "Label prompting user to select recipes"
   },
   "select_recipes": "Seleccionar recetas",
-  "items_selected": "{count} seleccionado",
+  "items_selected": "{count, plural, =0{Ningún elemento seleccionado} =1{1 elemento seleccionado} other{{count} elementos seleccionados}}",
   "@items_selected": {
     "description": "Shows the number of items currently selected",
     "placeholders": {

@@ -108,14 +108,14 @@ class BudgetDisplay extends StatelessWidget {
                 ),
                 if (showBudget)
                   Flexible(
-                    fit: FlexFit.tight,
+                    fit: .tight,
                     child: Card.filled(
                       margin: .zero,
                       shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(.circular(32 - 8)),
+                        borderRadius: .all(.circular(32 - 8)),
                       ),
                       child: Padding(
-                        padding: const .symmetric(vertical: 4),
+                        padding: const .symmetric(vertical: 4, horizontal: 2),
                         child: RichText(
                           textAlign: .center,
                           text: TextSpan(
