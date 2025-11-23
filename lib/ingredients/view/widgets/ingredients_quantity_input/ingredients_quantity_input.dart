@@ -132,8 +132,8 @@ class _ItemWidgetContent<T extends BasicIngredientQuantity>
         ),
         Expanded(
           child: IngredientSelect(
-            placeholder: s.ingredient(0),
-            label: s.ingredient(1),
+            placeholder: s.ingredient(0).capitalize(),
+            label: s.ingredient(1).capitalize(),
             key: ValueKey('ingredient_select_${item.hashCode}'),
             allowCreation: true,
             createIngredient: inputCubit.createIngredient,

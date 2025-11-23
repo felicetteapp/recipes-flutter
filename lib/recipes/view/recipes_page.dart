@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
@@ -32,6 +34,10 @@ class RecipesPage extends StatelessWidget {
     final recipesBloc = context.watch<RecipesBloc>();
 
     final isSelecting = recipesBloc.state.isSelecting;
+    log(
+      'isSelecting: $isSelecting, selectedcount: ${recipesBloc.state.selectedRecipeIds.length}',
+      name: 'RecipesPage.appbar',
+    );
 
     return FRAppbar(
       selectingMode: isSelecting,
@@ -46,7 +52,7 @@ class RecipesPage extends StatelessWidget {
       title: isSelecting
           ? Text(
               s.items_selected(
-                recipesBloc.state.selectedGroupCurrentListRecipeIds.length,
+                recipesBloc.state.selectedRecipeIds.length,
               ),
             )
           : Text(s.recipe(1).capitalize()),
