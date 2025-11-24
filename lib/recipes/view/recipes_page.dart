@@ -145,19 +145,46 @@ class _ListItem extends StatelessWidget {
 
   String get id => recipe.id;
 
-  RoundedRectangleBorder get shape => RoundedRectangleBorder(
-    borderRadius: .only(
-      topLeft: .circular(first ? 16 : 4),
-      topRight: .circular(first ? 16 : 4),
-      bottomLeft: .circular(last ? 16 : 4),
-      bottomRight: .circular(last ? 16 : 4),
-    ),
-  );
+  RoundedRectangleBorder getShape({
+    required bool isSelected,
+    required bool selectionModeIsEnabled,
+  }) {
+    final isSelectedAndSelectionModeIsEnabled =
+        isSelected && selectionModeIsEnabled;
+
+    const double biggestRadius = 16;
+    const double smallestRadius = 4;
+    return RoundedRectangleBorder(
+      borderRadius: .only(
+        topLeft: .circular(
+          first || isSelectedAndSelectionModeIsEnabled
+              ? biggestRadius
+              : smallestRadius,
+        ),
+        topRight: .circular(
+          first || isSelectedAndSelectionModeIsEnabled
+              ? biggestRadius
+              : smallestRadius,
+        ),
+        bottomLeft: .circular(
+          last || isSelectedAndSelectionModeIsEnabled
+              ? biggestRadius
+              : smallestRadius,
+        ),
+        bottomRight: .circular(
+          last || isSelectedAndSelectionModeIsEnabled
+              ? biggestRadius
+              : smallestRadius,
+        ),
+      ),
+    );
+  }
 
   EdgeInsetsGeometry getContentPadding({required bool selectionModeIsEnabled}) {
+    const double smallPadding = 4;
     return .only(
-      left: selectionModeIsEnabled ? 4 : 20,
-      right: selectionModeIsEnabled ? 24 : 4,
+      left: selectionModeIsEnabled ? smallPadding : 20,
+      right: selectionModeIsEnabled ? 32 : smallPadding,
     );
   }
 
@@ -184,8 +211,13 @@ class _ListItem extends StatelessWidget {
     return Padding(
       padding: const .symmetric(vertical: 1, horizontal: 8),
       child: ListTile(
-        shape: shape,
-        tileColor: colorScheme.surfaceContainer,
+        shape: getShape(
+          isSelected: isSelected,
+          selectionModeIsEnabled: selectionModeIsEnabled,
+        ),
+        tileColor: isSelected && selectionModeIsEnabled
+            ? colorScheme.surfaceContainerHighest
+            : colorScheme.surfaceContainer,
         visualDensity: .compact,
         contentPadding: getContentPadding(
           selectionModeIsEnabled: selectionModeIsEnabled,
@@ -212,8 +244,6 @@ class _ListItem extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {
-                      // TODO: Implement edit recipe
-
                       context.push(
                         AppRoutes.toEditRecipe(id),
                       );
@@ -268,7 +298,9 @@ class _ListItem extends StatelessWidget {
         onLongPress: selectionModeIsEnabled
             ? null
             : () {
-                recipesBloc.add(const RecipesSelectionToggled());
+                recipesBloc
+                  ..add(const RecipesSelectionToggled())
+                  ..add(RecipesToggleRecipeSelection(id));
               },
       ),
     );
