@@ -1,53 +1,57 @@
 part of 'edit_cubit.dart';
 
-class EditIngredientState extends Equatable {
-  const EditIngredientState({
+class EditRecipeState extends Equatable {
+  const EditRecipeState({
     this.isLoading = false,
     this.errorMessage,
     this.status = FormzSubmissionStatus.initial,
-    this.ingredientName = const IngredientName.pure(),
+    this.recipeName = const RecipeName.pure(),
     this.isValid = false,
-    this.isActualIngredient = false,
-    this.removeStatus = FormzSubmissionStatus.initial,
-    this.ingredient,
+    this.isActualIngredient = true,
     this.groupId = '',
+    this.recipeId = '',
+    this.recipeIngredients = const RecipeIngredients.pure(),
+    this.removeStatus = FormzSubmissionStatus.initial,
   });
 
   final FormzSubmissionStatus status;
   final bool isLoading;
   final String? errorMessage;
-  final IngredientName ingredientName;
+  final RecipeName recipeName;
+  final RecipeIngredients recipeIngredients;
   final bool isValid;
   final bool isActualIngredient;
-  final FormzSubmissionStatus removeStatus;
-  final FRIngredient? ingredient;
   final String groupId;
+  final String recipeId;
+  final FormzSubmissionStatus removeStatus;
 
-  EditIngredientState copyWith({
+  EditRecipeState copyWith({
     bool? isLoading,
     String? errorMessage,
     FormzSubmissionStatus? status,
-    IngredientName? ingredientName,
+    RecipeName? recipeName,
     bool? isValid,
     bool? isActualIngredient,
-    FormzSubmissionStatus? removeStatus,
-    FRIngredient? ingredient,
     String? groupId,
+    RecipeIngredients? recipeIngredients,
+    String? recipeId,
+    FormzSubmissionStatus? removeStatus,
   }) {
     log(
-      'EditIngredientState.copyWith called with isActualIngredient: $isActualIngredient',
-      name: 'EditIngredientState',
+      'EditRecipeState.copyWith called with isActualIngredient: $isActualIngredient',
+      name: 'EditRecipeState',
     );
-    return EditIngredientState(
-      ingredientName: ingredientName ?? this.ingredientName,
+    return EditRecipeState(
+      recipeName: recipeName ?? this.recipeName,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
       status: status ?? this.status,
       isValid: isValid ?? this.isValid,
       isActualIngredient: isActualIngredient ?? this.isActualIngredient,
-      removeStatus: removeStatus ?? this.removeStatus,
-      ingredient: ingredient ?? this.ingredient,
       groupId: groupId ?? this.groupId,
+      recipeIngredients: recipeIngredients ?? this.recipeIngredients,
+      recipeId: recipeId ?? this.recipeId,
+      removeStatus: removeStatus ?? this.removeStatus,
     );
   }
 
@@ -56,11 +60,12 @@ class EditIngredientState extends Equatable {
     isLoading,
     errorMessage,
     status,
-    ingredientName,
+    recipeName,
     isValid,
     isActualIngredient,
-    removeStatus,
-    ingredient,
     groupId,
+    recipeIngredients,
+    recipeId,
+    removeStatus,
   ];
 }

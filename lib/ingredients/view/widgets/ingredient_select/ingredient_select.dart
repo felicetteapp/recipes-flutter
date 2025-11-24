@@ -16,12 +16,14 @@ class IngredientSelect extends StatelessWidget {
     this.onChanged,
     this.errorMessage,
     this.onOpened,
+    this.initialValue,
   });
 
   final String? errorMessage;
   final String placeholder;
   final String label;
   final bool allowCreation;
+  final String? initialValue;
   final Future<FRIngredient> Function({required String name})? createIngredient;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onOpened;
@@ -38,6 +40,11 @@ class IngredientSelect extends StatelessWidget {
           allowCreation: allowCreation,
           createIngredient: createIngredient,
           onChanged: onChanged,
+          initialValue: IngredientSelectState(
+            selectedIngredientId: initialValue == null || initialValue!.isEmpty
+                ? null
+                : initialValue,
+          ),
         )..initIngredients(ingredients);
       },
       child: BlocListener<IngredientsBloc, IngredientsState>(

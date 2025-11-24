@@ -1,64 +1,97 @@
 import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
-import 'package:felicette_recipes/ingredients/ingredients.dart';
+import 'package:felicette_recipes/recipes/models/recipes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:ingredient_repository/ingredient_repository.dart';
+import 'package:recipe_repository/recipe_repository.dart';
 
 part 'edit_state.dart';
 
-class EditIngredientCubit extends Cubit<EditIngredientState> {
-  EditIngredientCubit({required IngredientRepository ingredientRepository})
-    : _ingredientRepository = ingredientRepository,
-      super(const EditIngredientState());
+class EditRecipeCubit extends Cubit<EditRecipeState> {
+  EditRecipeCubit({
+    required RecipeRepository recipeRepository,
+    EditRecipeState? initialState,
+  }) : _recipeRepository = recipeRepository,
+       super(initialState ?? const EditRecipeState());
 
-  final IngredientRepository _ingredientRepository;
+  final RecipeRepository _recipeRepository;
 
-  void ingredientNameChanged(String value) {
-    final ingredientName = IngredientName.dirty(value);
+  void recipeNameChanged(String value) {
+    final recipeName = RecipeName.dirty(value);
     emit(
       state.copyWith(
-        ingredientName: ingredientName,
-        isValid: Formz.validate([ingredientName]),
+        recipeName: recipeName,
+        isValid: Formz.validate([recipeName, state.recipeIngredients]),
       ),
     );
   }
 
-  void loadIngredient(String groupId, FRIngredient? ingredient) {
-    final ingredientName = IngredientName.dirty(ingredient?.name ?? '');
-    emit(
-      state.copyWith(
-        ingredient: ingredient,
-        ingredientName: ingredientName,
-        isValid: Formz.validate([ingredientName]),
-        isActualIngredient: ingredient?.actualIngredient ?? false,
-        groupId: groupId,
-      ),
-    );
-  }
-
-  void ingredientIsActualIngredientChanged({required bool isActualIngredient}) {
-    final novoStado = state.copyWith(
-      isActualIngredient: isActualIngredient,
-    );
-
+  void initEdit({
+    required String recipeId,
+    required String groupId,
+    FRRecipe? initialRecipe,
+  }) {
     log(
-      'novoStado $novoStado',
-      name: 'EditIngredientCubit.ingredientIsActualIngredientChanged',
+      'EditRecipeCubit.initEdit called with recipeId: $recipeId, groupId: $groupId',
+      name: 'EditRecipeCubit',
     );
-    emit(novoStado);
+
+    emit(
+      state.copyWith(
+        groupId: groupId,
+        recipeId: recipeId,
+        recipeIngredients: initialRecipe != null
+            ? RecipeIngredients.dirty(initialRecipe.ingredients)
+            : const RecipeIngredients.pure(),
+        recipeName: initialRecipe != null
+            ? RecipeName.dirty(initialRecipe.name)
+            : const RecipeName.pure(),
+        isValid:
+            initialRecipe != null &&
+            Formz.validate([
+              RecipeName.dirty(initialRecipe.name),
+              RecipeIngredients.dirty(initialRecipe.ingredients),
+            ]),
+      ),
+    );
   }
 
-  Future<void> saveIngredient() async {
+  void recipeIngredientsChanged(List<FRRecipeIngredient> value) {
+    log(
+      'EditRecipeCubit.recipeIngredientsChanged called with ${value.length} items',
+      name: 'EditRecipeCubit',
+    );
+
+    for (final ingredient in value) {
+      log(
+        'Ingredient ID: ${ingredient.ingredientId}, Quantity: ${ingredient.quantity}, UUID: ${ingredient.uuid}',
+        name: 'EditRecipeCubit.recipeIngredientsChanged',
+      );
+    }
+    final recipeIngredients = RecipeIngredients.dirty(value);
+    emit(
+      state.copyWith(
+        recipeIngredients: recipeIngredients,
+        isValid: Formz.validate([state.recipeName, recipeIngredients]),
+      ),
+    );
+  }
+
+  Future<void> updateRecipe() async {
     if (!state.isValid) return;
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      await _ingredientRepository.updateIngredient(
+      log(
+        'Updating recipe with name: ${state.recipeName.value} in group: ${state.groupId}',
+        name: 'EditRecipeCubit.updateRecipe',
+      );
+      await _recipeRepository.updateRecipe(
         state.groupId,
-        state.ingredient!.copyWith(
-          name: state.ingredientName.value,
-          actualIngredient: state.isActualIngredient,
+        FRRecipe(
+          id: state.recipeId,
+          name: state.recipeName.value,
+          ingredients: state.recipeIngredients.value,
         ),
       );
 
@@ -67,6 +100,10 @@ class EditIngredientCubit extends Cubit<EditIngredientState> {
       }
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } catch (e) {
+      log(
+        'Error updating recipe: $e',
+        name: 'EditRecipeCubit.updateRecipe',
+      );
       emit(
         state.copyWith(
           status: FormzSubmissionStatus.failure,
@@ -76,21 +113,27 @@ class EditIngredientCubit extends Cubit<EditIngredientState> {
     }
   }
 
-  Future<void> excludeIngredient() async {
+  Future<void> excludeRecipe() async {
     emit(state.copyWith(removeStatus: FormzSubmissionStatus.inProgress));
     try {
-      await _ingredientRepository.deleteIngredient(
+      log(
+        'Excluding recipe with id: ${state.recipeId} from group: ${state.groupId}',
+        name: 'EditRecipeCubit.excludeRecipe',
+      );
+      await _recipeRepository.deleteRecipe(
         state.groupId,
-        state.ingredient!,
+        FRRecipe(id: state.recipeId, name: '', ingredients: []),
       );
 
       if (isClosed) {
         return;
       }
-
-      //      throw Exception('Simulated delete error');
       emit(state.copyWith(removeStatus: FormzSubmissionStatus.success));
     } catch (e) {
+      log(
+        'Error excluding recipe: $e',
+        name: 'EditRecipeCubit.excludeRecipe',
+      );
       emit(
         state.copyWith(
           removeStatus: FormzSubmissionStatus.failure,

@@ -92,12 +92,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Confirmar Ingrediente Real",
     ),
     "confirm_actual_ingredient_description": m0,
-    "confirm_deletion": MessageLookupByLibrary.simpleMessage(
-      "Confirmar Eliminación",
-    ),
-    "confirm_deletion_message": MessageLookupByLibrary.simpleMessage(
-      "¿Estás seguro de que quieres eliminar este ingrediente?",
-    ),
     "confirm_password": MessageLookupByLibrary.simpleMessage(
       "Confirmar Contraseña",
     ),

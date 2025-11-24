@@ -213,6 +213,10 @@ class _ListItem extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       // TODO: Implement edit recipe
+
+                      context.push(
+                        AppRoutes.toEditRecipe(id),
+                      );
                     },
                     icon: const Icon(Icons.edit),
                   ),

@@ -93,14 +93,20 @@ class MessageLookup extends MessageLookupByLibrary {
       "Confirm Actual Ingredient",
     ),
     "confirm_actual_ingredient_description": m0,
-    "confirm_deletion": MessageLookupByLibrary.simpleMessage(
+    "confirm_ingredient_deletion": MessageLookupByLibrary.simpleMessage(
       "Confirm Deletion",
     ),
-    "confirm_deletion_message": MessageLookupByLibrary.simpleMessage(
+    "confirm_ingredient_deletion_message": MessageLookupByLibrary.simpleMessage(
       "Are you sure you want to delete this ingredient?",
     ),
     "confirm_password": MessageLookupByLibrary.simpleMessage(
       "Confirm Password",
+    ),
+    "confirm_recipe_deletion": MessageLookupByLibrary.simpleMessage(
+      "Confirm Deletion",
+    ),
+    "confirm_recipe_deletion_message": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this recipe?",
     ),
     "connected": MessageLookupByLibrary.simpleMessage("Connected"),
     "create": MessageLookupByLibrary.simpleMessage("Create"),
@@ -257,10 +263,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "recipe_created_successfully": MessageLookupByLibrary.simpleMessage(
       "Recipe created successfully",
     ),
+    "recipe_deleted_successfully": MessageLookupByLibrary.simpleMessage(
+      "Recipe deleted successfully",
+    ),
     "recipe_ingredients_error": MessageLookupByLibrary.simpleMessage(
       "There are errors in the recipe ingredients",
     ),
     "recipe_name": MessageLookupByLibrary.simpleMessage("Recipe Name"),
+    "recipe_updated_successfully": MessageLookupByLibrary.simpleMessage(
+      "Recipe updated successfully",
+    ),
     "recipes_should_have_at_least_one_ingredient":
         MessageLookupByLibrary.simpleMessage(
           "Recipes should have at least one ingredient",

@@ -849,20 +849,20 @@ class S {
   }
 
   /// `Confirm Deletion`
-  String get confirm_deletion {
+  String get confirm_ingredient_deletion {
     return Intl.message(
       'Confirm Deletion',
-      name: 'confirm_deletion',
+      name: 'confirm_ingredient_deletion',
       desc: 'Title for deletion confirmation dialog',
       args: [],
     );
   }
 
   /// `Are you sure you want to delete this ingredient?`
-  String get confirm_deletion_message {
+  String get confirm_ingredient_deletion_message {
     return Intl.message(
       'Are you sure you want to delete this ingredient?',
-      name: 'confirm_deletion_message',
+      name: 'confirm_ingredient_deletion_message',
       desc: 'Message asking for deletion confirmation',
       args: [],
     );
@@ -1445,6 +1445,46 @@ class S {
       'Recipe created successfully',
       name: 'recipe_created_successfully',
       desc: 'Success message when recipe is created',
+      args: [],
+    );
+  }
+
+  /// `Recipe updated successfully`
+  String get recipe_updated_successfully {
+    return Intl.message(
+      'Recipe updated successfully',
+      name: 'recipe_updated_successfully',
+      desc: 'Success message when recipe is updated',
+      args: [],
+    );
+  }
+
+  /// `Confirm Deletion`
+  String get confirm_recipe_deletion {
+    return Intl.message(
+      'Confirm Deletion',
+      name: 'confirm_recipe_deletion',
+      desc: 'Title for recipe deletion confirmation dialog',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this recipe?`
+  String get confirm_recipe_deletion_message {
+    return Intl.message(
+      'Are you sure you want to delete this recipe?',
+      name: 'confirm_recipe_deletion_message',
+      desc: 'Message asking for recipe deletion confirmation',
+      args: [],
+    );
+  }
+
+  /// `Recipe deleted successfully`
+  String get recipe_deleted_successfully {
+    return Intl.message(
+      'Recipe deleted successfully',
+      name: 'recipe_deleted_successfully',
+      desc: 'Success message when recipe is deleted',
       args: [],
     );
   }

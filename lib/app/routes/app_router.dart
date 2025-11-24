@@ -8,12 +8,11 @@ import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/authentication/authentication.dart';
 import 'package:felicette_recipes/create_account/create_account.dart';
 import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
-import 'package:felicette_recipes/ingredients/edit/edit.dart';
 import 'package:felicette_recipes/ingredients/ingredients.dart';
-import 'package:felicette_recipes/ingredients/new/new.dart';
 import 'package:felicette_recipes/list/list.dart';
 import 'package:felicette_recipes/login/login.dart';
 import 'package:felicette_recipes/password_recovery/password_recovery.dart';
+import 'package:felicette_recipes/recipes/edit/edit.dart';
 import 'package:felicette_recipes/recipes/new/new.dart';
 import 'package:felicette_recipes/recipes/recipes.dart';
 import 'package:felicette_recipes/splash/splash.dart';
@@ -83,6 +82,7 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       NewIngredientPage.route(),
       EditIngredientPage.route(),
       NewRecipePage.route(),
+      EditRecipePage.route(),
     ],
     refreshListenable: GoRouterRefreshStream(authenticationBloc.stream),
     redirect: (context, state) {

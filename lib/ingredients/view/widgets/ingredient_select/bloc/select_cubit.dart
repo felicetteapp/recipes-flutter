@@ -13,8 +13,9 @@ class IngredientSelectCubit extends Cubit<IngredientSelectState> {
     this.allowCreation = false,
     this.createIngredient,
     this.onChanged,
+    IngredientSelectState? initialValue,
   }) : _ingredients = [],
-       super(const IngredientSelectState());
+       super(initialValue ?? const IngredientSelectState());
 
   final List<FRIngredient> _ingredients;
   final bool allowCreation;

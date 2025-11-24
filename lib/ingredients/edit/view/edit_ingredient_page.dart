@@ -159,6 +159,9 @@ class _ExcludeButton extends StatelessWidget {
     final isSending = editCubit.state.removeStatus.isInProgressOrSuccess;
 
     return TextButton.icon(
+      style: TextButton.styleFrom(
+        foregroundColor: theme.colorScheme.error,
+      ),
       onPressed: isSending
           ? null
           : () async {
@@ -167,8 +170,8 @@ class _ExcludeButton extends StatelessWidget {
               final confirmedExclusion = await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text(s.confirm_deletion),
-                  content: Text(s.confirm_deletion_message),
+                  title: Text(s.confirm_ingredient_deletion),
+                  content: Text(s.confirm_ingredient_deletion_message),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(false),
@@ -194,13 +197,11 @@ class _ExcludeButton extends StatelessWidget {
                 strokeWidth: 2,
               ),
             )
-          : Icon(
+          : const Icon(
               Icons.delete,
-              color: theme.colorScheme.error,
             ),
       label: Text(
         s.delete,
-        style: TextStyle(color: theme.colorScheme.error),
         maxLines: 1,
         overflow: .ellipsis,
       ),
