@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 const double internalVerticalPadding = 8;
 const double externalVerticalPadding = 8;
+const double externalHorizontalPadding = 12;
 const double fontSize = 16;
 
 class BudgetDisplay extends StatelessWidget {
@@ -53,7 +54,10 @@ class BudgetDisplay extends StatelessWidget {
     );
 
     return Padding(
-      padding: const .all(externalVerticalPadding),
+      padding: const .symmetric(
+        vertical: externalVerticalPadding,
+        horizontal: externalHorizontalPadding,
+      ),
       child: SizedBox(
         width: .infinity,
         child: Card(

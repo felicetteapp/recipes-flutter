@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
@@ -6,6 +8,7 @@ import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
 import 'package:felicette_recipes/ingredients/ingredients.dart';
 import 'package:felicette_recipes/list/list.dart';
 import 'package:felicette_recipes/list/view/widgets/budget_display.dart';
+import 'package:felicette_recipes/list/view/widgets/ingredient_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -51,11 +54,17 @@ class ListPageContent extends StatelessWidget {
     final ingredientsBloc = context.watch<IngredientsBloc>();
     final currentSelectedGroup = groupsBloc.state.selectedGroup;
 
-    final currentIngredients =
-        ingredientsBloc.state.selectedGroupCurrentListIngredients;
-    final actualItemsCount = currentIngredients.length;
+    final currentIngredients = context
+        .watch<ListBloc>()
+        .state
+        .currentIngredients;
 
-    final listItemsCount = actualItemsCount + 2;
+    log(
+      'Current ingredients in ListPageContent: $currentIngredients',
+      name: 'ListPageContent',
+    );
+
+    final listItemsCount = currentIngredients.length + 2;
 
     return Scaffold(
       extendBody: true,
@@ -73,14 +82,16 @@ class ListPageContent extends StatelessWidget {
             return const _ListQuickActionButtons();
           }
 
-          return ListTile(
-            title: Text('Item $index'),
+          return _ListIngredientTile(
+            item: currentIngredients[index - 1],
+            first: index - 1 == 0,
+            last: index - 1 == listItemsCount - 3,
           );
         },
       ),
       bottomNavigationBar: BudgetDisplay(
-        used: 0.0,
-        total: 0.0,
+        used: 0,
+        total: 0,
         currency: currentSelectedGroup?.currency ?? '',
         showBudget: currentSelectedGroup?.filters.showBudget ?? false,
       ),
@@ -88,18 +99,162 @@ class ListPageContent extends StatelessWidget {
   }
 }
 
-final typesList = [
-  ListDisplayTypeEnum.ingredients,
-  ListDisplayTypeEnum.recipes,
+final List<ListDisplayTypeEnum> typesList = [
+  .ingredients,
+  .recipes,
 ];
 
 class _ListIngredientTile extends StatelessWidget {
-  const _ListIngredientTile();
+  const _ListIngredientTile({
+    required this.item,
+    required this.first,
+    required this.last,
+  });
+  final ListIngredientItem item;
+  final bool first;
+  final bool last;
+
+  RoundedRectangleBorder getShape() {
+    const double biggestRadius = 16;
+    const double smallestRadius = 4;
+    return RoundedRectangleBorder(
+      borderRadius: .only(
+        topLeft: .circular(
+          first || item.isChecked ? biggestRadius : smallestRadius,
+        ),
+        topRight: .circular(
+          first || item.isChecked ? biggestRadius : smallestRadius,
+        ),
+        bottomLeft: .circular(
+          last || item.isChecked ? biggestRadius : smallestRadius,
+        ),
+        bottomRight: .circular(
+          last || item.isChecked ? biggestRadius : smallestRadius,
+        ),
+      ),
+    );
+  }
+
+  Widget? getTrailingWidget() {
+    if (!item.isChecked) {
+      return null;
+    }
+
+    if (item.prices.isEmpty) {
+      return IconButton(
+        visualDensity: .compact,
+        onPressed: () {},
+        icon: const Icon(Icons.edit),
+      );
+    }
+
+    return const Text('preco'); // TODO: implement price display
+  }
+
+  Widget? getSubtitleWidget(BuildContext context) {
+    final s = S.of(context);
+    final theme = Theme.of(context);
+    final parts = <TextSpan>[];
+    if (item.quantity != null && item.quantity!.isNotEmpty) {
+      parts.add(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: item.quantity,
+            ),
+          ],
+        ),
+      );
+    }
+    if (item.associatedRecipes.isNotEmpty) {
+      item.associatedRecipes.asMap().forEach((index, recipe) {
+        final thisIngredientInRecipe = recipe.ingredients.firstWhereOrNull(
+          (ing) => ing.ingredientId == item.ingredient.id,
+        );
+        if (thisIngredientInRecipe == null) {
+          return;
+        }
+        parts.add(
+          TextSpan(
+            children: [
+              if (parts.isNotEmpty) const TextSpan(text: ', '),
+              if (thisIngredientInRecipe.quantity.isNotEmpty)
+                TextSpan(
+                  text: '${thisIngredientInRecipe.quantity} ',
+                  style: const TextStyle(
+                    fontWeight: .bold,
+                  ),
+                ),
+              TextSpan(text: s.tfor),
+              TextSpan(
+                text: recipe.name,
+                style: const TextStyle(
+                  fontWeight: .bold,
+                ),
+              ),
+            ],
+          ),
+        );
+      });
+    }
+
+    if (parts.isEmpty) {
+      return null;
+    }
+
+    return RichText(
+      text: TextSpan(
+        children: parts,
+        style: theme.textTheme.bodySmall?.copyWith(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text('Ingredient Item'),
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    final subtitleWidget = getSubtitleWidget(context);
+    return Padding(
+      padding: const .symmetric(vertical: 1, horizontal: 8),
+      child: ListTile(
+        isThreeLine: subtitleWidget != null,
+        title: Text(item.ingredient.name),
+        shape: getShape(),
+        tileColor: item.isChecked
+            ? colorScheme.surfaceContainerHighest
+            : colorScheme.surfaceContainer,
+        contentPadding: const .only(
+          left: 4,
+          right: 4,
+        ),
+        leading: Padding(
+          padding: const .only(left: 8),
+          child: Checkbox(
+            visualDensity: .compact,
+            materialTapTargetSize: .shrinkWrap,
+            value: item.isChecked,
+            onChanged: (checked) async {
+              log(
+                'Checkbox changed to $checked for ingredient ${item.ingredient.id}',
+                name: '_ListIngredientTile',
+              );
+              if (checked != true) return;
+              await showDialog<void>(
+                context: context,
+                useSafeArea: false,
+                builder: (_) => ListIngredientModal(item: item),
+              );
+              //recipesBloc.add(RecipesToggleRecipeSelection(id));
+            },
+            activeColor: colorScheme.secondary,
+          ),
+        ),
+        trailing: getTrailingWidget(),
+        visualDensity: .compact,
+        subtitle: subtitleWidget,
+      ),
     );
   }
 }
@@ -178,12 +333,12 @@ class _ListFilters extends StatelessWidget {
               return Center(
                 child: SingleChildScrollView(
                   scrollDirection: .horizontal,
-                  padding: const .symmetric(horizontal: 16.0),
+                  padding: const .symmetric(horizontal: 16),
                   child: Row(
                     mainAxisSize: .min,
                     spacing: 4,
                     children: [
-                      if (displayType == ListDisplayTypeEnum.ingredients)
+                      if (displayType == .ingredients)
                         ChoiceChip(
                           selected:
                               groupsBloc

@@ -197,6 +197,35 @@ class _MainShellContent extends StatelessWidget {
             context.read<RecipesBloc>().add(
               RecipesSelectedGroupChanged(selectedGroup),
             );
+            context.read<ListBloc>().add(
+              ListSelectedGroupChanged(selectedGroup),
+            );
+          },
+        ),
+        BlocListener<RecipesBloc, RecipesState>(
+          listenWhen: (previous, current) =>
+              previous.recipes != current.recipes,
+          listener: (context, state) {
+            log(
+              'RecipesBloc state changed: $state',
+              name: 'AppRouter',
+            );
+            context.read<ListBloc>().add(
+              UpdateGroupRecipes(state.recipes),
+            );
+          },
+        ),
+        BlocListener<IngredientsBloc, IngredientsState>(
+          listenWhen: (previous, current) =>
+              previous.ingredients != current.ingredients,
+          listener: (context, state) {
+            log(
+              'IngredientsBloc state changed: $state',
+              name: 'AppRouter',
+            );
+            context.read<ListBloc>().add(
+              UpdateGroupIngredients(state.ingredients),
+            );
           },
         ),
       ],
