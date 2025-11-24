@@ -180,10 +180,13 @@ class _ListIngredientTile extends StatelessWidget {
               if (parts.isNotEmpty) const TextSpan(text: ', '),
               if (thisIngredientInRecipe.quantity.isNotEmpty)
                 TextSpan(
-                  text: '${thisIngredientInRecipe.quantity} ',
                   style: const TextStyle(
                     fontWeight: .bold,
                   ),
+                  children: [
+                    TextSpan(text: thisIngredientInRecipe.quantity),
+                    const TextSpan(text: ' '),
+                  ],
                 ),
               TextSpan(text: s.tfor),
               TextSpan(
