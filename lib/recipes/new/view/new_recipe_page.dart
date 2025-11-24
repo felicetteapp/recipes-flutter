@@ -80,7 +80,7 @@ class _NewRecipePageContent extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
-                content: Text(s.ingredient_created_successfully),
+                content: Text(s.recipe_created_successfully),
               ),
             );
         } else if (state.status.isFailure) {

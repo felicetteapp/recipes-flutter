@@ -1438,6 +1438,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Recipe created successfully`
+  String get recipe_created_successfully {
+    return Intl.message(
+      'Recipe created successfully',
+      name: 'recipe_created_successfully',
+      desc: 'Success message when recipe is created',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -60,12 +60,16 @@ class NewRecipeCubit extends Cubit<NewRecipeState> {
     if (!state.isValid) return;
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
+      log(
+        'Creating recipe with name: ${state.recipeName.value} in group: ${state.groupId}',
+        name: 'NewRecipeCubit.createRecipe',
+      );
       await _recipeRepository.createRecipe(
         state.groupId,
         FRRecipe(
           id: '',
           name: state.recipeName.value,
-          ingredients: [],
+          ingredients: state.recipeIngredients.value,
         ),
       );
 

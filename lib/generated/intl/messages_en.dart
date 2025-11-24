@@ -254,6 +254,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "quantity": MessageLookupByLibrary.simpleMessage("Quantity"),
     "quantity_for": m7,
     "recipe": m8,
+    "recipe_created_successfully": MessageLookupByLibrary.simpleMessage(
+      "Recipe created successfully",
+    ),
     "recipe_ingredients_error": MessageLookupByLibrary.simpleMessage(
       "There are errors in the recipe ingredients",
     ),

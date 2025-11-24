@@ -145,6 +145,22 @@ class _ListItem extends StatelessWidget {
 
   String get id => recipe.id;
 
+  RoundedRectangleBorder get shape => RoundedRectangleBorder(
+    borderRadius: .only(
+      topLeft: .circular(first ? 16 : 4),
+      topRight: .circular(first ? 16 : 4),
+      bottomLeft: .circular(last ? 16 : 4),
+      bottomRight: .circular(last ? 16 : 4),
+    ),
+  );
+
+  EdgeInsetsGeometry getContentPadding({required bool selectionModeIsEnabled}) {
+    return .only(
+      left: selectionModeIsEnabled ? 4 : 20,
+      right: selectionModeIsEnabled ? 24 : 4,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
@@ -168,19 +184,11 @@ class _ListItem extends StatelessWidget {
     return Padding(
       padding: const .symmetric(vertical: 1, horizontal: 8),
       child: ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: .only(
-            topLeft: .circular(first ? 16 : 4),
-            topRight: .circular(first ? 16 : 4),
-            bottomLeft: .circular(last ? 16 : 4),
-            bottomRight: .circular(last ? 16 : 4),
-          ),
-        ),
+        shape: shape,
         tileColor: colorScheme.surfaceContainer,
         visualDensity: .compact,
-        contentPadding: .only(
-          left: selectionModeIsEnabled ? 4 : 20,
-          right: selectionModeIsEnabled ? 24 : 4,
+        contentPadding: getContentPadding(
+          selectionModeIsEnabled: selectionModeIsEnabled,
         ),
         isThreeLine: true,
         leading: selectionModeIsEnabled

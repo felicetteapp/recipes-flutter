@@ -595,5 +595,9 @@
   "@recipe_ingredients_error": {
     "description": "Error message indicating there are issues with recipe ingredients"
   },
-  "recipe_ingredients_error": "There are errors in the recipe ingredients"
+  "recipe_ingredients_error": "There are errors in the recipe ingredients",
+  "@recipe_created_successfully": {
+    "description": "Success message when recipe is created"
+  },
+  "recipe_created_successfully": "Recipe created successfully"
 }
