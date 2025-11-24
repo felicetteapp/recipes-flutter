@@ -4,24 +4,15 @@ class IngredientQuantityInputState<T extends BasicIngredientQuantity>
     extends Equatable {
   const IngredientQuantityInputState({
     required this.items,
-    required this.generateEmpty,
-    required this.onChanged,
   });
 
   final List<T> items;
 
-  final T Function() generateEmpty;
-  final ValueChanged<List<T>> onChanged;
-
   IngredientQuantityInputState<T> copyWith({
     List<T>? items,
-    T Function()? generateEmpty,
-    ValueChanged<List<T>>? onChanged,
   }) {
     return IngredientQuantityInputState<T>(
       items: items ?? this.items,
-      generateEmpty: generateEmpty ?? this.generateEmpty,
-      onChanged: onChanged ?? this.onChanged,
     );
   }
 
@@ -36,18 +27,22 @@ class IngredientQuantityInputItemState<T extends BasicIngredientQuantity>
   const IngredientQuantityInputItemState({
     required this.item,
     required this.ingredientQuantity,
+    required this.ingredient,
   });
 
   final T item;
   final IngredientQuantity ingredientQuantity;
+  final IngredientQuantityInputIngredient ingredient;
 
   IngredientQuantityInputItemState<T> copyWith({
     T? item,
     IngredientQuantity? ingredientQuantity,
+    IngredientQuantityInputIngredient? ingredient,
   }) {
     return IngredientQuantityInputItemState<T>(
       item: item ?? this.item,
       ingredientQuantity: ingredientQuantity ?? this.ingredientQuantity,
+      ingredient: ingredient ?? this.ingredient,
     );
   }
 
@@ -55,5 +50,6 @@ class IngredientQuantityInputItemState<T extends BasicIngredientQuantity>
   List<Object?> get props => [
     item,
     ingredientQuantity,
+    ingredient,
   ];
 }

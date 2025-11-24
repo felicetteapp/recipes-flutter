@@ -254,7 +254,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "quantity": MessageLookupByLibrary.simpleMessage("Quantity"),
     "quantity_for": m7,
     "recipe": m8,
+    "recipe_ingredients_error": MessageLookupByLibrary.simpleMessage(
+      "There are errors in the recipe ingredients",
+    ),
     "recipe_name": MessageLookupByLibrary.simpleMessage("Recipe Name"),
+    "recipes_should_have_at_least_one_ingredient":
+        MessageLookupByLibrary.simpleMessage(
+          "Recipes should have at least one ingredient",
+        ),
     "reset_password": MessageLookupByLibrary.simpleMessage("Reset Password"),
     "reset_password_error": MessageLookupByLibrary.simpleMessage(
       "Failed to send password reset email",
@@ -267,6 +274,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Save Without Price",
     ),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
+    "select_at_least_one_ingredient": MessageLookupByLibrary.simpleMessage(
+      "Please select at least one ingredient to proceed.",
+    ),
     "select_currency": MessageLookupByLibrary.simpleMessage("Select Currency"),
     "select_ingredients": MessageLookupByLibrary.simpleMessage(
       "Select Ingredients",

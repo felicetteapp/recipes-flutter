@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:formz/formz.dart';
 import 'package:recipe_repository/recipe_repository.dart';
 
@@ -13,7 +15,7 @@ class RecipeName extends FormzInput<String, RecipetNameValidationError> {
   }
 }
 
-enum RecipeIngredientsValidationError { invalid }
+enum RecipeIngredientsValidationError { invalid, empty }
 
 class RecipeIngredients
     extends
@@ -23,7 +25,30 @@ class RecipeIngredients
 
   @override
   RecipeIngredientsValidationError? validator(List<FRRecipeIngredient> value) {
-    // No validation needed for ingredients list
+    log(
+      'Validating RecipeIngredients with ${value.length} items',
+      name: 'RecipeIngredients.validator',
+    );
+    if (value.isEmpty) {
+      log(
+        'Validation failed: RecipeIngredients is empty',
+        name: 'RecipeIngredients.validator',
+      );
+      return RecipeIngredientsValidationError.empty;
+    }
+    for (final ingredient in value) {
+      log(
+        'Validating ingredient with ID: ${ingredient.ingredientId} and quantity: ${ingredient.quantity}',
+        name: 'RecipeIngredients.validator',
+      );
+      if (ingredient.ingredientId.isEmpty) {
+        log(
+          'Validation failed: Ingredient with empty ID found',
+          name: 'RecipeIngredients.validator',
+        );
+        return RecipeIngredientsValidationError.invalid;
+      }
+    }
     return null;
   }
 }

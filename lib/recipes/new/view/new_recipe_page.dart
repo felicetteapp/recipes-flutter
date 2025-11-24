@@ -6,6 +6,7 @@ import 'package:felicette_recipes/app/view/view.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/ingredients/ingredients.dart';
+import 'package:felicette_recipes/recipes/models/recipes.dart';
 import 'package:felicette_recipes/recipes/new/new.dart';
 import 'package:felicette_recipes/theme.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ingredient_repository/ingredient_repository.dart';
 import 'package:recipe_repository/recipe_repository.dart';
+import 'package:uuid/uuid.dart';
 
 class NewRecipePage extends StatelessWidget {
   const NewRecipePage({super.key});
@@ -44,10 +46,16 @@ class NewRecipePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final uuid = const Uuid().v4();
     return BlocProvider(
       create: (context) =>
           NewRecipeCubit(
             recipeRepository: context.read<RecipeRepository>(),
+            initialState: NewRecipeState(
+              recipeIngredients: .dirty([
+                FRRecipeIngredient(ingredientId: '', quantity: '', uuid: uuid),
+              ]),
+            ),
           )..defineGroupId(
             context.read<IngredientsBloc>().state.selectedGroupId!,
           ),
@@ -93,7 +101,9 @@ class _NewRecipePageContent extends StatelessWidget {
             spacing: 16,
             children: [
               _NameInput(),
-              _IngredientsQuantityInput(),
+              _IngredientsQuantityInput(
+                key: Key('newRecipePage_ingredientsQuantityInput'),
+              ),
             ],
           ),
         ),
@@ -123,33 +133,63 @@ class _NewRecipePageContent extends StatelessWidget {
 }
 
 class _IngredientsQuantityInput extends StatelessWidget {
-  const _IngredientsQuantityInput();
+  const _IngredientsQuantityInput({super.key});
+
+  String? getErrorMessage(
+    RecipeIngredients fieldState,
+    S s,
+  ) {
+    if (fieldState.displayError == RecipeIngredientsValidationError.empty) {
+      return s.recipes_should_have_at_least_one_ingredient;
+    } else if (fieldState.displayError ==
+        RecipeIngredientsValidationError.invalid) {
+      return s.recipe_ingredients_error;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
     final newCubit = context.watch<NewRecipeCubit>();
     final ingredientRepository = context.read<IngredientRepository>();
+    final fieldState = newCubit.state.recipeIngredients;
 
     return Padding(
       padding: const .symmetric(horizontal: 16),
-      child: IngredientsQuantityInput(
-        key: const Key('newRecipePage_ingredientsQuantityInput'),
-        generateEmpty: () => FRRecipeIngredient(
-          ingredientId: '',
-          quantity: '',
-        ),
-        createIngredient: ({required String name}) async {
-          final newIngredient = await ingredientRepository.createIngredient(
-            newCubit.state.groupId,
-            FRIngredient(id: '', name: name),
-          );
-          return newIngredient;
-        },
-        onChanged: (newValue) {
-          newCubit.recipeIngredientsChanged(newValue.cast());
-        },
-        initialValue: newCubit.state.recipeIngredients.value,
+      child: Column(
+        children: [
+          IngredientsQuantityInput(
+            key: const Key('newRecipePage_ingredientsQuantityInput'),
+            errorMessage: getErrorMessage(
+              fieldState,
+              s,
+            ),
+            generateEmpty: () {
+              final uuid = const Uuid().v4();
+              return FRRecipeIngredient(
+                ingredientId: '',
+                quantity: '',
+                uuid: uuid,
+              );
+            },
+            createIngredient: ({required String name}) async {
+              final newIngredient = await ingredientRepository.createIngredient(
+                newCubit.state.groupId,
+                FRIngredient(id: '', name: name),
+              );
+              return newIngredient;
+            },
+            onChanged: (newValue) {
+              log(
+                'IngredientsQuantityInput onChanged called with ${newValue.length} items',
+                name: 'NewRecipePage._IngredientsQuantityInput',
+              );
+              newCubit.recipeIngredientsChanged(newValue);
+            },
+            initialValue: newCubit.state.recipeIngredients.value,
+          ),
+        ],
       ),
     );
   }

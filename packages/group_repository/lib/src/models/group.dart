@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe_repository/recipe_repository.dart';
+import 'package:uuid/uuid.dart';
 
 class FRGroupFilter {
   FRGroupFilter({this.showCheckedsFirst = false, this.showBudget = false});
@@ -52,17 +53,37 @@ class FRIngredientPrice {
 }
 
 class FRCurrentIngredients extends BasicIngredientQuantity {
-  FRCurrentIngredients({required super.ingredientId, required super.quantity});
+  FRCurrentIngredients({
+    required super.ingredientId,
+    required super.quantity,
+    required super.uuid,
+  });
 
   factory FRCurrentIngredients.fromMap(Map<String, dynamic> data) {
+    final mapUuid = data['uuid'] as String?;
+    final uuid = const Uuid().v4();
     return FRCurrentIngredients(
       ingredientId: data['i'] as String,
       quantity: data['q'] as String,
+      uuid: mapUuid ?? uuid,
+    );
+  }
+
+  @override
+  BasicIngredientQuantity copyWith({
+    String? ingredientId,
+    String? quantity,
+    String? uuid,
+  }) {
+    return FRCurrentIngredients(
+      ingredientId: ingredientId ?? this.ingredientId,
+      quantity: quantity ?? this.quantity,
+      uuid: uuid ?? this.uuid,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {'i': ingredientId, 'q': quantity};
+    return {'i': ingredientId, 'q': quantity, 'uuid': uuid};
   }
 }
 

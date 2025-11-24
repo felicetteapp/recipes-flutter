@@ -583,5 +583,17 @@
   "@password_recovery_error": {
     "description": "Indicates that there was an error sending the password recovery email"
   },
-  "password_recovery_error": "Error sending password recovery email"
+  "password_recovery_error": "Error sending password recovery email",
+  "@recipes_should_have_at_least_one_ingredient": {
+    "description": "Error message when trying to save a recipe without ingredients"
+  },
+  "recipes_should_have_at_least_one_ingredient": "Recipes should have at least one ingredient",
+  "@select_at_least_one_ingredient": {
+    "description": "Error message prompting user to select at least one ingredient"
+  },
+  "select_at_least_one_ingredient": "Please select at least one ingredient to proceed.",
+  "@recipe_ingredients_error": {
+    "description": "Error message indicating there are issues with recipe ingredients"
+  },
+  "recipe_ingredients_error": "There are errors in the recipe ingredients"
 }

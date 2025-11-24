@@ -13,12 +13,18 @@ class IngredientSelect extends StatelessWidget {
     super.key,
     this.allowCreation = false,
     this.createIngredient,
+    this.onChanged,
+    this.errorMessage,
+    this.onOpened,
   });
 
+  final String? errorMessage;
   final String placeholder;
   final String label;
   final bool allowCreation;
   final Future<FRIngredient> Function({required String name})? createIngredient;
+  final ValueChanged<String>? onChanged;
+  final VoidCallback? onOpened;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +37,7 @@ class IngredientSelect extends StatelessWidget {
         return IngredientSelectCubit(
           allowCreation: allowCreation,
           createIngredient: createIngredient,
+          onChanged: onChanged,
         )..initIngredients(ingredients);
       },
       child: BlocListener<IngredientsBloc, IngredientsState>(
@@ -42,6 +49,8 @@ class IngredientSelect extends StatelessWidget {
         child: _IngredientSelectContent(
           placeholder: placeholder,
           label: label,
+          errorMessage: errorMessage,
+          onOpened: onOpened,
         ),
       ),
     );
@@ -52,10 +61,14 @@ class _IngredientSelectContent extends StatelessWidget {
   const _IngredientSelectContent({
     required this.placeholder,
     required this.label,
+    this.errorMessage,
+    this.onOpened,
   });
 
   final String placeholder;
   final String label;
+  final String? errorMessage;
+  final VoidCallback? onOpened;
 
   @override
   Widget build(BuildContext context) {
@@ -65,17 +78,15 @@ class _IngredientSelectContent extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final inputDecorationTheme = theme.inputDecorationTheme;
     final contentPadding = inputDecorationTheme.contentPadding;
-    final border = inputDecorationTheme.border!;
+    final border = errorMessage != null
+        ? theme.inputDecorationTheme.errorBorder!
+        : inputDecorationTheme.border!;
     final labelShouldFloat = cubit.state.selectedIngredientId != null;
 
     return LayoutBuilder(
       builder: (context, constraints) {
         const decorationRadius = 8.0;
         const topOffset = 4.0;
-
-        log(
-          'labelDecoration build with fillColor: ${inputDecorationTheme.labelStyle}',
-        );
 
         final floatingLabelHorizontalPadding = labelShouldFloat
             ? 4.0
@@ -94,87 +105,112 @@ class _IngredientSelectContent extends StatelessWidget {
             ? null
             : border.borderSide.width;
 
-        return Stack(
-          clipBehavior: Clip.none,
+        return Column(
           children: [
-            Container(
-              width: constraints.maxWidth,
-              padding: contentPadding,
-              height: 48,
-              decoration: BoxDecoration(
-                color: inputDecorationTheme.fillColor,
-                borderRadius: .circular(decorationRadius),
-                border: Border.fromBorderSide(
-                  border.borderSide,
+            Stack(
+              clipBehavior: .none,
+              children: [
+                Container(
+                  width: constraints.maxWidth,
+                  padding: contentPadding,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: inputDecorationTheme.fillColor,
+                    borderRadius: .circular(decorationRadius),
+                    border: .fromBorderSide(border.borderSide),
+                  ),
+                  child: Padding(
+                    padding: .only(left: floatingLabelHorizontalPadding),
+                    child: Text(
+                      maxLines: 1,
+                      overflow: .ellipsis,
+                      cubit.selectedIngredient?.name ?? '',
+                      style: textTheme.bodyLarge,
+                    ),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: .only(left: floatingLabelHorizontalPadding),
-                child: Text(
-                  maxLines: 1,
-                  overflow: .ellipsis,
-                  cubit.selectedIngredient?.name ?? '',
-                  style: textTheme.bodyLarge,
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 200),
+                  left: labelPositionedLeft,
+                  right: labelPositionedRight,
+                  top: labelPositionedTop,
+                  bottom: labelPositionedBottom,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    padding: .only(
+                      left: floatingLabelHorizontalPadding,
+                      bottom: labelShouldFloat ? 4 : 0,
+                      right: floatingLabelHorizontalPadding,
+                    ),
+                    color: labelShouldFloat
+                        ? theme.scaffoldBackgroundColor
+                        : null,
+                    child: Align(
+                      alignment: .centerLeft,
+                      child: Text(
+                        labelShouldFloat ? label : placeholder,
+                        style: labelShouldFloat
+                            ? textTheme.labelSmall?.copyWith(
+                                height: 1,
+                                color: errorMessage != null
+                                    ? colorScheme.error
+                                    : colorScheme.onSurfaceVariant,
+                              )
+                            : textTheme.bodyLarge?.copyWith(
+                                height: 1,
+                                color: errorMessage != null
+                                    ? colorScheme.error
+                                    : colorScheme.onSurfaceVariant,
+                              ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: .circular(decorationRadius),
+                    onTap: () async {
+                      log('Tapped IngredientSelect', name: 'IngredientSelect');
+                      await showDialog<void>(
+                        useSafeArea: false,
+                        context: context,
+                        builder: (_) {
+                          return BlocProvider.value(
+                            value: cubit,
+                            child: const _IngredientSelectModal(),
+                          );
+                        },
+                      );
+                      onOpened?.call();
+                      cubit.filterChange('');
+                    },
+                    child: Container(
+                      width: constraints.maxWidth,
+                      height: 48,
+                      color: Colors.transparent,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 200),
-              left: labelPositionedLeft,
-              right: labelPositionedRight,
-              top: labelPositionedTop,
-              bottom: labelPositionedBottom,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: .only(
-                  left: floatingLabelHorizontalPadding,
-                  bottom: labelShouldFloat ? 4 : 0,
-                  right: floatingLabelHorizontalPadding,
-                ),
-                color: labelShouldFloat ? theme.scaffoldBackgroundColor : null,
-                child: Align(
-                  alignment: .centerLeft,
+            if (errorMessage != null)
+              Align(
+                alignment: .centerLeft,
+                child: Padding(
+                  padding: .only(
+                    top: 4,
+                    left: contentPadding!.horizontal / 2,
+                    right: contentPadding.horizontal / 2,
+                  ),
                   child: Text(
-                    labelShouldFloat ? label : placeholder,
-                    style: labelShouldFloat
-                        ? textTheme.labelSmall?.copyWith(
-                            height: 1,
-                            color: colorScheme.onSurfaceVariant,
-                          )
-                        : textTheme.bodyLarge?.copyWith(
-                            height: 1,
-                            color: colorScheme.onSurfaceVariant,
-                          ),
+                    errorMessage!,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.error,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: .circular(decorationRadius),
-                onTap: () async {
-                  log('Tapped IngredientSelect', name: 'IngredientSelect');
-                  // Open ingredient selection logic here
-                  await showDialog<void>(
-                    useSafeArea: false,
-                    context: context,
-                    builder: (_) {
-                      return BlocProvider.value(
-                        value: cubit,
-                        child: const _IngredientSelectModal(),
-                      );
-                    },
-                  );
-                  cubit.filterChange('');
-                },
-                child: Container(
-                  width: constraints.maxWidth,
-                  height: 48,
-                  color: Colors.transparent,
-                ),
-              ),
-            ),
           ],
         );
       },

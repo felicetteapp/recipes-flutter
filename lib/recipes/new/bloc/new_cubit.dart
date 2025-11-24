@@ -9,9 +9,11 @@ import 'package:recipe_repository/recipe_repository.dart';
 part 'new_state.dart';
 
 class NewRecipeCubit extends Cubit<NewRecipeState> {
-  NewRecipeCubit({required RecipeRepository recipeRepository})
-    : _recipeRepository = recipeRepository,
-      super(const NewRecipeState());
+  NewRecipeCubit({
+    required RecipeRepository recipeRepository,
+    NewRecipeState? initialState,
+  }) : _recipeRepository = recipeRepository,
+       super(initialState ?? const NewRecipeState());
 
   final RecipeRepository _recipeRepository;
 
@@ -26,6 +28,17 @@ class NewRecipeCubit extends Cubit<NewRecipeState> {
   }
 
   void recipeIngredientsChanged(List<FRRecipeIngredient> value) {
+    log(
+      'NewRecipeCubit.recipeIngredientsChanged called with ${value.length} items',
+      name: 'NewRecipeCubit',
+    );
+
+    for (final ingredient in value) {
+      log(
+        'Ingredient ID: ${ingredient.ingredientId}, Quantity: ${ingredient.quantity}, UUID: ${ingredient.uuid}',
+        name: 'NewRecipeCubit.recipeIngredientsChanged',
+      );
+    }
     final recipeIngredients = RecipeIngredients.dirty(value);
     emit(
       state.copyWith(

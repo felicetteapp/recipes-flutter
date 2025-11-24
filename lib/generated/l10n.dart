@@ -1408,6 +1408,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Recipes should have at least one ingredient`
+  String get recipes_should_have_at_least_one_ingredient {
+    return Intl.message(
+      'Recipes should have at least one ingredient',
+      name: 'recipes_should_have_at_least_one_ingredient',
+      desc: 'Error message when trying to save a recipe without ingredients',
+      args: [],
+    );
+  }
+
+  /// `Please select at least one ingredient to proceed.`
+  String get select_at_least_one_ingredient {
+    return Intl.message(
+      'Please select at least one ingredient to proceed.',
+      name: 'select_at_least_one_ingredient',
+      desc: 'Error message prompting user to select at least one ingredient',
+      args: [],
+    );
+  }
+
+  /// `There are errors in the recipe ingredients`
+  String get recipe_ingredients_error {
+    return Intl.message(
+      'There are errors in the recipe ingredients',
+      name: 'recipe_ingredients_error',
+      desc: 'Error message indicating there are issues with recipe ingredients',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

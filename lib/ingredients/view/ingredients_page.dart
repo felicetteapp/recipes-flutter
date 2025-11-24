@@ -30,7 +30,7 @@ class IngredientsPage extends StatelessWidget {
     final s = S.of(context);
     return NavigationDestination(
       icon: const Icon(Icons.kitchen),
-      label: s.ingredient(1).capitalize(),
+      label: s.ingredient(0).capitalize(),
     );
   }
 
