@@ -63,3 +63,9 @@ final class ToggleShowCheckedsFirst extends ListEvent {
 final class ToggleShowBudget extends ListEvent {
   const ToggleShowBudget();
 }
+
+final class ToggleIngredientCheckedStatus extends ListEvent {
+  const ToggleIngredientCheckedStatus(this.ingredientId);
+
+  final String ingredientId;
+}

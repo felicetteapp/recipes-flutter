@@ -39,6 +39,9 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<ToggleShowBudget>(
       _onToggleShowBudget,
     );
+    on<ToggleIngredientCheckedStatus>(
+      _onToggleIngredientCheckedStatus,
+    );
   }
 
   final GroupRepository _groupRepository;
@@ -194,6 +197,42 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       ),
     );
     add(const UpdateCurrentGroupIngredients());
+  }
+
+  void _onToggleIngredientCheckedStatus(
+    ToggleIngredientCheckedStatus event,
+    Emitter<ListState> emit,
+  ) {
+    log(
+      'Toggling checked status for ingredient: ${event.ingredientId}',
+      name: 'ListBloc.ToggleIngredientCheckedStatus',
+    );
+
+    if (state.selectedGroup == null) return;
+
+    final isCurrentlyChecked = state.currentCheckedIngredients.contains(
+      event.ingredientId,
+    );
+
+    if (isCurrentlyChecked) {
+      log(
+        'Removing checked ingredient',
+        name: 'ListBloc.ToggleIngredientCheckedStatus',
+      );
+      _groupRepository.removeCheckedIngredientFromGroup(
+        state.selectedGroup!.id,
+        event.ingredientId,
+      );
+    } else {
+      log(
+        'Adding checked ingredient',
+        name: 'ListBloc.ToggleIngredientCheckedStatus',
+      );
+      _groupRepository.addCheckedIngredientToGroup(
+        state.selectedGroup!.id,
+        event.ingredientId,
+      );
+    }
   }
 
   void _onUpdateCurrentGroupIngredients(

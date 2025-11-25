@@ -37,4 +37,27 @@ class GroupRepository {
       'filters': filters.toMap(),
     });
   }
+
+  Future<void> removeCheckedIngredientFromGroup(
+    String groupId,
+    String ingredientId,
+  ) async {
+    final groupDocRef = collection().doc(groupId);
+
+    await groupDocRef.update({
+      'checkedIngredients': FieldValue.arrayRemove([ingredientId]),
+      'ingredientsPrices.$ingredientId': FieldValue.delete(),
+    });
+  }
+
+  Future<void> addCheckedIngredientToGroup(
+    String groupId,
+    String ingredientId,
+  ) async {
+    final groupDocRef = collection().doc(groupId);
+
+    await groupDocRef.update({
+      'checkedIngredients': FieldValue.arrayUnion([ingredientId]),
+    });
+  }
 }

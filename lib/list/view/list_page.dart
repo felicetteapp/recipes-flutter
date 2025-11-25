@@ -413,7 +413,7 @@ class _ListIngredientTile extends StatelessWidget {
     return Padding(
       padding: const .symmetric(vertical: 1, horizontal: 8),
       child: ListTile(
-        isThreeLine: subtitleWidget != null,
+        isThreeLine: true,
         title: Text(item.ingredient.name),
         shape: getShape(),
         tileColor: item.isChecked
@@ -434,12 +434,19 @@ class _ListIngredientTile extends StatelessWidget {
                 'Checkbox changed to $checked for ingredient ${item.ingredient.id}',
                 name: '_ListIngredientTile',
               );
+              context.read<ListBloc>().add(
+                ToggleIngredientCheckedStatus(
+                  item.ingredient.id,
+                ),
+              );
+
               if (checked != true) return;
               await showDialog<void>(
                 context: context,
                 useSafeArea: false,
                 builder: (_) => ListIngredientModal(item: item),
               );
+
               //recipesBloc.add(RecipesToggleRecipeSelection(id));
             },
             activeColor: colorScheme.secondary,
