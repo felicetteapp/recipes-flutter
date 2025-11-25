@@ -188,7 +188,7 @@ class _ListIngredientTile extends StatelessWidget {
     );
   }
 
-  Widget? getTrailingWidget(BuildContext context) {
+  Widget getTrailingWidget(BuildContext context) {
     if (!item.isChecked) {
       return const SizedBox(width: 16);
     }
@@ -281,11 +281,9 @@ class _ListIngredientTile extends StatelessWidget {
         );
       },
     );
-
-    return const Text('preco'); // TODO: implement price display
   }
 
-  Widget? getSubtitleWidget(BuildContext context) {
+  Widget getSubtitleWidget(BuildContext context) {
     final s = S.of(context);
     final theme = Theme.of(context);
     final parts = <TextSpan>[];
@@ -391,7 +389,11 @@ class _ListIngredientTile extends StatelessWidget {
     }
 
     if (parts.isEmpty) {
-      return null;
+      parts.add(
+        const TextSpan(
+          text: '',
+        ),
+      );
     }
 
     return RichText(
