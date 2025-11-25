@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:felicette_recipes/app/bloc/app_bloc.dart';
 import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
@@ -12,6 +13,8 @@ import 'package:felicette_recipes/list/view/widgets/ingredient_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:recipe_repository/recipe_repository.dart';
 
 class ListPage extends StatelessWidget {
   const ListPage({super.key});
@@ -51,20 +54,13 @@ class ListPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final groupsBloc = context.watch<GroupsBloc>();
+    final listBloc = context.watch<ListBloc>();
     final ingredientsBloc = context.watch<IngredientsBloc>();
     final currentSelectedGroup = groupsBloc.state.selectedGroup;
 
-    final currentIngredients = context
-        .watch<ListBloc>()
-        .state
-        .currentIngredients;
+    final items = listBloc.state.listItems;
 
-    log(
-      'Current ingredients in ListPageContent: $currentIngredients',
-      name: 'ListPageContent',
-    );
-
-    final listItemsCount = currentIngredients.length + 2;
+    final listItemsCount = items.length + 2;
 
     return Scaffold(
       extendBody: true,
@@ -74,6 +70,10 @@ class ListPageContent extends StatelessWidget {
         ),
         itemCount: listItemsCount,
         itemBuilder: (context, index) {
+          log(
+            'render index $index of $listItemsCount',
+            name: 'ListPageContent',
+          );
           if (index == 0) {
             return const _ListFilters();
           }
@@ -82,10 +82,29 @@ class ListPageContent extends StatelessWidget {
             return const _ListQuickActionButtons();
           }
 
+          final item = items[index - 1];
+
+          if (item.type == ListPageListItemTypeEnum.recipe) {
+            return _ListRecipeTile(
+              item: item.recipeItem!,
+              first:
+                  index - 1 == 0 ||
+                  items[index - 2].type == ListPageListItemTypeEnum.ingredient,
+              last:
+                  index - 1 == items.length - 1 ||
+                  items[index].type == ListPageListItemTypeEnum.ingredient,
+            );
+          }
           return _ListIngredientTile(
-            item: currentIngredients[index - 1],
-            first: index - 1 == 0,
-            last: index - 1 == listItemsCount - 3,
+            item: item.ingredientItem!,
+            displayType: listBloc.state.displayType,
+            recipe: item.recipeItem?.recipe,
+            first:
+                index - 1 == 0 ||
+                items[index - 2].type == ListPageListItemTypeEnum.recipe,
+            last:
+                index - 1 == items.length - 1 ||
+                items[index].type == ListPageListItemTypeEnum.recipe,
           );
         },
       ),
@@ -93,7 +112,7 @@ class ListPageContent extends StatelessWidget {
         used: 0,
         total: 0,
         currency: currentSelectedGroup?.currency ?? '',
-        showBudget: currentSelectedGroup?.filters.showBudget ?? false,
+        showBudget: listBloc.state.showBudget,
       ),
     );
   }
@@ -104,15 +123,51 @@ final List<ListDisplayTypeEnum> typesList = [
   .recipes,
 ];
 
+class _ListRecipeTile extends StatelessWidget {
+  const _ListRecipeTile({
+    required this.item,
+    required this.first,
+    required this.last,
+  });
+  final ListRecipeItem item;
+  final bool first;
+  final bool last;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const .symmetric(vertical: 16, horizontal: 8),
+      child: ListTile(
+        title: Text(item.recipe.name),
+        contentPadding: const .only(
+          left: 4,
+          right: 4,
+        ),
+        leading: const Padding(
+          padding: .only(left: 12, right: 4),
+          child: Icon(
+            Icons.book,
+          ),
+        ),
+        visualDensity: .compact,
+      ),
+    );
+  }
+}
+
 class _ListIngredientTile extends StatelessWidget {
   const _ListIngredientTile({
     required this.item,
     required this.first,
     required this.last,
+    required this.displayType,
+    required this.recipe,
   });
   final ListIngredientItem item;
   final bool first;
   final bool last;
+  final ListDisplayTypeEnum displayType;
+  final FRRecipe? recipe;
 
   RoundedRectangleBorder getShape() {
     const double biggestRadius = 16;
@@ -135,9 +190,9 @@ class _ListIngredientTile extends StatelessWidget {
     );
   }
 
-  Widget? getTrailingWidget() {
+  Widget? getTrailingWidget(BuildContext context) {
     if (!item.isChecked) {
-      return null;
+      return const SizedBox(width: 16);
     }
 
     if (item.prices.isEmpty) {
@@ -148,6 +203,87 @@ class _ListIngredientTile extends StatelessWidget {
       );
     }
 
+    final currentLocale = context.read<AppBloc>().state.locale;
+    final currency =
+        context.read<GroupsBloc>().state.selectedGroup?.currency ?? 'USD';
+
+    final currencyFormatter = NumberFormat.simpleCurrency(
+      locale: currentLocale.toLanguageTag(),
+      name: currency,
+    );
+
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
+
+    final num totalPrice = item.prices.fold(
+      0,
+      (previousValue, element) =>
+          previousValue + element.unitPrice * element.quantity,
+    );
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          padding: const .only(right: 4),
+          constraints: BoxConstraints(
+            maxWidth: constraints.maxWidth * 0.25,
+          ),
+          child: Column(
+            crossAxisAlignment: .end,
+            children: [
+              Text(
+                currencyFormatter.format(totalPrice),
+                style: textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.primary,
+                ),
+              ),
+
+              RichText(
+                overflow: .ellipsis,
+                maxLines: 2,
+                textAlign: .right,
+                text: TextSpan(
+                  style: textTheme.labelSmall?.copyWith(height: 1),
+                  children: item.prices.map((price) {
+                    return TextSpan(
+                      children: [
+                        if (item.prices.indexOf(price) > 0)
+                          const TextSpan(
+                            text: ' ',
+                          ),
+                        TextSpan(
+                          text: price.quantity.toString(),
+                          style: TextStyle(
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'x',
+                          style: TextStyle(
+                            color: colorScheme.onSurfaceVariant,
+                            fontWeight: .w400,
+                          ),
+                        ),
+                        TextSpan(
+                          text: currencyFormatter.format(price.unitPrice),
+                          style: TextStyle(
+                            fontWeight: .bold,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
     return const Text('preco'); // TODO: implement price display
   }
 
@@ -155,19 +291,54 @@ class _ListIngredientTile extends StatelessWidget {
     final s = S.of(context);
     final theme = Theme.of(context);
     final parts = <TextSpan>[];
-    if (item.quantity != null && item.quantity!.isNotEmpty) {
+
+    final otherAssociatedRecipes = item.associatedRecipes
+        .where((r) => r.id != recipe?.id)
+        .toList();
+
+    if (displayType == ListDisplayTypeEnum.recipes) {
+      if (recipe != null) {
+        final ingredientInThisRecipe = recipe!.ingredients.firstWhereOrNull(
+          (ing) => ing.ingredientId == item.ingredient.id,
+        );
+        if (ingredientInThisRecipe != null &&
+            ingredientInThisRecipe.quantity.isNotEmpty) {
+          parts.add(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: ingredientInThisRecipe.quantity,
+                  style: const TextStyle(
+                    fontWeight: .bold,
+                  ),
+                ),
+                const TextSpan(
+                  text: ' - ',
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    }
+
+    if (((item.quantity != null && item.quantity!.isNotEmpty) ||
+            otherAssociatedRecipes.isNotEmpty) &&
+        displayType == ListDisplayTypeEnum.recipes) {
       parts.add(
         TextSpan(
           children: [
-            TextSpan(
-              text: item.quantity,
+            TextSpan(text: s.also.capitalize()),
+            const TextSpan(
+              text: ': ',
             ),
           ],
         ),
       );
     }
-    if (item.associatedRecipes.isNotEmpty) {
-      item.associatedRecipes.asMap().forEach((index, recipe) {
+
+    if (otherAssociatedRecipes.isNotEmpty) {
+      otherAssociatedRecipes.asMap().forEach((index, recipe) {
         final thisIngredientInRecipe = recipe.ingredients.firstWhereOrNull(
           (ing) => ing.ingredientId == item.ingredient.id,
         );
@@ -177,7 +348,7 @@ class _ListIngredientTile extends StatelessWidget {
         parts.add(
           TextSpan(
             children: [
-              if (parts.isNotEmpty) const TextSpan(text: ', '),
+              if (index > 0) const TextSpan(text: ', '),
               if (thisIngredientInRecipe.quantity.isNotEmpty)
                 TextSpan(
                   style: const TextStyle(
@@ -199,6 +370,26 @@ class _ListIngredientTile extends StatelessWidget {
           ),
         );
       });
+    }
+
+    if (otherAssociatedRecipes.isNotEmpty &&
+        item.quantity != null &&
+        item.quantity!.isNotEmpty) {
+      parts.add(
+        const TextSpan(text: ', '),
+      );
+    }
+
+    if (item.quantity != null && item.quantity!.isNotEmpty) {
+      parts.add(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: item.quantity,
+            ),
+          ],
+        ),
+      );
     }
 
     if (parts.isEmpty) {
@@ -254,7 +445,7 @@ class _ListIngredientTile extends StatelessWidget {
             activeColor: colorScheme.secondary,
           ),
         ),
-        trailing: getTrailingWidget(),
+        trailing: getTrailingWidget(context),
         visualDensity: .compact,
         subtitle: subtitleWidget,
       ),
@@ -343,13 +534,7 @@ class _ListFilters extends StatelessWidget {
                     children: [
                       if (displayType == .ingredients)
                         ChoiceChip(
-                          selected:
-                              groupsBloc
-                                  .state
-                                  .selectedGroup
-                                  ?.filters
-                                  .showCheckedsFirst ??
-                              false,
+                          selected: listBloc.state.showCheckedsFirst,
                           label: Text(s.show_checked_first),
                           onSelected: (selected) {
                             //                          controller.setShowCheckedFirst(selected);
@@ -401,68 +586,71 @@ class _ListQuickActionButtons extends StatelessWidget {
     final theme = Theme.of(context);
     final s = S.of(context);
     final colorScheme = theme.colorScheme;
-    return Wrap(
-      alignment: .center,
-      runAlignment: .center,
-      spacing: 16,
-      children: [
-        TextButton.icon(
-          style: TextButton.styleFrom(
-            foregroundColor: colorScheme.primary,
-          ),
-          key: const Key('add_item_button'),
-          icon: const Icon(Icons.add),
-          label: Text(s.add_ingredient),
-          onPressed: () {
-            /*
-            Get.dialog(
-              Scaffold(
-                body: IngredientSelect(
-                  startOpened: true,
-                  onModalClosed: () {
-                    log('IngredientSelect modal closed', name: 'ListWidget');
-                    Get.back();
-                  },
-                  items: controller.ingredientsService.ingredients,
-                  value: [
-                    ...controller
-                            .groupsService
-                            .selectedGroup
-                            .value
-                            ?.currentIngredients ??
-                        [],
-                    BasicIngredientQuantity(ingredientId: '', quantity: ''),
-                  ],
-                  itemLabelBuilder: (item) {
-                    return controller.ingredientsService
-                            .getIngredientById(item.ingredientId)
-                            ?.name ??
-                        '';
-                  },
-                  onChanged: (val) => {
-                    log(val.toString(), name: 'IngredientSelect onChanged'),
-                  },
-                  isMulti: true,
-                  label: TranslationKeys.selectIngredients.tr,
-                  isRecipe: false,
+    return Padding(
+      padding: const .only(top: 8),
+      child: Wrap(
+        alignment: .center,
+        runAlignment: .center,
+        spacing: 16,
+        children: [
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              foregroundColor: colorScheme.primary,
+            ),
+            key: const Key('add_item_button'),
+            icon: const Icon(Icons.add),
+            label: Text(s.add_ingredient),
+            onPressed: () {
+              /*
+              Get.dialog(
+                Scaffold(
+                  body: IngredientSelect(
+                    startOpened: true,
+                    onModalClosed: () {
+                      log('IngredientSelect modal closed', name: 'ListWidget');
+                      Get.back();
+                    },
+                    items: controller.ingredientsService.ingredients,
+                    value: [
+                      ...controller
+                              .groupsService
+                              .selectedGroup
+                              .value
+                              ?.currentIngredients ??
+                          [],
+                      BasicIngredientQuantity(ingredientId: '', quantity: ''),
+                    ],
+                    itemLabelBuilder: (item) {
+                      return controller.ingredientsService
+                              .getIngredientById(item.ingredientId)
+                              ?.name ??
+                          '';
+                    },
+                    onChanged: (val) => {
+                      log(val.toString(), name: 'IngredientSelect onChanged'),
+                    },
+                    isMulti: true,
+                    label: TranslationKeys.selectIngredients.tr,
+                    isRecipe: false,
+                  ),
                 ),
-              ),
-            ); */
-            //   controller.openAddItemModal();
-          },
-        ),
-        TextButton.icon(
-          style: TextButton.styleFrom(
-            foregroundColor: colorScheme.error,
+              ); */
+              //   controller.openAddItemModal();
+            },
           ),
-          key: const Key('clear_all_checks_button'),
-          icon: const Icon(Icons.clear_all),
-          label: Text(s.clear_all_checks),
-          onPressed: () {
-            //            controller.clearAllChecks();
-          },
-        ),
-      ],
+          TextButton.icon(
+            style: TextButton.styleFrom(
+              foregroundColor: colorScheme.error,
+            ),
+            key: const Key('clear_all_checks_button'),
+            icon: const Icon(Icons.clear_all),
+            label: Text(s.clear_all_checks),
+            onPressed: () {
+              //            controller.clearAllChecks();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

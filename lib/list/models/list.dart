@@ -29,3 +29,37 @@ class ListIngredientItem extends Equatable {
     prices,
   ];
 }
+
+class ListRecipeItem extends Equatable {
+  const ListRecipeItem({
+    required this.recipe,
+  });
+  final FRRecipe recipe;
+  String get recipeId => recipe.id;
+
+  @override
+  List<Object?> get props => [
+    recipe,
+  ];
+}
+
+enum ListPageListItemTypeEnum { ingredient, recipe }
+
+class ListPageListItem extends Equatable {
+  const ListPageListItem({
+    required this.type,
+    this.ingredientItem,
+    this.recipeItem,
+  });
+
+  final ListPageListItemTypeEnum type;
+  final ListIngredientItem? ingredientItem;
+  final ListRecipeItem? recipeItem;
+
+  @override
+  List<Object?> get props => [
+    type,
+    ingredientItem,
+    recipeItem,
+  ];
+}

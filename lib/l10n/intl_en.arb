@@ -615,5 +615,9 @@
   "recipe_deleted_successfully": "Recipe deleted successfully",
   "@recipe_deleted_successfully": {
     "description": "Success message when recipe is deleted"
+  },
+  "also": "also",
+  "@also": {
+    "description": "Used to indicate additional associated items"
   }
 }

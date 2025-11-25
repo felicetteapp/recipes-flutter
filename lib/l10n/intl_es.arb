@@ -346,14 +346,14 @@
     "description": "Title for editing an ingredient"
   },
   "edit_ingredient": "Editar Ingrediente",
-  "@confirm_deletion": {
+  "@confirm_ingredient_deletion": {
     "description": "Title for deletion confirmation dialog"
   },
-  "confirm_deletion": "Confirmar Eliminación",
-  "@confirm_deletion_message": {
+  "confirm_ingredient_deletion": "Confirmar Eliminación",
+  "@confirm_ingredient_deletion_message": {
     "description": "Message asking for deletion confirmation"
   },
-  "confirm_deletion_message": "¿Estás seguro de que quieres eliminar este ingrediente?",
+  "confirm_ingredient_deletion_message": "¿Estás seguro de que quieres eliminar este ingrediente?",
   "@ingredient_updated_successfully": {
     "description": "Success message when ingredient is updated"
   },
@@ -583,5 +583,41 @@
   "@password_recovery_error": {
     "description": "Indicates that there was an error sending the password recovery email"
   },
-  "password_recovery_error": "Error al enviar el correo de recuperación de contraseña"
+  "password_recovery_error": "Error al enviar el correo de recuperación de contraseña",
+  "@recipes_should_have_at_least_one_ingredient": {
+    "description": "Error message when trying to save a recipe without ingredients"
+  },
+  "recipes_should_have_at_least_one_ingredient": "Las recetas deben tener al menos un ingrediente",
+  "@select_at_least_one_ingredient": {
+    "description": "Error message prompting user to select at least one ingredient"
+  },
+  "select_at_least_one_ingredient": "Por favor selecciona al menos un ingrediente para continuar.",
+  "@recipe_ingredients_error": {
+    "description": "Error message indicating there are issues with recipe ingredients"
+  },
+  "recipe_ingredients_error": "Hay errores en los ingredientes de la receta",
+  "@recipe_created_successfully": {
+    "description": "Success message when recipe is created"
+  },
+  "recipe_created_successfully": "Receta creada exitosamente",
+  "@recipe_updated_successfully": {
+    "description": "Success message when recipe is updated"
+  },
+  "recipe_updated_successfully": "Receta actualizada exitosamente",
+  "confirm_recipe_deletion": "Confirmar Eliminación",
+  "@confirm_recipe_deletion": {
+    "description": "Title for recipe deletion confirmation dialog"
+  },
+  "confirm_recipe_deletion_message": "¿Estás seguro de que quieres eliminar esta receta?",
+  "@confirm_recipe_deletion_message": {
+    "description": "Message asking for recipe deletion confirmation"
+  },
+  "recipe_deleted_successfully": "Receta eliminada exitosamente",
+  "@recipe_deleted_successfully": {
+    "description": "Success message when recipe is deleted"
+  },
+  "also": "también",
+  "@also": {
+    "description": "Used to indicate additional associated items"
+  }
 }

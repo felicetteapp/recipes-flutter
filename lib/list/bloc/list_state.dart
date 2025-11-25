@@ -9,6 +9,11 @@ class ListState extends Equatable {
     this.currentIngredients = const [],
     this.currentRecipesIds = const [],
     this.currentRecipes = const [],
+    this.listItems = const [],
+    this.currentIngredientPrices = const {},
+    this.currentCheckedIngredients = const [],
+    this.showBudget = false,
+    this.showCheckedsFirst = false,
   });
 
   final ListDisplayTypeEnum displayType;
@@ -18,6 +23,11 @@ class ListState extends Equatable {
   final List<FRRecipe> currentRecipes;
   final List<FRRecipe> groupRecipes;
   final List<FRIngredient> groupIngredients;
+  final List<ListPageListItem> listItems;
+  final Map<String, List<FRIngredientPrice>> currentIngredientPrices;
+  final List<String> currentCheckedIngredients;
+  final bool showBudget;
+  final bool showCheckedsFirst;
 
   ListState copyWith({
     ListDisplayTypeEnum? displayType,
@@ -27,6 +37,11 @@ class ListState extends Equatable {
     List<ListIngredientItem>? currentIngredients,
     List<String>? currentRecipesIds,
     List<FRRecipe>? currentRecipes,
+    List<ListPageListItem>? listItems,
+    Map<String, List<FRIngredientPrice>>? currentIngredientPrices,
+    List<String>? currentCheckedIngredients,
+    bool? showBudget,
+    bool? showCheckedsFirst,
   }) {
     return ListState(
       displayType: displayType ?? this.displayType,
@@ -36,6 +51,13 @@ class ListState extends Equatable {
       currentIngredients: currentIngredients ?? this.currentIngredients,
       currentRecipesIds: currentRecipesIds ?? this.currentRecipesIds,
       currentRecipes: currentRecipes ?? this.currentRecipes,
+      listItems: listItems ?? this.listItems,
+      currentIngredientPrices:
+          currentIngredientPrices ?? this.currentIngredientPrices,
+      currentCheckedIngredients:
+          currentCheckedIngredients ?? this.currentCheckedIngredients,
+      showBudget: showBudget ?? this.showBudget,
+      showCheckedsFirst: showCheckedsFirst ?? this.showCheckedsFirst,
     );
   }
 
@@ -48,5 +70,10 @@ class ListState extends Equatable {
     currentIngredients,
     currentRecipesIds,
     currentRecipes,
+    listItems,
+    currentIngredientPrices,
+    currentCheckedIngredients,
+    showBudget,
+    showCheckedsFirst,
   ];
 }

@@ -200,6 +200,27 @@ class _MainShellContent extends StatelessWidget {
             context.read<ListBloc>().add(
               ListSelectedGroupChanged(selectedGroup),
             );
+            context.read<ListBloc>().add(
+              UpdateCurrentGroupIngredientPrices(
+                selectedGroup?.ingredientsPrices ?? {},
+              ),
+            );
+            context.read<ListBloc>().add(
+              ListCurrentCheckedIngredientsChanged(
+                selectedGroup?.checkedIngredients ?? [],
+              ),
+            );
+            context.read<ListBloc>().add(
+              ListShowCheckedsFirstChanged(
+                showCheckedsFirst:
+                    selectedGroup?.filters.showCheckedsFirst ?? false,
+              ),
+            );
+            context.read<ListBloc>().add(
+              ListShowBudgetChanged(
+                showBudget: selectedGroup?.filters.showBudget ?? false,
+              ),
+            );
           },
         ),
         BlocListener<RecipesBloc, RecipesState>(

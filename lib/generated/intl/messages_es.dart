@@ -68,6 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "already_have_account": MessageLookupByLibrary.simpleMessage(
       "¿Ya tienes una cuenta?",
     ),
+    "also": MessageLookupByLibrary.simpleMessage("también"),
     "application_description": MessageLookupByLibrary.simpleMessage(
       "Felicette Recetas es una aplicación de código abierto que te ayuda a gestionar tus recetas y listas de compras.",
     ),
@@ -92,8 +93,20 @@ class MessageLookup extends MessageLookupByLibrary {
       "Confirmar Ingrediente Real",
     ),
     "confirm_actual_ingredient_description": m0,
+    "confirm_ingredient_deletion": MessageLookupByLibrary.simpleMessage(
+      "Confirmar Eliminación",
+    ),
+    "confirm_ingredient_deletion_message": MessageLookupByLibrary.simpleMessage(
+      "¿Estás seguro de que quieres eliminar este ingrediente?",
+    ),
     "confirm_password": MessageLookupByLibrary.simpleMessage(
       "Confirmar Contraseña",
+    ),
+    "confirm_recipe_deletion": MessageLookupByLibrary.simpleMessage(
+      "Confirmar Eliminación",
+    ),
+    "confirm_recipe_deletion_message": MessageLookupByLibrary.simpleMessage(
+      "¿Estás seguro de que quieres eliminar esta receta?",
     ),
     "connected": MessageLookupByLibrary.simpleMessage("Conectado"),
     "create": MessageLookupByLibrary.simpleMessage("Crear"),
@@ -257,7 +270,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "quantity": MessageLookupByLibrary.simpleMessage("Cantidad"),
     "quantity_for": m7,
     "recipe": m8,
+    "recipe_created_successfully": MessageLookupByLibrary.simpleMessage(
+      "Receta creada exitosamente",
+    ),
+    "recipe_deleted_successfully": MessageLookupByLibrary.simpleMessage(
+      "Receta eliminada exitosamente",
+    ),
+    "recipe_ingredients_error": MessageLookupByLibrary.simpleMessage(
+      "Hay errores en los ingredientes de la receta",
+    ),
     "recipe_name": MessageLookupByLibrary.simpleMessage("Nombre de la Receta"),
+    "recipe_updated_successfully": MessageLookupByLibrary.simpleMessage(
+      "Receta actualizada exitosamente",
+    ),
+    "recipes_should_have_at_least_one_ingredient":
+        MessageLookupByLibrary.simpleMessage(
+          "Las recetas deben tener al menos un ingrediente",
+        ),
     "reset_password": MessageLookupByLibrary.simpleMessage(
       "Restablecer Contraseña",
     ),
@@ -272,6 +301,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Guardar Sin Precio",
     ),
     "search": MessageLookupByLibrary.simpleMessage("Buscar"),
+    "select_at_least_one_ingredient": MessageLookupByLibrary.simpleMessage(
+      "Por favor selecciona al menos un ingrediente para continuar.",
+    ),
     "select_currency": MessageLookupByLibrary.simpleMessage(
       "Seleccionar Moneda",
     ),

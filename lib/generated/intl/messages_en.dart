@@ -67,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "already_have_account": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
+    "also": MessageLookupByLibrary.simpleMessage("also"),
     "application_description": MessageLookupByLibrary.simpleMessage(
       "Felicette Recipes is an open-source application to help you manage your recipes and shopping lists.",
     ),

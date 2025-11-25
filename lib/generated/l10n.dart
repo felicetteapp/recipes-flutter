@@ -1488,6 +1488,16 @@ class S {
       args: [],
     );
   }
+
+  /// `also`
+  String get also {
+    return Intl.message(
+      'also',
+      name: 'also',
+      desc: 'Used to indicate additional associated items',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

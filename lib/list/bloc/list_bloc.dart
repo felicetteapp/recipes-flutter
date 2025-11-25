@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:math' hide log;
 
 import 'package:equatable/equatable.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
@@ -19,6 +18,18 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<UpdateGroupIngredients>(_onGroupIngredientsUpdated);
     on<UpdateGroupRecipes>(_onGroupRecipesUpdated);
     on<UpdateCurrentGroupIngredients>(_onUpdateCurrentGroupIngredients);
+    on<UpdateCurrentGroupIngredientPrices>(
+      _onUpdateCurrentGroupIngredientPrices,
+    );
+    on<ListCurrentCheckedIngredientsChanged>(
+      _onListCurrentCheckedIngredientsChanged,
+    );
+    on<ListShowBudgetChanged>(
+      _onListShowBudgetChanged,
+    );
+    on<ListShowCheckedsFirstChanged>(
+      _onListShowCheckedsFirstChanged,
+    );
   }
 
   void _onListDisplayTypeChanged(
@@ -30,6 +41,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
         displayType: event.displayType,
       ),
     );
+    add(const UpdateCurrentGroupIngredients());
   }
 
   void _onListSelectedGroupChanged(
@@ -81,6 +93,64 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     add(const UpdateCurrentGroupIngredients());
   }
 
+  void _onUpdateCurrentGroupIngredientPrices(
+    UpdateCurrentGroupIngredientPrices event,
+    Emitter<ListState> emit,
+  ) {
+    log('Updating current group ingredient prices', name: 'ListBloc');
+    emit(
+      state.copyWith(
+        currentIngredientPrices: event.prices,
+      ),
+    );
+    add(const UpdateCurrentGroupIngredients());
+  }
+
+  void _onListCurrentCheckedIngredientsChanged(
+    ListCurrentCheckedIngredientsChanged event,
+    Emitter<ListState> emit,
+  ) {
+    log(
+      'Updating current checked ingredients: ${event.checkedIngredientIds}',
+      name: 'ListBloc',
+    );
+    emit(
+      state.copyWith(
+        currentCheckedIngredients: event.checkedIngredientIds,
+      ),
+    );
+    add(const UpdateCurrentGroupIngredients());
+  }
+
+  void _onListShowBudgetChanged(
+    ListShowBudgetChanged event,
+    Emitter<ListState> emit,
+  ) {
+    log('Updating show budget: ${event.showBudget}', name: 'ListBloc');
+    emit(
+      state.copyWith(
+        showBudget: event.showBudget,
+      ),
+    );
+    add(const UpdateCurrentGroupIngredients());
+  }
+
+  void _onListShowCheckedsFirstChanged(
+    ListShowCheckedsFirstChanged event,
+    Emitter<ListState> emit,
+  ) {
+    log(
+      'Updating show checkeds first: ${event.showCheckedsFirst}',
+      name: 'ListBloc',
+    );
+    emit(
+      state.copyWith(
+        showCheckedsFirst: event.showCheckedsFirst,
+      ),
+    );
+    add(const UpdateCurrentGroupIngredients());
+  }
+
   void _onUpdateCurrentGroupIngredients(
     UpdateCurrentGroupIngredients event,
     Emitter<ListState> emit,
@@ -88,8 +158,15 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     log('Updating current group ingredients', name: 'ListBloc');
     final currentIngredientIds = state.currentIngredientIds;
     final groupIngredients = state.groupIngredients;
-    final groupRecipes = state.groupRecipes;
-    final currentRecipes = state.currentRecipes;
+    final currentRecipes = state.currentRecipes
+      ..sort(
+        (a, b) => a.name.normalizeForSearch().compareTo(
+          b.name.normalizeForSearch(),
+        ),
+      );
+    final currentCheckedIngredients = state.currentCheckedIngredients;
+    final currentIngredientPrices = state.currentIngredientPrices;
+    final showCheckedsFirst = state.showCheckedsFirst;
 
     final currentIngredients = <ListIngredientItem>[];
 
@@ -104,9 +181,8 @@ class ListBloc extends Bloc<ListEvent, ListState> {
             ingredient: ingredient,
             quantity: current.quantity,
             associatedRecipes: List.empty(growable: true),
-            //  isChecked: false, // TODO: implement checked state
-            isChecked: Random().nextBool(),
-            prices: [], // TODO: implement prices
+            isChecked: currentCheckedIngredients.contains(ingredient.id),
+            prices: currentIngredientPrices[ingredient.id] ?? [],
           ),
         );
       }
@@ -127,9 +203,8 @@ class ListBloc extends Bloc<ListEvent, ListState> {
                 ingredient: ingredient,
                 quantity: recipeIngredient.quantity,
                 associatedRecipes: List.empty(growable: true),
-                // isChecked: false, // TODO: implement checked state
-                isChecked: Random().nextBool(),
-                prices: [], // TODO: implement prices
+                isChecked: currentCheckedIngredients.contains(ingredient.id),
+                prices: currentIngredientPrices[ingredient.id] ?? [],
               ),
             );
           }
@@ -146,9 +221,65 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       item.associatedRecipes.addAll(associatedRecipes);
     }
 
+    final listItems = <ListPageListItem>[];
+
+    if (state.displayType == ListDisplayTypeEnum.ingredients) {
+      for (final ingredientItem in currentIngredients) {
+        listItems
+          ..add(
+            ListPageListItem(
+              type: ListPageListItemTypeEnum.ingredient,
+              ingredientItem: ingredientItem,
+            ),
+          )
+          ..sort(
+            (a, b) {
+              if (showCheckedsFirst) {
+                if (a.ingredientItem!.isChecked &&
+                    !b.ingredientItem!.isChecked) {
+                  return -1;
+                } else if (!a.ingredientItem!.isChecked &&
+                    b.ingredientItem!.isChecked) {
+                  return 1;
+                }
+              }
+              return a.ingredientItem!.ingredient.name
+                  .normalizeForSearch()
+                  .compareTo(
+                    b.ingredientItem!.ingredient.name.normalizeForSearch(),
+                  );
+            },
+          );
+      }
+    } else {
+      for (final recipe in currentRecipes) {
+        listItems.add(
+          ListPageListItem(
+            type: ListPageListItemTypeEnum.recipe,
+            recipeItem: ListRecipeItem(recipe: recipe),
+          ),
+        );
+        for (final recipeIngredient in recipe.ingredients) {
+          final ingredientItem = currentIngredients.firstWhereOrNull((item) {
+            return item.ingredient.id == recipeIngredient.ingredientId;
+          });
+          if (ingredientItem != null) {
+            listItems.add(
+              ListPageListItem(
+                type: ListPageListItemTypeEnum.ingredient,
+                ingredientItem: ingredientItem,
+                recipeItem: ListRecipeItem(recipe: recipe),
+              ),
+            );
+          }
+        }
+      }
+    }
+
     emit(
       state.copyWith(
         currentIngredients: currentIngredients,
+        listItems: listItems,
       ),
     );
   }

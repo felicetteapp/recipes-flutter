@@ -31,3 +31,27 @@ final class UpdateGroupIngredients extends ListEvent {
 final class UpdateCurrentGroupIngredients extends ListEvent {
   const UpdateCurrentGroupIngredients();
 }
+
+final class UpdateCurrentGroupIngredientPrices extends ListEvent {
+  const UpdateCurrentGroupIngredientPrices(this.prices);
+
+  final Map<String, List<FRIngredientPrice>> prices;
+}
+
+final class ListCurrentCheckedIngredientsChanged extends ListEvent {
+  const ListCurrentCheckedIngredientsChanged(this.checkedIngredientIds);
+
+  final List<String> checkedIngredientIds;
+}
+
+final class ListShowBudgetChanged extends ListEvent {
+  const ListShowBudgetChanged({required this.showBudget});
+
+  final bool showBudget;
+}
+
+final class ListShowCheckedsFirstChanged extends ListEvent {
+  const ListShowCheckedsFirstChanged({required this.showCheckedsFirst});
+
+  final bool showCheckedsFirst;
+}
