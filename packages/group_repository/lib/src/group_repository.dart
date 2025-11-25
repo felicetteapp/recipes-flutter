@@ -26,4 +26,15 @@ class GroupRepository {
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
+
+  Future<void> updateSelectedGroupFilters(
+    String groupId, {
+    required FRGroupFilter filters,
+  }) async {
+    final groupDocRef = collection().doc(groupId);
+
+    await groupDocRef.update({
+      'filters': filters.toMap(),
+    });
+  }
 }

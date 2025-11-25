@@ -14,6 +14,9 @@ class ListState extends Equatable {
     this.currentCheckedIngredients = const [],
     this.showBudget = false,
     this.showCheckedsFirst = false,
+    this.selectedGroup,
+    this.currentListSpentBudget = 0,
+    this.currentListBudget = 0,
   });
 
   final ListDisplayTypeEnum displayType;
@@ -28,6 +31,9 @@ class ListState extends Equatable {
   final List<String> currentCheckedIngredients;
   final bool showBudget;
   final bool showCheckedsFirst;
+  final FRGroup? selectedGroup;
+  final num currentListSpentBudget;
+  final num currentListBudget;
 
   ListState copyWith({
     ListDisplayTypeEnum? displayType,
@@ -42,6 +48,9 @@ class ListState extends Equatable {
     List<String>? currentCheckedIngredients,
     bool? showBudget,
     bool? showCheckedsFirst,
+    FRGroup? selectedGroup,
+    num? currentListSpentBudget,
+    num? currentListBudget,
   }) {
     return ListState(
       displayType: displayType ?? this.displayType,
@@ -58,6 +67,10 @@ class ListState extends Equatable {
           currentCheckedIngredients ?? this.currentCheckedIngredients,
       showBudget: showBudget ?? this.showBudget,
       showCheckedsFirst: showCheckedsFirst ?? this.showCheckedsFirst,
+      selectedGroup: selectedGroup ?? this.selectedGroup,
+      currentListSpentBudget:
+          currentListSpentBudget ?? this.currentListSpentBudget,
+      currentListBudget: currentListBudget ?? this.currentListBudget,
     );
   }
 
@@ -75,5 +88,8 @@ class ListState extends Equatable {
     currentCheckedIngredients,
     showBudget,
     showCheckedsFirst,
+    selectedGroup,
+    currentListSpentBudget,
+    currentListBudget,
   ];
 }

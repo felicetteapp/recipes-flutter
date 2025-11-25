@@ -55,3 +55,11 @@ final class ListShowCheckedsFirstChanged extends ListEvent {
 
   final bool showCheckedsFirst;
 }
+
+final class ToggleShowCheckedsFirst extends ListEvent {
+  const ToggleShowCheckedsFirst();
+}
+
+final class ToggleShowBudget extends ListEvent {
+  const ToggleShowBudget();
+}

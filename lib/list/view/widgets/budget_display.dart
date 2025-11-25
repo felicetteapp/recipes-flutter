@@ -119,7 +119,7 @@ class BudgetDisplay extends StatelessWidget {
                         borderRadius: .all(.circular(32 - 8)),
                       ),
                       child: Padding(
-                        padding: const .symmetric(vertical: 4, horizontal: 2),
+                        padding: const .symmetric(vertical: 4, horizontal: 4),
                         child: RichText(
                           textAlign: .center,
                           text: TextSpan(

@@ -6,7 +6,6 @@ import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
-import 'package:felicette_recipes/ingredients/ingredients.dart';
 import 'package:felicette_recipes/list/list.dart';
 import 'package:felicette_recipes/list/view/widgets/budget_display.dart';
 import 'package:felicette_recipes/list/view/widgets/ingredient_modal.dart';
@@ -55,7 +54,6 @@ class ListPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final groupsBloc = context.watch<GroupsBloc>();
     final listBloc = context.watch<ListBloc>();
-    final ingredientsBloc = context.watch<IngredientsBloc>();
     final currentSelectedGroup = groupsBloc.state.selectedGroup;
 
     final items = listBloc.state.listItems;
@@ -109,8 +107,8 @@ class ListPageContent extends StatelessWidget {
         },
       ),
       bottomNavigationBar: BudgetDisplay(
-        used: 0,
-        total: 0,
+        used: listBloc.state.currentListSpentBudget.toDouble(),
+        total: listBloc.state.currentListBudget.toDouble(),
         currency: currentSelectedGroup?.currency ?? '',
         showBudget: listBloc.state.showBudget,
       ),
@@ -460,7 +458,6 @@ class _ListFilters extends StatelessWidget {
   Widget build(BuildContext context) {
     final listBloc = context.watch<ListBloc>();
     final displayType = listBloc.state.displayType;
-    final groupsBloc = context.watch<GroupsBloc>();
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final s = S.of(context);
@@ -537,33 +534,16 @@ class _ListFilters extends StatelessWidget {
                           selected: listBloc.state.showCheckedsFirst,
                           label: Text(s.show_checked_first),
                           onSelected: (selected) {
-                            //                          controller.setShowCheckedFirst(selected);
+                            listBloc.add(const ToggleShowCheckedsFirst());
                           },
                         ),
                       ChoiceChip(
-                        selected:
-                            groupsBloc
-                                .state
-                                .selectedGroup
-                                ?.filters
-                                .showBudget ??
-                            false,
+                        selected: listBloc.state.showBudget,
                         label: Text(s.show_budget),
                         onSelected: (selected) {
-                          /*     final currentFilters =
-                              controller
-                                  .groupsService
-                                  .selectedGroup
-                                  .value
-                                  ?.filters ??
-                              FRGroupFilter();
-                          controller.groupsService.updateCurrentGroupFilters(
-                            FRGroupFilter(
-                              showCheckedsFirst:
-                                  currentFilters.showCheckedsFirst,
-                              showBudget: selected,
-                            ),
-                          ); */
+                          listBloc.add(
+                            ListShowBudgetChanged(showBudget: selected),
+                          );
                         },
                       ),
                     ],

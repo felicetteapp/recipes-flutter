@@ -12,7 +12,10 @@ part 'list_event.dart';
 part 'list_state.dart';
 
 class ListBloc extends Bloc<ListEvent, ListState> {
-  ListBloc() : super(const ListState()) {
+  ListBloc({
+    required GroupRepository groupRepository,
+  }) : _groupRepository = groupRepository,
+       super(const ListState()) {
     on<ListDisplayTypeChanged>(_onListDisplayTypeChanged);
     on<ListSelectedGroupChanged>(_onListSelectedGroupChanged);
     on<UpdateGroupIngredients>(_onGroupIngredientsUpdated);
@@ -29,6 +32,46 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     );
     on<ListShowCheckedsFirstChanged>(
       _onListShowCheckedsFirstChanged,
+    );
+    on<ToggleShowCheckedsFirst>(
+      _onToggleShowCheckedsFirst,
+    );
+    on<ToggleShowBudget>(
+      _onToggleShowBudget,
+    );
+  }
+
+  final GroupRepository _groupRepository;
+
+  void _onToggleShowCheckedsFirst(
+    ToggleShowCheckedsFirst event,
+    Emitter<ListState> emit,
+  ) {
+    final currentShowCheckedsFirst = state.showCheckedsFirst;
+
+    if (state.selectedGroup == null) return;
+
+    _groupRepository.updateSelectedGroupFilters(
+      state.selectedGroup!.id,
+      filters: state.selectedGroup!.filters.copyWith(
+        showCheckedsFirst: !currentShowCheckedsFirst,
+      ),
+    );
+  }
+
+  void _onToggleShowBudget(
+    ToggleShowBudget event,
+    Emitter<ListState> emit,
+  ) {
+    final currentShowBudget = state.showBudget;
+
+    if (state.selectedGroup == null) return;
+
+    _groupRepository.updateSelectedGroupFilters(
+      state.selectedGroup!.id,
+      filters: state.selectedGroup!.filters.copyWith(
+        showBudget: !currentShowBudget,
+      ),
     );
   }
 
@@ -57,6 +100,8 @@ class ListBloc extends Bloc<ListEvent, ListState> {
           return event.selectedGroup?.currentRecipes.contains(recipe.id) ??
               false;
         }).toList(),
+        selectedGroup: event.selectedGroup,
+        currentListBudget: event.selectedGroup?.budget ?? 0,
       ),
     );
     add(const UpdateCurrentGroupIngredients());
@@ -280,6 +325,21 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       state.copyWith(
         currentIngredients: currentIngredients,
         listItems: listItems,
+        currentListSpentBudget: currentIngredientPrices.entries.fold(0, (
+          previousValue,
+          priceEntry,
+        ) {
+          final ingredientId = priceEntry.key;
+          if (!currentCheckedIngredients.contains(ingredientId)) {
+            return previousValue;
+          }
+
+          return previousValue! +
+              priceEntry.value.fold(
+                0,
+                (prev, price) => prev + price.quantity * price.unitPrice,
+              );
+        }),
       ),
     );
   }

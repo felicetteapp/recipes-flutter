@@ -151,7 +151,11 @@ Widget _getMultiProvider(
         ingredientRepository: context.read<IngredientRepository>(),
       ),
     ),
-    BlocProvider(create: (context) => ListBloc()),
+    BlocProvider(
+      create: (context) => ListBloc(
+        groupRepository: context.read<GroupRepository>(),
+      ),
+    ),
     BlocProvider(
       create: (context) => GroupsBloc(
         groupRepository: context.read<GroupRepository>(),
