@@ -74,4 +74,23 @@ class GroupRepository {
       'ingredientsPrices.$ingredientId': pricesMapList,
     });
   }
+
+  Future<void> updateList(
+    String groupId,
+    FRGroup updatedGroup,
+  ) async {
+    final groupDocRef = collection().doc(groupId);
+
+    await groupDocRef.set(
+      updatedGroup,
+      SetOptions(
+        mergeFields: [
+          'currentIngredients',
+          'currentRecipes',
+          'budget',
+          'currency',
+        ],
+      ),
+    );
+  }
 }

@@ -60,6 +60,10 @@ class _IngredientsQuantityInputContent<T extends BasicIngredientQuantity>
     final theme = Theme.of(context);
     final s = S.of(context);
 
+    final atLeastOneIngredientIsEmpty = items.any(
+      (iq) => iq.ingredientId.isEmpty,
+    );
+
     return Column(
       spacing: 16,
       children: [
@@ -87,13 +91,15 @@ class _IngredientsQuantityInputContent<T extends BasicIngredientQuantity>
             backgroundColor: theme.customColors.onSuccess,
             foregroundColor: theme.customColors.success,
           ),
-          onPressed: () {
-            final newValue = [
-              ...items,
-              cubit.generateEmpty(),
-            ];
-            cubit.itemsChanged(newValue);
-          },
+          onPressed: atLeastOneIngredientIsEmpty
+              ? null
+              : () {
+                  final newValue = [
+                    ...items,
+                    cubit.generateEmpty(),
+                  ];
+                  cubit.itemsChanged(newValue);
+                },
           label: Text(s.add_ingredient),
         ),
       ],

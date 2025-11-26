@@ -8,6 +8,7 @@ class EditListState extends Equatable {
     this.currency = '',
     this.groupIngredients = const [],
     this.groupRecipes = const [],
+    this.currentGroup,
   });
   final List<FRCurrentIngredients> currentIngredients;
   final double budget;
@@ -16,6 +17,7 @@ class EditListState extends Equatable {
 
   final List<FRIngredient> groupIngredients;
   final List<FRRecipe> groupRecipes;
+  final FRGroup? currentGroup;
 
   EditListState copyWith({
     List<FRCurrentIngredients>? currentIngredients,
@@ -24,6 +26,7 @@ class EditListState extends Equatable {
     String? currency,
     List<FRIngredient>? groupIngredients,
     List<FRRecipe>? groupRecipes,
+    FRGroup? currentGroup,
   }) {
     return EditListState(
       currentIngredients: currentIngredients ?? this.currentIngredients,
@@ -32,6 +35,7 @@ class EditListState extends Equatable {
       currency: currency ?? this.currency,
       groupIngredients: groupIngredients ?? this.groupIngredients,
       groupRecipes: groupRecipes ?? this.groupRecipes,
+      currentGroup: currentGroup ?? this.currentGroup,
     );
   }
 
@@ -43,5 +47,6 @@ class EditListState extends Equatable {
     currency,
     groupIngredients,
     groupRecipes,
+    currentGroup,
   ];
 }

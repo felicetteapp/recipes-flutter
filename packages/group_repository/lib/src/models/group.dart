@@ -71,7 +71,7 @@ class FRCurrentIngredients extends BasicIngredientQuantity {
     required super.ingredientId,
     required super.quantity,
     required super.uuid,
-  });
+  }) : assert(uuid.isNotEmpty, 'uuid cannot be empty');
 
   factory FRCurrentIngredients.fromMap(Map<String, dynamic> data) {
     final mapUuid = data['uuid'] as String?;
