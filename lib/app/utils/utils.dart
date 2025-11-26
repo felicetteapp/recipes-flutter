@@ -13,6 +13,7 @@ class FRUtils {
     'CNY',
     'INR',
     'BRL',
+    'ARS',
   ];
 
   static String getCurrencyName(String currencyCode, BuildContext context) {
@@ -25,6 +26,7 @@ class FRUtils {
       'CNY': s.currency_cny,
       'INR': s.currency_inr,
       'BRL': s.currency_brl,
+      'ARS': s.currency_ars,
     };
     return currencyNames[currencyCode] ?? currencyCode;
   }
@@ -38,6 +40,7 @@ class FRUtils {
       'CNY': '¥',
       'INR': '₹',
       'BRL': r'R$',
+      'ARS': r'$',
     };
     return currencySymbols[currencyCode] ?? currencyCode;
   }
@@ -112,6 +115,7 @@ class FRUtils {
     final languageNames = {
       'en': 'English',
       'es': 'Español',
+      'pt': 'Português',
     };
     return languageNames[locale.languageCode] ?? locale.languageCode;
   }
