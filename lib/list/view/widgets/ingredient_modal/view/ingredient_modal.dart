@@ -220,7 +220,7 @@ class _PriceCard extends StatelessWidget {
 }
 
 class _PriceCardQuantityButtons extends StatelessWidget {
-  const _PriceCardQuantityButtons({required this.price, super.key});
+  const _PriceCardQuantityButtons({required this.price});
   final FRIngredientPrice price;
 
   List<int> get defaultQuantities => [1, 2, 3, 4];
@@ -412,7 +412,6 @@ class _SaveWithoutPriceButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = S.of(context);
     final theme = Theme.of(context);
-    final modalCubit = context.watch<IngredientModalCubit>();
 
     return TextButton.icon(
       style: TextButton.styleFrom(

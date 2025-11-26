@@ -8,6 +8,7 @@ import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/ingredients/ingredients.dart';
 import 'package:felicette_recipes/list/bloc/list_bloc.dart';
 import 'package:felicette_recipes/list/edit/bloc/edit_cubit.dart';
+import 'package:felicette_recipes/recipes/recipes.dart';
 import 'package:felicette_recipes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,8 +97,13 @@ class _EditListPageContent extends StatelessWidget {
             Text(
               'Budget: ${editCubit.state.budget} ${editCubit.state.currency}',
             ),
-            Text('Ingredients: ${editCubit.state.currentIngredients.length}'),
-            Text('Recipes: ${editCubit.state.currentRecipes.length}'),
+            RecipeSelect(
+              placeholder: s.select_recipes,
+              label: s.recipe(0).capitalize(),
+              isMulti: true,
+              initialValue: editCubit.state.currentRecipes,
+              onChanged: editCubit.handleCurrentRecipesChanged,
+            ),
             TextFormField(
               initialValue: editCubit.state.budget.toString(),
               decoration: InputDecoration(

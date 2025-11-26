@@ -68,6 +68,20 @@ class EditListCubit extends Cubit<EditListState> {
     );
   }
 
+  void handleCurrentRecipesChanged(
+    List<String> currentRecipes,
+  ) {
+    log(
+      'handleCurrentRecipesChanged: $currentRecipes',
+      name: 'EditListCubit.handleCurrentRecipesChanged',
+    );
+    emit(
+      state.copyWith(
+        currentRecipes: currentRecipes,
+      ),
+    );
+  }
+
   Future<void> saveChanges() async {
     await _groupRepository.updateList(
       state.currentGroup!.id,
