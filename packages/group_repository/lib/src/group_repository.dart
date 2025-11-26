@@ -60,4 +60,18 @@ class GroupRepository {
       'checkedIngredients': FieldValue.arrayUnion([ingredientId]),
     });
   }
+
+  Future<void> updateIngredientPrices(
+    String groupId,
+    String ingredientId,
+    List<FRIngredientPrice> prices,
+  ) async {
+    final groupDocRef = collection().doc(groupId);
+
+    final pricesMapList = prices.map((price) => price.toMap()).toList();
+
+    await groupDocRef.update({
+      'ingredientsPrices.$ingredientId': pricesMapList,
+    });
+  }
 }

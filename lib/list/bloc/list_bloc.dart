@@ -42,6 +42,9 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<ToggleIngredientCheckedStatus>(
       _onToggleIngredientCheckedStatus,
     );
+    on<UpdateIngredientPrices>(
+      _onUpdateIngredientPrices,
+    );
   }
 
   final GroupRepository _groupRepository;
@@ -197,6 +200,24 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       ),
     );
     add(const UpdateCurrentGroupIngredients());
+  }
+
+  void _onUpdateIngredientPrices(
+    UpdateIngredientPrices event,
+    Emitter<ListState> emit,
+  ) {
+    log(
+      'Updating prices for ingredient: ${event.ingredientId} with prices: ${event.prices}',
+      name: 'ListBloc.UpdateIngredientPrices',
+    );
+
+    if (state.selectedGroup == null) return;
+
+    _groupRepository.updateIngredientPrices(
+      state.selectedGroup!.id,
+      event.ingredientId,
+      event.prices,
+    );
   }
 
   void _onToggleIngredientCheckedStatus(

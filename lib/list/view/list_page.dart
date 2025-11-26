@@ -8,10 +8,11 @@ import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
 import 'package:felicette_recipes/list/list.dart';
 import 'package:felicette_recipes/list/view/widgets/budget_display.dart';
-import 'package:felicette_recipes/list/view/widgets/ingredient_modal.dart';
+import 'package:felicette_recipes/list/view/widgets/ingredient_modal/view/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:group_repository/group_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:recipe_repository/recipe_repository.dart';
 
@@ -196,7 +197,26 @@ class _ListIngredientTile extends StatelessWidget {
     if (item.prices.isEmpty) {
       return IconButton(
         visualDensity: .compact,
-        onPressed: () {},
+        onPressed: () async {
+          final prices = await showDialog<List<FRIngredientPrice>>(
+            context: context,
+            useSafeArea: false,
+            builder: (_) => ListIngredientModal(item: item),
+          );
+
+          log(
+            'Returned prices from modal: $prices',
+            name: '_ListIngredientTile',
+          );
+
+          if (!context.mounted || prices == null) return;
+          context.read<ListBloc>().add(
+            UpdateIngredientPrices(
+              item.ingredient.id,
+              prices,
+            ),
+          );
+        },
         icon: const Icon(Icons.edit),
       );
     }
@@ -214,7 +234,7 @@ class _ListIngredientTile extends StatelessWidget {
     final textTheme = theme.textTheme;
     final colorScheme = theme.colorScheme;
 
-    final num totalPrice = item.prices.fold(
+    final totalPrice = item.prices.fold<double>(
       0,
       (previousValue, element) =>
           previousValue + element.unitPrice * element.quantity,
@@ -222,61 +242,86 @@ class _ListIngredientTile extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Container(
-          padding: const .only(right: 4),
-          constraints: BoxConstraints(
-            maxWidth: constraints.maxWidth * 0.25,
-          ),
-          child: Column(
-            crossAxisAlignment: .end,
-            children: [
-              Text(
-                currencyFormatter.format(totalPrice),
-                style: textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.primary,
-                ),
-              ),
+        return Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () async {
+              final prices = await showDialog<List<FRIngredientPrice>>(
+                context: context,
+                useSafeArea: false,
+                builder: (_) => ListIngredientModal(item: item),
+              );
 
-              RichText(
-                overflow: .ellipsis,
-                maxLines: 2,
-                textAlign: .right,
-                text: TextSpan(
-                  style: textTheme.labelSmall?.copyWith(height: 1),
-                  children: item.prices.map((price) {
-                    return TextSpan(
-                      children: [
-                        if (item.prices.indexOf(price) > 0)
-                          const TextSpan(
-                            text: ' ',
-                          ),
-                        TextSpan(
-                          text: price.quantity.toString(),
-                          style: TextStyle(
-                            color: colorScheme.onSurface,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'x',
-                          style: TextStyle(
-                            color: colorScheme.onSurfaceVariant,
-                            fontWeight: .w400,
-                          ),
-                        ),
-                        TextSpan(
-                          text: currencyFormatter.format(price.unitPrice),
-                          style: TextStyle(
-                            fontWeight: .bold,
-                            color: colorScheme.onSurface,
-                          ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+              log(
+                'Returned prices from modal: $prices',
+                name: '_ListIngredientTile',
+              );
+
+              if (!context.mounted || prices == null) return;
+              context.read<ListBloc>().add(
+                UpdateIngredientPrices(
+                  item.ingredient.id,
+                  prices,
                 ),
+              );
+            },
+            child: Container(
+              padding: const .only(right: 4),
+              constraints: BoxConstraints(
+                maxWidth: constraints.maxWidth * 0.25,
               ),
-            ],
+              child: Column(
+                crossAxisAlignment: .end,
+                children: [
+                  Text(
+                    currencyFormatter.format(totalPrice),
+                    style: textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+
+                  RichText(
+                    overflow: .ellipsis,
+                    maxLines: 2,
+                    textAlign: .right,
+                    text: TextSpan(
+                      style: textTheme.labelSmall?.copyWith(height: 1),
+                      children: item.prices.map((price) {
+                        return TextSpan(
+                          children: [
+                            if (item.prices.indexOf(price) > 0)
+                              const TextSpan(
+                                text: ' ',
+                              ),
+                            TextSpan(
+                              text: price.quantity.toString(),
+                              style: TextStyle(
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'x',
+                              style: TextStyle(
+                                color: colorScheme.onSurfaceVariant,
+                                fontWeight: .w400,
+                              ),
+                            ),
+                            TextSpan(
+                              text: currencyFormatter.format(price.unitPrice),
+                              style: TextStyle(
+                                fontWeight: .bold,
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         );
       },
@@ -441,13 +486,24 @@ class _ListIngredientTile extends StatelessWidget {
               );
 
               if (checked != true) return;
-              await showDialog<void>(
+              final prices = await showDialog<List<FRIngredientPrice>>(
                 context: context,
                 useSafeArea: false,
                 builder: (_) => ListIngredientModal(item: item),
               );
 
-              //recipesBloc.add(RecipesToggleRecipeSelection(id));
+              log(
+                'Returned prices from modal: $prices',
+                name: '_ListIngredientTile',
+              );
+
+              if (!context.mounted || prices == null) return;
+              context.read<ListBloc>().add(
+                UpdateIngredientPrices(
+                  item.ingredient.id,
+                  prices,
+                ),
+              );
             },
             activeColor: colorScheme.secondary,
           ),

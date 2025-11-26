@@ -29,26 +29,40 @@ class FRGroupFilter {
 }
 
 class FRIngredientPrice {
-  FRIngredientPrice({required this.quantity, required this.unitPrice});
+  FRIngredientPrice({
+    required this.quantity,
+    required this.unitPrice,
+    required this.uuid,
+  });
 
   factory FRIngredientPrice.fromMap(Map<String, dynamic> data) {
+    final mapUuid = data['uuid'] as String?;
+    final uuid = const Uuid().v4();
     return FRIngredientPrice(
       quantity: data['q'] as num,
       unitPrice: data['u'] as num,
+      uuid: mapUuid ?? uuid,
     );
   }
   num quantity;
   num unitPrice;
+  String uuid;
 
   Map<String, dynamic> toMap() {
-    return {'q': quantity, 'u': unitPrice};
+    return {'q': quantity, 'u': unitPrice, 'uuid': uuid};
   }
 
   FRIngredientPrice copyWith({num? quantity, num? unitPrice}) {
     return FRIngredientPrice(
       quantity: quantity ?? this.quantity,
       unitPrice: unitPrice ?? this.unitPrice,
+      uuid: uuid,
     );
+  }
+
+  @override
+  String toString() {
+    return 'FRIngredientPrice(quantity: $quantity, unitPrice: $unitPrice, uuid: $uuid)';
   }
 }
 

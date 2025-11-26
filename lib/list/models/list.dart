@@ -20,6 +20,27 @@ class ListIngredientItem extends Equatable {
   final List<FRIngredientPrice> prices;
   String get ingredientId => ingredient.id;
 
+  ListIngredientItem copyWith({
+    FRIngredient? ingredient,
+    List<FRRecipe>? associatedRecipes,
+    String? quantity,
+    bool? isChecked,
+    List<FRIngredientPrice>? prices,
+  }) {
+    return ListIngredientItem(
+      ingredient: ingredient ?? this.ingredient,
+      associatedRecipes: associatedRecipes ?? this.associatedRecipes,
+      quantity: quantity ?? this.quantity,
+      isChecked: isChecked ?? this.isChecked,
+      prices: prices ?? this.prices,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ListIngredientItem(ingredient: $ingredient, associatedRecipes: $associatedRecipes, quantity: $quantity, isChecked: $isChecked, prices: $prices)';
+  }
+
   @override
   List<Object?> get props => [
     ingredient,
