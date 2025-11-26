@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
@@ -59,7 +58,10 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       CreateAccountPage.route(),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navShell) {
-          return _MainShellContent(navShell: navShell);
+          return _MainShellContent(
+            navShell: navShell,
+            key: const Key('MainShellContent'),
+          );
         },
         branches: [
           StatefulShellBranch(
@@ -83,16 +85,12 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       EditIngredientPage.route(),
       NewRecipePage.route(),
       EditRecipePage.route(),
+      EditListPage.route(),
     ],
     refreshListenable: GoRouterRefreshStream(authenticationBloc.stream),
     redirect: (context, state) {
-      log('Redirecting based on authentication state');
       final authState = context.read<AuthenticationBloc>().state;
 
-      log(
-        'Authentication status: ${authState.status}',
-        name: 'AppRouter',
-      );
       final authIsUnknown = authState.status == AuthenticationStatus.unknown;
       final isAuthenticated =
           authState.status == AuthenticationStatus.authenticated;
@@ -100,21 +98,14 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       final isOnSplashRoute = state.matchedLocation == AppRoutes.splash;
 
       if (isOnSplashRoute && authIsUnknown) {
-        log(
-          'Authentication status is unknown and on splash route. Staying on splash.',
-        );
         return null;
       }
 
       if (isOnSplashRoute && isAuthenticated) {
-        log('User is authenticated and on splash route. Redirecting to home.');
         return AppRoutes.home;
       }
 
       if (isOnSplashRoute && !isAuthenticated) {
-        log(
-          'User is not authenticated and on splash route. Redirecting to login.',
-        );
         return AppRoutes.login;
       }
 
@@ -124,24 +115,14 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       final isOnGuestRoute = guestRoutes.contains(state.matchedLocation);
       final isOnPublicRoute = publicRoutes.contains(state.matchedLocation);
 
-      log(
-        'isAuthenticated: $isAuthenticated, isOnProtectedRoute: $isOnProtectedRoute, isOnGuestRoute: $isOnGuestRoute, isOnPublicRoute: $isOnPublicRoute',
-      );
-
       if (isOnPublicRoute) {
         return null;
       }
 
       if (!isAuthenticated && isOnProtectedRoute) {
-        log(
-          'User is not authenticated and trying to access a protected route. Redirecting to login.',
-        );
         return AppRoutes.login;
       }
       if (isAuthenticated && isOnGuestRoute) {
-        log(
-          'User is authenticated and trying to access a guest route. Redirecting to home.',
-        );
         return AppRoutes.home;
       }
 
@@ -170,26 +151,13 @@ class _MainShellContent extends StatelessWidget {
       listeners: [
         BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
-            log(
-              'AuthenticationBloc state changed: $state',
-              name: 'AppRouter',
-            );
             if (state.status == AuthenticationStatus.authenticated) {
-              log(
-                'User authenticated: ${state.user} - Groups subscription requested',
-                name: 'AppRouter',
-              );
               context.read<GroupsBloc>().add(GroupsSubscriptionRequested());
             }
           },
         ),
         BlocListener<GroupsBloc, GroupsState>(
           listener: (context, state) {
-            log(
-              'GroupsBloc state changed: $state',
-              name: 'AppRouter',
-            );
-
             final selectedGroup = state.selectedGroup;
             context.read<IngredientsBloc>().add(
               IngredientSelectedGroupChanged(selectedGroup),
@@ -227,10 +195,6 @@ class _MainShellContent extends StatelessWidget {
           listenWhen: (previous, current) =>
               previous.recipes != current.recipes,
           listener: (context, state) {
-            log(
-              'RecipesBloc state changed: $state',
-              name: 'AppRouter',
-            );
             context.read<ListBloc>().add(
               UpdateGroupRecipes(state.recipes),
             );
@@ -240,10 +204,6 @@ class _MainShellContent extends StatelessWidget {
           listenWhen: (previous, current) =>
               previous.ingredients != current.ingredients,
           listener: (context, state) {
-            log(
-              'IngredientsBloc state changed: $state',
-              name: 'AppRouter',
-            );
             context.read<ListBloc>().add(
               UpdateGroupIngredients(state.ingredients),
             );

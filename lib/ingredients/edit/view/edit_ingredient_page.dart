@@ -5,7 +5,6 @@ import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/app/view/view.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
-import 'package:felicette_recipes/ingredients/edit/bloc/edit_cubit.dart';
 import 'package:felicette_recipes/ingredients/ingredients.dart';
 import 'package:felicette_recipes/theme.dart';
 import 'package:flutter/material.dart';

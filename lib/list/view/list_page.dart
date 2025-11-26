@@ -39,6 +39,14 @@ class ListPage extends StatelessWidget {
 
     return FRAppbar(
       title: Text(s.list(1).capitalize()),
+      actions: [
+        TextButton(
+          onPressed: () {
+            context.push(AppRoutes.editList);
+          },
+          child: Text(s.edit),
+        ),
+      ],
     );
   }
 

@@ -7,7 +7,7 @@ import 'package:felicette_recipes/extensions/extensions.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/ingredients/ingredients.dart';
 import 'package:felicette_recipes/recipes/bloc/recipes_bloc.dart';
-import 'package:felicette_recipes/recipes/edit/bloc/edit_cubit.dart';
+import 'package:felicette_recipes/recipes/edit/edit.dart';
 import 'package:felicette_recipes/recipes/models/recipes.dart';
 import 'package:felicette_recipes/theme.dart';
 import 'package:flutter/material.dart';
