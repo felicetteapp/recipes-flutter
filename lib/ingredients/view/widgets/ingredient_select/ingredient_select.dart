@@ -17,15 +17,17 @@ class IngredientSelect extends StatelessWidget {
     this.errorMessage,
     this.onOpened,
     this.initialValue,
+    this.isMulti = false,
   });
 
   final String? errorMessage;
   final String placeholder;
   final String label;
   final bool allowCreation;
-  final String? initialValue;
+  final bool isMulti;
+  final List<String>? initialValue;
   final Future<FRIngredient> Function({required String name})? createIngredient;
-  final ValueChanged<String>? onChanged;
+  final ValueChanged<List<String>>? onChanged;
   final VoidCallback? onOpened;
 
   @override
@@ -39,11 +41,12 @@ class IngredientSelect extends StatelessWidget {
         return IngredientSelectCubit(
           allowCreation: allowCreation,
           createIngredient: createIngredient,
+          isMulti: isMulti,
           onChanged: onChanged,
           initialValue: IngredientSelectState(
-            selectedIngredientId: initialValue == null || initialValue!.isEmpty
-                ? null
-                : initialValue,
+            selectedIngredientIds: initialValue == null || initialValue!.isEmpty
+                ? []
+                : initialValue!,
           ),
         )..initIngredients(ingredients);
       },
@@ -88,7 +91,7 @@ class _IngredientSelectContent extends StatelessWidget {
     final border = errorMessage != null
         ? theme.inputDecorationTheme.errorBorder!
         : inputDecorationTheme.border!;
-    final labelShouldFloat = cubit.state.selectedIngredientId != null;
+    final labelShouldFloat = cubit.state.selectedIngredientIds.isNotEmpty;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -131,7 +134,11 @@ class _IngredientSelectContent extends StatelessWidget {
                     child: Text(
                       maxLines: 1,
                       overflow: .ellipsis,
-                      cubit.selectedIngredient?.name ?? '',
+                      cubit.selectedIngredients.isNotEmpty
+                          ? cubit.selectedIngredients
+                                .map((ing) => ing.name)
+                                .join(', ')
+                          : '',
                       style: textTheme.bodyLarge,
                     ),
                   ),
@@ -385,8 +392,9 @@ class _IngredientSelectModal extends StatelessWidget {
 
                       final ingredient = currentFilteredIngredients[index];
                       return ListTile(
-                        selected:
-                            cubit.state.selectedIngredientId == ingredient.id,
+                        selected: cubit.state.selectedIngredientIds.contains(
+                          ingredient.id,
+                        ),
                         title: Text(ingredient.name),
                         onTap: () {
                           log(

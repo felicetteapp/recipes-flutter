@@ -2,22 +2,23 @@ part of 'select_cubit.dart';
 
 class IngredientSelectState extends Equatable {
   const IngredientSelectState({
-    this.selectedIngredientId,
+    this.selectedIngredientIds = const [],
     this.filteredIngredients = const [],
     this.textFilter = '',
   });
 
-  final String? selectedIngredientId;
+  final List<String> selectedIngredientIds;
   final String textFilter;
   final List<FRIngredient> filteredIngredients;
 
   IngredientSelectState copyWith({
-    String? selectedIngredientId,
+    List<String>? selectedIngredientIds,
     String? textFilter,
     List<FRIngredient>? filteredIngredients,
   }) {
     return IngredientSelectState(
-      selectedIngredientId: selectedIngredientId ?? this.selectedIngredientId,
+      selectedIngredientIds:
+          selectedIngredientIds ?? this.selectedIngredientIds,
       textFilter: textFilter ?? this.textFilter,
       filteredIngredients: filteredIngredients ?? this.filteredIngredients,
     );
@@ -29,7 +30,7 @@ class IngredientSelectState extends Equatable {
 
   @override
   List<Object?> get props => [
-    selectedIngredientId,
+    selectedIngredientIds,
     textFilter,
     filteredIngredients,
   ];

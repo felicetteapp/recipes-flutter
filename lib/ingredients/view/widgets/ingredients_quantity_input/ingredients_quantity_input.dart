@@ -205,7 +205,7 @@ class _ItemWidgetContent<T extends BasicIngredientQuantity>
         ),
         Expanded(
           child: IngredientSelect(
-            initialValue: item.ingredientId,
+            initialValue: item.ingredientId.isEmpty ? [] : [item.ingredientId],
             placeholder: s.ingredient(0).capitalize(),
             label: s.ingredient(1).capitalize(),
             key: ValueKey('ingredient_select_${item.uuid}'),
@@ -224,8 +224,13 @@ class _ItemWidgetContent<T extends BasicIngredientQuantity>
                 'Ingredient changed to $newValue',
                 name: '_ItemWidgetContent',
               );
+
+              log(
+                'Notifying item cubit of ingredient change $newValue',
+                name: '_ItemWidgetContent',
+              );
               itemCubit.ingredientChanged(
-                newValue,
+                newValue.isEmpty ? '' : newValue.first,
               );
             },
           ),

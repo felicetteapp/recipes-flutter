@@ -13,6 +13,7 @@ class IngredientSelectCubit extends Cubit<IngredientSelectState> {
     this.allowCreation = false,
     this.createIngredient,
     this.onChanged,
+    this.isMulti = false,
     IngredientSelectState? initialValue,
   }) : _ingredients = [],
        super(initialValue ?? const IngredientSelectState());
@@ -20,11 +21,14 @@ class IngredientSelectCubit extends Cubit<IngredientSelectState> {
   final List<FRIngredient> _ingredients;
   final bool allowCreation;
   final Future<FRIngredient> Function({required String name})? createIngredient;
-  final ValueChanged<String>? onChanged;
+  final ValueChanged<List<String>>? onChanged;
+  final bool isMulti;
 
-  FRIngredient? get selectedIngredient => _ingredients.firstWhereOrNull(
-    (ingredient) => ingredient.id == state.selectedIngredientId,
-  );
+  List<FRIngredient> get selectedIngredients => _ingredients
+      .where(
+        (ingredient) => state.selectedIngredientIds.contains(ingredient.id),
+      )
+      .toList();
 
   List<FRIngredient> get ingredients => _ingredients;
 
@@ -73,13 +77,38 @@ class IngredientSelectCubit extends Cubit<IngredientSelectState> {
   }
 
   void selectIngredient(String ingredientId) {
+    if (!isMulti) {
+      log(
+        'Selecting single ingredient $ingredientId',
+        name: 'IngredientSelectCubit',
+      );
+      emit(
+        state.copyWith(selectedIngredientIds: [ingredientId]),
+      );
+      if (onChanged != null) {
+        onChanged?.call([ingredientId]);
+      }
+      return;
+    }
+
+    final isSelected = state.selectedIngredientIds.contains(ingredientId);
+    log(
+      'Toggling selection for ingredient $ingredientId. Currently selected: $isSelected',
+      name: 'IngredientSelectCubit',
+    );
+    final updatedSelectedIds = List<String>.from(
+      state.selectedIngredientIds,
+    );
+    if (isSelected) {
+      updatedSelectedIds.remove(ingredientId);
+    } else {
+      updatedSelectedIds.add(ingredientId);
+    }
     emit(
-      state.copyWith(
-        selectedIngredientId: ingredientId,
-      ),
+      state.copyWith(selectedIngredientIds: updatedSelectedIds),
     );
     if (onChanged != null) {
-      onChanged!(ingredientId);
+      onChanged?.call(updatedSelectedIds);
     }
   }
 }
