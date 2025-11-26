@@ -125,6 +125,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "currency_cny": MessageLookupByLibrary.simpleMessage("Chinese Yuan"),
     "currency_eur": MessageLookupByLibrary.simpleMessage("Euro"),
     "currency_gbp": MessageLookupByLibrary.simpleMessage("British Pound"),
+    "currency_inr": MessageLookupByLibrary.simpleMessage("Indian Rupee"),
     "currency_jpy": MessageLookupByLibrary.simpleMessage("Japanese Yen"),
     "currency_usd": MessageLookupByLibrary.simpleMessage("US Dollar"),
     "dark_mode": MessageLookupByLibrary.simpleMessage("Dark Mode"),

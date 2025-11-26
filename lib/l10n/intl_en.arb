@@ -490,6 +490,10 @@
   "@please_enter_valid_number": {
     "description": "Error message for invalid number input"
   },
+  "@currency_inr": {
+    "description": "Indian Rupee currency option"
+  },
+  "currency_inr": "Indian Rupee",
   "please_enter_valid_number": "Please enter a valid number",
   "@budget_must_be_positive": {
     "description": "Error message when budget is not positive"

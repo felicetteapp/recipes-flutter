@@ -1178,6 +1178,16 @@ class S {
     );
   }
 
+  /// `Indian Rupee`
+  String get currency_inr {
+    return Intl.message(
+      'Indian Rupee',
+      name: 'currency_inr',
+      desc: 'Indian Rupee currency option',
+      args: [],
+    );
+  }
+
   /// `Please enter a valid number`
   String get please_enter_valid_number {
     return Intl.message(

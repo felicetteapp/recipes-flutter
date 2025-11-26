@@ -82,6 +82,16 @@ class EditListCubit extends Cubit<EditListState> {
     );
   }
 
+  void handleCurrencyChanged(
+    String currency,
+  ) {
+    emit(
+      state.copyWith(
+        currency: currency,
+      ),
+    );
+  }
+
   Future<void> saveChanges() async {
     await _groupRepository.updateList(
       state.currentGroup!.id,

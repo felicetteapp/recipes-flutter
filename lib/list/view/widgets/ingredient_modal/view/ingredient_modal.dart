@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:felicette_recipes/app/bloc/app_bloc.dart';
+import 'package:felicette_recipes/app/utils/utils.dart';
 import 'package:felicette_recipes/app/view/view.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/list/list.dart';
@@ -154,6 +155,11 @@ class _PriceCard extends StatelessWidget {
                               : price.unitPrice.toString(),
                           decoration: InputDecoration(
                             labelText: s.unit_price,
+                            prefix: Text(
+                              FRUtils.getCurrencySymbol(
+                                currency,
+                              ),
+                            ),
                           ),
                           keyboardType: const .numberWithOptions(
                             decimal: true,
@@ -400,7 +406,7 @@ class _SavePricesButton extends StatelessWidget {
       label: Text(
         s.save,
         maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+        overflow: .ellipsis,
       ),
     );
   }
@@ -428,7 +434,7 @@ class _SaveWithoutPriceButton extends StatelessWidget {
       label: Text(
         s.save_without_price,
         maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+        overflow: .ellipsis,
       ),
     );
   }

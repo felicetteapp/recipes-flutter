@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/utils/utils.dart';
 import 'package:felicette_recipes/app/view/view.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
@@ -90,13 +91,10 @@ class _EditListPageContent extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const .symmetric(horizontal: 16),
+        padding: const .symmetric(horizontal: 16, vertical: 16),
         child: Column(
           spacing: 16,
           children: [
-            Text(
-              'Budget: ${editCubit.state.budget} ${editCubit.state.currency}',
-            ),
             RecipeSelect(
               placeholder: s.select_recipes,
               label: s.recipe(0).capitalize(),
@@ -104,10 +102,16 @@ class _EditListPageContent extends StatelessWidget {
               initialValue: editCubit.state.currentRecipes,
               onChanged: editCubit.handleCurrentRecipesChanged,
             ),
+            const _CurrencySelector(),
             TextFormField(
               initialValue: editCubit.state.budget.toString(),
               decoration: InputDecoration(
                 labelText: s.budget.capitalize(),
+                prefix: Text(
+                  FRUtils.getCurrencySymbol(
+                    editCubit.state.currency,
+                  ),
+                ),
               ),
               keyboardType: const .numberWithOptions(
                 decimal: true,
@@ -180,6 +184,35 @@ class _EditListPageContent extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _CurrencySelector extends StatelessWidget {
+  const _CurrencySelector();
+  @override
+  Widget build(BuildContext context) {
+    final s = S.of(context);
+    final editCubit = context.watch<EditListCubit>();
+
+    return DropdownButtonFormField<String>(
+      initialValue: editCubit.state.currency,
+      decoration: InputDecoration(
+        labelText: s.select_currency.capitalize(),
+      ),
+      items: FRUtils.availableCurrencies
+          .map(
+            (currency) => DropdownMenuItem<String>(
+              value: currency,
+              child: Text(FRUtils.getCurrencyName(currency, context)),
+            ),
+          )
+          .toList(),
+      onChanged: (value) {
+        if (value != null) {
+          editCubit.handleCurrencyChanged(value);
+        }
+      },
     );
   }
 }

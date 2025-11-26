@@ -5,6 +5,43 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class FRUtils {
+  static List<String> availableCurrencies = [
+    'USD',
+    'EUR',
+    'GBP',
+    'JPY',
+    'CNY',
+    'INR',
+    'BRL',
+  ];
+
+  static String getCurrencyName(String currencyCode, BuildContext context) {
+    final s = S.of(context);
+    final currencyNames = {
+      'USD': s.currency_usd,
+      'EUR': s.currency_eur,
+      'GBP': s.currency_gbp,
+      'JPY': s.currency_jpy,
+      'CNY': s.currency_cny,
+      'INR': s.currency_inr,
+      'BRL': s.currency_brl,
+    };
+    return currencyNames[currencyCode] ?? currencyCode;
+  }
+
+  static String getCurrencySymbol(String currencyCode) {
+    final currencySymbols = {
+      'USD': r'$',
+      'EUR': '€',
+      'GBP': '£',
+      'JPY': '¥',
+      'CNY': '¥',
+      'INR': '₹',
+      'BRL': r'R$',
+    };
+    return currencySymbols[currencyCode] ?? currencyCode;
+  }
+
   static Future<void> showAboutDialog(BuildContext context) async {
     final packageInfo = await PackageInfo.fromPlatform();
     if (!context.mounted) return;
