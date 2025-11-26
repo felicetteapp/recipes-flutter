@@ -85,6 +85,8 @@ class FRRecipe {
   String name;
   List<FRRecipeIngredient> ingredients;
 
+  static final FRRecipe empty = FRRecipe(id: '', name: '', ingredients: []);
+
   static Map<String, dynamic> toFirestore(
     FRRecipe recipe,
     SetOptions? options,

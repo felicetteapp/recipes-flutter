@@ -58,6 +58,12 @@ class ListRecipeItem extends Equatable {
   final FRRecipe recipe;
   String get recipeId => recipe.id;
 
+  static ListRecipeItem withoutRecipe = ListRecipeItem(
+    recipe: FRRecipe.empty,
+  );
+
+  bool get withoutRecipeFlag => recipe.id.isEmpty;
+
   @override
   List<Object?> get props => [
     recipe,

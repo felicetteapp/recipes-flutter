@@ -379,6 +379,47 @@ class ListBloc extends Bloc<ListEvent, ListState> {
           }
         }
       }
+
+      final ingredientsWithoutRecipe = currentIngredientIds.where((current) {
+        final isInAnyRecipe = currentRecipes.any((recipe) {
+          return recipe.ingredients.any((recipeIngredient) {
+            return recipeIngredient.ingredientId == current.ingredientId;
+          });
+        });
+        return !isInAnyRecipe;
+      }).toList();
+
+      log(
+        'Ingredients without recipe: $ingredientsWithoutRecipe',
+        name: 'ListBloc',
+      );
+
+      if (ingredientsWithoutRecipe.isNotEmpty) {
+        log(
+          'Adding separator for ingredients without recipe',
+          name: 'ListBloc',
+        );
+        listItems.add(
+          ListPageListItem(
+            type: ListPageListItemTypeEnum.recipe,
+            recipeItem: ListRecipeItem.withoutRecipe,
+          ),
+        );
+      }
+
+      for (final current in ingredientsWithoutRecipe) {
+        final ingredientItem = currentIngredients.firstWhereOrNull((item) {
+          return item.ingredient.id == current.ingredientId;
+        });
+        if (ingredientItem != null) {
+          listItems.add(
+            ListPageListItem(
+              type: ListPageListItemTypeEnum.ingredient,
+              ingredientItem: ingredientItem,
+            ),
+          );
+        }
+      }
     }
 
     emit(

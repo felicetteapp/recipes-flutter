@@ -85,6 +85,7 @@ class ListPageContent extends StatelessWidget {
 
           if (item.type == ListPageListItemTypeEnum.recipe) {
             return _ListRecipeTile(
+              key: Key('list_recipe_tile_${item.recipeItem!.recipeId}'),
               item: item.recipeItem!,
               first:
                   index - 1 == 0 ||
@@ -95,6 +96,10 @@ class ListPageContent extends StatelessWidget {
             );
           }
           return _ListIngredientTile(
+            key: Key(
+              // ignore: lines_longer_than_80_chars
+              'list_ingredient_tile_${item.ingredientItem!.ingredientId}_${item.recipeItem?.recipeId ?? 'no_recipe'}',
+            ),
             item: item.ingredientItem!,
             displayType: listBloc.state.displayType,
             recipe: item.recipeItem?.recipe,
@@ -127,6 +132,7 @@ class _ListRecipeTile extends StatelessWidget {
     required this.item,
     required this.first,
     required this.last,
+    super.key,
   });
   final ListRecipeItem item;
   final bool first;
@@ -134,18 +140,21 @@ class _ListRecipeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Padding(
       padding: const .symmetric(vertical: 16, horizontal: 8),
       child: ListTile(
-        title: Text(item.recipe.name),
+        title: Text(
+          item.withoutRecipeFlag ? s.other_ingredients : item.recipe.name,
+        ),
         contentPadding: const .only(
           left: 4,
           right: 4,
         ),
-        leading: const Padding(
-          padding: .only(left: 12, right: 4),
+        leading: Padding(
+          padding: const .only(left: 12, right: 4),
           child: Icon(
-            Icons.book,
+            item.withoutRecipeFlag ? Icons.kitchen : Icons.book,
           ),
         ),
         visualDensity: .compact,
@@ -161,6 +170,7 @@ class _ListIngredientTile extends StatelessWidget {
     required this.last,
     required this.displayType,
     required this.recipe,
+    super.key,
   });
   final ListIngredientItem item;
   final bool first;
@@ -189,6 +199,27 @@ class _ListIngredientTile extends StatelessWidget {
     );
   }
 
+  Future<void> handleCheckedDialog(BuildContext context) async {
+    final prices = await showDialog<List<FRIngredientPrice>>(
+      context: context,
+      useSafeArea: false,
+      builder: (_) => ListIngredientModal(item: item),
+    );
+
+    log(
+      'Returned prices from modal: $prices',
+      name: '_ListIngredientTile',
+    );
+
+    if (!context.mounted || prices == null) return;
+    context.read<ListBloc>().add(
+      UpdateIngredientPrices(
+        item.ingredient.id,
+        prices,
+      ),
+    );
+  }
+
   Widget getTrailingWidget(BuildContext context) {
     if (!item.isChecked) {
       return const SizedBox(width: 16);
@@ -197,26 +228,7 @@ class _ListIngredientTile extends StatelessWidget {
     if (item.prices.isEmpty) {
       return IconButton(
         visualDensity: .compact,
-        onPressed: () async {
-          final prices = await showDialog<List<FRIngredientPrice>>(
-            context: context,
-            useSafeArea: false,
-            builder: (_) => ListIngredientModal(item: item),
-          );
-
-          log(
-            'Returned prices from modal: $prices',
-            name: '_ListIngredientTile',
-          );
-
-          if (!context.mounted || prices == null) return;
-          context.read<ListBloc>().add(
-            UpdateIngredientPrices(
-              item.ingredient.id,
-              prices,
-            ),
-          );
-        },
+        onPressed: () => handleCheckedDialog(context),
         icon: const Icon(Icons.edit),
       );
     }
@@ -245,28 +257,10 @@ class _ListIngredientTile extends StatelessWidget {
         return Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () async {
-              final prices = await showDialog<List<FRIngredientPrice>>(
-                context: context,
-                useSafeArea: false,
-                builder: (_) => ListIngredientModal(item: item),
-              );
-
-              log(
-                'Returned prices from modal: $prices',
-                name: '_ListIngredientTile',
-              );
-
-              if (!context.mounted || prices == null) return;
-              context.read<ListBloc>().add(
-                UpdateIngredientPrices(
-                  item.ingredient.id,
-                  prices,
-                ),
-              );
-            },
+            borderRadius: .circular(8),
+            onTap: () => handleCheckedDialog(context),
             child: Container(
-              padding: const .only(right: 4),
+              padding: const .symmetric(horizontal: 4),
               constraints: BoxConstraints(
                 maxWidth: constraints.maxWidth * 0.25,
               ),
@@ -276,7 +270,7 @@ class _ListIngredientTile extends StatelessWidget {
                   Text(
                     currencyFormatter.format(totalPrice),
                     style: textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: .bold,
                       color: colorScheme.primary,
                     ),
                   ),
@@ -486,24 +480,8 @@ class _ListIngredientTile extends StatelessWidget {
               );
 
               if (checked != true) return;
-              final prices = await showDialog<List<FRIngredientPrice>>(
-                context: context,
-                useSafeArea: false,
-                builder: (_) => ListIngredientModal(item: item),
-              );
 
-              log(
-                'Returned prices from modal: $prices',
-                name: '_ListIngredientTile',
-              );
-
-              if (!context.mounted || prices == null) return;
-              context.read<ListBloc>().add(
-                UpdateIngredientPrices(
-                  item.ingredient.id,
-                  prices,
-                ),
-              );
+              await handleCheckedDialog(context);
             },
             activeColor: colorScheme.secondary,
           ),
