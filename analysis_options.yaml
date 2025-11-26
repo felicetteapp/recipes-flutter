@@ -12,6 +12,10 @@ include:
   - package:flutter_lints/flutter.yaml
   - package:bloc_lint/recommended.yaml
 
+analyzer:
+  exclude:
+    - lib/generated/**/*
+
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`

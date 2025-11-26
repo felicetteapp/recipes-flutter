@@ -1,12 +1,10 @@
 import 'dart:developer';
-import 'package:felicette_recipes/app/data/models/ingredient_models.dart';
-import 'package:felicette_recipes/app/modules/home/widgets/list/list_controller.dart';
-import 'package:felicette_recipes/app/services/groups_service.dart';
-import 'package:felicette_recipes/app/services/ingredients_service.dart';
-import 'package:felicette_recipes/ingredients/models/ingredient.dart';
+
+// import 'package:felicette_recipes/ingredients/models/ingredient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:ingredient_repository/ingredient_repository.dart';
 
 /// Service to communicate with WearOS devices through the native Android layer.
 /// This service provides methods to manually trigger data synchronization with paired watches.
@@ -30,18 +28,20 @@ class WearOSService extends GetxService {
       );
       switch (call.method) {
         case 'updateIngredientStatus':
-          final String ingredientId = call.arguments['ingredientId'];
-          final bool isChecked = call.arguments['isChecked'];
+          final String ingredientId = call.arguments['ingredientId'] as String;
+          final bool isChecked = call.arguments['isChecked'] as bool;
           log(
             'Updating status for ingredient $ingredientId to $isChecked',
             name: 'WearOSService',
           );
-
+          /*
           final groupsService = Get.find<GroupsService>();
           await groupsService.checkIngredient(
             ingredientId: ingredientId,
             isChecked: isChecked,
-          );
+          ); */
+
+          await Future.delayed(const Duration(seconds: 1));
 
           log(
             'Ingredient $ingredientId status updated successfully',
@@ -61,7 +61,7 @@ class WearOSService extends GetxService {
   }
 
   List<FRWearIngredient> getCurrentIngredients(BuildContext? context) {
-    final ingredientsService = Get.find<IngredientsService>();
+    /*    final ingredientsService = Get.find<IngredientsService>();
 
     final currentIngredientsItems = ingredientsService.getListIngredientsItems(
       showCheckedFirst: false,
@@ -69,9 +69,11 @@ class WearOSService extends GetxService {
 
     final wearIngredients = currentIngredientsItems
         .map((ing) => FRWearIngredient.fromListIngredientItem(ing, context!))
-        .toList();
+        .toList(); 
 
     return wearIngredients;
+     */
+    return [];
   }
 
   Future<void> sendCurrentIngredients() async {
@@ -90,20 +92,8 @@ class WearOSService extends GetxService {
       log('Result: $result', name: 'WearOSService');
     } on PlatformException catch (e) {
       log('Error sending to watch: ${e.message}', name: 'WearOSService');
-      Get.snackbar(
-        'WearOS Sync Error',
-        e.message ?? 'Failed to send data to watch',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 3),
-      );
     } catch (e) {
       log('Unexpected error: $e', name: 'WearOSService');
-      Get.snackbar(
-        'Error',
-        'An unexpected error occurred',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 3),
-      );
     } finally {
       isSyncing.value = false;
     }
