@@ -487,6 +487,10 @@
     "description": "Argentine Peso currency option"
   },
   "currency_ars": "Peso Argentino",
+  "@currency_inr": {
+    "description": "Indian Rupee currency option"
+  },
+  "currency_inr": "Rupia India",
   "@please_enter_valid_number": {
     "description": "Error message for invalid number input"
   },
