@@ -99,6 +99,11 @@ class FRCurrentIngredients extends BasicIngredientQuantity {
   Map<String, dynamic> toMap() {
     return {'i': ingredientId, 'q': quantity, 'uuid': uuid};
   }
+
+  @override
+  String toString() {
+    return 'FRCurrentIngredients(ingredientId: $ingredientId, quantity: $quantity, uuid: $uuid)';
+  }
 }
 
 class FRGroup {
@@ -234,5 +239,10 @@ class FRGroup {
       currency: currency ?? this.currency,
       budget: budget ?? this.budget,
     );
+  }
+
+  @override
+  String toString() {
+    return 'FRGroup(id: $id, creatorUid: $creatorUid, name: $name, currentRecipes: $currentRecipes, currentIngredients: $currentIngredients, checkedIngredients: $checkedIngredients, ingredientsPrices: $ingredientsPrices, filters: $filters, currency: $currency, budget: $budget)';
   }
 }

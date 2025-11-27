@@ -1518,6 +1518,37 @@ class S {
       args: [],
     );
   }
+
+  /// `An unknown error occurred while adding the ingredient`
+  String get add_ingredient_error_unknown {
+    return Intl.message(
+      'An unknown error occurred while adding the ingredient',
+      name: 'add_ingredient_error_unknown',
+      desc: 'Error message for unknown error when adding ingredient',
+      args: [],
+    );
+  }
+
+  /// `Ingredient(s) added successfully`
+  String get add_ingredient_success {
+    return Intl.message(
+      'Ingredient(s) added successfully',
+      name: 'add_ingredient_success',
+      desc: 'Success message when ingredient(s) are added',
+      args: [],
+    );
+  }
+
+  /// `One or more ingredients are already in the list`
+  String get add_ingredient_error_already_in_list {
+    return Intl.message(
+      'One or more ingredients are already in the list',
+      name: 'add_ingredient_error_already_in_list',
+      desc:
+          'Error message when trying to add ingredients that are already in the list',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -6,15 +6,18 @@ import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
+import 'package:felicette_recipes/ingredients/ingredients.dart';
 import 'package:felicette_recipes/list/list.dart';
 import 'package:felicette_recipes/list/view/widgets/budget_display.dart';
 import 'package:felicette_recipes/list/view/widgets/ingredient_modal/view/view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 import 'package:group_repository/group_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:recipe_repository/recipe_repository.dart';
+import 'package:uuid/uuid.dart';
 
 class ListPage extends StatelessWidget {
   const ListPage({super.key});
@@ -52,7 +55,64 @@ class ListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ListPageContent();
+    final s = S.of(context);
+    return BlocListener<ListBloc, ListState>(
+      key: const Key('list_page_bloc_listener'),
+      listenWhen: (previous, current) =>
+          previous.addIngredientError != current.addIngredientError ||
+          previous.addIngredientStatus != current.addIngredientStatus,
+      listener: (context, state) {
+        log(
+          'Listening for add ingredient status changes: ${state.addIngredientStatus} with error: ${state.addIngredientError}',
+          name: 'ListPage.listener',
+        );
+        final scaffoldMessenger = ScaffoldMessenger.of(context);
+        if (state.addIngredientStatus == FormzSubmissionStatus.success) {
+          scaffoldMessenger
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Text(s.add_ingredient_success),
+              ),
+            );
+
+          return;
+        } else if (state.addIngredientStatus != FormzSubmissionStatus.failure) {
+          return;
+        }
+
+        log(
+          'Handling add ingredient error: ${state.addIngredientError}',
+          name: 'ListPage.listener',
+        );
+
+        String errorMessage;
+        switch (state.addIngredientError) {
+          case AddIngredientError.unknown:
+            errorMessage = s.add_ingredient_error_unknown;
+          case AddIngredientError.alreadyInList:
+            errorMessage = s.add_ingredient_error_already_in_list;
+          case AddIngredientError.none:
+            errorMessage = '';
+            return;
+        }
+
+        log(
+          'Showing error message: $errorMessage',
+          name: 'ListPage.listener',
+        );
+        scaffoldMessenger
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(errorMessage),
+            ),
+          );
+      },
+      child: const ListPageContent(
+        key: Key('list_page_content'),
+      ),
+    );
   }
 }
 
@@ -86,7 +146,9 @@ class ListPageContent extends StatelessWidget {
           }
 
           if (index == listItemsCount - 1) {
-            return const _ListQuickActionButtons();
+            return const _ListQuickActionButtons(
+              key: Key('list_quick_action_buttons'),
+            );
           }
 
           final item = items[index - 1];
@@ -478,7 +540,7 @@ class _ListIngredientTile extends StatelessWidget {
             value: item.isChecked,
             onChanged: (checked) async {
               log(
-                'Checkbox changed to $checked for ingredient ${item.ingredient.id}',
+                'Checkbox changed to $checked for ingredient${item.ingredient.id}',
                 name: '_ListIngredientTile',
               );
               context.read<ListBloc>().add(
@@ -610,13 +672,15 @@ class _ListFilters extends StatelessWidget {
 }
 
 class _ListQuickActionButtons extends StatelessWidget {
-  const _ListQuickActionButtons();
+  const _ListQuickActionButtons({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final s = S.of(context);
     final colorScheme = theme.colorScheme;
+    final listBloc = context.watch<ListBloc>();
+
     return Padding(
       padding: const .only(top: 8),
       child: Wrap(
@@ -631,42 +695,85 @@ class _ListQuickActionButtons extends StatelessWidget {
             key: const Key('add_item_button'),
             icon: const Icon(Icons.add),
             label: Text(s.add_ingredient),
-            onPressed: () {
-              /*
-              Get.dialog(
-                Scaffold(
-                  body: IngredientSelect(
-                    startOpened: true,
-                    onModalClosed: () {
-                      log('IngredientSelect modal closed', name: 'ListWidget');
-                      Get.back();
-                    },
-                    items: controller.ingredientsService.ingredients,
-                    value: [
-                      ...controller
-                              .groupsService
-                              .selectedGroup
-                              .value
-                              ?.currentIngredients ??
-                          [],
-                      BasicIngredientQuantity(ingredientId: '', quantity: ''),
-                    ],
-                    itemLabelBuilder: (item) {
-                      return controller.ingredientsService
-                              .getIngredientById(item.ingredientId)
-                              ?.name ??
-                          '';
-                    },
-                    onChanged: (val) => {
-                      log(val.toString(), name: 'IngredientSelect onChanged'),
-                    },
-                    isMulti: true,
-                    label: TranslationKeys.selectIngredients.tr,
-                    isRecipe: false,
-                  ),
+            onPressed: () async {
+              final mediaQuery = MediaQuery.of(context);
+              final textScaler = mediaQuery.textScaler;
+              final tempItems = [
+                FRCurrentIngredients(
+                  ingredientId: '',
+                  quantity: '',
+                  uuid: const Uuid().v4(),
                 ),
-              ); */
-              //   controller.openAddItemModal();
+              ];
+              final shouldAddIngredient = await showModalBottomSheet<bool>(
+                context: context,
+                showDragHandle: true,
+                constraints: BoxConstraints(
+                  minWidth: MediaQuery.sizeOf(context).width,
+                  maxHeight: textScaler.scale(200),
+                ),
+                builder: (context) {
+                  return Padding(
+                    padding: const .only(
+                      top: 28,
+                      bottom: 8,
+                      left: 16,
+                      right: 16,
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: IngredientsQuantityInput<FRCurrentIngredients>(
+                            maxItems: 1,
+                            initialValue: tempItems,
+                            generateEmpty: () => FRCurrentIngredients(
+                              ingredientId: '',
+                              quantity: '',
+                              uuid: const Uuid().v4(),
+                            ),
+                            onChanged: (value) {
+                              tempItems.replaceRange(
+                                0,
+                                tempItems.length,
+                                value,
+                              );
+                              log(
+                                'Ingredients selected from modal: $value',
+                                name: '_ListQuickActionButtons',
+                              );
+                            },
+                          ),
+                        ),
+                        FilledButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(
+                              tempItems.isNotEmpty &&
+                                  tempItems.first.ingredientId.isNotEmpty,
+                            );
+                          },
+                          child: Text(s.add_ingredient),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+              log(
+                'Modal closed, adding ingredient if valid: $tempItems - shouldAdd: $shouldAddIngredient',
+                name: '_ListQuickActionButtons',
+              );
+
+              if (shouldAddIngredient != true ||
+                  tempItems.isEmpty ||
+                  tempItems.first.ingredientId.isEmpty) {
+                return;
+              }
+
+              listBloc.add(
+                AddIngredientsToList(
+                  tempItems,
+                ),
+              );
             },
           ),
           TextButton.icon(

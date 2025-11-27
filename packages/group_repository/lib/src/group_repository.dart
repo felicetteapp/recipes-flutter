@@ -105,4 +105,20 @@ class GroupRepository {
       ),
     );
   }
+
+  Future<void> addIngredientsToGroup(
+    String groupId,
+    List<FRCurrentIngredients> ingredients,
+  ) async {
+    final groupDocRef = collection().doc(groupId);
+
+    final ingredientIds = ingredients.map((e) => e.ingredientId).toList();
+
+    await groupDocRef.update({
+      'currentIngredients': FieldValue.arrayUnion(
+        ingredients.map((e) => e.toMap()).toList(),
+      ),
+      'checkedIngredients': FieldValue.arrayRemove(ingredientIds),
+    });
+  }
 }

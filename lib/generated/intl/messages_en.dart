@@ -59,6 +59,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "These items can be used in recipes and added to the shopping list",
     ),
     "add_ingredient": MessageLookupByLibrary.simpleMessage("Add Ingredient"),
+    "add_ingredient_error_already_in_list":
+        MessageLookupByLibrary.simpleMessage(
+          "One or more ingredients are already in the list",
+        ),
+    "add_ingredient_error_unknown": MessageLookupByLibrary.simpleMessage(
+      "An unknown error occurred while adding the ingredient",
+    ),
+    "add_ingredient_success": MessageLookupByLibrary.simpleMessage(
+      "Ingredient(s) added successfully",
+    ),
     "add_price": MessageLookupByLibrary.simpleMessage("Add Price"),
     "add_recipe": MessageLookupByLibrary.simpleMessage("Add Recipe"),
     "all_checks_cleared": MessageLookupByLibrary.simpleMessage(

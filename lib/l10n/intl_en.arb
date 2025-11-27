@@ -627,5 +627,17 @@
   "@clear_all_checks_confirmation": {
     "description": "Confirmation message when clearing all checked ingredients"
   },
-  "clear_all_checks_confirmation": "Are you sure you want to clear all checked ingredients?"
+  "clear_all_checks_confirmation": "Are you sure you want to clear all checked ingredients?",
+  "add_ingredient_error_unknown": "An unknown error occurred while adding the ingredient",
+  "@add_ingredient_error_unknown": {
+    "description": "Error message for unknown error when adding ingredient"
+  },
+  "add_ingredient_success": "Ingredient(s) added successfully",
+  "@add_ingredient_success": {
+    "description": "Success message when ingredient(s) are added"
+  },
+  "add_ingredient_error_already_in_list": "One or more ingredients are already in the list",
+  "@add_ingredient_error_already_in_list": {
+    "description": "Error message when trying to add ingredients that are already in the list"
+  }
 }

@@ -1,5 +1,11 @@
 part of 'list_bloc.dart';
 
+enum AddIngredientError {
+  none,
+  alreadyInList,
+  unknown,
+}
+
 class ListState extends Equatable {
   const ListState({
     this.displayType = ListDisplayTypeEnum.ingredients,
@@ -17,6 +23,8 @@ class ListState extends Equatable {
     this.selectedGroup,
     this.currentListSpentBudget = 0,
     this.currentListBudget = 0,
+    this.addIngredientStatus = FormzSubmissionStatus.initial,
+    this.addIngredientError = AddIngredientError.none,
   });
 
   final ListDisplayTypeEnum displayType;
@@ -34,6 +42,8 @@ class ListState extends Equatable {
   final FRGroup? selectedGroup;
   final num currentListSpentBudget;
   final num currentListBudget;
+  final FormzSubmissionStatus addIngredientStatus;
+  final AddIngredientError addIngredientError;
 
   ListState copyWith({
     ListDisplayTypeEnum? displayType,
@@ -51,6 +61,8 @@ class ListState extends Equatable {
     FRGroup? selectedGroup,
     num? currentListSpentBudget,
     num? currentListBudget,
+    FormzSubmissionStatus? addIngredientStatus,
+    AddIngredientError? addIngredientError,
   }) {
     return ListState(
       displayType: displayType ?? this.displayType,
@@ -71,6 +83,8 @@ class ListState extends Equatable {
       currentListSpentBudget:
           currentListSpentBudget ?? this.currentListSpentBudget,
       currentListBudget: currentListBudget ?? this.currentListBudget,
+      addIngredientStatus: addIngredientStatus ?? this.addIngredientStatus,
+      addIngredientError: addIngredientError ?? this.addIngredientError,
     );
   }
 
@@ -91,5 +105,7 @@ class ListState extends Equatable {
     selectedGroup,
     currentListSpentBudget,
     currentListBudget,
+    addIngredientStatus,
+    addIngredientError,
   ];
 }

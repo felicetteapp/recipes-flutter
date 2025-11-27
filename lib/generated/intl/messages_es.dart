@@ -60,6 +60,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "add_ingredient": MessageLookupByLibrary.simpleMessage(
       "Agregar ingrediente",
     ),
+    "add_ingredient_error_already_in_list":
+        MessageLookupByLibrary.simpleMessage(
+          "Uno o más ingredientes ya están en la lista",
+        ),
+    "add_ingredient_error_unknown": MessageLookupByLibrary.simpleMessage(
+      "Ocurrió un error desconocido al agregar el ingrediente",
+    ),
+    "add_ingredient_success": MessageLookupByLibrary.simpleMessage(
+      "Ingrediente(s) agregado(s) exitosamente",
+    ),
     "add_price": MessageLookupByLibrary.simpleMessage("Agregar Precio"),
     "add_recipe": MessageLookupByLibrary.simpleMessage("Agregar receta"),
     "all_checks_cleared": MessageLookupByLibrary.simpleMessage(

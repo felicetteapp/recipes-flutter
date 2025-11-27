@@ -18,11 +18,13 @@ class IngredientsQuantityInput<T extends BasicIngredientQuantity>
     required this.generateEmpty,
     this.errorMessage,
     this.createIngredient,
+    this.maxItems,
     super.key,
   });
   final String? errorMessage;
   final List<T> initialValue;
   final T Function() generateEmpty;
+  final int? maxItems;
   final ValueChanged<List<T>> onChanged;
   final Future<FRIngredient> Function({required String name})? createIngredient;
 
@@ -32,6 +34,7 @@ class IngredientsQuantityInput<T extends BasicIngredientQuantity>
       lazy: false,
       create: (context) {
         return IngredientsQuantityInputCubit<T>(
+          maxItems: maxItems,
           createIngredient: createIngredient,
           onChanged: onChanged,
           generateEmpty: generateEmpty,
@@ -85,23 +88,25 @@ class _IngredientsQuantityInputContent<T extends BasicIngredientQuantity>
               ),
             ),
           ),
-        TextButton.icon(
-          icon: const Icon(Icons.add),
-          style: TextButton.styleFrom(
-            backgroundColor: theme.customColors.onSuccess,
-            foregroundColor: theme.customColors.success,
+        if (cubit.maxItems == null ||
+            cubit.state.items.length < cubit.maxItems!)
+          TextButton.icon(
+            icon: const Icon(Icons.add),
+            style: TextButton.styleFrom(
+              backgroundColor: theme.customColors.onSuccess,
+              foregroundColor: theme.customColors.success,
+            ),
+            onPressed: atLeastOneIngredientIsEmpty
+                ? null
+                : () {
+                    final newValue = [
+                      ...items,
+                      cubit.generateEmpty(),
+                    ];
+                    cubit.itemsChanged(newValue);
+                  },
+            label: Text(s.add_ingredient),
           ),
-          onPressed: atLeastOneIngredientIsEmpty
-              ? null
-              : () {
-                  final newValue = [
-                    ...items,
-                    cubit.generateEmpty(),
-                  ];
-                  cubit.itemsChanged(newValue);
-                },
-          label: Text(s.add_ingredient),
-        ),
       ],
     );
   }
@@ -152,8 +157,18 @@ class _ItemWidget<T extends BasicIngredientQuantity> extends StatelessWidget {
                 'Notifying input cubit of item change... ${newItem.uuid} -> quantity: ${newItem.quantity}, ingredientId: ${newItem.ingredientId}',
                 name: '_ItemWidget.listener',
               );
+
+              final index = inputCubit.state.items.indexWhere(
+                (i) => i.uuid == newItem.uuid,
+              );
+              if (index == -1) {
+                log(
+                  'Item not found in input cubit state items list: ${newItem.uuid}',
+                );
+              }
+
               inputCubit.itemChanged(
-                inputCubit.state.items.indexOf(item),
+                index,
                 newItem as T,
               );
             },
@@ -215,7 +230,7 @@ class _ItemWidgetContent<T extends BasicIngredientQuantity>
             placeholder: s.ingredient(0).capitalize(),
             label: s.ingredient(1).capitalize(),
             key: ValueKey('ingredient_select_${item.uuid}'),
-            allowCreation: true,
+            allowCreation: inputCubit.createIngredient != null,
             createIngredient: inputCubit.createIngredient,
             errorMessage: getErrorMessage(itemCubit.state.ingredient, s),
             onOpened: () {
@@ -241,21 +256,22 @@ class _ItemWidgetContent<T extends BasicIngredientQuantity>
             },
           ),
         ),
-        Align(
-          alignment: .centerRight,
-          child: IconButton(
-            style: IconButton.styleFrom(
-              foregroundColor: theme.colorScheme.error,
+        if (inputCubit.maxItems == null || inputCubit.state.items.length > 1)
+          Align(
+            alignment: .centerRight,
+            child: IconButton(
+              style: IconButton.styleFrom(
+                foregroundColor: theme.colorScheme.error,
+              ),
+              onPressed: () {
+                final newItems = inputCubit.state.items
+                    .where((i) => i.uuid != item.uuid)
+                    .toList();
+                inputCubit.itemsChanged(newItems);
+              },
+              icon: const Icon(Icons.delete),
             ),
-            onPressed: () {
-              final newItems = inputCubit.state.items
-                  .where((i) => i.uuid != item.uuid)
-                  .toList();
-              inputCubit.itemsChanged(newItems);
-            },
-            icon: const Icon(Icons.delete),
           ),
-        ),
       ],
     );
   }

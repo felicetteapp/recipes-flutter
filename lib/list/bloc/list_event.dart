@@ -80,3 +80,9 @@ final class UpdateIngredientPrices extends ListEvent {
 final class ClearAllChecked extends ListEvent {
   const ClearAllChecked();
 }
+
+final class AddIngredientsToList extends ListEvent {
+  const AddIngredientsToList(this.ingredients);
+
+  final List<FRCurrentIngredients> ingredients;
+}

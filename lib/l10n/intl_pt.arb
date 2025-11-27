@@ -627,5 +627,17 @@
   "@clear_all_checks_confirmation": {
     "description": "Confirmation message when clearing all checked ingredients"
   },
-  "clear_all_checks_confirmation": "Tem certeza de que quer desmarcar todos os itens?"
+  "clear_all_checks_confirmation": "Tem certeza de que quer desmarcar todos os itens?",
+  "add_ingredient_error_unknown": "Ocorreu um erro desconhecido ao adicionar o ingrediente",
+  "@add_ingredient_error_unknown": {
+    "description": "Mensagem de erro para erro desconhecido ao adicionar ingrediente"
+  },
+  "add_ingredient_success": "Ingrediente(s) adicionado(s) com sucesso",
+  "@add_ingredient_success": {
+    "description": "Mensagem de sucesso quando o(s) ingrediente(s) são adicionados"
+  },
+  "add_ingredient_error_already_in_list": "Um ou mais ingredientes já estão na lista",
+  "@add_ingredient_error_already_in_list": {
+    "description": "Mensagem de erro ao tentar adicionar ingredientes que já estão na lista"
+  }
 }

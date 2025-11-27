@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:felicette_recipes/extensions/extensions.dart';
 import 'package:felicette_recipes/list/models/models.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:group_repository/group_repository.dart';
 import 'package:ingredient_repository/ingredient_repository.dart';
 import 'package:recipe_repository/recipe_repository.dart';
@@ -47,6 +48,9 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     );
     on<ClearAllChecked>(
       _onClearAllChecked,
+    );
+    on<AddIngredientsToList>(
+      _onAddIngredientsToList,
     );
   }
 
@@ -462,5 +466,61 @@ class ListBloc extends Bloc<ListEvent, ListState> {
         }),
       ),
     );
+  }
+
+  Future<void> _onAddIngredientsToList(
+    AddIngredientsToList event,
+    Emitter<ListState> emit,
+  ) async {
+    log(
+      'Adding ingredients to list: ${event.ingredients} - selectedGroup: ${state.selectedGroup}',
+      name: 'ListBloc.AddIngredientsToList',
+    );
+
+    if (state.selectedGroup == null) return;
+
+    emit(
+      state.copyWith(
+        addIngredientStatus: FormzSubmissionStatus.inProgress,
+        addIngredientError: AddIngredientError.none,
+      ),
+    );
+
+    try {
+      final ingredientAlreadyAtList = state.selectedGroup!.currentIngredients
+          .any(
+            (current) => event.ingredients.any(
+              (newIng) => newIng.ingredientId == current.ingredientId,
+            ),
+          );
+
+      if (ingredientAlreadyAtList) {
+        emit(
+          state.copyWith(
+            addIngredientStatus: FormzSubmissionStatus.failure,
+            addIngredientError: AddIngredientError.alreadyInList,
+          ),
+        );
+        return;
+      }
+
+      await _groupRepository.addIngredientsToGroup(
+        state.selectedGroup!.id,
+        event.ingredients,
+      );
+
+      emit(
+        state.copyWith(
+          addIngredientStatus: FormzSubmissionStatus.success,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          addIngredientStatus: FormzSubmissionStatus.failure,
+          addIngredientError: AddIngredientError.unknown,
+        ),
+      );
+    }
   }
 }

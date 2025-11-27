@@ -16,11 +16,13 @@ class IngredientsQuantityInputCubit<T extends BasicIngredientQuantity>
     required this.onChanged,
     required this.generateEmpty,
     this.createIngredient,
+    this.maxItems,
   }) : super(initialState);
 
   Future<FRIngredient> Function({required String name})? createIngredient;
   final ValueChanged<List<T>> onChanged;
   final T Function() generateEmpty;
+  final int? maxItems;
 
   void itemsChanged(List<T> newItems) {
     log(
