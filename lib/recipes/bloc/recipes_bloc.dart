@@ -9,14 +9,18 @@ part 'recipes_state.dart';
 class RecipesBloc extends Bloc<RecipesEvent, RecipesState> {
   RecipesBloc({
     required RecipeRepository recipeRepository,
+    required GroupRepository groupRepository,
   }) : _recipeRepository = recipeRepository,
+       _groupRepository = groupRepository,
        super(const RecipesState()) {
     on<RecipesSelectionToggled>(_onSelectionToggled);
-    on<RecipesSelectedGroupChanged>(_onIngredientsSelectedGroupChanged);
+    on<RecipesSelectedGroupChanged>(_onRecipesSelectedGroupChanged);
     on<RecipesToggleRecipeSelection>(_onRecipeSelectionToggled);
+    on<RecipesSaveSelectedRecipes>(_onSaveSelectedRecipes);
   }
 
   final RecipeRepository _recipeRepository;
+  final GroupRepository _groupRepository;
 
   void _onSelectionToggled(
     RecipesSelectionToggled event,
@@ -30,7 +34,7 @@ class RecipesBloc extends Bloc<RecipesEvent, RecipesState> {
     );
   }
 
-  Future<void> _onIngredientsSelectedGroupChanged(
+  Future<void> _onRecipesSelectedGroupChanged(
     RecipesSelectedGroupChanged event,
     Emitter<RecipesState> emit,
   ) async {
@@ -73,5 +77,27 @@ class RecipesBloc extends Bloc<RecipesEvent, RecipesState> {
       selectedRecipeIds.add(event.recipeId);
     }
     emit(state.copyWith(selectedRecipeIds: selectedRecipeIds));
+  }
+
+  void _onSaveSelectedRecipes(
+    RecipesSaveSelectedRecipes event,
+    Emitter<RecipesState> emit,
+  ) {
+    if (state.selectedGroupId == null) return;
+
+    _groupRepository.updateList(
+      state.selectedGroupId!,
+      FRGroup.empty.copyWith(
+        currentRecipes: state.selectedRecipeIds,
+      ),
+      mergeFields: ['currentRecipes'],
+    );
+
+    emit(
+      state.copyWith(
+        isSelecting: false,
+        selectedRecipeIds: const [],
+      ),
+    );
   }
 }

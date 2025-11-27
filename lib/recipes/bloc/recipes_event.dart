@@ -28,3 +28,7 @@ final class RecipesToggleRecipeSelection extends RecipesEvent {
   @override
   List<Object?> get props => [recipeId];
 }
+
+final class RecipesSaveSelectedRecipes extends RecipesEvent {
+  const RecipesSaveSelectedRecipes();
+}

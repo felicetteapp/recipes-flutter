@@ -143,6 +143,7 @@ Widget _getMultiProvider(
     BlocProvider.value(value: appBloc),
     BlocProvider(
       create: (context) => RecipesBloc(
+        groupRepository: context.read<GroupRepository>(),
         recipeRepository: context.read<RecipeRepository>(),
       ),
     ),

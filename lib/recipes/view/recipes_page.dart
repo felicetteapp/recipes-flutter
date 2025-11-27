@@ -91,7 +91,7 @@ class _FloatingActionButton extends StatelessWidget {
         foregroundColor: theme.colorScheme.onSecondary,
         child: const Icon(Icons.save),
         onPressed: () {
-          // TODO: Implement bulk actions
+          recipesBloc.add(const RecipesSaveSelectedRecipes());
         },
       );
     }

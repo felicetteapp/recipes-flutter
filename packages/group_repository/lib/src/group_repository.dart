@@ -77,19 +77,20 @@ class GroupRepository {
 
   Future<void> updateList(
     String groupId,
-    FRGroup updatedGroup,
-  ) async {
+    FRGroup updatedGroup, {
+    List<String>? mergeFields = const [
+      'currentIngredients',
+      'currentRecipes',
+      'budget',
+      'currency',
+    ],
+  }) async {
     final groupDocRef = collection().doc(groupId);
 
     await groupDocRef.set(
       updatedGroup,
       SetOptions(
-        mergeFields: [
-          'currentIngredients',
-          'currentRecipes',
-          'budget',
-          'currency',
-        ],
+        mergeFields: mergeFields,
       ),
     );
   }

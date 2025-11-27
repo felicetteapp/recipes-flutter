@@ -197,6 +197,19 @@ class FRGroup {
     };
   }
 
+  static FRGroup empty = FRGroup(
+    id: '',
+    creatorUid: '',
+    name: '',
+    currentRecipes: [],
+    currentIngredients: [],
+    checkedIngredients: [],
+    ingredientsPrices: {},
+    filters: FRGroupFilter(),
+    currency: 'USD',
+    budget: 0.0,
+  );
+
   FRGroup copyWith({
     String? id,
     String? creatorUid,
