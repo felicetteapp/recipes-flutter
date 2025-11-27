@@ -113,15 +113,15 @@ class CreateAccountBloc extends Bloc<CreateAccountEvent, CreateAccountState> {
     Emitter<CreateAccountState> emit,
   ) async {
     if (state.isValid) {
-      emit(state.copyWith(submissionStatus: FormzSubmissionStatus.inProgress));
+      emit(state.copyWith(submissionStatus: .inProgress));
       try {
-        /*        await _authenticationRepository.createAccount(
+        await _authenticationRepository.createAccount(
           username: state.username.value,
           password: state.password.value,
-        ); */
-        emit(state.copyWith(submissionStatus: FormzSubmissionStatus.success));
+        );
+        emit(state.copyWith(submissionStatus: .success));
       } catch (_) {
-        emit(state.copyWith(submissionStatus: FormzSubmissionStatus.failure));
+        emit(state.copyWith(submissionStatus: .failure));
       }
     }
   }

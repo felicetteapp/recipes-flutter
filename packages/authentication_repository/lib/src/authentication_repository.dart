@@ -39,5 +39,15 @@ class AuthenticationRepository {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
 
+  Future<void> createAccount({
+    required String username,
+    required String password,
+  }) async {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: username,
+      password: password,
+    );
+  }
+
   void dispose() => _controller.close();
 }
