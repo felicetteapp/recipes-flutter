@@ -45,6 +45,9 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<UpdateIngredientPrices>(
       _onUpdateIngredientPrices,
     );
+    on<ClearAllChecked>(
+      _onClearAllChecked,
+    );
   }
 
   final GroupRepository _groupRepository;
@@ -254,6 +257,22 @@ class ListBloc extends Bloc<ListEvent, ListState> {
         event.ingredientId,
       );
     }
+  }
+
+  void _onClearAllChecked(
+    ClearAllChecked event,
+    Emitter<ListState> emit,
+  ) {
+    log(
+      'Clearing all checked ingredients',
+      name: 'ListBloc.ClearAllChecked',
+    );
+
+    if (state.selectedGroup == null) return;
+
+    _groupRepository.clearAllCheckedIngredientsFromGroup(
+      state.selectedGroup!.id,
+    );
   }
 
   void _onUpdateCurrentGroupIngredients(

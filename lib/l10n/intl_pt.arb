@@ -623,5 +623,9 @@
   "also": "também",
   "@also": {
     "description": "Used to indicate additional associated items"
-  }
+  },
+  "@clear_all_checks_confirmation": {
+    "description": "Confirmation message when clearing all checked ingredients"
+  },
+  "clear_all_checks_confirmation": "Tem certeza de que quer desmarcar todos os itens?"
 }

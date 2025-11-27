@@ -88,6 +88,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Elige los ingredientes necesarios para la receta. Las cantidades se pueden ingresar abajo.",
     ),
     "clear_all_checks": MessageLookupByLibrary.simpleMessage("Desmarcar Todo"),
+    "clear_all_checks_confirmation": MessageLookupByLibrary.simpleMessage(
+      "¿Estás seguro de que quieres desmarcar todos los elementos?",
+    ),
     "confirm": MessageLookupByLibrary.simpleMessage("Confirmar"),
     "confirm_actual_ingredient": MessageLookupByLibrary.simpleMessage(
       "Confirmar Ingrediente Real",

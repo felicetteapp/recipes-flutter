@@ -1508,6 +1508,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Are you sure you want to clear all checked ingredients?`
+  String get clear_all_checks_confirmation {
+    return Intl.message(
+      'Are you sure you want to clear all checked ingredients?',
+      name: 'clear_all_checks_confirmation',
+      desc: 'Confirmation message when clearing all checked ingredients',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

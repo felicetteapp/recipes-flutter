@@ -76,3 +76,7 @@ final class UpdateIngredientPrices extends ListEvent {
   final String ingredientId;
   final List<FRIngredientPrice> prices;
 }
+
+final class ClearAllChecked extends ListEvent {
+  const ClearAllChecked();
+}

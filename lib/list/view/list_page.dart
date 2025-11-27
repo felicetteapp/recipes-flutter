@@ -676,8 +676,36 @@ class _ListQuickActionButtons extends StatelessWidget {
             key: const Key('clear_all_checks_button'),
             icon: const Icon(Icons.clear_all),
             label: Text(s.clear_all_checks),
-            onPressed: () {
-              //            controller.clearAllChecks();
+            onPressed: () async {
+              final confirm =
+                  await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text(s.clear_all_checks),
+                      content: Text(
+                        s.clear_all_checks_confirmation,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(false);
+                          },
+                          child: Text(s.cancel),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                          child: Text(s.confirm),
+                        ),
+                      ],
+                    ),
+                  ) ??
+                  false;
+
+              if (!confirm) return;
+              if (!context.mounted) return;
+              context.read<ListBloc>().add(const ClearAllChecked());
             },
           ),
         ],

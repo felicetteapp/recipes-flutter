@@ -89,6 +89,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "clear_all_checks": MessageLookupByLibrary.simpleMessage(
       "Clear All Checks",
     ),
+    "clear_all_checks_confirmation": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to clear all checked ingredients?",
+    ),
     "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
     "confirm_actual_ingredient": MessageLookupByLibrary.simpleMessage(
       "Confirm Actual Ingredient",

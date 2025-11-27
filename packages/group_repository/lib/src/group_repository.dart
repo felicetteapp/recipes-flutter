@@ -75,6 +75,17 @@ class GroupRepository {
     });
   }
 
+  Future<void> clearAllCheckedIngredientsFromGroup(
+    String groupId,
+  ) async {
+    final groupDocRef = collection().doc(groupId);
+
+    await groupDocRef.update({
+      'checkedIngredients': [],
+      'ingredientsPrices': {},
+    });
+  }
+
   Future<void> updateList(
     String groupId,
     FRGroup updatedGroup, {
