@@ -214,7 +214,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     Emitter<ListState> emit,
   ) {
     log(
-      'Updating prices for ingredient: ${event.ingredientId} with prices: ${event.prices}',
+      'Updating ingredient: ${event.ingredientId} with prices: ${event.prices}',
       name: 'ListBloc.UpdateIngredientPrices',
     );
 
@@ -472,11 +472,6 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     AddIngredientsToList event,
     Emitter<ListState> emit,
   ) async {
-    log(
-      'Adding ingredients to list: ${event.ingredients} - selectedGroup: ${state.selectedGroup}',
-      name: 'ListBloc.AddIngredientsToList',
-    );
-
     if (state.selectedGroup == null) return;
 
     emit(

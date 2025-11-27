@@ -62,10 +62,6 @@ class ListPage extends StatelessWidget {
           previous.addIngredientError != current.addIngredientError ||
           previous.addIngredientStatus != current.addIngredientStatus,
       listener: (context, state) {
-        log(
-          'Listening for add ingredient status changes: ${state.addIngredientStatus} with error: ${state.addIngredientError}',
-          name: 'ListPage.listener',
-        );
         final scaffoldMessenger = ScaffoldMessenger.of(context);
         if (state.addIngredientStatus == FormzSubmissionStatus.success) {
           scaffoldMessenger
@@ -540,7 +536,7 @@ class _ListIngredientTile extends StatelessWidget {
             value: item.isChecked,
             onChanged: (checked) async {
               log(
-                'Checkbox changed to $checked for ingredient${item.ingredient.id}',
+                'check changed to $checked for ingredient${item.ingredient.id}',
                 name: '_ListIngredientTile',
               );
               context.read<ListBloc>().add(
@@ -757,10 +753,6 @@ class _ListQuickActionButtons extends StatelessWidget {
                     ),
                   );
                 },
-              );
-              log(
-                'Modal closed, adding ingredient if valid: $tempItems - shouldAdd: $shouldAddIngredient',
-                name: '_ListQuickActionButtons',
               );
 
               if (shouldAddIngredient != true ||

@@ -118,7 +118,7 @@ class _ItemWidget<T extends BasicIngredientQuantity> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log(
-      'Building IngredientQuantityInputItemWidget... ${item.uuid} -> quantity: ${item.quantity}, ingredientId: ${item.ingredientId}',
+      'Building  $item',
       name: '_ItemWidget',
     );
     return BlocProvider(
@@ -154,7 +154,7 @@ class _ItemWidget<T extends BasicIngredientQuantity> extends StatelessWidget {
                 ingredientId: state.ingredient.value,
               );
               log(
-                'Notifying input cubit of item change... ${newItem.uuid} -> quantity: ${newItem.quantity}, ingredientId: ${newItem.ingredientId}',
+                'Notifying input cubit of item change: $newItem',
                 name: '_ItemWidget.listener',
               );
 
@@ -163,7 +163,7 @@ class _ItemWidget<T extends BasicIngredientQuantity> extends StatelessWidget {
               );
               if (index == -1) {
                 log(
-                  'Item not found in input cubit state items list: ${newItem.uuid}',
+                  'Item not found in input state items list: ${newItem.uuid}',
                 );
               }
 

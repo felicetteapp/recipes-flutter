@@ -10,7 +10,7 @@ class FRUser extends Equatable {
   });
   factory FRUser.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
+    SnapshotOptions? _,
   ) {
     final data = snapshot.data()!;
     final user = FRUser(
@@ -53,6 +53,7 @@ class FRUser extends Equatable {
 
   @override
   String toString() {
+    // ignore: lines_longer_than_80_chars
     return 'FRUser{uid: $uid, email: $email, groups: $groups, metadataUpdatedAt: $metadataUpdatedAt}';
   }
 

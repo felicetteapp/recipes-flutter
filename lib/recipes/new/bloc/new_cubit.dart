@@ -29,13 +29,13 @@ class NewRecipeCubit extends Cubit<NewRecipeState> {
 
   void recipeIngredientsChanged(List<FRRecipeIngredient> value) {
     log(
-      'NewRecipeCubit.recipeIngredientsChanged called with ${value.length} items',
+      'recipeIngredientsChanged called with ${value.length} items',
       name: 'NewRecipeCubit',
     );
 
     for (final ingredient in value) {
       log(
-        'Ingredient ID: ${ingredient.ingredientId}, Quantity: ${ingredient.quantity}, UUID: ${ingredient.uuid}',
+        'Ingredient ID: $ingredient',
         name: 'NewRecipeCubit.recipeIngredientsChanged',
       );
     }
@@ -61,7 +61,7 @@ class NewRecipeCubit extends Cubit<NewRecipeState> {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       log(
-        'Creating recipe with name: ${state.recipeName.value} in group: ${state.groupId}',
+        'Creating ${state.recipeName.value} in group: ${state.groupId}',
         name: 'NewRecipeCubit.createRecipe',
       );
       await _recipeRepository.createRecipe(

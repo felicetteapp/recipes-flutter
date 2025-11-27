@@ -8,7 +8,7 @@ class SplashPage extends StatelessWidget {
   static GoRoute route() {
     return GoRoute(
       path: AppRoutes.splash,
-      builder: (_, __) => const SplashPage(),
+      builder: (_, _) => const SplashPage(),
     );
   }
 
@@ -18,7 +18,7 @@ class SplashPage extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: .center,
           children: [
             Image.asset('assets/images/logo.png', width: 100, height: 100),
           ],

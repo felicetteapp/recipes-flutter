@@ -32,7 +32,7 @@ class NewRecipeState extends Equatable {
     RecipeIngredients? recipeIngredients,
   }) {
     log(
-      'NewRecipeState.copyWith called with isActualIngredient: $isActualIngredient',
+      'called with isActualIngredient: $isActualIngredient',
       name: 'NewRecipeState',
     );
     return NewRecipeState(

@@ -38,6 +38,7 @@ class ListIngredientItem extends Equatable {
 
   @override
   String toString() {
+    // ignore: lines_longer_than_80_chars
     return 'ListIngredientItem(ingredient: $ingredient, associatedRecipes: $associatedRecipes, quantity: $quantity, isChecked: $isChecked, prices: $prices)';
   }
 

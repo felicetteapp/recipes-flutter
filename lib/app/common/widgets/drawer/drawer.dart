@@ -18,108 +18,6 @@ class FRDrawer extends StatelessWidget {
   List<Widget> _buildGroupListTiles(BuildContext context) {
     final groupsBloc = context.watch<GroupsBloc>();
 
-    /*    final selectedGroup = groupServices.selectedGroup.value;
-
-    final actualGroupsTiles = groupServices.availableGroups.map((group) {
-      return ListTile(
-        contentPadding: listTileContentPadding,
-        selected: group.id == selectedGroup?.id,
-        leading: Icon(
-          group.id == selectedGroup?.id ? Icons.group : Icons.group_outlined,
-        ),
-        title: Text(group.name),
-        trailing: IconButton(
-          onPressed: () {
-            Get.toNamed(AppRoutes.groupDetails(group.id));
-          },
-          icon: Icon(Icons.edit),
-        ),
-        onTap: () {
-          groupServices.selectGroup(group);
-          Navigator.pop(context);
-        },
-      );
-    }).toList(); 
-
-    return [
-      ListTile(
-        contentPadding: listTileContentPadding,
-        title: Text(
-          TranslationKeys.yourGroups.tr,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        trailing: TextButton(
-          child: Text(TranslationKeys.createGroup.tr),
-          onPressed: () async {
-            if (groupServices.availableGroups.length >= 3) {
-              FRSnackbar.error(
-                TranslationKeys.error.tr,
-                TranslationKeys.groupCreationLimitReached.tr,
-              );
-              return;
-            }
-
-            final name = await Get.dialog<String>(
-              ObxValue(
-                (nameState) => SimpleDialog(
-                  title: Text(TranslationKeys.createGroup.tr),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextField(
-                        autofocus: true,
-                        onChanged: (value) => nameState.value = value,
-                        decoration: InputDecoration(
-                          labelText: TranslationKeys.groupName.tr,
-                        ),
-                        onSubmitted: (value) {
-                          Get.back(result: value);
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: Text(TranslationKeys.cancel.tr),
-                            ),
-                          ),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: nameState.value.trim().isEmpty
-                                  ? null
-                                  : () {
-                                      Get.back(result: nameState.value.trim());
-                                    },
-                              child: Text(TranslationKeys.create.tr),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                ''.obs,
-              ),
-            );
-
-            if (name != null && name.trim().isNotEmpty) {
-              final createdGroup = await groupServices.createGroup(name.trim());
-              await Future.delayed(const Duration(seconds: 1));
-              Get.toNamed(AppRoutes.groupDetails(createdGroup.id));
-            }
-          },
-        ),
-      ),
-      ...actualGroupsTiles,
-    ];
-    */
-
     final s = S.of(context);
 
     final selectedGroup = groupsBloc.state.selectedGroup;
@@ -142,67 +40,6 @@ class FRDrawer extends StatelessWidget {
               );
               return;
             }
-
-            /*
-
-            final name = await Get.dialog<String>(
-              ObxValue(
-                (nameState) => SimpleDialog(
-                  title: Text(TranslationKeys.createGroup.tr),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextField(
-                        autofocus: true,
-                        onChanged: (value) => nameState.value = value,
-                        decoration: InputDecoration(
-                          labelText: TranslationKeys.groupName.tr,
-                        ),
-                        onSubmitted: (value) {
-                          Get.back(result: value);
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: Text(TranslationKeys.cancel.tr),
-                            ),
-                          ),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: nameState.value.trim().isEmpty
-                                  ? null
-                                  : () {
-                                      Get.back(
-                                        result: nameState.value.trim(),
-                                      );
-                                    },
-                              child: Text(TranslationKeys.create.tr),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                ''.obs,
-              ),
-            );
-
-            if (name != null && name.trim().isNotEmpty) {
-              final createdGroup = await groupServices.createGroup(
-                name.trim(),
-              );
-              await Future.delayed(const Duration(seconds: 1));
-              Get.toNamed(AppRoutes.groupDetails(createdGroup.id));
-            } */
           },
         ),
       ),
@@ -215,9 +52,7 @@ class FRDrawer extends StatelessWidget {
           ),
           title: Text(group.name),
           trailing: IconButton(
-            onPressed: () {
-              //              Get.toNamed(AppRoutes.groupDetails(group.id));
-            },
+            onPressed: () {},
             icon: const Icon(Icons.edit),
           ),
           onTap: () {
@@ -247,36 +82,11 @@ class FRDrawer extends StatelessWidget {
   }
 
   Widget _buildWearOsListTile(BuildContext context) {
-    /*
-    final WearOSService wearOSService = Get.find<WearOSService>();
-
-    return ListTile(
-      contentPadding: listTileContentPadding,
-      leading: const Icon(Icons.watch),
-      title: Text(TranslationKeys.wearOSSync.tr),
-      subtitle: Text(
-        wearOSService.hasConnectedWatch.value
-            ? TranslationKeys.connected.tr
-            : TranslationKeys.notConnected.tr,
-      ),
-      onTap: wearOSService.hasConnectedWatch.value
-          ? () async {
-              await wearOSService.sendCurrentIngredients();
-            }
-          : null,
-    );
-    */
-
     return const SizedBox.shrink();
   }
 
   @override
   Widget build(BuildContext context) {
-    /*    final AuthService authService = Get.find<AuthService>();
-    final DrawerController controller = Get.put<DrawerController>(
-      DrawerController(),
-      permanent: true,
-    ); */
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -343,7 +153,7 @@ class _CurrentUserTile extends StatelessWidget {
     final authenticationBloc = context.watch<AuthenticationBloc>();
     final currentUser = authenticationBloc.state.user;
 
-    log('Building CurrentUserTile with user: ${currentUser}');
+    log('Building CurrentUserTile with user: $currentUser');
 
     final s = S.of(context);
 

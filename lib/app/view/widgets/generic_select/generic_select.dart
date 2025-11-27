@@ -50,7 +50,7 @@ class GenericSelect<T, B extends StateStreamableSource<Object?>>
   /// Function to filter items based on search text
   final bool Function(T item, String filter) filterPredicate;
 
-  /// Function to create a new item (optional, required if allowCreation is true)
+  /// Function to create a new item (required if allowCreation is true)
   final Future<T> Function({required String name})? createItem;
 
   /// Callback when selection changes

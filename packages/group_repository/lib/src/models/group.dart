@@ -62,6 +62,7 @@ class FRIngredientPrice {
 
   @override
   String toString() {
+    // ignore: lines_longer_than_80_chars
     return 'FRIngredientPrice(quantity: $quantity, unitPrice: $unitPrice, uuid: $uuid)';
   }
 }
@@ -102,6 +103,7 @@ class FRCurrentIngredients extends BasicIngredientQuantity {
 
   @override
   String toString() {
+    // ignore: lines_longer_than_80_chars
     return 'FRCurrentIngredients(ingredientId: $ingredientId, quantity: $quantity, uuid: $uuid)';
   }
 }
@@ -212,7 +214,7 @@ class FRGroup {
     ingredientsPrices: {},
     filters: FRGroupFilter(),
     currency: 'USD',
-    budget: 0.0,
+    budget: 0,
   );
 
   FRGroup copyWith({
@@ -243,6 +245,7 @@ class FRGroup {
 
   @override
   String toString() {
+    // ignore: lines_longer_than_80_chars
     return 'FRGroup(id: $id, creatorUid: $creatorUid, name: $name, currentRecipes: $currentRecipes, currentIngredients: $currentIngredients, checkedIngredients: $checkedIngredients, ingredientsPrices: $ingredientsPrices, filters: $filters, currency: $currency, budget: $budget)';
   }
 }

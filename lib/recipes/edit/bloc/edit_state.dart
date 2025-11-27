@@ -38,7 +38,7 @@ class EditRecipeState extends Equatable {
     FormzSubmissionStatus? removeStatus,
   }) {
     log(
-      'EditRecipeState.copyWith called with isActualIngredient: $isActualIngredient',
+      'copyWith called with isActualIngredient: $isActualIngredient',
       name: 'EditRecipeState',
     );
     return EditRecipeState(

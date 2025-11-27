@@ -42,7 +42,7 @@ class _AppViewState extends State<AppView> {
     final currentLocale = appState.locale;
 
     log(
-      'Building AppView with isDarkModeEnabled: $isDarkModeEnabled, locale: $currentLocale',
+      'Building isDarkModeEnabled: $isDarkModeEnabled, locale: $currentLocale',
       name: 'AppView',
     );
 

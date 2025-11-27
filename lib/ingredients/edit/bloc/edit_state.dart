@@ -35,7 +35,7 @@ class EditIngredientState extends Equatable {
     String? groupId,
   }) {
     log(
-      'EditIngredientState.copyWith called with isActualIngredient: $isActualIngredient',
+      'copyWith called with isActualIngredient: $isActualIngredient',
       name: 'EditIngredientState',
     );
     return EditIngredientState(

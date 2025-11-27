@@ -182,7 +182,7 @@ class _IngredientsQuantityInput extends StatelessWidget {
             },
             onChanged: (newValue) {
               log(
-                'IngredientsQuantityInput onChanged called with ${newValue.length} items',
+                'onChanged called with ${newValue.length} items',
                 name: 'NewRecipePage._IngredientsQuantityInput',
               );
               newCubit.recipeIngredientsChanged(newValue);

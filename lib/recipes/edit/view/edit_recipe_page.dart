@@ -58,10 +58,6 @@ class EditRecipePage extends StatelessWidget {
           (recipe) => recipe.id == recipeId,
         );
 
-    log(
-      'Building EditRecipePage for recipe: ${initialRecipe?.name}, with ${initialRecipe?.ingredients.length} ingredients',
-      name: 'EditRecipePage',
-    );
     return BlocProvider(
       create: (context) =>
           EditRecipeCubit(
@@ -93,15 +89,7 @@ class _WithRecipeBlocListener extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<RecipesBloc, RecipesState>(
       bloc: context.read<RecipesBloc>(),
-      listener: (context, state) {
-        final recipe = state.recipes.firstWhereOrNull(
-          (recipe) => recipe.id == recipeId,
-        );
-        log(
-          'Recipe updated: ${recipe?.name}, with ${recipe?.ingredients.length} ingredients',
-          name: '_WithRecipeBlocListener',
-        );
-      },
+      listener: (context, state) {},
       child: child,
     );
   }
@@ -201,11 +189,6 @@ class _IngredientsQuantityInput extends StatelessWidget {
     final ingredientRepository = context.read<IngredientRepository>();
     final fieldState = newCubit.state.recipeIngredients;
 
-    log(
-      '_IngredientsQuantityInput build called with ${fieldState.value.length} items',
-      name: '_IngredientsQuantityInput',
-    );
-
     return Padding(
       padding: const .symmetric(horizontal: 16),
       child: Column(
@@ -231,13 +214,7 @@ class _IngredientsQuantityInput extends StatelessWidget {
               );
               return newIngredient;
             },
-            onChanged: (newValue) {
-              log(
-                'IngredientsQuantityInput onChanged called with ${newValue.length} items',
-                name: 'EditRecipePage._IngredientsQuantityInput',
-              );
-              newCubit.recipeIngredientsChanged(newValue);
-            },
+            onChanged: newCubit.recipeIngredientsChanged,
             initialValue: fieldState.value,
           ),
         ],

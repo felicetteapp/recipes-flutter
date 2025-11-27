@@ -26,7 +26,7 @@ class UserRepository {
     final snapshot = await collection().doc(authUser.uid).get();
 
     log(
-      'Fetched user data for userId ${authUser}: ${snapshot.data()}',
+      'Fetched user data for userId $authUser: ${snapshot.data()}',
       name: 'UserRepository',
     );
     return _user = snapshot.data()?.copyWith(

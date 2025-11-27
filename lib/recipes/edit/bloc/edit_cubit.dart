@@ -33,7 +33,7 @@ class EditRecipeCubit extends Cubit<EditRecipeState> {
     FRRecipe? initialRecipe,
   }) {
     log(
-      'EditRecipeCubit.initEdit called with recipeId: $recipeId, groupId: $groupId',
+      'initEdit called with recipeId: $recipeId, groupId: $groupId',
       name: 'EditRecipeCubit',
     );
 
@@ -59,13 +59,13 @@ class EditRecipeCubit extends Cubit<EditRecipeState> {
 
   void recipeIngredientsChanged(List<FRRecipeIngredient> value) {
     log(
-      'EditRecipeCubit.recipeIngredientsChanged called with ${value.length} items',
+      'recipeIngredientsChanged called with ${value.length} items',
       name: 'EditRecipeCubit',
     );
 
     for (final ingredient in value) {
       log(
-        'Ingredient ID: ${ingredient.ingredientId}, Quantity: ${ingredient.quantity}, UUID: ${ingredient.uuid}',
+        'ID: $ingredient',
         name: 'EditRecipeCubit.recipeIngredientsChanged',
       );
     }
@@ -83,7 +83,7 @@ class EditRecipeCubit extends Cubit<EditRecipeState> {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       log(
-        'Updating recipe with name: ${state.recipeName.value} in group: ${state.groupId}',
+        'Updating name: ${state.recipeName.value} in group: ${state.groupId}',
         name: 'EditRecipeCubit.updateRecipe',
       );
       await _recipeRepository.updateRecipe(
@@ -117,7 +117,7 @@ class EditRecipeCubit extends Cubit<EditRecipeState> {
     emit(state.copyWith(removeStatus: FormzSubmissionStatus.inProgress));
     try {
       log(
-        'Excluding recipe with id: ${state.recipeId} from group: ${state.groupId}',
+        'Excluding recipe id: ${state.recipeId} from group: ${state.groupId}',
         name: 'EditRecipeCubit.excludeRecipe',
       );
       await _recipeRepository.deleteRecipe(

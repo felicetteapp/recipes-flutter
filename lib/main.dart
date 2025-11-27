@@ -170,3 +170,8 @@ Widget _getMultiProvider(
     themeDark: actualThemeDark,
   ),
 );
+
+//TODO(facundoleites): test auth features
+//TODO(facundoleites): implement group edition
+//TODO(facundoleites): fix wearos service
+//TODO(facundoleites): test deeplinks

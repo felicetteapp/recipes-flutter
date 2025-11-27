@@ -35,7 +35,7 @@ class RecipesPage extends StatelessWidget {
 
     final isSelecting = recipesBloc.state.isSelecting;
     log(
-      'isSelecting: $isSelecting, selectedcount: ${recipesBloc.state.selectedRecipeIds.length}',
+      '$isSelecting, count: ${recipesBloc.state.selectedRecipeIds.length}',
       name: 'RecipesPage.appbar',
     );
 

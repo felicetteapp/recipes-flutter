@@ -38,7 +38,7 @@ class RecipeIngredients
     }
     for (final ingredient in value) {
       log(
-        'Validating ingredient with ID: ${ingredient.ingredientId} and quantity: ${ingredient.quantity}',
+        'Validating $ingredient',
         name: 'RecipeIngredients.validator',
       );
       if (ingredient.ingredientId.isEmpty) {

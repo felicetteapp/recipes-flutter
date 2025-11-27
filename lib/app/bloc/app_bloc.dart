@@ -108,11 +108,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       initialThemeIsDark = false;
     }
 
-    log(
-      'Initial dark mode setting: $initialThemeIsDark (Stored: $storedDarkModeSetting, System: $userHasDarkModeSettingEnabled)',
-      name: 'AppBloc',
-    );
-
     return initialThemeIsDark;
   }
 
