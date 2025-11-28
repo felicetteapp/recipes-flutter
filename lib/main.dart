@@ -166,6 +166,5 @@ Widget _getMultiProvider(
 );
 
 //TODO(facundoleites): test auth features
-//TODO(facundoleites): implement group edition
 //TODO(facundoleites): fix wearos service
 //TODO(facundoleites): test deeplinks
