@@ -632,14 +632,17 @@ class _ListFilters extends StatelessWidget {
             builder: (context, constraints) {
               return Center(
                 child: SingleChildScrollView(
+                  key: const Key('list_filter_chips_scrollview'),
                   scrollDirection: .horizontal,
                   padding: const .symmetric(horizontal: 16),
                   child: Row(
+                    key: const Key('list_filter_chips_row'),
                     mainAxisSize: .min,
                     spacing: 4,
                     children: [
                       if (displayType == .ingredients)
                         ChoiceChip(
+                          key: const Key('show_checkeds_first_choice_chip'),
                           selected: listBloc.state.showCheckedsFirst,
                           label: Text(s.show_checked_first),
                           onSelected: (selected) {
@@ -647,11 +650,12 @@ class _ListFilters extends StatelessWidget {
                           },
                         ),
                       ChoiceChip(
+                        key: const Key('show_budget_choice_chip'),
                         selected: listBloc.state.showBudget,
                         label: Text(s.show_budget),
                         onSelected: (selected) {
                           listBloc.add(
-                            ListShowBudgetChanged(showBudget: selected),
+                            const ToggleShowBudget(),
                           );
                         },
                       ),

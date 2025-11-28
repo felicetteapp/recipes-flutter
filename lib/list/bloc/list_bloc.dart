@@ -76,9 +76,18 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     ToggleShowBudget event,
     Emitter<ListState> emit,
   ) {
+    log(
+      'Toggling show budget from ${state.showBudget} to ${!state.showBudget}',
+      name: 'ListBloc',
+    );
     final currentShowBudget = state.showBudget;
 
     if (state.selectedGroup == null) return;
+
+    log(
+      'Updating group filters to set showBudget to ${!currentShowBudget}',
+      name: 'ListBloc',
+    );
 
     _groupRepository.updateSelectedGroupFilters(
       state.selectedGroup!.id,

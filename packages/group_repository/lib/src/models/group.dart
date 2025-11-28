@@ -26,6 +26,12 @@ class FRGroupFilter {
       showBudget: showBudget ?? this.showBudget,
     );
   }
+
+  @override
+  String toString() {
+    // ignore: lines_longer_than_80_chars
+    return 'FRGroupFilter(showCheckedsFirst: $showCheckedsFirst, showBudget: $showBudget)';
+  }
 }
 
 class FRIngredientPrice {
