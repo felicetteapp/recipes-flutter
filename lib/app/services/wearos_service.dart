@@ -3,7 +3,6 @@ import 'dart:developer';
 // import 'package:felicette_recipes/ingredients/models/ingredient.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:ingredient_repository/ingredient_repository.dart';
 
 /// Service to communicate with WearOS devices through the native Android layer.
@@ -13,8 +12,8 @@ class WearOSService extends GetxService {
     'app.felicette.recipes/wearos',
   );
 
-  final RxBool isSyncing = false.obs;
-  final RxBool hasConnectedWatch = false.obs;
+  final ValueNotifier<bool> isSyncing = ValueNotifier(false);
+  final ValueNotifier<bool> hasConnectedWatch = ValueNotifier(false);
 
   @override
   void onInit() {
@@ -118,4 +117,8 @@ class WearOSService extends GetxService {
       hasConnectedWatch.value = false;
     }
   }
+}
+
+class GetxService {
+  void onInit() {}
 }

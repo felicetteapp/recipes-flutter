@@ -107,6 +107,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Confirm Actual Ingredient",
     ),
     "confirm_actual_ingredient_description": m0,
+    "confirm_group_deletion": MessageLookupByLibrary.simpleMessage(
+      "Confirm Deletion",
+    ),
+    "confirm_group_deletion_message": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this group? This action cannot be undone.",
+    ),
     "confirm_ingredient_deletion": MessageLookupByLibrary.simpleMessage(
       "Confirm Deletion",
     ),

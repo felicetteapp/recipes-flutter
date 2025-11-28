@@ -1549,6 +1549,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Confirm Deletion`
+  String get confirm_group_deletion {
+    return Intl.message(
+      'Confirm Deletion',
+      name: 'confirm_group_deletion',
+      desc: 'Title for group deletion confirmation dialog',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this group? This action cannot be undone.`
+  String get confirm_group_deletion_message {
+    return Intl.message(
+      'Are you sure you want to delete this group? This action cannot be undone.',
+      name: 'confirm_group_deletion_message',
+      desc: 'Message asking for group deletion confirmation',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

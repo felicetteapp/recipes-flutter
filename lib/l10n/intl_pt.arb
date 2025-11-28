@@ -639,5 +639,13 @@
   "add_ingredient_error_already_in_list": "Um ou mais ingredientes já estão na lista",
   "@add_ingredient_error_already_in_list": {
     "description": "Mensagem de erro ao tentar adicionar ingredientes que já estão na lista"
-  }
+  },
+  "@confirm_group_deletion": {
+    "description": "Title for group deletion confirmation dialog"
+  },
+  "confirm_group_deletion": "Confirmar Exclusão",
+  "@confirm_group_deletion_message": {
+    "description": "Message asking for group deletion confirmation"
+  },
+  "confirm_group_deletion_message": "Tem certeza de que deseja excluir este grupo? Esta ação não se pode deshacer."
 }

@@ -14,9 +14,10 @@ class AppRoutes {
   static const String newRecipe = '$recipes/new';
   static const String editRecipe = '$recipes/:recipeId/edit';
   static const String editList = '$list/edit';
+  static const String editGroup = '$groups/:groupId/edit';
 
-  static String groupDetails(String groupId) =>
-      [groups, detailsPart, groupId].join('/').replaceAll('//', '/');
+  static String toEditGroup(String groupId) =>
+      editGroup.replaceFirst(':groupId', groupId);
 
   static String toEditIngredient(String ingredientId) =>
       editIngredient.replaceFirst(':ingredientId', ingredientId);

@@ -107,6 +107,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Confirmar Ingrediente Real",
     ),
     "confirm_actual_ingredient_description": m0,
+    "confirm_group_deletion": MessageLookupByLibrary.simpleMessage(
+      "Confirmar Exclusão",
+    ),
+    "confirm_group_deletion_message": MessageLookupByLibrary.simpleMessage(
+      "Tem certeza de que deseja excluir este grupo? Esta ação não se pode deshacer.",
+    ),
     "confirm_ingredient_deletion": MessageLookupByLibrary.simpleMessage(
       "Confirmar Exclusão",
     ),

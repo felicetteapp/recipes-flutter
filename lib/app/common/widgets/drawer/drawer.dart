@@ -1,12 +1,14 @@
 import 'dart:developer';
 
 import 'package:felicette_recipes/app/bloc/app_bloc.dart';
+import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/app/utils/utils.dart';
 import 'package:felicette_recipes/authentication/bloc/authentication_bloc.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
 import 'package:flutter/material.dart' hide DrawerController;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class FRDrawer extends StatelessWidget {
   const FRDrawer({super.key});
@@ -52,7 +54,12 @@ class FRDrawer extends StatelessWidget {
           ),
           title: Text(group.name),
           trailing: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+              context.push(
+                AppRoutes.toEditGroup(group.id),
+              );
+            },
             icon: const Icon(Icons.edit),
           ),
           onTap: () {

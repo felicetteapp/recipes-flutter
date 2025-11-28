@@ -380,15 +380,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.0"
-  get:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: "old-4.7.0"
-      resolved-ref: ed0a932185786a4b946a24b72f3904a915dc12e8
-      url: "https://github.com/luis901101/getx_fork.git"
-    source: git
-    version: "4.7.0"
   glob:
     dependency: transitive
     description:

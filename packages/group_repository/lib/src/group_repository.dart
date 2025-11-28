@@ -121,4 +121,21 @@ class GroupRepository {
       'checkedIngredients': FieldValue.arrayRemove(ingredientIds),
     });
   }
+
+  Future<void> updateGroup(
+    String groupId,
+    FRGroup updatedGroup,
+  ) async {
+    final groupDocRef = collection().doc(groupId);
+
+    await groupDocRef.update(
+      FRGroup.toFirestore(updatedGroup, SetOptions(mergeFields: ['name'])),
+    );
+  }
+
+  Future<void> deleteGroup(String groupId) async {
+    final groupDocRef = collection().doc(groupId);
+
+    await groupDocRef.delete();
+  }
 }
