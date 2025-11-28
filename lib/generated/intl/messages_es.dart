@@ -278,6 +278,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "password_recovery_error": MessageLookupByLibrary.simpleMessage(
       "Error al enviar el correo de recuperación de contraseña",
     ),
+    "passwordless_email_error": MessageLookupByLibrary.simpleMessage(
+      "Error al enviar el enlace de inicio de sesión. Por favor, inténtalo de nuevo.",
+    ),
+    "passwordless_email_sent": MessageLookupByLibrary.simpleMessage(
+      "¡Enlace de inicio de sesión enviado! Por favor revisa tu correo.",
+    ),
     "passwords_do_not_match_error": MessageLookupByLibrary.simpleMessage(
       "Las contraseñas no coinciden",
     ),

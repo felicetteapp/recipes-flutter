@@ -1,7 +1,10 @@
 import 'dart:developer';
 
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:felicette_recipes/app/bloc/app_bloc.dart';
 import 'package:felicette_recipes/app/routes/app_router.dart';
+import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/services/deep_link_service.dart';
 import 'package:felicette_recipes/authentication/bloc/authentication_bloc.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
@@ -30,6 +33,8 @@ class AppView extends StatefulWidget {
 
 class _AppViewState extends State<AppView> {
   late final GoRouter _router;
+  late final DeepLinkService _deepLinkService;
+  late final AuthenticationRepository _authenticationRepository;
 
   @override
   void initState() {
@@ -37,6 +42,52 @@ class _AppViewState extends State<AppView> {
     _router = createAppRouter(
       context.read<AuthenticationBloc>(),
     );
+    _deepLinkService = DeepLinkService();
+    _authenticationRepository = context.read<AuthenticationRepository>();
+    _initializeDeepLinks();
+  }
+
+  void _initializeDeepLinks() {
+    log(
+      'Initializing deep link service',
+      name: 'AppView',
+    );
+    _deepLinkService.initialize(
+      onLink: (uri) {
+        log('Deep link received: $uri', name: 'AppView');
+        _handleDeepLink(uri);
+      },
+    );
+  }
+
+  void _handleDeepLink(Uri uri) {
+    try {
+      log('Checking if link is email sign-in link', name: 'AppView');
+
+      if (_authenticationRepository.isSignInWithEmailLink(uri.toString())) {
+        log(
+          'Email link detected, navigating to login',
+          name: 'AppView',
+        );
+
+        _router
+          ..go(AppRoutes.createAccount)
+          ..push<void>(
+            AppRoutes.login,
+            extra: uri.toString(),
+          );
+      } else {
+        log('No action for this deep link: $uri', name: 'AppView');
+      }
+    } catch (e) {
+      log('Error handling deep link: $e', name: 'AppView');
+    }
+  }
+
+  @override
+  void dispose() {
+    _deepLinkService.dispose();
+    super.dispose();
   }
 
   @override
@@ -167,5 +218,12 @@ class _AppViewState extends State<AppView> {
         },
       ),
     );
+  }
+}
+
+class Teste {
+  bool isSignInWithEmailLink(String link) {
+    // Dummy implementation for testing
+    return link.contains('signInWithEmailLink=true');
   }
 }

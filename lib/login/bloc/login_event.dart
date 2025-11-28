@@ -32,3 +32,16 @@ final class LoginPasswordVisibilityToggled extends LoginEvent {
 final class LoginSubmitted extends LoginEvent {
   const LoginSubmitted();
 }
+
+final class LoginPasswordlessRequested extends LoginEvent {
+  const LoginPasswordlessRequested();
+}
+
+final class LoginEmailLinkReceived extends LoginEvent {
+  const LoginEmailLinkReceived(this.emailLink);
+
+  final String emailLink;
+
+  @override
+  List<Object> get props => [emailLink];
+}

@@ -638,6 +638,26 @@ class S {
     );
   }
 
+  /// `Login link sent! Please check your email.`
+  String get passwordless_email_sent {
+    return Intl.message(
+      'Login link sent! Please check your email.',
+      name: 'passwordless_email_sent',
+      desc: 'Success message when passwordless email is sent',
+      args: [],
+    );
+  }
+
+  /// `Failed to send login link. Please try again.`
+  String get passwordless_email_error {
+    return Intl.message(
+      'Failed to send login link. Please try again.',
+      name: 'passwordless_email_error',
+      desc: 'Error message when passwordless email fails to send',
+      args: [],
+    );
+  }
+
   /// `Your Groups`
   String get your_groups {
     return Intl.message(

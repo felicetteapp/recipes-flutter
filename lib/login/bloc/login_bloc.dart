@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:felicette_recipes/app/common/environment.dart';
 import 'package:felicette_recipes/authentication/models/password.dart';
 import 'package:felicette_recipes/authentication/models/username.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginPasswordChanged>(_onPasswordChanged);
     on<LoginPasswordVisibilityToggled>(_onPasswordVisibilityToggled);
     on<LoginSubmitted>(_onSubmitted);
+    on<LoginPasswordlessRequested>(_onPasswordlessRequested);
+    on<LoginEmailLinkReceived>(_onEmailLinkReceived);
   }
 
   final AuthenticationRepository _authenticationRepository;
@@ -77,6 +80,69 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } catch (_) {
         emit(state.copyWith(status: FormzSubmissionStatus.failure));
       }
+    }
+  }
+
+  Future<void> _onPasswordlessRequested(
+    LoginPasswordlessRequested event,
+    Emitter<LoginState> emit,
+  ) async {
+    if (state.isUsernameValid) {
+      emit(
+        state.copyWith(
+          passwordlessStatus: FormzSubmissionStatus.inProgress,
+        ),
+      );
+      try {
+        await _authenticationRepository.sendSignInLinkToEmail(
+          email: state.username.value,
+          continueUrl:
+              'https://${Environment.androidDeepLinkUrl}/__/auth/links?email=${state.username.value}',
+          linkDomain: Environment.androidDeepLinkUrl,
+        );
+        emit(
+          state.copyWith(
+            passwordlessStatus: FormzSubmissionStatus.success,
+          ),
+        );
+      } catch (_) {
+        emit(
+          state.copyWith(
+            passwordlessStatus: FormzSubmissionStatus.failure,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _onEmailLinkReceived(
+    LoginEmailLinkReceived event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    try {
+      if (!_authenticationRepository.isSignInWithEmailLink(event.emailLink)) {
+        emit(state.copyWith(status: FormzSubmissionStatus.failure));
+        return;
+      }
+
+      final email = await _authenticationRepository.getEmailForSignIn();
+
+      if (email == null) {
+        emit(state.copyWith(status: FormzSubmissionStatus.failure));
+        return;
+      }
+
+      await _authenticationRepository.signInWithEmailLink(
+        email: email,
+        emailLink: event.emailLink,
+      );
+
+      await _authenticationRepository.clearEmailForSignIn();
+
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
+    } catch (_) {
+      emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
   }
 }

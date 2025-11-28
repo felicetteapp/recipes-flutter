@@ -262,6 +262,14 @@
     "description": "Success message when passwordless login link is sent"
   },
   "login_without_password_success_message": "Login link sent! Please check your email.",
+  "@passwordless_email_sent": {
+    "description": "Success message when passwordless email is sent"
+  },
+  "passwordless_email_sent": "Login link sent! Please check your email.",
+  "@passwordless_email_error": {
+    "description": "Error message when passwordless email fails to send"
+  },
+  "passwordless_email_error": "Failed to send login link. Please try again.",
   "@your_groups": {
     "description": "Header label for user's groups section"
   },

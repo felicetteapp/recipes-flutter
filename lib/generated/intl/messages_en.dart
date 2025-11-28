@@ -269,6 +269,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "password_recovery_error": MessageLookupByLibrary.simpleMessage(
       "Error sending password recovery email",
     ),
+    "passwordless_email_error": MessageLookupByLibrary.simpleMessage(
+      "Failed to send login link. Please try again.",
+    ),
+    "passwordless_email_sent": MessageLookupByLibrary.simpleMessage(
+      "Login link sent! Please check your email.",
+    ),
     "passwords_do_not_match_error": MessageLookupByLibrary.simpleMessage(
       "Passwords do not match",
     ),

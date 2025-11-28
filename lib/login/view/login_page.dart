@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:felicette_recipes/app/common/widgets/footer/footer.dart';
 import 'package:felicette_recipes/app/common/widgets/header/header.dart';
@@ -10,21 +12,36 @@ import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  const LoginPage({this.emailLink, super.key});
+
+  final String? emailLink;
 
   static GoRoute route() {
     return GoRoute(
       path: AppRoutes.login,
-      builder: (context, state) => const LoginPage(),
+      builder: (context, state) {
+        final emailLink = state.extra as String?;
+        log(
+          'Navigating to login page with email link: $emailLink',
+          name: 'LoginPage.route',
+        );
+        return LoginPage(emailLink: emailLink);
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(
-        authenticationRepository: context.read<AuthenticationRepository>(),
-      ),
+      create: (context) {
+        final bloc = LoginBloc(
+          authenticationRepository: context.read<AuthenticationRepository>(),
+        );
+        if (emailLink != null) {
+          bloc.add(LoginEmailLinkReceived(emailLink!));
+        }
+        return bloc;
+      },
       child: const _LoginPageContent(),
     );
   }
@@ -35,18 +52,46 @@ class _LoginPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state) {
-        if (state.status.isFailure) {
-          final s = S.of(context);
-          final snackBar = SnackBar(
-            content: Text(s.login_error),
-          );
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(snackBar);
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<LoginBloc, LoginState>(
+          listenWhen: (previous, current) => previous.status != current.status,
+          listener: (context, state) {
+            if (state.status.isFailure) {
+              final s = S.of(context);
+              final snackBar = SnackBar(
+                content: Text(s.login_error),
+              );
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(snackBar);
+            }
+          },
+        ),
+        BlocListener<LoginBloc, LoginState>(
+          listenWhen: (previous, current) =>
+              previous.passwordlessStatus != current.passwordlessStatus,
+          listener: (context, state) {
+            if (state.passwordlessStatus.isSuccess) {
+              final s = S.of(context);
+              final snackBar = SnackBar(
+                content: Text(s.passwordless_email_sent),
+              );
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(snackBar);
+            } else if (state.passwordlessStatus.isFailure) {
+              final s = S.of(context);
+              final snackBar = SnackBar(
+                content: Text(s.passwordless_email_error),
+              );
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(snackBar);
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         body: SafeArea(
           child: LayoutBuilder(
@@ -186,7 +231,9 @@ class _PasswordlessLoginButton extends StatelessWidget {
       key: const Key('loginForm_passwordlessLogin_outlinedButton'),
       onPressed: isUsernameValid
           ? () {
-              // Implement passwordless login logic here
+              context.read<LoginBloc>().add(
+                const LoginPasswordlessRequested(),
+              );
             }
           : null,
       child: Text(S.of(context).login_without_password),
@@ -201,8 +248,11 @@ class _LoginButtons extends StatelessWidget {
     final isInProgressOrSuccess = context.select(
       (LoginBloc bloc) => bloc.state.status.isInProgressOrSuccess,
     );
+    final isPasswordlessInProgress = context.select(
+      (LoginBloc bloc) => bloc.state.passwordlessStatus.isInProgress,
+    );
 
-    if (isInProgressOrSuccess) {
+    if (isInProgressOrSuccess || isPasswordlessInProgress) {
       return const SizedBox(
         height: 48,
         width: 48,

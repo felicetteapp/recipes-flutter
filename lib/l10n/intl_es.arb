@@ -262,6 +262,14 @@
     "description": "Success message when passwordless login link is sent"
   },
   "login_without_password_success_message": "¡Enlace de inicio de sesión enviado! Por favor revisa tu correo.",
+  "@passwordless_email_sent": {
+    "description": "Success message when passwordless email is sent"
+  },
+  "passwordless_email_sent": "¡Enlace de inicio de sesión enviado! Por favor revisa tu correo.",
+  "@passwordless_email_error": {
+    "description": "Error message when passwordless email fails to send"
+  },
+  "passwordless_email_error": "Error al enviar el enlace de inicio de sesión. Por favor, inténtalo de nuevo.",
   "@your_groups": {
     "description": "Header label for user's groups section"
   },

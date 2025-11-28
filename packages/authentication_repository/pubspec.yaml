@@ -7,3 +7,6 @@ environment:
 
 dependencies:
   firebase_auth: ^6.1.1
+  package_info_plus: ^9.0.0
+  secure_storage:
+    path: ../secure_storage
