@@ -93,7 +93,13 @@ class AuthenticationBloc
       name: 'AuthenticationBloc',
     );
     if (event.user != null) {
-      emit(AuthenticationState.authenticated(event.user!));
+      emit(
+        AuthenticationState.authenticated(
+          event.user!.copyWith(
+            email: _authenticationRepository.currentUser?.email ?? '',
+          ),
+        ),
+      );
     }
   }
 
