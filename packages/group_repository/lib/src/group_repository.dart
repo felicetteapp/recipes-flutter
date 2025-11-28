@@ -3,13 +3,15 @@ import 'package:group_repository/group_repository.dart';
 
 class GroupRepository {
   final FirebaseFirestore db = FirebaseFirestore.instance;
+  CollectionReference collectionWithoutConverter() {
+    return db.collection('groups');
+  }
+
   CollectionReference<FRGroup> collection() {
-    return db
-        .collection('groups')
-        .withConverter<FRGroup>(
-          fromFirestore: FRGroup.fromFirestore,
-          toFirestore: FRGroup.toFirestore,
-        );
+    return collectionWithoutConverter().withConverter<FRGroup>(
+      fromFirestore: FRGroup.fromFirestore,
+      toFirestore: FRGroup.toFirestore,
+    );
   }
 
   Stream<DocumentSnapshot<FRGroup>> listenToGroup(String groupId) {
@@ -137,5 +139,10 @@ class GroupRepository {
     final groupDocRef = collection().doc(groupId);
 
     await groupDocRef.delete();
+  }
+
+  Future<void> createGroup(FRGroup newGroup) async {
+    final data = newGroup.toCreationMap();
+    await collectionWithoutConverter().add(data);
   }
 }

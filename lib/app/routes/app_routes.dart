@@ -7,6 +7,7 @@ class AppRoutes {
   static const String detailsPart = '/details';
   static const String createAccount = '/create-account';
   static const String recipes = '/recipes';
+  static const String newGroup = '$groups/new';
   static const String list = '/list';
   static const String ingredients = '/ingredients';
   static const String newIngredient = '$ingredients/new';

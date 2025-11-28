@@ -46,24 +46,37 @@ class _AppViewState extends State<AppView> {
       name: 'AppView',
     );
 
-    return MaterialApp.router(
-      routerConfig: _router,
-      title: 'Felicette Recipes',
-      theme: widget.themeLight,
-      darkTheme: widget.themeDark,
-      themeMode: isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      locale: currentLocale,
-      debugShowCheckedModeBanner: false,
-      builder: (context, child) {
-        return child!;
+    return BlocListener<AuthenticationBloc, AuthenticationState>(
+      listenWhen: (previous, current) =>
+          previous.user?.metadataUpdatedAt != current.user?.metadataUpdatedAt,
+      listener: (context, state) {
+        log(
+          'Authentication state changed: ${state.user}',
+          name: 'AppView',
+        );
+        context.read<AuthenticationBloc>().add(
+          AuthenticationStatusRefreshRequested(),
+        );
       },
+      child: MaterialApp.router(
+        routerConfig: _router,
+        title: 'Felicette Recipes',
+        theme: widget.themeLight,
+        darkTheme: widget.themeDark,
+        themeMode: isDarkModeEnabled ? .dark : .light,
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        locale: currentLocale,
+        debugShowCheckedModeBanner: false,
+        builder: (context, child) {
+          return child!;
+        },
+      ),
     );
   }
 }

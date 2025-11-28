@@ -48,12 +48,6 @@ Future<void> main() async {
   final authCurrentUser = authenticationRepository.currentUser;
 
   log('Current authenticated user: $authCurrentUser', name: 'main');
-  if (authCurrentUser != null) {
-    final testeU = await userRepository.getUserFromAuthenticatedUser(
-      authCurrentUser,
-    );
-    log('Fetched user data: $testeU', name: 'main');
-  }
 
   final appBloc = AppBloc(
     authenticationRepository: authenticationRepository,

@@ -17,6 +17,7 @@ class UserRepository {
   }
 
   FRUser? _user;
+  StreamSubscription<DocumentSnapshot<FRUser>>? _userSubscription;
 
   FRUser? get user => _user;
 
@@ -34,7 +35,27 @@ class UserRepository {
     );
   }
 
+  Stream<FRUser?> getUserStream(String userId) {
+    log(
+      'Starting user stream for userId: $userId',
+      name: 'UserRepository',
+    );
+    return collection().doc(userId).snapshots().map((snapshot) {
+      final user = snapshot.data();
+      log(
+        'User stream update for userId $userId: $user',
+        name: 'UserRepository',
+      );
+      if (user != null) {
+        _user = user;
+      }
+      return user;
+    });
+  }
+
   void clearCurrentUser() {
     _user = null;
+    _userSubscription?.cancel();
+    _userSubscription = null;
   }
 }

@@ -63,6 +63,9 @@ class EditGroupCubit extends Cubit<EditGroupState> {
     try {
       await _groupRepository.deleteGroup(state.groupId);
 
+      //Add a delay to allow the backend to process the new group
+      await Future<void>.delayed(const Duration(seconds: 5));
+
       if (isClosed) {
         return;
       }

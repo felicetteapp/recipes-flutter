@@ -49,5 +49,9 @@ class AuthenticationRepository {
     );
   }
 
+  Future<void> refreshToken() async {
+    await currentUser?.getIdToken(true);
+  }
+
   void dispose() => _controller.close();
 }

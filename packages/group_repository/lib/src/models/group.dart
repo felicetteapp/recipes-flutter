@@ -191,6 +191,13 @@ class FRGroup {
   String currency;
   double budget;
 
+  Map<String, dynamic> toCreationMap() {
+    return {
+      'creatorUid': creatorUid,
+      'name': name,
+    };
+  }
+
   static Map<String, dynamic> toFirestore(FRGroup group, SetOptions? options) {
     return {
       'creatorUid': group.creatorUid,

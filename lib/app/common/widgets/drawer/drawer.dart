@@ -33,7 +33,7 @@ class FRDrawer extends StatelessWidget {
         ),
         trailing: TextButton(
           child: Text(s.create_group),
-          onPressed: () async {
+          onPressed: () {
             if (groupsBloc.state.groups.length >= 3) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -42,6 +42,10 @@ class FRDrawer extends StatelessWidget {
               );
               return;
             }
+            Navigator.pop(context);
+            context.push(
+              AppRoutes.newGroup,
+            );
           },
         ),
       ),

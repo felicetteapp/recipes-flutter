@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:authentication_repository/authentication_repository.dart';
@@ -18,10 +19,26 @@ class AuthenticationBloc
        super(const AuthenticationState.unknown()) {
     on<AuthenticationSubscriptionRequested>(_onSubscriptionRequested);
     on<AuthenticationLogoutPressed>(_onLogoutPressed);
+    on<AuthenticationStatusRefreshRequested>(
+      _onAuthenticationStatusRefreshRequested,
+    );
+    on<AuthenticationUserChanged>(_onUserChanged);
   }
 
   final AuthenticationRepository _authenticationRepository;
   final UserRepository _userRepository;
+  StreamSubscription<FRUser?>? _userStreamSubscription;
+
+  Future<void> _onAuthenticationStatusRefreshRequested(
+    AuthenticationStatusRefreshRequested event,
+    Emitter<AuthenticationState> emit,
+  ) async {
+    log(
+      'Refreshing authentication status',
+      name: 'AuthenticationBloc',
+    );
+    await _authenticationRepository.refreshToken();
+  }
 
   Future<void> _onSubscriptionRequested(
     AuthenticationSubscriptionRequested event,
@@ -45,11 +62,13 @@ class AuthenticationBloc
               'User authenticated: $user',
               name: 'AuthenticationBloc',
             );
-            return emit(
-              user != null
-                  ? AuthenticationState.authenticated(user)
-                  : const AuthenticationState.unauthenticated(),
-            );
+
+            if (user != null) {
+              _startListeningToUser(user.uid);
+              return emit(AuthenticationState.authenticated(user));
+            } else {
+              return emit(const AuthenticationState.unauthenticated());
+            }
           case AuthenticationStatus.unknown:
             return emit(const AuthenticationState.unknown());
         }
@@ -65,6 +84,41 @@ class AuthenticationBloc
     _authenticationRepository.logOut();
   }
 
+  void _onUserChanged(
+    AuthenticationUserChanged event,
+    Emitter<AuthenticationState> emit,
+  ) {
+    log(
+      'User data changed: ${event.user}',
+      name: 'AuthenticationBloc',
+    );
+    if (event.user != null) {
+      emit(AuthenticationState.authenticated(event.user!));
+    }
+  }
+
+  void _startListeningToUser(String userId) {
+    log(
+      'Starting to listen to user stream for userId: $userId',
+      name: 'AuthenticationBloc',
+    );
+    _userStreamSubscription?.cancel();
+    _userStreamSubscription = _userRepository
+        .getUserStream(userId)
+        .listen(
+          (user) {
+            add(AuthenticationUserChanged(user));
+          },
+          onError: (dynamic error) {
+            log(
+              'Error in user stream: $error',
+              name: 'AuthenticationBloc',
+              error: error,
+            );
+          },
+        );
+  }
+
   Future<FRUser?> _tryGetUser() async {
     try {
       final user = await _userRepository.getUserFromAuthenticatedUser(
@@ -77,6 +131,14 @@ class AuthenticationBloc
   }
 
   void _clearCurrentUserData() {
+    _userStreamSubscription?.cancel();
+    _userStreamSubscription = null;
     _userRepository.clearCurrentUser();
+  }
+
+  @override
+  Future<void> close() {
+    _userStreamSubscription?.cancel();
+    return super.close();
   }
 }

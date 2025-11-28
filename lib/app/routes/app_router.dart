@@ -86,6 +86,7 @@ GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
       NewRecipePage.route(),
       EditRecipePage.route(),
       EditListPage.route(),
+      CreateGroupPage.route(),
       EditGroupPage.route(),
     ],
     refreshListenable: GoRouterRefreshStream(authenticationBloc.stream),
