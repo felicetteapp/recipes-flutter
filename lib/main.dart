@@ -40,9 +40,7 @@ Future<void> main() async {
   );
 
   final authenticationRepository = AuthenticationRepository();
-  final teste = await authenticationRepository.user.first;
-
-  log('Current user at startup: $teste', name: 'main');
+  await authenticationRepository.user.first;
 
   final userRepository = UserRepository();
   final authCurrentUser = authenticationRepository.currentUser;
@@ -95,6 +93,10 @@ class FRApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log(
+      'Building FRApp with initialThemeIsDark: $initialThemeIsDark',
+      name: 'FRApp',
+    );
     return DynamicColorBuilder(
       builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
         final actualThemeLight = getLightThemeData(lightDynamic);

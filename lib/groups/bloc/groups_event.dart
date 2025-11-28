@@ -11,3 +11,9 @@ final class GroupSelected extends GroupsEvent {
 
   final FRGroup group;
 }
+
+final class GroupAuthUserChanged extends GroupsEvent {
+  const GroupAuthUserChanged(this.authUser);
+
+  final FRUser? authUser;
+}

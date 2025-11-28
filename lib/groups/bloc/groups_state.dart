@@ -6,6 +6,8 @@ class GroupsState extends Equatable {
     String? selectedGroupId,
   }) : _selectedGroupId = selectedGroupId;
 
+  static const empty = GroupsState();
+
   GroupsState copyWith({
     List<FRGroup>? groups,
     String? selectedGroupId,

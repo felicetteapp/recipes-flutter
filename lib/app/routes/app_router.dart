@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
@@ -50,6 +51,10 @@ const guestRoutes = {
 const Set<String> publicRoutes = {};
 
 GoRouter createAppRouter(AuthenticationBloc authenticationBloc) {
+  log(
+    'Creating App Router',
+    name: 'AppRouter',
+  );
   return GoRouter(
     routes: [
       SplashPage.route(),
@@ -149,82 +154,22 @@ class _MainShellContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<AuthenticationBloc, AuthenticationState>(
-          listener: (context, state) {
-            if (state.status == .authenticated) {
-              context.read<GroupsBloc>().add(GroupsSubscriptionRequested());
-            }
-          },
-        ),
-        BlocListener<GroupsBloc, GroupsState>(
-          listener: (context, state) {
-            final selectedGroup = state.selectedGroup;
-            context.read<IngredientsBloc>().add(
-              IngredientSelectedGroupChanged(selectedGroup),
-            );
-            context.read<RecipesBloc>().add(
-              RecipesSelectedGroupChanged(selectedGroup),
-            );
-            context.read<ListBloc>().add(
-              ListSelectedGroupChanged(selectedGroup),
-            );
-            context.read<ListBloc>().add(
-              UpdateCurrentGroupIngredientPrices(
-                selectedGroup?.ingredientsPrices ?? {},
-              ),
-            );
-            context.read<ListBloc>().add(
-              ListCurrentCheckedIngredientsChanged(
-                selectedGroup?.checkedIngredients ?? [],
-              ),
-            );
-            context.read<ListBloc>().add(
-              ListShowCheckedsFirstChanged(
-                showCheckedsFirst:
-                    selectedGroup?.filters.showCheckedsFirst ?? false,
-              ),
-            );
-            context.read<ListBloc>().add(
-              ListShowBudgetChanged(
-                showBudget: selectedGroup?.filters.showBudget ?? false,
-              ),
-            );
-          },
-        ),
-        BlocListener<RecipesBloc, RecipesState>(
-          listenWhen: (previous, current) =>
-              previous.recipes != current.recipes,
-          listener: (context, state) {
-            context.read<ListBloc>().add(
-              UpdateGroupRecipes(state.recipes),
-            );
-          },
-        ),
-        BlocListener<IngredientsBloc, IngredientsState>(
-          listenWhen: (previous, current) =>
-              previous.ingredients != current.ingredients,
-          listener: (context, state) {
-            context.read<ListBloc>().add(
-              UpdateGroupIngredients(state.ingredients),
-            );
-          },
-        ),
-      ],
-      child: Scaffold(
-        body: navShell,
-        drawer: const FRDrawer(),
-        appBar: _appBar(context),
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: navShell.currentIndex,
-          onDestinationSelected: navShell.goBranch,
-          destinations: [
-            RecipesPage.navigationDestination(context),
-            ListPage.navigationDestination(context),
-            IngredientsPage.navigationDestination(context),
-          ],
-        ),
+    log(
+      'Building MainShellContent with currentIndex: ${navShell.currentIndex}',
+      name: '_MainShellContent',
+    );
+    return Scaffold(
+      body: navShell,
+      drawer: const FRDrawer(),
+      appBar: _appBar(context),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: navShell.currentIndex,
+        onDestinationSelected: navShell.goBranch,
+        destinations: [
+          RecipesPage.navigationDestination(context),
+          ListPage.navigationDestination(context),
+          IngredientsPage.navigationDestination(context),
+        ],
       ),
     );
   }

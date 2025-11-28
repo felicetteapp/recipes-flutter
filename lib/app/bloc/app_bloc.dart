@@ -119,6 +119,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       'Setting language to ${event.locale}',
       name: 'AppBloc',
     );
+    _authenticationRepository.setLocale(event.locale);
     _secureStorageClient.write(
       key: localeKey,
       value: event.locale.toString(),

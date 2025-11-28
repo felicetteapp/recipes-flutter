@@ -17,14 +17,26 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
     required UserRepository userRepository,
   }) : _groupRepository = groupRepository,
        _userRepository = userRepository,
-       super(const GroupsState()) {
+       super(GroupsState.empty) {
     on<GroupsSubscriptionRequested>(_onSubscriptionRequested);
     on<GroupSelected>(_onGroupSelected);
+    on<GroupAuthUserChanged>(_onAuthUserChanged);
   }
 
   final GroupRepository _groupRepository;
   final UserRepository _userRepository;
   final SecureStorageClient _secureStorageClient = SecureStorageClient();
+
+  void _onAuthUserChanged(
+    GroupAuthUserChanged event,
+    Emitter<GroupsState> emit,
+  ) {
+    log(
+      'Group auth user changed: ${event.authUser}',
+      name: 'GroupsBloc',
+    );
+    add(GroupsSubscriptionRequested());
+  }
 
   Future<void> _onSubscriptionRequested(
     GroupsSubscriptionRequested event,
@@ -32,18 +44,24 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
   ) async {
     log('Groups subscription requested', name: 'GroupsBloc');
 
-    final selectedGroupId = await _secureStorageClient.read(
-      key: selectedGroupIdKey,
-    );
-
-    emit(state.copyWith(selectedGroupId: selectedGroupId));
+    emit(GroupsState.empty);
 
     final user = _userRepository.user;
     if (user == null) return;
+
     return emit.onEach<List<FRGroup>>(
       _groupRepository.listenToGroups(user.groups),
-      onData: (groups) {
+      onData: (groups) async {
         log('Received groups update: $groups', name: 'GroupsBloc');
+
+        final selectedGroupId = await _secureStorageClient.read(
+          key: selectedGroupIdKey,
+        );
+
+        if (selectedGroupId != null &&
+            groups.any((g) => g.id == selectedGroupId)) {
+          add(GroupSelected(groups.firstWhere((g) => g.id == selectedGroupId)));
+        }
 
         emit(state.copyWith(groups: groups));
         if (state.selectedGroup == null && groups.isNotEmpty) {
