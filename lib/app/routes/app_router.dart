@@ -152,7 +152,7 @@ class _MainShellContent extends StatelessWidget {
       listeners: [
         BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
-            if (state.status == AuthenticationStatus.authenticated) {
+            if (state.status == .authenticated) {
               context.read<GroupsBloc>().add(GroupsSubscriptionRequested());
             }
           },

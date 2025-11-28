@@ -3,10 +3,13 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:group_repository/group_repository.dart';
+import 'package:secure_storage/secure_storage.dart';
 import 'package:user_repository/user_repository.dart';
 
 part 'groups_state.dart';
 part 'groups_event.dart';
+
+const selectedGroupIdKey = 'selectedGroupId';
 
 class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
   GroupsBloc({
@@ -21,12 +24,19 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
 
   final GroupRepository _groupRepository;
   final UserRepository _userRepository;
+  final SecureStorageClient _secureStorageClient = SecureStorageClient();
 
   Future<void> _onSubscriptionRequested(
     GroupsSubscriptionRequested event,
     Emitter<GroupsState> emit,
   ) async {
     log('Groups subscription requested', name: 'GroupsBloc');
+
+    final selectedGroupId = await _secureStorageClient.read(
+      key: selectedGroupIdKey,
+    );
+
+    emit(state.copyWith(selectedGroupId: selectedGroupId));
 
     final user = _userRepository.user;
     if (user == null) return;
@@ -53,6 +63,10 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
     Emitter<GroupsState> emit,
   ) {
     log('Group selected: ${event.group}', name: 'GroupsBloc');
+    _secureStorageClient.write(
+      key: selectedGroupIdKey,
+      value: event.group.id,
+    );
     emit(state.copyWith(selectedGroupId: event.group.id));
   }
 }
