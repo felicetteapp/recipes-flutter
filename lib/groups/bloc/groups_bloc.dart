@@ -42,12 +42,13 @@ class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
     GroupsSubscriptionRequested event,
     Emitter<GroupsState> emit,
   ) async {
-    log('Groups subscription requested', name: 'GroupsBloc');
-
-    emit(GroupsState.empty);
-
     final user = _userRepository.user;
-    if (user == null) return;
+    log('Groups subscription requested $event - $user', name: 'GroupsBloc');
+
+    if (user == null) {
+      emit(GroupsState.empty);
+      return;
+    }
 
     return emit.onEach<List<FRGroup>>(
       _groupRepository.listenToGroups(user.groups),
