@@ -131,6 +131,7 @@ class _PriceCard extends StatelessWidget {
     );
 
     return Card(
+      elevation: 0,
       child: Padding(
         padding: const .symmetric(
           horizontal: 16,
