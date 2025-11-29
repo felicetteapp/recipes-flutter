@@ -43,6 +43,9 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     on<ToggleIngredientCheckedStatus>(
       _onToggleIngredientCheckedStatus,
     );
+    on<SetIngredientCheckedStatus>(
+      _onSetIngredientCheckedStatus,
+    );
     on<UpdateIngredientPrices>(
       _onUpdateIngredientPrices,
     );
@@ -234,6 +237,38 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       event.ingredientId,
       event.prices,
     );
+  }
+
+  void _onSetIngredientCheckedStatus(
+    SetIngredientCheckedStatus event,
+    Emitter<ListState> emit,
+  ) {
+    log(
+      'Setting checked status for ingredient: ${event.ingredientId} to ${event.isChecked}',
+      name: 'ListBloc.SetIngredientCheckedStatus',
+    );
+
+    if (state.selectedGroup == null) return;
+
+    if (event.isChecked) {
+      log(
+        'Adding checked ingredient',
+        name: 'ListBloc.SetIngredientCheckedStatus',
+      );
+      _groupRepository.addCheckedIngredientToGroup(
+        state.selectedGroup!.id,
+        event.ingredientId,
+      );
+    } else {
+      log(
+        'Removing checked ingredient',
+        name: 'ListBloc.SetIngredientCheckedStatus',
+      );
+      _groupRepository.removeCheckedIngredientFromGroup(
+        state.selectedGroup!.id,
+        event.ingredientId,
+      );
+    }
   }
 
   void _onToggleIngredientCheckedStatus(

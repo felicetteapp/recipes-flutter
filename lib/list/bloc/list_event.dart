@@ -70,6 +70,16 @@ final class ToggleIngredientCheckedStatus extends ListEvent {
   final String ingredientId;
 }
 
+final class SetIngredientCheckedStatus extends ListEvent {
+  const SetIngredientCheckedStatus({
+    required this.ingredientId,
+    required this.isChecked,
+  });
+
+  final String ingredientId;
+  final bool isChecked;
+}
+
 final class UpdateIngredientPrices extends ListEvent {
   const UpdateIngredientPrices(this.ingredientId, this.prices);
 

@@ -70,8 +70,9 @@ class WearOsListenerWrapperState extends State<WearOsListenerWrapper> {
 
         if (context.mounted) {
           listBloc.add(
-            ToggleIngredientCheckedStatus(
-              event.ingredientId,
+            SetIngredientCheckedStatus(
+              ingredientId: event.ingredientId,
+              isChecked: event.isChecked,
             ),
           );
         }
