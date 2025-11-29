@@ -10,13 +10,6 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-/**
- * Background service that listens for messages and data changes from WearOS devices.
- * This service handles:
- * - Ingredient requests from the watch
- * - Status updates (check/uncheck) from the watch
- * - Communication with Flutter via MethodChannel
- */
 class PhoneDataLayerListenerService : WearableListenerService() {
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -28,8 +21,6 @@ class PhoneDataLayerListenerService : WearableListenerService() {
         private const val INGREDIENTS_REQUEST_PATH = "/ingredients/request"
         private const val INGREDIENT_STATUS_PATH = "/ingredient/status"
         
-        // Static reference to MainActivity's FlutterEngine
-        // This is set by MainActivity when it's created
         var flutterEngine: FlutterEngine? = null
     }
 
@@ -37,7 +28,6 @@ class PhoneDataLayerListenerService : WearableListenerService() {
         super.onCreate()
         Log.d(TAG, "PhoneDataLayerListenerService created")
         
-        // Initialize MethodChannel if FlutterEngine is available
         flutterEngine?.let { engine ->
             methodChannel = MethodChannel(
                 engine.dartExecutor.binaryMessenger,
@@ -55,10 +45,6 @@ class PhoneDataLayerListenerService : WearableListenerService() {
         Log.d(TAG, "PhoneDataLayerListenerService destroyed")
     }
 
-    /**
-     * Called when the watch sends a message to the phone.
-     * Handles ingredient requests from the watch.
-     */
     override fun onMessageReceived(messageEvent: MessageEvent) {
         Log.d(TAG, "Message received from ${messageEvent.sourceNodeId}")
         Log.d(TAG, "  Path: ${messageEvent.path}")
@@ -77,10 +63,6 @@ class PhoneDataLayerListenerService : WearableListenerService() {
         }
     }
 
-    /**
-     * Called when data items change (sent from watch).
-     * Handles ingredient status updates (check/uncheck) from the watch.
-     */
     override fun onDataChanged(dataEvents: DataEventBuffer) {
         Log.d(TAG, "Data changed event received: ${dataEvents.count} events")
         
@@ -102,10 +84,7 @@ class PhoneDataLayerListenerService : WearableListenerService() {
         dataEvents.release()
     }
 
-    /**
-     * Handle ingredient status update (check/uncheck) from watch.
-     * Extracts the data and forwards it to Flutter via MethodChannel.
-     */
+
     private fun handleIngredientStatusUpdate(dataEvent: DataEvent) {
         try {
             Log.d(TAG, "Handling ingredient status update from watch")
@@ -130,10 +109,6 @@ class PhoneDataLayerListenerService : WearableListenerService() {
         }
     }
 
-    /**
-     * Send ingredients to the watch.
-     * Fetches ingredients from Flutter.
-     */
     private suspend fun sendIngredientsToWatch() {
         try {
             val ingredients = if (methodChannel != null) {
@@ -159,10 +134,6 @@ class PhoneDataLayerListenerService : WearableListenerService() {
         }
     }
 
-    /**
-     * Get ingredients from Flutter via MethodChannel.
-     * This communicates with the Dart side to get the current ingredient list.
-     */
     private suspend fun getIngredientsFromFlutter(): List<WearIngredient> {
         return withContext(Dispatchers.Main) {
             suspendCoroutine { continuation ->
@@ -215,10 +186,6 @@ class PhoneDataLayerListenerService : WearableListenerService() {
         }
     }
 
-    /**
-     * Update ingredient status in Flutter via MethodChannel.
-     * This communicates with the Dart side to update the check status.
-     */
     private suspend fun updateIngredientStatusInFlutter(
         ingredientId: String,
         isChecked: Boolean
@@ -251,17 +218,12 @@ class PhoneDataLayerListenerService : WearableListenerService() {
         }
     }
 
-    /**
-     * Called when a peer (watch) is connected.
-     */
+
     override fun onPeerConnected(peer: Node) {
         super.onPeerConnected(peer)
         Log.d(TAG, "Peer connected: ${peer.displayName} (${peer.id})")
     }
 
-    /**
-     * Called when a peer (watch) is disconnected.
-     */
     override fun onPeerDisconnected(peer: Node) {
         super.onPeerDisconnected(peer)
         Log.d(TAG, "Peer disconnected: ${peer.displayName} (${peer.id})")

@@ -4,6 +4,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:felicette_recipes/app/bloc/app_bloc.dart';
 import 'package:felicette_recipes/app/common/environment.dart';
+import 'package:felicette_recipes/app/services/wearos/wearos_service.dart';
 import 'package:felicette_recipes/app/view/app_view.dart';
 import 'package:felicette_recipes/authentication/bloc/authentication_bloc.dart';
 import 'package:felicette_recipes/firebase_options.dart';
@@ -65,6 +66,8 @@ Future<void> main() async {
     name: 'main',
   );
   appBloc.add(AppSetLanguage(locale: initialLocale));
+
+  await WearOSService.instance.initialize();
 
   runApp(
     FRApp(
@@ -166,7 +169,3 @@ Widget _getMultiProvider(
     themeDark: actualThemeDark,
   ),
 );
-
-//TODO(facundoleites): test auth features
-//TODO(facundoleites): fix wearos service
-//TODO(facundoleites): test deeplinks

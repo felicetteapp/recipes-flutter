@@ -1,5 +1,4 @@
 import 'package:felicette_recipes/app/view/view.dart';
-import 'package:felicette_recipes/app/view/widgets/generic_select/bloc/select_cubit.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

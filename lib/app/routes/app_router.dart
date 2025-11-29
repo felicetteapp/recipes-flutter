@@ -5,8 +5,10 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:felicette_recipes/app/common/widgets/appbar/appbar.dart';
 import 'package:felicette_recipes/app/common/widgets/drawer/drawer.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/services/wearos/wearos_service.dart';
 import 'package:felicette_recipes/authentication/authentication.dart';
 import 'package:felicette_recipes/create_account/create_account.dart';
+import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/groups/groups.dart';
 import 'package:felicette_recipes/ingredients/ingredients.dart';
 import 'package:felicette_recipes/list/list.dart';
@@ -158,18 +160,50 @@ class _MainShellContent extends StatelessWidget {
       'Building MainShellContent with currentIndex: ${navShell.currentIndex}',
       name: '_MainShellContent',
     );
-    return Scaffold(
-      body: navShell,
-      drawer: const FRDrawer(),
-      appBar: _appBar(context),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navShell.currentIndex,
-        onDestinationSelected: navShell.goBranch,
-        destinations: [
-          RecipesPage.navigationDestination(context),
-          ListPage.navigationDestination(context),
-          IngredientsPage.navigationDestination(context),
-        ],
+    final s = S.of(context);
+    return BlocListener<ListBloc, ListState>(
+      listener: (context, state) {
+        log(
+          // ignore: lines_longer_than_80_chars
+          'Current ingredients in ListBloc changed: ${state.currentIngredients.length} items',
+          name: 'AppView',
+        );
+        try {
+          WearOSService.instance.sendCurrentIngredients(
+            currentIngredients: state.listItemsAsIngredientDisplayType
+                .where((item) {
+                  return item.type == .ingredient;
+                })
+                .map(
+                  (item) => item.ingredientItem!,
+                )
+                .toList(),
+            s: s,
+          );
+        } catch (e) {
+          log(
+            'Error sending ingredients to WearOS: $e',
+            name: 'AppView',
+          );
+        }
+      },
+      listenWhen: (previous, current) =>
+          previous.listItemsAsIngredientDisplayType !=
+          current.listItemsAsIngredientDisplayType,
+
+      child: Scaffold(
+        body: navShell,
+        drawer: const FRDrawer(),
+        appBar: _appBar(context),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: navShell.currentIndex,
+          onDestinationSelected: navShell.goBranch,
+          destinations: [
+            RecipesPage.navigationDestination(context),
+            ListPage.navigationDestination(context),
+            IngredientsPage.navigationDestination(context),
+          ],
+        ),
       ),
     );
   }

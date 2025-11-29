@@ -5,6 +5,7 @@ import 'package:felicette_recipes/app/bloc/app_bloc.dart';
 import 'package:felicette_recipes/app/routes/app_router.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
 import 'package:felicette_recipes/app/services/deep_link_service.dart';
+import 'package:felicette_recipes/app/view/view.dart';
 import 'package:felicette_recipes/authentication/bloc/authentication_bloc.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
 import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
@@ -214,16 +215,9 @@ class _AppViewState extends State<AppView> {
         locale: currentLocale,
         debugShowCheckedModeBanner: false,
         builder: (context, child) {
-          return child!;
+          return WearOsListenerWrapper(child: child!);
         },
       ),
     );
-  }
-}
-
-class Teste {
-  bool isSignInWithEmailLink(String link) {
-    // Dummy implementation for testing
-    return link.contains('signInWithEmailLink=true');
   }
 }

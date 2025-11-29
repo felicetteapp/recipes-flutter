@@ -292,7 +292,10 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     UpdateCurrentGroupIngredients event,
     Emitter<ListState> emit,
   ) {
-    log('Updating current group ingredients', name: 'ListBloc');
+    log(
+      'Updating current group ingredients',
+      name: 'ListBloc._onUpdateCurrentGroupIngredients',
+    );
     final currentIngredientIds = state.currentIngredientIds;
     final groupIngredients = state.groupIngredients;
     final currentRecipes = state.currentRecipes
@@ -338,7 +341,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
             currentIngredients.add(
               ListIngredientItem(
                 ingredient: ingredient,
-                quantity: recipeIngredient.quantity,
+                quantity: null,
                 associatedRecipes: List.empty(growable: true),
                 isChecked: currentCheckedIngredients.contains(ingredient.id),
                 prices: currentIngredientPrices[ingredient.id] ?? [],
@@ -360,39 +363,42 @@ class ListBloc extends Bloc<ListEvent, ListState> {
 
     final listItems = <ListPageListItem>[];
 
-    if (state.displayType == ListDisplayTypeEnum.ingredients) {
-      for (final ingredientItem in currentIngredients) {
-        listItems
-          ..add(
-            ListPageListItem(
-              type: ListPageListItemTypeEnum.ingredient,
-              ingredientItem: ingredientItem,
-            ),
-          )
-          ..sort(
-            (a, b) {
-              if (showCheckedsFirst) {
-                if (a.ingredientItem!.isChecked &&
-                    !b.ingredientItem!.isChecked) {
-                  return -1;
-                } else if (!a.ingredientItem!.isChecked &&
-                    b.ingredientItem!.isChecked) {
-                  return 1;
-                }
+    final listItemsAsIngredientDisplayType = <ListPageListItem>[];
+
+    for (final ingredientItem in currentIngredients) {
+      listItemsAsIngredientDisplayType
+        ..add(
+          ListPageListItem(
+            type: .ingredient,
+            ingredientItem: ingredientItem,
+          ),
+        )
+        ..sort(
+          (a, b) {
+            if (showCheckedsFirst) {
+              if (a.ingredientItem!.isChecked && !b.ingredientItem!.isChecked) {
+                return -1;
+              } else if (!a.ingredientItem!.isChecked &&
+                  b.ingredientItem!.isChecked) {
+                return 1;
               }
-              return a.ingredientItem!.ingredient.name
-                  .normalizeForSearch()
-                  .compareTo(
-                    b.ingredientItem!.ingredient.name.normalizeForSearch(),
-                  );
-            },
-          );
-      }
+            }
+            return a.ingredientItem!.ingredient.name
+                .normalizeForSearch()
+                .compareTo(
+                  b.ingredientItem!.ingredient.name.normalizeForSearch(),
+                );
+          },
+        );
+    }
+
+    if (state.displayType == .ingredients) {
+      listItems.addAll(listItemsAsIngredientDisplayType);
     } else {
       for (final recipe in currentRecipes) {
         listItems.add(
           ListPageListItem(
-            type: ListPageListItemTypeEnum.recipe,
+            type: .recipe,
             recipeItem: ListRecipeItem(recipe: recipe),
           ),
         );
@@ -403,7 +409,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
           if (ingredientItem != null) {
             listItems.add(
               ListPageListItem(
-                type: ListPageListItemTypeEnum.ingredient,
+                type: .ingredient,
                 ingredientItem: ingredientItem,
                 recipeItem: ListRecipeItem(recipe: recipe),
               ),
@@ -458,6 +464,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
       state.copyWith(
         currentIngredients: currentIngredients,
         listItems: listItems,
+        listItemsAsIngredientDisplayType: listItemsAsIngredientDisplayType,
         currentListSpentBudget: currentIngredientPrices.entries.fold(0, (
           previousValue,
           priceEntry,

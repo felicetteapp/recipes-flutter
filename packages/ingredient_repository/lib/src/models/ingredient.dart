@@ -70,4 +70,10 @@ class FRWearIngredient {
       'isChecked': checked,
     };
   }
+
+  @override
+  String toString() {
+    // ignore: lines_longer_than_80_chars
+    return 'FRWearIngredient(id: $id, name: $name, description: $description, checked: $checked)';
+  }
 }

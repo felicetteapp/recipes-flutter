@@ -16,6 +16,7 @@ class ListState extends Equatable {
     this.currentRecipesIds = const [],
     this.currentRecipes = const [],
     this.listItems = const [],
+    this.listItemsAsIngredientDisplayType = const [],
     this.currentIngredientPrices = const {},
     this.currentCheckedIngredients = const [],
     this.showBudget = false,
@@ -35,6 +36,7 @@ class ListState extends Equatable {
   final List<FRRecipe> groupRecipes;
   final List<FRIngredient> groupIngredients;
   final List<ListPageListItem> listItems;
+  final List<ListPageListItem> listItemsAsIngredientDisplayType;
   final Map<String, List<FRIngredientPrice>> currentIngredientPrices;
   final List<String> currentCheckedIngredients;
   final bool showBudget;
@@ -54,6 +56,7 @@ class ListState extends Equatable {
     List<String>? currentRecipesIds,
     List<FRRecipe>? currentRecipes,
     List<ListPageListItem>? listItems,
+    List<ListPageListItem>? listItemsAsIngredientDisplayType,
     Map<String, List<FRIngredientPrice>>? currentIngredientPrices,
     List<String>? currentCheckedIngredients,
     bool? showBudget,
@@ -73,6 +76,9 @@ class ListState extends Equatable {
       currentRecipesIds: currentRecipesIds ?? this.currentRecipesIds,
       currentRecipes: currentRecipes ?? this.currentRecipes,
       listItems: listItems ?? this.listItems,
+      listItemsAsIngredientDisplayType:
+          listItemsAsIngredientDisplayType ??
+          this.listItemsAsIngredientDisplayType,
       currentIngredientPrices:
           currentIngredientPrices ?? this.currentIngredientPrices,
       currentCheckedIngredients:
@@ -107,5 +113,6 @@ class ListState extends Equatable {
     currentListBudget,
     addIngredientStatus,
     addIngredientError,
+    listItemsAsIngredientDisplayType,
   ];
 }

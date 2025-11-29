@@ -133,10 +133,6 @@ class ListPageContent extends StatelessWidget {
         ),
         itemCount: listItemsCount,
         itemBuilder: (context, index) {
-          log(
-            'render index $index of $listItemsCount',
-            name: 'ListPageContent',
-          );
           if (index == 0) {
             return const _ListFilters();
           }

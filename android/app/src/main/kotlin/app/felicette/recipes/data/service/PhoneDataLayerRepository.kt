@@ -8,10 +8,6 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-/**
- * Repository to handle communication with WearOS devices via Wearable Data Layer.
- * This class sends ingredient data to connected WearOS watches.
- */
 class PhoneDataLayerRepository private constructor(context: Context) {
 
     private val dataClient: DataClient = Wearable.getDataClient(context)
@@ -22,16 +18,9 @@ class PhoneDataLayerRepository private constructor(context: Context) {
     private val json = Json {
         ignoreUnknownKeys = true
         encodeDefaults = true
-        prettyPrint = false // Compact JSON for efficiency
+        prettyPrint = false
     }
 
-    /**
-     * Send ingredients list to all connected WearOS devices.
-     * The data is serialized to JSON and sent as a DataItem.
-     * 
-     * @param ingredients List of ingredients to send to the watch
-     * @throws SendToWatchException if sending fails
-     */
     suspend fun sendIngredientsToWatch(ingredients: List<WearIngredient>) {
         try {
             Log.d(TAG, "Sending ${ingredients.size} ingredients to watch")
@@ -54,10 +43,6 @@ class PhoneDataLayerRepository private constructor(context: Context) {
         }
     }
 
-    /**
-     * Request sync from all connected WearOS devices.
-     * This triggers the watch to request fresh data from the phone.
-     */
     suspend fun requestSyncFromWatch() {
         try {
             val nodes = getConnectedNodes()
@@ -84,11 +69,7 @@ class PhoneDataLayerRepository private constructor(context: Context) {
         }
     }
 
-    /**
-     * Check if any WearOS devices are currently connected.
-     * 
-     * @return true if at least one watch is connected, false otherwise
-     */
+
     suspend fun hasConnectedWatch(): Boolean {
         return try {
             getConnectedNodes().isNotEmpty()
@@ -98,11 +79,7 @@ class PhoneDataLayerRepository private constructor(context: Context) {
         }
     }
 
-    /**
-     * Get list of connected WearOS devices.
-     * 
-     * @return List of connected Node objects
-     */
+
     suspend fun getConnectedNodes(): List<Node> {
         return try {
             nodeClient.connectedNodes.await().also { nodes ->
@@ -117,12 +94,6 @@ class PhoneDataLayerRepository private constructor(context: Context) {
         }
     }
 
-    /**
-     * Get capabilities of connected devices.
-     * Useful for checking if the Felicette Recipes watch app is installed.
-     * 
-     * @return Set of nodes that have the Felicette Recipes capability
-     */
     suspend fun getWatchCapabilities(): Set<Node> {
         return try {
             val capabilityClient = Wearable.getCapabilityClient(applicationContext)
@@ -142,23 +113,17 @@ class PhoneDataLayerRepository private constructor(context: Context) {
     companion object {
         private const val TAG = "PhoneDataRepository"
         
-        // Communication paths - must match WearOS app exactly
         private const val INGREDIENTS_PATH = "/ingredients"
         private const val INGREDIENTS_KEY = "ingredients_data"
         private const val TIMESTAMP_KEY = "timestamp"
         private const val INGREDIENTS_REQUEST_PATH = "/ingredients/request"
         private const val INGREDIENT_STATUS_PATH = "/ingredient/status"
         
-        // Capability to identify compatible watch apps
         private const val WEAR_CAPABILITY = "felicette_recipes_wear"
 
         @Volatile
         private var instance: PhoneDataLayerRepository? = null
 
-        /**
-         * Get singleton instance of the repository.
-         * Thread-safe double-checked locking pattern.
-         */
         fun getInstance(context: Context): PhoneDataLayerRepository {
             return instance ?: synchronized(this) {
                 instance ?: PhoneDataLayerRepository(context).also { 
@@ -169,7 +134,4 @@ class PhoneDataLayerRepository private constructor(context: Context) {
     }
 }
 
-/**
- * Custom exception for watch communication errors.
- */
 class SendToWatchException(message: String, cause: Throwable? = null) : Exception(message, cause)

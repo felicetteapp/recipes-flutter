@@ -12,11 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-/**
- * Main Activity for the Felicette Recipes Flutter app.
- * Handles WearOS communication by making the FlutterEngine available to the service
- * and setting up MethodChannel handlers for Flutter-to-native communication.
- */
 class MainActivity : FlutterActivity() {
     private val TAG = "MainActivity"
     private val CHANNEL = "app.felicette.recipes/wearos"
@@ -26,11 +21,8 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         
-        // Make FlutterEngine available to the PhoneDataLayerListenerService
-        // This allows the service to use MethodChannel to communicate with Flutter
         PhoneDataLayerListenerService.flutterEngine = flutterEngine
         
-        // Set up MethodChannel for Flutter-to-native communication
         methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
         methodChannel?.setMethodCallHandler { call, result ->
             when (call.method) {
@@ -64,11 +56,9 @@ class MainActivity : FlutterActivity() {
     override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
         super.cleanUpFlutterEngine(flutterEngine)
         
-        // Clear the method call handler
         methodChannel?.setMethodCallHandler(null)
         methodChannel = null
         
-        // Clear the FlutterEngine reference when cleaning up
         PhoneDataLayerListenerService.flutterEngine = null
         
         Log.d(TAG, "FlutterEngine cleaned up")
@@ -91,10 +81,6 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    /**
-     * Handle request to check if a watch is connected.
-     * This allows Flutter to update UI based on watch connectivity.
-     */
     private fun handleHasConnectedWatch(result: MethodChannel.Result) {
         activityScope.launch {
             try {
