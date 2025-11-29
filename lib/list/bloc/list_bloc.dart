@@ -244,6 +244,7 @@ class ListBloc extends Bloc<ListEvent, ListState> {
     Emitter<ListState> emit,
   ) {
     log(
+      // ignore: lines_longer_than_80_chars
       'Setting checked status for ingredient: ${event.ingredientId} to ${event.isChecked}',
       name: 'ListBloc.SetIngredientCheckedStatus',
     );
