@@ -1,0 +1,9 @@
+name: secure_storage
+description: Dart package which manages the secure storage.
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  flutter_secure_storage: ^9.2.4

@@ -1,7 +1,9 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 
 const mainColor = Color(0xFF92cdcf);
 const secondaryColor = Color(0xFFcfa7c2);
+const tertiaryColor = Color(0xFF445878);
 
 // Custom colors extension
 @immutable
@@ -39,122 +41,175 @@ class CustomColors extends ThemeExtension<CustomColors> {
       return this;
     }
     return CustomColors(
-      success: Color.lerp(success, other.success, t)!,
-      onSuccess: Color.lerp(onSuccess, other.onSuccess, t)!,
-      successContainer:
-          Color.lerp(successContainer, other.successContainer, t)!,
-      onSuccessContainer:
-          Color.lerp(onSuccessContainer, other.onSuccessContainer, t)!,
+      success: .lerp(success, other.success, t)!,
+      onSuccess: .lerp(onSuccess, other.onSuccess, t)!,
+      successContainer: .lerp(
+        successContainer,
+        other.successContainer,
+        t,
+      )!,
+      onSuccessContainer: .lerp(
+        onSuccessContainer,
+        other.onSuccessContainer,
+        t,
+      )!,
+    );
+  }
+
+  CustomColors harmonized(ColorScheme dynamic) {
+    return copyWith(
+      success: success.harmonizeWith(dynamic.primary),
+      onSuccess: onSuccess.harmonizeWith(dynamic.primary),
+      successContainer: successContainer.harmonizeWith(dynamic.primary),
+      onSuccessContainer: onSuccessContainer.harmonizeWith(dynamic.primary),
     );
   }
 }
 
-final colorSchemeDark = ColorScheme.fromSeed(
+final ColorScheme colorSchemeDark = .fromSeed(
   seedColor: mainColor,
   secondary: secondaryColor,
-  brightness: Brightness.dark,
+  tertiary: tertiaryColor,
+  brightness: .dark,
 );
 
-final colorSchemeLight = ColorScheme.fromSeed(
+final ColorScheme colorSchemeLight = .fromSeed(
   seedColor: mainColor,
   secondary: secondaryColor,
-  brightness: Brightness.light,
-);
-
-final themeLight = ThemeData(
-  colorScheme: colorSchemeLight,
-  fontFamily: 'NunitoSans',
-  useMaterial3: true,
-  extensions: <ThemeExtension<dynamic>>[
-    CustomColors(
-      success: Color.fromARGB(255, 27, 160, 27),
-      onSuccess: colorSchemeLight.onSurface,
-      successContainer: Color.fromARGB(255, 144, 219, 144),
-      onSuccessContainer: colorSchemeLight.onSurface,
-    ),
-  ],
-  inputDecorationTheme: InputDecorationTheme(
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(
-        color: colorSchemeLight.surfaceContainer,
-        width: 1.5,
-      ),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(
-        color: colorSchemeLight.surfaceContainer,
-        width: 1.5,
-      ),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(
-        color: mainColor, // Use your main color
-        width: 2.0,
-      ),
-    ),
-    errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: Colors.red, width: 2.0),
-    ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: Colors.red, width: 2.0),
-    ),
-    filled: false,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-  ),
-);
-
-final themeDark = ThemeData(
-  colorScheme: colorSchemeDark,
-  fontFamily: 'NunitoSans',
-  useMaterial3: true,
-  extensions: <ThemeExtension<dynamic>>[
-    CustomColors(
-      success: Color.fromARGB(255, 109, 226, 109),
-      onSuccess: colorSchemeDark.surface,
-      successContainer: Color.fromARGB(255, 165, 192, 165),
-      onSuccessContainer: colorSchemeDark.surface,
-    ),
-  ],
-  inputDecorationTheme: InputDecorationTheme(
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(
-        color: colorSchemeDark.surfaceContainer,
-        width: 1.5,
-      ),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(
-        color: colorSchemeDark.surfaceContainer,
-        width: 1.5,
-      ),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(
-        color: mainColor, // Use your main color
-        width: 2.0,
-      ),
-    ),
-    errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: Colors.red, width: 2.0),
-    ),
-    focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: Colors.red, width: 2.0),
-    ),
-    filled: false,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-  ),
+  tertiary: tertiaryColor,
 );
 
 extension ThemeDataExtensions on ThemeData {
   CustomColors get customColors => extension<CustomColors>()!;
+}
+
+ThemeData getDarkThemeData(ColorScheme? darkDynamic) {
+  var colorSchema = colorSchemeDark;
+
+  if (darkDynamic != null) {
+    colorSchema = .fromSeed(
+      seedColor: Color(darkDynamic.primary.toARGB32()),
+      brightness: .dark,
+      secondary: darkDynamic.secondary,
+      tertiary: darkDynamic.tertiary,
+    );
+    colorSchema = colorSchema.harmonized();
+  }
+
+  final customColors = CustomColors(
+    success: const .fromARGB(255, 109, 226, 109),
+    onSuccess: colorSchema.surface,
+    successContainer: const .fromARGB(255, 165, 192, 165),
+    onSuccessContainer: colorSchema.surface,
+  ).harmonized(colorSchema);
+
+  final themeDark = ThemeData(
+    colorScheme: colorSchema,
+    fontFamily: 'NunitoSans',
+    useMaterial3: true,
+    extensions: <ThemeExtension<dynamic>>[customColors],
+    snackBarTheme: const SnackBarThemeData(
+      behavior: .floating,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderRadius: .circular(8),
+        borderSide: BorderSide(color: colorSchema.outlineVariant, width: 1.5),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: .circular(8),
+        borderSide: BorderSide(color: colorSchema.outlineVariant, width: 1.5),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: .circular(8),
+        borderSide: BorderSide(
+          color: mainColor.harmonizeWith(
+            colorSchema.primary,
+          ), // Use your main color
+          width: 2,
+        ),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: .circular(8),
+        borderSide: BorderSide(
+          color: Colors.red.harmonizeWith(colorSchema.primary),
+          width: 2,
+        ),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: .circular(8),
+        borderSide: BorderSide(
+          color: Colors.red.harmonizeWith(colorSchema.primary),
+          width: 2,
+        ),
+      ),
+      filled: false,
+      contentPadding: const .symmetric(horizontal: 16, vertical: 12),
+    ),
+  );
+  return themeDark;
+}
+
+ThemeData getLightThemeData(ColorScheme? lightDynamic) {
+  var colorSchema = colorSchemeLight;
+
+  if (lightDynamic != null) {
+    colorSchema = .fromSeed(
+      seedColor: Color(lightDynamic.primary.toARGB32()),
+      secondary: lightDynamic.secondary,
+      tertiary: lightDynamic.tertiary,
+    );
+    colorSchema = colorSchema.harmonized();
+  }
+
+  final customColors = CustomColors(
+    success: const .fromARGB(255, 27, 160, 27),
+    onSuccess: colorSchema.surface,
+    successContainer: const .fromARGB(255, 144, 219, 144),
+    onSuccessContainer: colorSchema.onSurface,
+  ).harmonized(colorSchema);
+
+  final themeLight = ThemeData(
+    colorScheme: colorSchema,
+    fontFamily: 'NunitoSans',
+    useMaterial3: true,
+    extensions: <ThemeExtension<dynamic>>[customColors],
+    snackBarTheme: const SnackBarThemeData(
+      behavior: .floating,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderRadius: .circular(8),
+        borderSide: BorderSide(color: colorSchema.outlineVariant, width: 1.5),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: .circular(8),
+        borderSide: BorderSide(color: colorSchema.outlineVariant, width: 1.5),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: .circular(8),
+        borderSide: BorderSide(
+          color: mainColor.harmonizeWith(colorSchema.primary),
+          width: 2,
+        ),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: .circular(8),
+        borderSide: BorderSide(
+          color: Colors.red.harmonizeWith(colorSchema.primary),
+          width: 2,
+        ),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: .circular(8),
+        borderSide: BorderSide(
+          color: Colors.red.harmonizeWith(colorSchema.primary),
+          width: 2,
+        ),
+      ),
+      filled: false,
+      contentPadding: const .symmetric(horizontal: 16, vertical: 12),
+    ),
+  );
+  return themeLight;
 }

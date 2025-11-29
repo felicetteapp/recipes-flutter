@@ -1,0 +1,659 @@
+{
+  "@@locale": "en",
+  "name_min_length": "Name must be at least {min} characters",
+  "@name_min_length": {
+    "description": "Error message when name is too short",
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "name_max_length": "Name cannot exceed {max} characters",
+  "@name_max_length": {
+    "description": "Error message when name is too long",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "@email": {
+    "description": "Label for email input field"
+  },
+  "email": "Email",
+  "@password": {
+    "description": "Label for password input field"
+  },
+  "password": "Password",
+  "@login": {
+    "description": "Button text for login action"
+  },
+  "login": "Login",
+  "@logout": {
+    "description": "Button text for logout action"
+  },
+  "logout": "Logout",
+  "@cancel": {
+    "description": "Button text for cancel action"
+  },
+  "cancel": "Cancel",
+  "@save": {
+    "description": "Button text for save action"
+  },
+  "save": "Save",
+  "@delete": {
+    "description": "Button text for delete action"
+  },
+  "delete": "Delete",
+  "@edit": {
+    "description": "Button text for edit action"
+  },
+  "edit": "Edit",
+  "@confirm": {
+    "description": "Button text for confirm action"
+  },
+  "confirm": "Confirm",
+  "@success": {
+    "description": "Indicates a successful operation"
+  },
+  "success": "Success",
+  "@try_again": {
+    "description": "Prompt to try an action again"
+  },
+  "try_again": "Try Again",
+  "list": "{count, plural, =1{list} other{lists}}",
+  "@list": {
+    "description": "Plural form for list/lists",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@on_list": {
+    "description": "Indicates something is on the list"
+  },
+  "on_list": "on list",
+  "recipe": "{count, plural, =1{recipe} other{recipes}}",
+  "@recipe": {
+    "description": "Plural form for recipe/recipes",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ingredient": "{count, plural, =1{ingredient} other{ingredients}}",
+  "@ingredient": {
+    "description": "Plural form for ingredient/ingredients",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@show_list_by_ingredients": {
+    "description": "Option to show the list organized by ingredients"
+  },
+  "show_list_by_ingredients": "Show list by ingredients",
+  "@show_list_by_recipes": {
+    "description": "Option to show the list organized by recipes"
+  },
+  "show_list_by_recipes": "Show list by recipes",
+  "@show_checked_first": {
+    "description": "Option to show checked items first in the list"
+  },
+  "show_checked_first": "Show checked first",
+  "@show_budget": {
+    "description": "Option to show budget information"
+  },
+  "show_budget": "Show budget",
+  "@other_ingredients": {
+    "description": "Label for other ingredients section"
+  },
+  "other_ingredients": "Other Ingredients",
+  "@tfor": {
+    "description": "Preposition 'for ' used in various contexts"
+  },
+  "tfor": "for ",
+  "@budget": {
+    "description": "Label for budget information"
+  },
+  "budget": "Budget",
+  "@no": {
+    "description": "Negative response"
+  },
+  "no": "No",
+  "@yes": {
+    "description": "Affirmative response"
+  },
+  "yes": "Yes",
+  "@more": {
+    "description": "Indicates there is more content available"
+  },
+  "more": "More",
+  "@ok": {
+    "description": "Button text for OK action"
+  },
+  "ok": "OK",
+  "@loading": {
+    "description": "Indicates that content is loading"
+  },
+  "loading": "Loading",
+  "@theme": {
+    "description": "Label for theme selection"
+  },
+  "theme": "Theme",
+  "@dark_mode": {
+    "description": "Label for dark mode theme option"
+  },
+  "dark_mode": "Dark Mode",
+  "@light_mode": {
+    "description": "Label for light mode theme option"
+  },
+  "light_mode": "Light Mode",
+  "@my_first_group": {
+    "description": "Default name for the first group created"
+  },
+  "my_first_group": "My First Group",
+  "@wear_os_sync": {
+    "description": "Label for Wear OS synchronization feature"
+  },
+  "wear_os_sync": "Wear OS Sync",
+  "@connected": {
+    "description": "Status indicating a connection is established"
+  },
+  "connected": "Connected",
+  "@not_connected": {
+    "description": "Status indicating no connection is established"
+  },
+  "not_connected": "Not Connected",
+  "@input_required_error": {
+    "description": "Error message when a required field is empty"
+  },
+  "input_required_error": "This field is required",
+  "@invalid_email_error": {
+    "description": "Error message when email format is invalid"
+  },
+  "invalid_email_error": "Please enter a valid email address",
+  "@email_is_required_error": {
+    "description": "Error message when email field is empty"
+  },
+  "email_is_required_error": "Email is required",
+  "@unknown_view": {
+    "description": "Label shown when an unrecognized view is encountered"
+  },
+  "unknown_view": "Unknown View",
+  "@add_recipe": {
+    "description": "Button text to add a new recipe"
+  },
+  "add_recipe": "Add Recipe",
+  "@add_ingredient": {
+    "description": "Button text to add a new ingredient"
+  },
+  "add_ingredient": "Add Ingredient",
+  "@select_recipes": {
+    "description": "Label prompting user to select recipes"
+  },
+  "select_recipes": "Select recipes",
+  "items_selected": "{count, plural, =0{No items selected} =1{1 item selected} other{{count} items selected}}",
+  "@items_selected": {
+    "description": "Shows the number of items currently selected",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@no_groups_created": {
+    "description": "Message shown when user has no groups"
+  },
+  "no_groups_created": "No groups created",
+  "@login_error": {
+    "description": "Error message when login fails"
+  },
+  "login_error": "Login failed",
+  "@forgot_password": {
+    "description": "Link text for password recovery"
+  },
+  "forgot_password": "Forgot Password?",
+  "@already_have_account": {
+    "description": "Prompt for users who already have an account"
+  },
+  "already_have_account": "Already have an account?",
+  "@reset_password": {
+    "description": "Button text to reset password"
+  },
+  "reset_password": "Reset Password",
+  "@reset_password_success": {
+    "description": "Success message after password reset email is sent"
+  },
+  "reset_password_success": "Password reset email sent! Please check your inbox.",
+  "@reset_password_error": {
+    "description": "Error message when password reset fails"
+  },
+  "reset_password_error": "Failed to send password reset email",
+  "@create_account": {
+    "description": "Button text to create a new account"
+  },
+  "create_account": "Create Account",
+  "@confirm_password": {
+    "description": "Label for password confirmation field"
+  },
+  "confirm_password": "Confirm Password",
+  "@passwords_do_not_match_error": {
+    "description": "Error message when passwords don't match"
+  },
+  "passwords_do_not_match_error": "Passwords do not match",
+  "@create_account_error": {
+    "description": "Error message when account creation fails"
+  },
+  "create_account_error": "Failed to create account",
+  "@create_account_success": {
+    "description": "Success message when account is created"
+  },
+  "create_account_success": "Account created successfully!",
+  "@login_without_password": {
+    "description": "Button text for passwordless login option"
+  },
+  "login_without_password": "Login without password",
+  "@login_without_password_success_message": {
+    "description": "Success message when passwordless login link is sent"
+  },
+  "login_without_password_success_message": "Login link sent! Please check your email.",
+  "@passwordless_email_sent": {
+    "description": "Success message when passwordless email is sent"
+  },
+  "passwordless_email_sent": "Login link sent! Please check your email.",
+  "@passwordless_email_error": {
+    "description": "Error message when passwordless email fails to send"
+  },
+  "passwordless_email_error": "Failed to send login link. Please try again.",
+  "@your_groups": {
+    "description": "Header label for user's groups section"
+  },
+  "your_groups": "Your Groups",
+  "@language": {
+    "description": "Label for language selection"
+  },
+  "language": "Language",
+  "@select_language": {
+    "description": "Title for language selection dialog"
+  },
+  "select_language": "Select Language",
+  "@about": {
+    "description": "Label for about section"
+  },
+  "about": "About",
+  "@application_name": {
+    "description": "Name of the application"
+  },
+  "application_name": "Felicette Recipes",
+  "@application_description": {
+    "description": "Description of the application"
+  },
+  "application_description": "Felicette Recipes is an open-source application to help you manage your recipes and shopping lists.",
+  "@developed_with_love": {
+    "description": "Text preceding 'Love and Cats' in about section"
+  },
+  "developed_with_love": "Developed with",
+  "@love_and_cats": {
+    "description": "Playful text in about section"
+  },
+  "love_and_cats": "Love and Cats",
+  "@developed_in": {
+    "description": "Location where the app was developed"
+  },
+  "developed_in": "in Curitiba, Brazil.",
+  "@developed_by": {
+    "description": "Developer attribution"
+  },
+  "developed_by": "By felicette.dev",
+  "@checkout_github": {
+    "description": "Text prompting to visit GitHub repository"
+  },
+  "checkout_github": "Check out the project on GitHub: ",
+  "@spent_of": {
+    "description": "Text showing budget spent amount in format 'X spent of Y'"
+  },
+  "spent_of": " spent of ",
+  "@available": {
+    "description": "Text showing available budget amount"
+  },
+  "available": " available",
+  "@actual_ingredients": {
+    "description": "Header for actual ingredients section"
+  },
+  "actual_ingredients": "Actual Ingredients",
+  "@actual_ingredients_subtitle": {
+    "description": "Description of actual ingredients section"
+  },
+  "actual_ingredients_subtitle": "These items can be used in recipes and added to the shopping list",
+  "@non_actual_ingredients": {
+    "description": "Header for non-actual ingredients section"
+  },
+  "non_actual_ingredients": "Non-Ingredients",
+  "@non_actual_ingredients_subtitle": {
+    "description": "Description of non-actual ingredients section"
+  },
+  "non_actual_ingredients_subtitle": "This items can be added to the shopping list but can't be used in recipes",
+  "@new_ingredient": {
+    "description": "Title for creating a new ingredient"
+  },
+  "new_ingredient": "New Ingredient",
+  "@ingredient_name": {
+    "description": "Label for ingredient name field"
+  },
+  "ingredient_name": "Ingredient Name",
+  "@is_actual_ingredient": {
+    "description": "Label for actual ingredient checkbox"
+  },
+  "is_actual_ingredient": "Is Actual Ingredient",
+  "@edit_ingredient": {
+    "description": "Title for editing an ingredient"
+  },
+  "edit_ingredient": "Edit Ingredient",
+  "@confirm_ingredient_deletion": {
+    "description": "Title for deletion confirmation dialog"
+  },
+  "confirm_ingredient_deletion": "Confirm Deletion",
+  "@confirm_ingredient_deletion_message": {
+    "description": "Message asking for deletion confirmation"
+  },
+  "confirm_ingredient_deletion_message": "Are you sure you want to delete this ingredient?",
+  "@ingredient_updated_successfully": {
+    "description": "Success message when ingredient is updated"
+  },
+  "ingredient_updated_successfully": "Ingredient updated successfully",
+  "@ingredient_deleted_successfully": {
+    "description": "Success message when ingredient is deleted"
+  },
+  "ingredient_deleted_successfully": "Ingredient deleted successfully",
+  "@ingredient_created_successfully": {
+    "description": "Success message when ingredient is created"
+  },
+  "ingredient_created_successfully": "Ingredient created successfully",
+  "confirm_actual_ingredient_description": "Is \"{ingredientName}\" an actual ingredient that can be used in recipes?",
+  "@confirm_actual_ingredient_description": {
+    "placeholders": {
+      "ingredientName": {
+        "type": "String"
+      }
+    }
+  },
+  "@confirm_actual_ingredient": {
+    "description": "Title for actual ingredient confirmation dialog"
+  },
+  "confirm_actual_ingredient": "Confirm Actual Ingredient",
+  "@no_ingredients_created": {
+    "description": "Message when user has no ingredients"
+  },
+  "no_ingredients_created": "No ingredients created",
+  "@no_ingredients_created_description": {
+    "description": "Description encouraging user to create first ingredient"
+  },
+  "no_ingredients_created_description": "Create your first ingredient to get started with recipes and shopping lists.",
+  "@edit_recipe": {
+    "description": "Title for editing a recipe"
+  },
+  "edit_recipe": "Edit Recipe",
+  "@create_recipe": {
+    "description": "Title for creating a new recipe"
+  },
+  "create_recipe": "Create Recipe",
+  "@recipe_name": {
+    "description": "Label for recipe name field"
+  },
+  "recipe_name": "Recipe Name",
+  "@select_ingredients": {
+    "description": "Label for ingredient selection section"
+  },
+  "select_ingredients": "Select Ingredients",
+  "@choose_ingredients_text": {
+    "description": "Instructions for selecting ingredients"
+  },
+  "choose_ingredients_text": "Choose the ingredients needed for the recipe. Quantities can be entered below.",
+  "@optional_quantities_text": {
+    "description": "Instructions about optional quantities"
+  },
+  "optional_quantities_text": "Optionally, enter the quantities of the ingredients below.",
+  "@quantities_shopping_list_text": {
+    "description": "Explanation of how quantities appear in shopping list"
+  },
+  "quantities_shopping_list_text": "The quantities will appear in the shopping list when the recipe is selected.",
+  "quantity_for": "Quantity for {ingredient}",
+  "@quantity_for": {
+    "description": "Label for quantity input field for a specific ingredient",
+    "placeholders": {
+      "ingredient": {
+        "type": "String"
+      }
+    }
+  },
+  "@no_recipes_created": {
+    "description": "Message when user has no recipes"
+  },
+  "no_recipes_created": "No recipes created",
+  "@no_recipes_created_description": {
+    "description": "Description encouraging user to create first recipe"
+  },
+  "no_recipes_created_description": "Create your first recipe to organize your cooking and generate shopping lists.",
+  "@search": {
+    "description": "Label for search functionality"
+  },
+  "search": "Search",
+  "@create": {
+    "description": "Button text for create action"
+  },
+  "create": "Create",
+  "@done": {
+    "description": "Button text for done action"
+  },
+  "done": "Done",
+  "@edit_list": {
+    "description": "Button text to edit a list"
+  },
+  "edit_list": "Edit List",
+  "@select_currency": {
+    "description": "Label for currency selection"
+  },
+  "select_currency": "Select Currency",
+  "@clear_all_checks": {
+    "description": "Button text to clear all checked items"
+  },
+  "clear_all_checks": "Clear All Checks",
+  "@all_checks_cleared": {
+    "description": "Message confirming all checks have been cleared"
+  },
+  "all_checks_cleared": "All checks have been cleared",
+  "@currency_usd": {
+    "description": "US Dollar currency option"
+  },
+  "currency_usd": "US Dollar",
+  "@currency_eur": {
+    "description": "Euro currency option"
+  },
+  "currency_eur": "Euro",
+  "@currency_gbp": {
+    "description": "British Pound currency option"
+  },
+  "currency_gbp": "British Pound",
+  "@currency_jpy": {
+    "description": "Japanese Yen currency option"
+  },
+  "currency_jpy": "Japanese Yen",
+  "@currency_cny": {
+    "description": "Chinese Yuan currency option"
+  },
+  "currency_cny": "Chinese Yuan",
+  "@currency_brl": {
+    "description": "Brazilian Real currency option"
+  },
+  "currency_brl": "Brazilian Real",
+  "@currency_ars": {
+    "description": "Argentine Peso currency option"
+  },
+  "currency_ars": "Argentine Peso",
+  "@please_enter_valid_number": {
+    "description": "Error message for invalid number input"
+  },
+  "@currency_inr": {
+    "description": "Indian Rupee currency option"
+  },
+  "currency_inr": "Indian Rupee",
+  "please_enter_valid_number": "Please enter a valid number",
+  "@budget_must_be_positive": {
+    "description": "Error message when budget is not positive"
+  },
+  "budget_must_be_positive": "Budget must be a positive number",
+  "@error": {
+    "description": "Generic error label"
+  },
+  "error": "Error",
+  "@no_group_selected": {
+    "description": "Message when no group is selected"
+  },
+  "no_group_selected": "No group selected",
+  "@list_details_updated_successfully": {
+    "description": "Success message when list details are updated"
+  },
+  "list_details_updated_successfully": "List details updated successfully",
+  "failed_to_update_list_details": "Failed to update list details: {error}",
+  "@failed_to_update_list_details": {
+    "description": "Error message when list update fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@quantity": {
+    "description": "Label for quantity field"
+  },
+  "quantity": "Quantity",
+  "@unit_price": {
+    "description": "Label for unit price field"
+  },
+  "unit_price": "Unit Price",
+  "@add_price": {
+    "description": "Button text to add price information"
+  },
+  "add_price": "Add Price",
+  "@enter_quantity": {
+    "description": "Placeholder text for quantity input"
+  },
+  "enter_quantity": "Enter Quantity",
+  "@save_without_price": {
+    "description": "Button text to save without entering price"
+  },
+  "save_without_price": "Save Without Price",
+  "@actual_ingredient_title": {
+    "description": "Title for actual ingredient dialog"
+  },
+  "actual_ingredient_title": "Actual Ingredient",
+  "@actual_ingredient_content": {
+    "description": "Question asking if item is an actual ingredient"
+  },
+  "actual_ingredient_content": "Is this an actual ingredient that can be used in recipes?",
+  "@create_group": {
+    "description": "Button text to create a new group"
+  },
+  "create_group": "Create Group",
+  "@edit_group": {
+    "description": "Button text to edit a group"
+  },
+  "edit_group": "Edit Group",
+  "@group_name": {
+    "description": "Label for group name field"
+  },
+  "group_name": "Group Name",
+  "@group_name_updated": {
+    "description": "Success message when group is updated"
+  },
+  "group_name_updated": "Group updated successfully",
+  "@delete_group": {
+    "description": "Button text to delete a group"
+  },
+  "delete_group": "Delete Group",
+  "@delete_group_message": {
+    "description": "Confirmation message for group deletion"
+  },
+  "delete_group_message": "Are you sure you want to delete this group? This action cannot be undone.",
+  "@group_deleted": {
+    "description": "Success message when group is deleted"
+  },
+  "group_deleted": "Group deleted successfully",
+  "@group_creation_limit_reached": {
+    "description": "Error message when group creation limit is reached"
+  },
+  "group_creation_limit_reached": "You have reached the maximum number of groups allowed.",
+  "@password_recovery_email_sent": {
+    "description": "Indicates that the password recovery email has been sent"
+  },
+  "password_recovery_email_sent": "Password recovery email sent",
+  "@password_recovery_error": {
+    "description": "Indicates that there was an error sending the password recovery email"
+  },
+  "password_recovery_error": "Error sending password recovery email",
+  "@recipes_should_have_at_least_one_ingredient": {
+    "description": "Error message when trying to save a recipe without ingredients"
+  },
+  "recipes_should_have_at_least_one_ingredient": "Recipes should have at least one ingredient",
+  "@select_at_least_one_ingredient": {
+    "description": "Error message prompting user to select at least one ingredient"
+  },
+  "select_at_least_one_ingredient": "Please select at least one ingredient to proceed.",
+  "@recipe_ingredients_error": {
+    "description": "Error message indicating there are issues with recipe ingredients"
+  },
+  "recipe_ingredients_error": "There are errors in the recipe ingredients",
+  "@recipe_created_successfully": {
+    "description": "Success message when recipe is created"
+  },
+  "recipe_created_successfully": "Recipe created successfully",
+  "@recipe_updated_successfully": {
+    "description": "Success message when recipe is updated"
+  },
+  "recipe_updated_successfully": "Recipe updated successfully",
+  "confirm_recipe_deletion": "Confirm Deletion",
+  "@confirm_recipe_deletion": {
+    "description": "Title for recipe deletion confirmation dialog"
+  },
+  "confirm_recipe_deletion_message": "Are you sure you want to delete this recipe?",
+  "@confirm_recipe_deletion_message": {
+    "description": "Message asking for recipe deletion confirmation"
+  },
+  "recipe_deleted_successfully": "Recipe deleted successfully",
+  "@recipe_deleted_successfully": {
+    "description": "Success message when recipe is deleted"
+  },
+  "also": "also",
+  "@also": {
+    "description": "Used to indicate additional associated items"
+  },
+  "@clear_all_checks_confirmation": {
+    "description": "Confirmation message when clearing all checked ingredients"
+  },
+  "clear_all_checks_confirmation": "Are you sure you want to clear all checked ingredients?",
+  "add_ingredient_error_unknown": "An unknown error occurred while adding the ingredient",
+  "@add_ingredient_error_unknown": {
+    "description": "Error message for unknown error when adding ingredient"
+  },
+  "add_ingredient_success": "Ingredient(s) added successfully",
+  "@add_ingredient_success": {
+    "description": "Success message when ingredient(s) are added"
+  },
+  "add_ingredient_error_already_in_list": "One or more ingredients are already in the list",
+  "@add_ingredient_error_already_in_list": {
+    "description": "Error message when trying to add ingredients that are already in the list"
+  },
+  "@confirm_group_deletion": {
+    "description": "Title for group deletion confirmation dialog"
+  },
+  "confirm_group_deletion": "Confirm Deletion",
+  "@confirm_group_deletion_message": {
+    "description": "Message asking for group deletion confirmation"
+  },
+  "confirm_group_deletion_message": "Are you sure you want to delete this group? This action cannot be undone."
+}

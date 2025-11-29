@@ -1,67 +1,171 @@
-import 'dart:ui';
+import 'dart:developer';
+
+import 'package:authentication_repository/authentication_repository.dart';
+import 'package:dynamic_color/dynamic_color.dart';
+import 'package:felicette_recipes/app/bloc/app_bloc.dart';
 import 'package:felicette_recipes/app/common/environment.dart';
-import 'package:felicette_recipes/app/services/app_service.dart';
-import 'package:felicette_recipes/app/utils/secure_storage.dart';
+import 'package:felicette_recipes/app/services/wearos/wearos_service.dart';
+import 'package:felicette_recipes/app/view/app_view.dart';
+import 'package:felicette_recipes/authentication/bloc/authentication_bloc.dart';
+import 'package:felicette_recipes/firebase_options.dart';
+import 'package:felicette_recipes/groups/groups.dart';
+import 'package:felicette_recipes/ingredients/ingredients.dart';
+import 'package:felicette_recipes/list/list.dart';
+import 'package:felicette_recipes/recipes/recipes.dart';
+import 'package:felicette_recipes/theme.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:felicette_recipes/app/bindings/initial_binding.dart';
-import 'package:felicette_recipes/app/common/translations/app_translations.dart';
-import 'package:felicette_recipes/app/routes/app_pages.dart';
-import 'package:felicette_recipes/app/routes/app_routes.dart';
-import 'package:felicette_recipes/firebase_options.dart';
-import 'package:felicette_recipes/theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:group_repository/group_repository.dart';
+import 'package:ingredient_repository/ingredient_repository.dart';
+import 'package:recipe_repository/recipe_repository.dart';
+import 'package:user_repository/user_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final userHasDarkModeSettingEnabled =
-      PlatformDispatcher.instance.platformBrightness == Brightness.dark;
-
-  final storedDarkModeSetting = await FRSecureStorage.read(key: isDarkModeKey);
-
-  final initialThemeIsDark =
-      storedDarkModeSetting == 'true' ||
-      (storedDarkModeSetting != 'false' && userHasDarkModeSettingEnabled);
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await FirebaseAppCheck.instance.activate(
-    providerApple:
-        Environment.firebaseAppCheckIosDebugToken.isNotEmpty
-            ? AppleDebugProvider(
-              debugToken: Environment.firebaseAppCheckIosDebugToken,
-            )
-            : AppleDeviceCheckProvider(),
-    providerAndroid:
-        Environment.firebaseAppCheckAndroidDebugToken.isNotEmpty
-            ? AndroidDebugProvider(
-              debugToken: Environment.firebaseAppCheckAndroidDebugToken,
-            )
-            : AndroidPlayIntegrityProvider(),
+    providerApple: Environment.firebaseAppCheckIosDebugToken.isNotEmpty
+        ? const AppleDebugProvider(
+            debugToken: Environment.firebaseAppCheckIosDebugToken,
+          )
+        : const AppleDeviceCheckProvider(),
+    providerAndroid: Environment.firebaseAppCheckAndroidDebugToken.isNotEmpty
+        ? const AndroidDebugProvider(
+            debugToken: Environment.firebaseAppCheckAndroidDebugToken,
+          )
+        : const AndroidPlayIntegrityProvider(),
   );
-  runApp(MyApp(initialThemeIsDark: initialThemeIsDark));
+
+  final authenticationRepository = AuthenticationRepository();
+  await authenticationRepository.user.first;
+
+  final userRepository = UserRepository();
+  final authCurrentUser = authenticationRepository.currentUser;
+
+  log('Current authenticated user: $authCurrentUser', name: 'main');
+
+  final appBloc = AppBloc(
+    authenticationRepository: authenticationRepository,
+    userRepository: userRepository,
+  );
+
+  final initialThemeIsDark = await appBloc.getInitialDarkModeSetting();
+  log(
+    'Setting initial dark mode to $initialThemeIsDark',
+    name: 'main',
+  );
+  appBloc.add(AppSetDarkMode(isDarkMode: initialThemeIsDark));
+
+  final initialLocale = await appBloc.getInitialLocale();
+  log(
+    'Setting initial locale to $initialLocale',
+    name: 'main',
+  );
+  appBloc.add(AppSetLanguage(locale: initialLocale));
+
+  await WearOSService.instance.initialize();
+
+  runApp(
+    FRApp(
+      initialThemeIsDark: initialThemeIsDark,
+      authenticationRepository: authenticationRepository,
+      userRepository: userRepository,
+      appBloc: appBloc,
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class FRApp extends StatelessWidget {
+  const FRApp({
+    required this.initialThemeIsDark,
+    required AuthenticationRepository authenticationRepository,
+    required UserRepository userRepository,
+    required AppBloc appBloc,
+    super.key,
+  }) : _authenticationRepository = authenticationRepository,
+       _userRepository = userRepository,
+       _appBloc = appBloc;
   final bool initialThemeIsDark;
-  const MyApp({super.key, required this.initialThemeIsDark});
+  final AuthenticationRepository _authenticationRepository;
+  final UserRepository _userRepository;
+  final AppBloc _appBloc;
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Felicette Recipes',
-      theme: themeLight,
-      darkTheme: themeDark,
-      themeMode: initialThemeIsDark ? ThemeMode.dark : ThemeMode.light,
-      translations: AppTranslations(),
-      locale: const Locale('en', 'US'),
-      fallbackLocale: const Locale('en', 'US'),
-      initialBinding: InitialBinding(),
-      initialRoute: AppRoutes.splash,
-      getPages: AppPages.routes,
-      debugShowCheckedModeBanner: false,
+    log(
+      'Building FRApp with initialThemeIsDark: $initialThemeIsDark',
+      name: 'FRApp',
+    );
+    return DynamicColorBuilder(
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        final actualThemeLight = getLightThemeData(lightDynamic);
+        final actualThemeDark = getDarkThemeData(darkDynamic);
+
+        return MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider.value(value: _authenticationRepository),
+            RepositoryProvider.value(value: _userRepository),
+            RepositoryProvider(create: (context) => IngredientRepository()),
+            RepositoryProvider(create: (context) => GroupRepository()),
+            RepositoryProvider(create: (context) => RecipeRepository()),
+          ],
+          child: _getMultiProvider(
+            _appBloc,
+            initialThemeIsDark,
+            actualThemeLight,
+            actualThemeDark,
+          ),
+        );
+      },
     );
   }
 }
+
+Widget _getMultiProvider(
+  AppBloc appBloc,
+  bool initialThemeIsDark,
+  ThemeData actualThemeLight,
+  ThemeData actualThemeDark,
+) => MultiBlocProvider(
+  providers: [
+    BlocProvider(
+      lazy: false,
+      create: (context) => AuthenticationBloc(
+        authenticationRepository: context.read<AuthenticationRepository>(),
+        userRepository: context.read<UserRepository>(),
+      )..add(AuthenticationSubscriptionRequested()),
+    ),
+    BlocProvider.value(value: appBloc),
+    BlocProvider(
+      create: (context) => RecipesBloc(
+        groupRepository: context.read<GroupRepository>(),
+        recipeRepository: context.read<RecipeRepository>(),
+      ),
+    ),
+    BlocProvider(
+      create: (context) => IngredientsBloc(
+        ingredientRepository: context.read<IngredientRepository>(),
+      ),
+    ),
+    BlocProvider(
+      create: (context) => ListBloc(
+        groupRepository: context.read<GroupRepository>(),
+      ),
+    ),
+    BlocProvider(
+      create: (context) => GroupsBloc(
+        groupRepository: context.read<GroupRepository>(),
+        userRepository: context.read<UserRepository>(),
+      )..add(GroupsSubscriptionRequested()),
+    ),
+  ],
+  child: AppView(
+    initialThemeIsDark: initialThemeIsDark,
+    themeLight: actualThemeLight,
+    themeDark: actualThemeDark,
+  ),
+);

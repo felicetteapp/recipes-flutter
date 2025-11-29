@@ -1,0 +1,91 @@
+import 'dart:developer';
+
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:group_repository/group_repository.dart';
+import 'package:secure_storage/secure_storage.dart';
+import 'package:user_repository/user_repository.dart';
+
+part 'groups_state.dart';
+part 'groups_event.dart';
+
+const selectedGroupIdKey = 'selectedGroupId';
+
+class GroupsBloc extends Bloc<GroupsEvent, GroupsState> {
+  GroupsBloc({
+    required GroupRepository groupRepository,
+    required UserRepository userRepository,
+  }) : _groupRepository = groupRepository,
+       _userRepository = userRepository,
+       super(GroupsState.empty) {
+    on<GroupsSubscriptionRequested>(_onSubscriptionRequested);
+    on<GroupSelected>(_onGroupSelected);
+    on<GroupAuthUserChanged>(_onAuthUserChanged);
+  }
+
+  final GroupRepository _groupRepository;
+  final UserRepository _userRepository;
+  final SecureStorageClient _secureStorageClient = SecureStorageClient();
+
+  void _onAuthUserChanged(
+    GroupAuthUserChanged event,
+    Emitter<GroupsState> emit,
+  ) {
+    log(
+      'Group auth user changed: ${event.authUser}',
+      name: 'GroupsBloc',
+    );
+    add(GroupsSubscriptionRequested());
+  }
+
+  Future<void> _onSubscriptionRequested(
+    GroupsSubscriptionRequested event,
+    Emitter<GroupsState> emit,
+  ) async {
+    final user = _userRepository.user;
+    log('Groups subscription requested $event - $user', name: 'GroupsBloc');
+
+    if (user == null) {
+      emit(GroupsState.empty);
+      return;
+    }
+
+    return emit.onEach<List<FRGroup>>(
+      _groupRepository.listenToGroups(user.groups),
+      onData: (groups) async {
+        log('Received groups update: $groups', name: 'GroupsBloc');
+
+        final selectedGroupId = await _secureStorageClient.read(
+          key: selectedGroupIdKey,
+        );
+
+        if (selectedGroupId != null &&
+            groups.any((g) => g.id == selectedGroupId)) {
+          add(GroupSelected(groups.firstWhere((g) => g.id == selectedGroupId)));
+        }
+
+        emit(state.copyWith(groups: groups));
+        if (state.selectedGroup == null && groups.isNotEmpty) {
+          log(
+            'No group selected, selecting first group: ${groups.first}',
+            name: 'GroupsBloc',
+          );
+          add(GroupSelected(groups.first));
+        }
+      },
+      onError: addError,
+    );
+  }
+
+  void _onGroupSelected(
+    GroupSelected event,
+    Emitter<GroupsState> emit,
+  ) {
+    log('Group selected: ${event.group}', name: 'GroupsBloc');
+    _secureStorageClient.write(
+      key: selectedGroupIdKey,
+      value: event.group.id,
+    );
+    emit(state.copyWith(selectedGroupId: event.group.id));
+  }
+}

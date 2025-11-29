@@ -1,0 +1,118 @@
+part of 'list_bloc.dart';
+
+enum AddIngredientError {
+  none,
+  alreadyInList,
+  unknown,
+}
+
+class ListState extends Equatable {
+  const ListState({
+    this.displayType = ListDisplayTypeEnum.ingredients,
+    this.currentIngredientIds = const [],
+    this.groupRecipes = const [],
+    this.groupIngredients = const [],
+    this.currentIngredients = const [],
+    this.currentRecipesIds = const [],
+    this.currentRecipes = const [],
+    this.listItems = const [],
+    this.listItemsAsIngredientDisplayType = const [],
+    this.currentIngredientPrices = const {},
+    this.currentCheckedIngredients = const [],
+    this.showBudget = false,
+    this.showCheckedsFirst = false,
+    this.selectedGroup,
+    this.currentListSpentBudget = 0,
+    this.currentListBudget = 0,
+    this.addIngredientStatus = FormzSubmissionStatus.initial,
+    this.addIngredientError = AddIngredientError.none,
+  });
+
+  final ListDisplayTypeEnum displayType;
+  final List<FRCurrentIngredients> currentIngredientIds;
+  final List<ListIngredientItem> currentIngredients;
+  final List<String> currentRecipesIds;
+  final List<FRRecipe> currentRecipes;
+  final List<FRRecipe> groupRecipes;
+  final List<FRIngredient> groupIngredients;
+  final List<ListPageListItem> listItems;
+  final List<ListPageListItem> listItemsAsIngredientDisplayType;
+  final Map<String, List<FRIngredientPrice>> currentIngredientPrices;
+  final List<String> currentCheckedIngredients;
+  final bool showBudget;
+  final bool showCheckedsFirst;
+  final FRGroup? selectedGroup;
+  final num currentListSpentBudget;
+  final num currentListBudget;
+  final FormzSubmissionStatus addIngredientStatus;
+  final AddIngredientError addIngredientError;
+
+  ListState copyWith({
+    ListDisplayTypeEnum? displayType,
+    List<FRCurrentIngredients>? currentIngredientIds,
+    List<FRRecipe>? groupRecipes,
+    List<FRIngredient>? groupIngredients,
+    List<ListIngredientItem>? currentIngredients,
+    List<String>? currentRecipesIds,
+    List<FRRecipe>? currentRecipes,
+    List<ListPageListItem>? listItems,
+    List<ListPageListItem>? listItemsAsIngredientDisplayType,
+    Map<String, List<FRIngredientPrice>>? currentIngredientPrices,
+    List<String>? currentCheckedIngredients,
+    bool? showBudget,
+    bool? showCheckedsFirst,
+    FRGroup? selectedGroup,
+    num? currentListSpentBudget,
+    num? currentListBudget,
+    FormzSubmissionStatus? addIngredientStatus,
+    AddIngredientError? addIngredientError,
+  }) {
+    return ListState(
+      displayType: displayType ?? this.displayType,
+      currentIngredientIds: currentIngredientIds ?? this.currentIngredientIds,
+      groupRecipes: groupRecipes ?? this.groupRecipes,
+      groupIngredients: groupIngredients ?? this.groupIngredients,
+      currentIngredients: currentIngredients ?? this.currentIngredients,
+      currentRecipesIds: currentRecipesIds ?? this.currentRecipesIds,
+      currentRecipes: currentRecipes ?? this.currentRecipes,
+      listItems: listItems ?? this.listItems,
+      listItemsAsIngredientDisplayType:
+          listItemsAsIngredientDisplayType ??
+          this.listItemsAsIngredientDisplayType,
+      currentIngredientPrices:
+          currentIngredientPrices ?? this.currentIngredientPrices,
+      currentCheckedIngredients:
+          currentCheckedIngredients ?? this.currentCheckedIngredients,
+      showBudget: showBudget ?? this.showBudget,
+      showCheckedsFirst: showCheckedsFirst ?? this.showCheckedsFirst,
+      selectedGroup: selectedGroup ?? this.selectedGroup,
+      currentListSpentBudget:
+          currentListSpentBudget ?? this.currentListSpentBudget,
+      currentListBudget: currentListBudget ?? this.currentListBudget,
+      addIngredientStatus: addIngredientStatus ?? this.addIngredientStatus,
+      addIngredientError: addIngredientError ?? this.addIngredientError,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+    displayType,
+    currentIngredientIds,
+    groupRecipes,
+    groupIngredients,
+    currentIngredients,
+    currentRecipesIds,
+    currentRecipes,
+    listItems,
+    currentIngredientPrices,
+    currentCheckedIngredients,
+    showBudget,
+    showCheckedsFirst,
+    selectedGroup,
+    currentListSpentBudget,
+    currentListBudget,
+    addIngredientStatus,
+    addIngredientError,
+    listItemsAsIngredientDisplayType,
+  ];
+}

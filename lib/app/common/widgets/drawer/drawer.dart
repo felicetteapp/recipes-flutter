@@ -1,306 +1,249 @@
+import 'dart:developer';
+
+import 'package:felicette_recipes/app/bloc/app_bloc.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
-import 'package:felicette_recipes/app/services/app_service.dart';
-import 'package:felicette_recipes/app/utils/snackbar.dart';
+import 'package:felicette_recipes/app/services/wearos/wearos_service.dart';
+import 'package:felicette_recipes/app/utils/utils.dart';
+import 'package:felicette_recipes/authentication/bloc/authentication_bloc.dart';
+import 'package:felicette_recipes/generated/l10n.dart';
+import 'package:felicette_recipes/groups/bloc/groups_bloc.dart';
 import 'package:flutter/material.dart' hide DrawerController;
-import 'package:get/get.dart';
-import 'package:felicette_recipes/app/common/translation_keys.dart';
-import 'package:felicette_recipes/app/common/widgets/drawer/drawer_controller.dart';
-import 'package:felicette_recipes/app/services/auth_service.dart';
-import 'package:felicette_recipes/app/services/groups_service.dart';
-import 'package:felicette_recipes/app/services/localization_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class FRDrawer extends StatelessWidget {
-  final groupServices = Get.find<GroupsService>();
-  FRDrawer({super.key});
+  const FRDrawer({super.key});
+  static const EdgeInsetsGeometry listTileContentPadding = EdgeInsets.only(
+    right: 8,
+    left: 16,
+  );
 
   List<Widget> _buildGroupListTiles(BuildContext context) {
-    final selectedGroup = groupServices.selectedGroup.value;
+    final groupsBloc = context.watch<GroupsBloc>();
 
-    final actualGroupsTiles =
-        groupServices.availableGroups.map((group) {
-          return ListTile(
-            selected: group.id == selectedGroup?.id,
-            leading: Icon(
-              group.id == selectedGroup?.id
-                  ? Icons.group
-                  : Icons.group_outlined,
-            ),
-            title: Text(group.name),
-            trailing: IconButton(
-              onPressed: () {
-                Get.toNamed(AppRoutes.groupDetails(group.id));
-              },
-              icon: Icon(Icons.edit),
-            ),
-            onTap: () {
-              groupServices.selectGroup(group);
-              Navigator.pop(context);
-            },
-          );
-        }).toList();
+    final s = S.of(context);
 
-    return [
+    final selectedGroup = groupsBloc.state.selectedGroup;
+
+    final items = <Widget>[
       ListTile(
+        contentPadding: listTileContentPadding,
         title: Text(
-          TranslationKeys.yourGroups.tr,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          s.your_groups,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         trailing: TextButton(
-          child: Text(TranslationKeys.createGroup.tr),
-          onPressed: () async {
-            if (groupServices.availableGroups.length >= 3) {
-              FRSnackbar.error(
-                TranslationKeys.error.tr,
-                TranslationKeys.groupCreationLimitReached.tr,
+          child: Text(s.create_group),
+          onPressed: () {
+            if (groupsBloc.state.groups.length >= 3) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(s.group_creation_limit_reached),
+                ),
               );
               return;
             }
-
-            final name = await Get.dialog<String>(
-              ObxValue(
-                (nameState) => SimpleDialog(
-                  title: Text(TranslationKeys.createGroup.tr),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextField(
-                        autofocus: true,
-                        onChanged: (value) => nameState.value = value,
-                        decoration: InputDecoration(
-                          labelText: TranslationKeys.groupName.tr,
-                        ),
-                        onSubmitted: (value) {
-                          Get.back(result: value);
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: Text(TranslationKeys.cancel.tr),
-                            ),
-                          ),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed:
-                                  nameState.value.trim().isEmpty
-                                      ? null
-                                      : () {
-                                        Get.back(
-                                          result: nameState.value.trim(),
-                                        );
-                                      },
-                              child: Text(TranslationKeys.create.tr),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                ''.obs,
-              ),
+            Navigator.pop(context);
+            context.push(
+              AppRoutes.newGroup,
             );
-
-            if (name != null && name.trim().isNotEmpty) {
-              final createdGroup = await groupServices.createGroup(name.trim());
-              await Future.delayed(const Duration(seconds: 1));
-              Get.toNamed(AppRoutes.groupDetails(createdGroup.id));
-            }
           },
         ),
       ),
-      ...actualGroupsTiles,
+      ...groupsBloc.state.groups.map((group) {
+        return ListTile(
+          contentPadding: listTileContentPadding,
+          selected: group.id == selectedGroup?.id,
+          leading: Icon(
+            group.id == selectedGroup?.id ? Icons.group : Icons.group_outlined,
+          ),
+          title: Text(group.name),
+          trailing: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+              context.push(
+                AppRoutes.toEditGroup(group.id),
+              );
+            },
+            icon: const Icon(Icons.edit),
+          ),
+          onTap: () {
+            groupsBloc.add(GroupSelected(group));
+            Navigator.pop(context);
+          },
+        );
+      }),
     ];
+
+    return items;
   }
 
   Widget _buildLanguageListTile(BuildContext context) {
-    final localizationService = Get.find<LocalizationService>();
+    final s = S.of(context);
+    final currentLocale = context.read<AppBloc>().state.locale;
 
     return ListTile(
-      leading: Icon(Icons.language),
-      title: Text(TranslationKeys.language.tr),
-      subtitle: Text(
-        localizationService.getLocaleName(localizationService.currentLocale),
-      ),
+      contentPadding: listTileContentPadding,
+      leading: const Icon(Icons.language),
+      title: Text(s.language),
+      subtitle: Text(FRUtils.getLocaleName(currentLocale)),
       onTap: () async {
-        final response = await Get.dialog<Locale>(
-          SimpleDialog(
-            title: Text(TranslationKeys.selectLanguage.tr),
-            children:
-                LocalizationService.supportedLocales.map((locale) {
-                  return SimpleDialogOption(
-                    onPressed: () {
-                      Get.back(result: locale);
-                    },
-                    child: Text(localizationService.getLocaleName(locale)),
-                  );
-                }).toList(),
-          ),
-        );
-
-        if (response != null) {
-          localizationService.changeLocale(response);
-        }
+        await FRUtils.showLanguageSelectionDialog(context);
       },
     );
   }
 
-  Widget _buildThemeListTile(BuildContext context) {
-    final appService = Get.find<AppService>();
-
-    final isDarkMode = Get.isDarkMode;
-    return ListTile(
-      leading: Icon(Icons.brightness_6),
-      title: Text(TranslationKeys.theme.tr),
-      subtitle: Text(
-        isDarkMode ? TranslationKeys.darkMode.tr : TranslationKeys.lightMode.tr,
-      ),
-      onTap: () async {
-        await appService.toggleTheme();
-        Get.offAndToNamed(AppRoutes.home);
+  Widget _buildWearOsListTile(BuildContext context) {
+    final s = S.of(context);
+    return ValueListenableBuilder<bool>(
+      valueListenable: WearOSService.instance.hasConnectedWatch,
+      builder: (context, hasConnectedWatch, child) {
+        return ValueListenableBuilder<bool>(
+          valueListenable: WearOSService.instance.isSyncing,
+          builder: (context, isSyncing, child) {
+            return ListTile(
+              key: const Key('drawer_wearos_list_tile'),
+              contentPadding: listTileContentPadding,
+              leading: Icon(
+                hasConnectedWatch ? Icons.watch : Icons.watch_outlined,
+                color: hasConnectedWatch
+                    ? Theme.of(context).colorScheme.primary
+                    : null,
+              ),
+              title: Text(s.wear_os_sync),
+              subtitle: Text(
+                hasConnectedWatch ? s.connected : s.not_connected,
+              ),
+              trailing: isSyncing
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : null,
+            );
+          },
+        );
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final AuthService authService = Get.find<AuthService>();
-    final DrawerController controller = Get.put<DrawerController>(
-      DrawerController(),
-      permanent: true,
-    );
     return Drawer(
-      child: Obx(() {
-        return ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              child: Row(
-                spacing: 8,
-                children: [
-                  Image.asset(
-                    'assets/images/logo.png',
-                    width: 100,
-                    height: 100,
-                  ),
-                  Expanded(
-                    child: RichText(
-                      softWrap: true,
-                      maxLines: 2,
-                      text: TextSpan(
-                        style: TextStyle(fontSize: 24),
-                        children: [
-                          TextSpan(
-                            text: 'Felicette',
-                            style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: Get.theme.colorScheme.onSecondary,
-                            ),
-                          ),
-                          TextSpan(
-                            text: ' Recipes',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Get.theme.colorScheme.onSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+      child: ListView(
+        padding: .zero,
+        children: <Widget>[
+          const _DrawerHeader(),
+          ..._buildGroupListTiles(context),
+          const Divider(),
+          _buildLanguageListTile(context),
+          const _ThemeTile(),
+          _buildWearOsListTile(context),
+          const Divider(),
+          const _CurrentUserTile(),
+          const Divider(),
+          const _AboutTile(),
+        ],
+      ),
+    );
+  }
+}
+
+class _ThemeTile extends StatelessWidget {
+  const _ThemeTile();
+  @override
+  Widget build(BuildContext context) {
+    final appBloc = context.watch<AppBloc>();
+    final isDarkMode = appBloc.state.darkMode;
+    final s = S.of(context);
+    return ListTile(
+      key: const Key('drawer_theme_list_tile'),
+      contentPadding: FRDrawer.listTileContentPadding,
+      leading: const Icon(Icons.brightness_6),
+      title: Text(s.theme),
+      subtitle: Text(
+        isDarkMode ? s.dark_mode : s.light_mode,
+      ),
+      onTap: () async {
+        appBloc.add(const AppToggleDarkMode());
+      },
+    );
+  }
+}
+
+class _AboutTile extends StatelessWidget {
+  const _AboutTile();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      key: const Key('drawer_about_list_tile'),
+      contentPadding: FRDrawer.listTileContentPadding,
+      leading: const Icon(Icons.info_outline),
+      title: Text(S.of(context).about),
+      onTap: () async {
+        await FRUtils.showAboutDialog(context);
+      },
+    );
+  }
+}
+
+class _CurrentUserTile extends StatelessWidget {
+  const _CurrentUserTile();
+  @override
+  Widget build(BuildContext context) {
+    final authenticationBloc = context.watch<AuthenticationBloc>();
+    final currentUser = authenticationBloc.state.user;
+
+    log('Building CurrentUserTile with user: $currentUser');
+
+    final s = S.of(context);
+
+    return ListTile(
+      key: const Key('drawer_current_user_list_tile'),
+      contentPadding: FRDrawer.listTileContentPadding,
+      leading: const Icon(Icons.logout),
+      title: Text(s.logout),
+      subtitle: Text(currentUser?.email ?? ''),
+      onTap: () {
+        authenticationBloc.add(
+          AuthenticationLogoutPressed(),
+        );
+      },
+    );
+  }
+}
+
+class _DrawerHeader extends StatelessWidget {
+  const _DrawerHeader();
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return DrawerHeader(
+      key: const Key('drawer_header'),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.secondary,
+      ),
+      child: Row(
+        children: [
+          Image.asset(
+            'assets/images/logo.png',
+            width: 100,
+            height: 100,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              S.of(context).application_name,
+              style: TextStyle(
+                fontSize: 24,
+                color: theme.colorScheme.onSecondary,
               ),
             ),
-            ..._buildGroupListTiles(context),
-            const Divider(),
-            _buildLanguageListTile(context),
-            _buildThemeListTile(context),
-            const Divider(),
-            Obx(() {
-              return ListTile(
-                leading: Icon(Icons.logout),
-                title: Text(TranslationKeys.logout.tr),
-                subtitle: Text(authService.currentUser.value?.email ?? ''),
-                onTap: () {
-                  authService.logout();
-                },
-              );
-            }),
-            const Divider(),
-            Obx(() {
-              return AboutListTile(
-                applicationName: TranslationKeys.applicationName.tr,
-                applicationVersion:
-                    '${controller.packageInfo.value?.version ?? ''} (${controller.packageInfo.value?.buildNumber ?? ''})',
-                applicationIcon: Image.asset(
-                  'assets/images/logo.png',
-                  width: 50,
-                  height: 50,
-                ),
-                aboutBoxChildren: [
-                  RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                      children: [
-                        TextSpan(
-                          text:
-                              '${TranslationKeys.applicationDescription.tr}\n\n',
-                        ),
-                        TextSpan(text: TranslationKeys.developedWith.tr),
-                        TextSpan(text: ' '),
-                        TextSpan(
-                          text: TranslationKeys.loveAndCats.tr,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(text: ' '),
-                        TextSpan(text: TranslationKeys.developedIn.tr),
-                        TextSpan(text: ' '),
-                        TextSpan(
-                          text: '${TranslationKeys.developedBy.tr}\n\n',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        TextSpan(text: TranslationKeys.checkoutGithub.tr),
-                        WidgetSpan(
-                          child: GestureDetector(
-                            onTap: () {
-                              // Open GitHub link
-                            },
-                            child: Text(
-                              'github.com/felicetteapp/recipes-flutter',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ),
-                        TextSpan(text: '\n\n'),
-                        TextSpan(
-                          text: controller.packageInfo.value?.packageName ?? '',
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-                icon: Icon(Icons.info_outline),
-                child: Text(TranslationKeys.about.tr),
-              );
-            }),
-          ],
-        );
-      }),
+          ),
+        ],
+      ),
     );
   }
 }
