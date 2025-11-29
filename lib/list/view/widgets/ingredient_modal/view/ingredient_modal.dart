@@ -255,6 +255,8 @@ class _PriceCardQuantityButtons extends StatelessWidget {
         borderRadius: .only(
           topLeft: .circular(biggestRadius),
           bottomLeft: .circular(biggestRadius),
+          topRight: .circular(smallRadius),
+          bottomRight: .circular(smallRadius),
         ),
       );
     } else {
