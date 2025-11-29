@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:felicette_recipes/app/bloc/app_bloc.dart';
 import 'package:felicette_recipes/app/routes/app_routes.dart';
+import 'package:felicette_recipes/app/services/wearos/wearos_service.dart';
 import 'package:felicette_recipes/app/utils/utils.dart';
 import 'package:felicette_recipes/authentication/bloc/authentication_bloc.dart';
 import 'package:felicette_recipes/generated/l10n.dart';
@@ -93,14 +94,45 @@ class FRDrawer extends StatelessWidget {
   }
 
   Widget _buildWearOsListTile(BuildContext context) {
-    return const SizedBox.shrink();
+    final s = S.of(context);
+    return ValueListenableBuilder<bool>(
+      valueListenable: WearOSService.instance.hasConnectedWatch,
+      builder: (context, hasConnectedWatch, child) {
+        return ValueListenableBuilder<bool>(
+          valueListenable: WearOSService.instance.isSyncing,
+          builder: (context, isSyncing, child) {
+            return ListTile(
+              key: const Key('drawer_wearos_list_tile'),
+              contentPadding: listTileContentPadding,
+              leading: Icon(
+                hasConnectedWatch ? Icons.watch : Icons.watch_outlined,
+                color: hasConnectedWatch
+                    ? Theme.of(context).colorScheme.primary
+                    : null,
+              ),
+              title: Text(s.wear_os_sync),
+              subtitle: Text(
+                hasConnectedWatch ? s.connected : s.not_connected,
+              ),
+              trailing: isSyncing
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : null,
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        padding: EdgeInsets.zero,
+        padding: .zero,
         children: <Widget>[
           const _DrawerHeader(),
           ..._buildGroupListTiles(context),
